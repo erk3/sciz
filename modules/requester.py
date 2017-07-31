@@ -5,12 +5,12 @@
 import ConfigParser, sqlalchemy
 from sqlalchemy import desc, or_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sciz_mob_class import MOB
-from sciz_cdm_class import CDM
-from sciz_battle_event_class import BATTLE_EVENT
-from sciz_sql_helper import SQLHelper
-from sciz_pretty_printer import PrettyPrinter
-import sciz_globals as sg
+from classes.mob import MOB
+from classes.cdm import CDM
+from classes.battle_event import BATTLE_EVENT
+from modules.sql_helper import SQLHelper
+from modules.pretty_printer import PrettyPrinter
+import modules.globals as sg
 
 ## Requester class for SCIZ
 class Requester:

@@ -4,12 +4,12 @@
 # Imports
 import sys, argparse, ConfigParser, sqlalchemy, json, codecs
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sciz_mh_caller import MHCaller
-from sciz_mail_walker import MailWalker
-from sciz_admin_helper import AdminHelper
-from sciz_notifier import Notifier
-from sciz_requester import Requester
-import sciz_globals as sg
+from modules.mh_caller import MHCaller
+from modules.mail_walker import MailWalker
+from modules.admin_helper import AdminHelper
+from modules.notifier import Notifier
+from modules.requester import Requester
+import modules.globals as sg
 
 ## SCIZ
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
              description='Système de Chauve-souris Interdimensionnel pour Zhumains',
              epilog='From Põm³ with love')
-    parser.add_argument('-c', '--conf', metavar='CONFIG_FILE', type=str, default='sciz.ini', help='specify the .ini configuration file')
+    parser.add_argument('-c', '--conf', metavar='CONFIG_FILE', type=str, default='confs/sciz.ini', help='specify the .ini configuration file')
     parser.add_argument('-t', '--test', action='store_true', help='instruct SCIZ to test your thing')
     parser.add_argument('-u', '--users', metavar = 'USERS_FILE', type=str, help='instruct SCIZ to create or update users from JSON')
     parser.add_argument('-i', '--init', action='store_true', help='instruct SCIZ to setup the things')

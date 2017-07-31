@@ -5,7 +5,7 @@
 import re, datetime, ConfigParser
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-import sciz_globals as sg
+import modules.globals as sg
 
 # Class of a Battle Event (ATT / DEF / POUVOIR / HYPNO / ... ???)
 class BATTLE_EVENT(sg.SqlAlchemyBase):

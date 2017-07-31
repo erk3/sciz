@@ -4,10 +4,10 @@
 # Imports
 #from __future__ import unicode_literals
 import ConfigParser
-from sciz_cdm_class import CDM
-from sciz_mob_class import MOB
-from sciz_battle_event_class import BATTLE_EVENT
-import sciz_globals as sg
+from classes.cdm import CDM
+from classes.mob import MOB
+from classes.battle_event import BATTLE_EVENT
+import modules.globals as sg
 
 ## PrettyPrinter class for SCIZ
 class PrettyPrinter:

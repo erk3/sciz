@@ -4,9 +4,9 @@
 # Imports
 import sys, ConfigParser, sqlalchemy, json, codecs
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sciz_sql_helper import SQLHelper
-from sciz_user_class import USER
-import sciz_globals as sg
+from modules.sql_helper import SQLHelper
+from classes.user import USER
+import modules.globals as sg
 
 ## AdminHelper class for SCIZ
 class AdminHelper:

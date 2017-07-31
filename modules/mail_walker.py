@@ -4,11 +4,11 @@
 # Imports
 import email, mailbox, ConfigParser, sys, os, re
 from email.header import decode_header
-from sciz_sql_helper import SQLHelper
-from sciz_cdm_class import CDM
-from sciz_battle_event_class import BATTLE_EVENT
-from sciz_pretty_printer import PrettyPrinter
-import sciz_globals as sg
+from modules.sql_helper import SQLHelper
+from classes.cdm import CDM
+from classes.battle_event import BATTLE_EVENT
+from modules.pretty_printer import PrettyPrinter
+import modules.globals as sg
 
 ## MailWalker class for SCIZ
 class MailWalker:

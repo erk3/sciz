@@ -4,9 +4,9 @@
 # Imports
 import ConfigParser, sqlalchemy
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sciz_sql_helper import SQLHelper
-from sciz_notif_class import NOTIF
-import sciz_globals as sg
+from modules.sql_helper import SQLHelper
+from classes.notif import NOTIF
+import modules.globals as sg
 
 ## Notifier class for SCIZ
 class Notifier:

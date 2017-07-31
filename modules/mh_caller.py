@@ -4,10 +4,10 @@
 # Imports
 import ConfigParser, requests
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from sciz_sql_helper import SQLHelper
-from sciz_troll_class import TROLL
-from sciz_metamob_class import METAMOB
-import sciz_globals as sg
+from modules.sql_helper import SQLHelper
+from classes.troll import TROLL
+from classes.metamob import METAMOB
+import modules.globals as sg
 
 ## Mountyhall Caller class for SCIZ
 class MHCaller:

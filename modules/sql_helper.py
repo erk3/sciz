@@ -4,15 +4,15 @@
 # Imports
 import ConfigParser
 from sqlalchemy import create_engine, exc, orm
-from sciz_user_class import USER
-from sciz_troll_class import TROLL
-from sciz_metamob_class import METAMOB
-from sciz_mob_class import MOB
-from sciz_cdm_class import CDM
-from sciz_battle_event_class import BATTLE_EVENT
-from sciz_notif_class import NOTIF
-from sciz_pretty_printer import PrettyPrinter
-import sciz_globals as sg
+from classes.user import USER
+from classes.troll import TROLL
+from classes.metamob import METAMOB
+from classes.mob import MOB
+from classes.cdm import CDM
+from classes.battle_event import BATTLE_EVENT
+from classes.notif import NOTIF
+from modules.pretty_printer import PrettyPrinter
+import modules.globals as sg
 
 ## SCIZ SQL Help
 

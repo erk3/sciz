@@ -5,7 +5,7 @@
 import re, datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-import sciz_globals as sg
+import modules.globals as sg
 
 # Class of a CDM
 class CDM(sg.SqlAlchemyBase):
