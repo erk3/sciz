@@ -112,7 +112,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.deg = res.group(1) if res else None
         # Points de vie perdus
         res = re.search(re_event_pv, body)
-        self.pv = res.group(1) if res else None
+        self.pv = res.group(1) if res else self.deg # Pas d'armure
         
     def __populate_from_def_mail(self, subject, body, config):       
         # Load config
@@ -159,7 +159,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.deg = res.group(1) if res else None
         # Points de vie perdus
         res = re.search(re_event_pv, body)
-        self.pv = res.group(1) if res else None
+        self.pv = res.group(1) if res else self.deg # Pas d'armure
         # Points de vie restants
         res = re.search(re_event_vie, body)
         self.vie = res.group(1) if res else None

@@ -1,0 +1,191 @@
+Return-Path: <paul.similowski@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id 3CB88826
+	for <sciz@cerv.ovh>; Thu, 13 Jul 2017 10:14:14 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=d4Vkw2RV;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 0J7EHr05ftQd for <sciz@cerv.ovh>;
+	Thu, 13 Jul 2017 10:14:11 +0000 (UTC)
+Received: from mail-lf0-f42.google.com (mail-lf0-f42.google.com [209.85.215.42])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id C96DC520
+	for <sciz@cerv.ovh>; Thu, 13 Jul 2017 10:14:10 +0000 (UTC)
+Received: by mail-lf0-f42.google.com with SMTP id b207so33820494lfg.2
+        for <sciz@cerv.ovh>; Thu, 13 Jul 2017 03:14:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=G8uq8q4asB9sXoxlbDg/zXkjXx1Fv1GUpUOzV0kbuME=;
+        b=d4Vkw2RVJVJiR24rYao8b9MW0FW7i6/YgJD2DSD9eLDp7GE9uUjJdTFvKlDheh0LCZ
+         F+/hpu/+U3KZ/MPoFdrHHiiP0VusT9wHkWbiymU7eRFRulCrI2rmMTMURDh3wo8VSLLe
+         Zyk9JeOfnjXD2ZjI9VCJlU8j4c2Zdrg9Z+KX/YGQmdamuK7QXgbZ2z/ugkg7D0DefcWr
+         ZPWoOyBT21ea0nuBlXxyLHzbV9HUkGIQAxj1CP6xOL7w+lcOvtmaNfKOK+ge3JSOthD9
+         /bcDhCvnUqiG8gHHkPXGiqtmYigGc26E8+LLkw56ebV6qT395l8eiTcluEp31eH/2nDH
+         mEfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=G8uq8q4asB9sXoxlbDg/zXkjXx1Fv1GUpUOzV0kbuME=;
+        b=FIxULaxBH07FQQScUn32ucmBSNOC0xGc6cVbJ/yQSi3Oj6sedvje4Ro2u8IOIvXYo+
+         PGZlNHpwJcNHCAUWT7/ijiRiGeClgh/zCnyZMyBJ+eESVSLviCAVInZCsXyvzUsPK5gF
+         bfKLLsV4MYyQ7GNTY4wU7ClCvizzKIHn90XysZkVaOyQgw/Hiq0SraF4mlOaRVFGk0lk
+         4s1sDDZC31EJ64/6YlexI5Cx5crweKQsxlbV1bKTneN4vIZmgbcRGshJHbC1bQHZfFYo
+         asML/sFdgs6hPyF6H8QJ5veZP23WJ7aiJW89Qsukf42W8hIK2BFo6BKIY3WjaZadiYFT
+         fS3A==
+X-Gm-Message-State: AIVw110IwCb6yysV0+RFo8T3wxZcOblNl2aJt4EOpqLiY1cZ4PulXvPl
+	C/LVrdfGc6A+WS1OcuKNg05qrSuycObi
+X-Received: by 10.46.92.193 with SMTP id q184mr938817ljb.105.1499940849824;
+ Thu, 13 Jul 2017 03:14:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <2edf09121910299090d0568d6d3b0981@games.mountyhall.com>
+In-Reply-To: <2edf09121910299090d0568d6d3b0981@games.mountyhall.com>
+From: Paul S <paul.similowski@gmail.com>
+Date: Thu, 13 Jul 2017 10:13:59 +0000
+Message-ID: <CALtH2Jj5bguHyS0yjCgsvw9mV7DhvKLMoF=70fUSeqHzge118Q@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_=3A_Connaissance_des_Mon?=
+	=?UTF-8?Q?stres_3_sur_un_Crasc_Maexus_Esculape_=5BJeune=5D_=285878470=29?=
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="f403043670d689ba8705543031b7"
+
+--f403043670d689ba8705543031b7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mer. 12 juil. 2017 =C3=A0 23:17
+Subject: [MountyHall] Comp=C3=A9tence : Connaissance des Monstres 3 sur un =
+Crasc
+Maexus Esculape [Jeune] (5878470)
+To: <paul.similowski@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 12/07/2017 23:01:22.
+***********************************************************
+
+Vous avez utilis=C3=A9 CONNAISSANCE DES MONSTRES sur un Crasc Maexus Escula=
+pe
+[Jeune] (5878470)
+
+Le Monstre cibl=C3=A9 fait partie des : Monstre
+
+Niveau :                Exceptionnel (entre 31 et 34)
+Points de Vie : Exceptionnel (entre 310 et 340)
+Blessure :              30 % (approximativement)
+D=C3=A9s d'Attaque : Tr=C3=A8s Faible (inf=C3=A9rieur =C3=A0 1)
+D=C3=A9s d'Esquive : Remarquable (entre 20 et 23)
+D=C3=A9s de D=C3=A9g=C3=A2t :  Fort (entre 13 et 16)
+D=C3=A9s de R=C3=A9g=C3=A9n. : Excellent (entre 12 et 13)
+Armure :                Remarquable (entre 20 et 23)
+Vue :                   Faible (entre 5 et 8)
+Capacit=C3=A9 sp=C3=A9ciale : Absorption de Pouvoir - Affecte : ??? | Dur=
+=C3=A9e 2 tour(s)
+Maitrise Magique :                      Tr=C3=A8s Faible (inf=C3=A9rieur =
+=C3=A0 200)
+R=C3=A9sistance Magique :            Surtrollesque (entre 4400 et 4700)
+Nombre d'attaques :                     1
+Vitesse de D=C3=A9placement :        Rapide
+Voir le Cach=C3=A9 :                         Non
+Attaque =C3=A0 distance :            Non
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--f403043670d689ba8705543031b7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: mer. 12 juil. 2=
+017 =C3=A0=C2=A023:17<br>Subject: [MountyHall] Comp=C3=A9tence : Connaissan=
+ce des Monstres 3 sur un Crasc Maexus Esculape [Jeune] (5878470)<br>To:  &l=
+t;<a href=3D"mailto:paul.similowski@gmail.com">paul.similowski@gmail.com</a=
+>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 12/07/2017 23:01:22.<br>
+***********************************************************<br>
+<br>
+Vous avez utilis=C3=A9 CONNAISSANCE DES MONSTRES sur un Crasc Maexus Escula=
+pe [Jeune] (5878470)<br>
+<br>
+Le Monstre cibl=C3=A9 fait partie des : Monstre<br>
+<br>
+Niveau :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Exceptionne=
+l (entre 31 et 34)<br>
+Points de Vie : Exceptionnel (entre 310 et 340)<br>
+Blessure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 30 % (approximat=
+ivement)<br>
+D=C3=A9s d&#39;Attaque : Tr=C3=A8s Faible (inf=C3=A9rieur =C3=A0 1)<br>
+D=C3=A9s d&#39;Esquive : Remarquable (entre 20 et 23)<br>
+D=C3=A9s de D=C3=A9g=C3=A2t :=C2=A0 Fort (entre 13 et 16)<br>
+D=C3=A9s de R=C3=A9g=C3=A9n. : Excellent (entre 12 et 13)<br>
+Armure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Remarquable=
+ (entre 20 et 23)<br>
+Vue :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0F=
+aible (entre 5 et 8)<br>
+Capacit=C3=A9 sp=C3=A9ciale : Absorption de Pouvoir - Affecte : ??? | Dur=
+=C3=A9e 2 tour(s)<br>
+Maitrise Magique :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 Tr=C3=A8s Faible (inf=C3=A9rieur =C3=A0 200)<br>
+R=C3=A9sistance Magique :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Surtroll=
+esque (entre 4400 et 4700)<br>
+Nombre d&#39;attaques :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A01<br>
+Vitesse de D=C3=A9placement :=C2=A0 =C2=A0 =C2=A0 =C2=A0 Rapide<br>
+Voir le Cach=C3=A9 :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Non<br>
+Attaque =C3=A0 distance :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Non<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--f403043670d689ba8705543031b7--

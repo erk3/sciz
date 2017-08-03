@@ -28,6 +28,7 @@ def copy_properties(src, dst, names, with_none):
 
 def do_unless_none(fnc, lst):
     lst = filter(lambda x: x!=None, lst)
+    lst = [int(x) for x in lst]
     return (fnc)(lst) if len(lst) != 0 else None
 
 def str_min_max(min, max):
@@ -132,6 +133,7 @@ CONF_PRINT_REG          = "stat_reg"
 CONF_PRINT_VUE          = "stat_vue"
 CONF_PRINT_MM           = "stat_mm"
 CONF_PRINT_RM           = "stat_rm"
+CONF_PRINT_ARM_PHY      = "stat_arm_phy"
 CONF_PRINT_CAPA         = "stat_capa"
 CONF_PRINT_VLC          = "stat_vlc"
 CONF_PRINT_ATT_DIST     = "stat_att_dist"

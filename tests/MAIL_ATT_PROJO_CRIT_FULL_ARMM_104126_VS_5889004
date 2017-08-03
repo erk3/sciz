@@ -1,0 +1,192 @@
+Return-Path: <paul.similowski@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id A73AF816
+	for <sciz@cerv.ovh>; Fri, 21 Jul 2017 06:59:58 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=FLioqePB;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id H-arGkKHG9L5 for <sciz@cerv.ovh>;
+	Fri, 21 Jul 2017 06:59:57 +0000 (UTC)
+Received: from mail-lf0-f51.google.com (mail-lf0-f51.google.com [209.85.215.51])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 93D9C86D
+	for <sciz@cerv.ovh>; Fri, 21 Jul 2017 06:59:57 +0000 (UTC)
+Received: by mail-lf0-f51.google.com with SMTP id y15so19942454lfd.5
+        for <sciz@cerv.ovh>; Thu, 20 Jul 2017 23:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=dN+ZTuWyFIZgcg3/vPwzBsjLtsle5RyIlz8QJ2TqOp4=;
+        b=FLioqePB/F/UReBFE6MrOt96LPmZwjcINGFmyxwnAwDpNMCq++PH5YoiBKr6eQ/BE/
+         xkpl7yPshxfI1UOYpcw8kAZKBnc+JPPqKx5f7QEJNVdRwBevjDw3dG7K5CWTu85YbbJX
+         xPEssmOMUDAy6bBoYacBtccK7ZxqklIN5Pg5y1DguaNEVaCgq/9a2SdWXlQG71N3Xsla
+         5/RSSUVy1RPfg4XkJUMoFFflL8wAtivhis6f/+i8ksurAlp8KkherEwH6GyVKdI5jHyt
+         itYM55JN7+Js6WNA+eeu7bEqh+lvNjGFk4NjnTjd70ZajDeieokOJsgCZKfQ+L/EVR0N
+         UVwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=dN+ZTuWyFIZgcg3/vPwzBsjLtsle5RyIlz8QJ2TqOp4=;
+        b=VisR83ma7M4aSBkVPZbKAMAX8WVgkVAXsQdNjnWx/fZex+MKOBOcmd6xGC4Y/iNkym
+         RRQKCIxUmxpkFt/DSeMpOQCcmCNohAW+TWTcfbe04dBTp8TyB4va9oC61eyA47YGd6IM
+         z+hRQ1gUhTvE3Xg+mzeAhgr8/7YTSI4jFK874tkeIJOju7aHcfcABsrJWFwtJrb4tS6c
+         hCUcLDFVyMAsDNqM02gGN+YNrjhuh28vsgiENdFv8DCkUw0hr2KpggG0XQNLFbJRA8QQ
+         NMor5aqdgLFToml473RlS8jQ5rUKfaGEupUyAdESSeODIbQ0pyNrrZ1Z2oaE4Q+SK/Op
+         w3/Q==
+X-Gm-Message-State: AIVw111ODEzNwpipWoCWg8nANwrE+zgdMCjvh2JwN4CKBEAa+wlRLanP
+	LchBjVeNAG/DgzRWV1kFRIIcqVGX0B86
+X-Received: by 10.25.29.16 with SMTP id d16mr1887297lfd.50.1500620396984; Thu,
+ 20 Jul 2017 23:59:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <7d48a507dcf056ddccfbc33c9f442557@smartphone.mountyhall.com>
+In-Reply-To: <7d48a507dcf056ddccfbc33c9f442557@smartphone.mountyhall.com>
+From: Paul S <paul.similowski@gmail.com>
+Date: Fri, 21 Jul 2017 06:59:46 +0000
+Message-ID: <CALtH2Jh+DwOZusBptuwm_c0G8a_N4LUt9e+jWK=Nt_bQ=YiXVw@mail.gmail.com>
+Subject: Fwd: [MountyHall] Attaquant - Attaque critique (Projectile Magique)
+ sur un Prince Xorn [Initial] (5889004)
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="001a114019d8b481260554ce69a8"
+
+--001a114019d8b481260554ce69a8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: dim. 16 juil. 2017 =C3=A0 10:44
+Subject: [MountyHall] Attaquant - Attaque critique (Projectile Magique) sur
+un Prince Xorn [Initial] (5889004)
+To: <paul.similowski@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 16/07/2017 10:44:23.
+***********************************************************
+
+Vous avez attaqu=C3=A9 un Prince Xorn [Initial] (5889004) gr=C3=A2ce =C3=A0=
+ un sortil=C3=A8ge.
+
+
+
+Votre Jet d'Attaque est de....................: 123
+Le Jet d'Esquive de votre adversaire est de...: 29
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 10 %
+Jet de R=C3=A9sistance...........................: 25
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.
+
+
+Vous lui avez inflig=C3=A9 58 points de d=C3=A9g=C3=A2ts.
+Son Armure le prot=C3=A8ge et il ne perdra que 48 points de vie.
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.
+
+Votre Machette des Cyclopes a =C3=A9t=C3=A9 abim=C3=A9e par ce coup.Votre C=
+amouflage a =C3=A9t=C3=A9
+ANNUL=C3=89.
+
+
+
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--001a114019d8b481260554ce69a8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: dim. 16 juil. 2=
+017 =C3=A0=C2=A010:44<br>Subject: [MountyHall] Attaquant - Attaque critique=
+ (Projectile Magique) sur un Prince Xorn [Initial] (5889004)<br>To:  &lt;<a=
+ href=3D"mailto:paul.similowski@gmail.com">paul.similowski@gmail.com</a>&gt=
+;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 16/07/2017 10:44:23.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 un Prince Xorn [Initial] (5889004) gr=C3=A2ce =C3=A0=
+ un sortil=C3=A8ge.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 123<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 29<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 10 %<br>
+Jet de R=C3=A9sistance...........................: 25<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 58 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure le prot=C3=A8ge et il ne perdra que 48 points de vie.<br>
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.<br>
+<br>
+Votre Machette des Cyclopes a =C3=A9t=C3=A9 abim=C3=A9e par ce coup.Votre C=
+amouflage a =C3=A9t=C3=A9 ANNUL=C3=89.<br>
+<br>
+<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--001a114019d8b481260554ce69a8--

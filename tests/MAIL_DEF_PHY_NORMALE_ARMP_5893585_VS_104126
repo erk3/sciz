@@ -1,0 +1,164 @@
+Return-Path: <paul.similowski@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id CECF88CD
+	for <sciz@cerv.ovh>; Fri, 21 Jul 2017 06:51:08 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=UY984RsG;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WrtkqV8fvw6b for <sciz@cerv.ovh>;
+	Fri, 21 Jul 2017 06:51:06 +0000 (UTC)
+Received: from mail-lf0-f43.google.com (mail-lf0-f43.google.com [209.85.215.43])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 4CF46816
+	for <sciz@cerv.ovh>; Fri, 21 Jul 2017 06:51:06 +0000 (UTC)
+Received: by mail-lf0-f43.google.com with SMTP id l200so20038980lfb.2
+        for <sciz@cerv.ovh>; Thu, 20 Jul 2017 23:51:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=OKtUp/A+QXu9Z6gG4Ax350V5M0iiH1bfBvjhua/GRMY=;
+        b=UY984RsG9V9ZVji0BIc1W6dc9jWYocqMglCElkZ9pWfj5bCmxFAdgpEYdQfFXdR0VS
+         MvDcU1FjkqnjvktGteb71WyrMo9GaGhTaBcKx+Nxs+dK0S7rDJOLQqYBC2WLZcflmErL
+         DbjKMH/aAnHSZwUfb9DH+oha2gbe1MteJbDRn8U31mKA/djME4JgFcgoObBRBpV4LoFR
+         Xuq0mGfS0r3HOzr2CYFrZQ2jBE/WlClJu0G2FaSSInejLrwlnKIHn5a46+74jSb0zvTh
+         krVj+iFMVn1cfKGugyYh5FSo6rh9sVtyvi+oFEdja+kxK2rLB4dVPKmIw4yYoAZL3aQO
+         vXyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=OKtUp/A+QXu9Z6gG4Ax350V5M0iiH1bfBvjhua/GRMY=;
+        b=kNvFlN8RAUhe9h/nZDCOvqfs2VeN58upJ+sWxk+nXD4QVx2r+7JCV7e5agjB4OAMeT
+         nIzZD/RNWpFvlY9BVKWHlMLqmMNpJ0W05hxPUO3MGbVCa2w995Q9/Wc2LwA11LIMlhIf
+         6EEW4z9nk4F83Z13/xso2I/04qSU1z6HeAEYZkR2rEa8OLUUHRb2bxBDTSIbzoNYFdTe
+         2nF+++f/vg2+YhFtIalPkS6WL4eZY5PPpo/1M9cE0TKECIWMXShqz897FFBX2IuaVhof
+         gQeGrKeH/iCrhDIw9d0H90QHHvkwiB9Y46kzZJaxPm8feRwer4IEVbkEWsCYZGFPT830
+         jClA==
+X-Gm-Message-State: AIVw110UEcGQofMkp+K2sv+ILJosHIG8u6zETLHYXFftk2/tUBLlEA98
+	GTcwZS8j6gvqHvV7wsQ/i4auFwy2+fHo
+X-Received: by 10.46.75.2 with SMTP id y2mr2274854lja.78.1500619864908; Thu,
+ 20 Jul 2017 23:51:04 -0700 (PDT)
+MIME-Version: 1.0
+References: <4ba3df945e672420cb9d7d30404558c8@localhost.localdomain>
+In-Reply-To: <4ba3df945e672420cb9d7d30404558c8@localhost.localdomain>
+From: Paul S <paul.similowski@gmail.com>
+Date: Fri, 21 Jul 2017 06:50:54 +0000
+Message-ID: <CALtH2JjcfkCLhvQG=TXHG66GYxsORkB_VvcPQCONW4ACReBVVg@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_D=C3=A9fenseur_=2D_Attaque_d=27un_Titan_=5BN?=
+	=?UTF-8?Q?ouveau=5D_=285893585=29?=
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="f403045ea6e8fda9510554ce496e"
+
+--f403045ea6e8fda9510554ce496e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: ven. 21 juil. 2017 =C3=A0 01:38
+Subject: [MountyHall] D=C3=A9fenseur - Attaque d'un Titan [Nouveau] (589358=
+5)
+To: <paul.similowski@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 21/07/2017 01:38:09.
+***********************************************************
+
+Le Monstre n=C2=B05893585 (un Titan [Nouveau]) vous a attaqu=C3=A9.
+
+Son jet d'Attaque est de......................: 71
+Votre jet d'Esquive est de....................: 69
+
+ Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89
+
+ Il vous a inflig=C3=A9  31 points de d=C3=A9g=C3=A2ts.
+ Votre Armure vous prot=C3=A8ge et vous ne perdrez que 10 points de vie.
+ Vous serez, de plus, fragilis=C3=A9 lors des prochaines esquives.
+ Il vous reste actuellement 165 points de vie.
+
+Votre Robe de mage a =C3=A9t=C3=A9 l=C3=A9g=C3=A8rement abim=C3=A9e par ce =
+coup.
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--f403045ea6e8fda9510554ce496e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: ven. 21 juil. 2=
+017 =C3=A0=C2=A001:38<br>Subject: [MountyHall] D=C3=A9fenseur - Attaque d&#=
+39;un Titan [Nouveau] (5893585)<br>To:  &lt;<a href=3D"mailto:paul.similows=
+ki@gmail.com">paul.similowski@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 21/07/2017 01:38:09.<br>
+***********************************************************<br>
+<br>
+Le Monstre n=C2=B05893585 (un Titan [Nouveau]) vous a attaqu=C3=A9.<br>
+<br>
+Son jet d&#39;Attaque est de......................: 71<br>
+Votre jet d&#39;Esquive est de....................: 69<br>
+<br>
+=C2=A0Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89<br>
+<br>
+=C2=A0Il vous a inflig=C3=A9=C2=A0 31 points de d=C3=A9g=C3=A2ts.<br>
+=C2=A0Votre Armure vous prot=C3=A8ge et vous ne perdrez que 10 points de vi=
+e.<br>
+=C2=A0Vous serez, de plus, fragilis=C3=A9 lors des prochaines esquives.<br>
+=C2=A0Il vous reste actuellement 165 points de vie.<br>
+<br>
+Votre Robe de mage a =C3=A9t=C3=A9 l=C3=A9g=C3=A8rement abim=C3=A9e par ce =
+coup.<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--f403045ea6e8fda9510554ce496e--

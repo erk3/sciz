@@ -1,0 +1,201 @@
+Return-Path: <paul.similowski@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id E1E3185C
+	for <sciz@cerv.ovh>; Thu,  3 Aug 2017 13:23:22 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=LNI/3ayA;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id bj892EG5pnH0 for <sciz@cerv.ovh>;
+	Thu,  3 Aug 2017 13:23:21 +0000 (UTC)
+Received: from mail-lf0-f46.google.com (mail-lf0-f46.google.com [209.85.215.46])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 03645816
+	for <sciz@cerv.ovh>; Thu,  3 Aug 2017 13:23:20 +0000 (UTC)
+Received: by mail-lf0-f46.google.com with SMTP id y15so5934574lfd.5
+        for <sciz@cerv.ovh>; Thu, 03 Aug 2017 06:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=r2lX7eRRqU+vluK84pXOky5FbZmGd1CacQlIJmP0OAY=;
+        b=LNI/3ayAnIMfTaOfmmOIoraNDHhYwhkvGCFlvOqCr4XrryyDDOXxF0Ye0v/eZ34jcf
+         oyVWWWpJtUVu5qlVaTDiRIF5hD4vJ68NKhXcYil/b++M6tXA0QSZ4MGy/R9RkN2uSnkY
+         FZGQl7HsfPtWyluLOYghIVCGx9k/kyj7WNH6oBp/EBe6FCiNFlgNtxw5xX3AGj2X1ZvT
+         Jt+tDLMR5WkhWB50QlqFrltwLmZKFh9E/l6Hs8s8ftyUeGLLb4OAieR1YiRsgFqO6SU8
+         m5sKyYHSBUVwq55I5R87VF55cyu0pOr8LAk31dBR093RFCGI+zQiWPmY1HU5DJlojD1H
+         n0Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=r2lX7eRRqU+vluK84pXOky5FbZmGd1CacQlIJmP0OAY=;
+        b=gkDjrVWeiFNh5/iaUd38CNAXk33ZM6iqVvEOXU4xFylo7GBKqwEEb4d4QdAWapnPxL
+         u+ioyNvunbdVbnsfZbvmDfVfG+1EQmN85DIF8OGj9OiFIdCR/HtVIvZzLTNSHa5Ay0bM
+         4ICHRJ+QtklREzCxxSMB43oGQIC+V/PecheMy5FYqU+pPpBCALaNeUTwaWv9pVVWBnHH
+         jxs+hSLs8Lx85drESYSmR3FaJ+SmHASoOYGcpVr4ZZRfq6MK1voHbyzJ25LIi2ulCTfz
+         g3zRv/fQdgLvhI3keCF/a/YSBfxp4zwLiAhSQexQGGL2kaV6NH2aWuld8h5SyWUcjQu2
+         sSjA==
+X-Gm-Message-State: AIVw113BwH2HyYWg9fJCBFHtcuDNz7y+JQeIrzpSSLg13dRM5CgAP4ko
+	7oflXMT8I/Ew3Y5ZJ1vEvOvA2rDpBlyy
+X-Received: by 10.46.0.163 with SMTP id e35mr717378lji.112.1501766600128; Thu,
+ 03 Aug 2017 06:23:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <196bf25426baccaf8035675646f399e4@games.mountyhall.com> <CAEYjN-h0zWe_HmymmhE+qEuR4cT=hiPpvZqh21Ccdjt9HBkJrg@mail.gmail.com>
+In-Reply-To: <CAEYjN-h0zWe_HmymmhE+qEuR4cT=hiPpvZqh21Ccdjt9HBkJrg@mail.gmail.com>
+From: Paul S <paul.similowski@gmail.com>
+Date: Thu, 03 Aug 2017 13:23:09 +0000
+Message-ID: <CALtH2JgApGEb3spO6oSOT3JpZ8Pa+2H9YZUG6rHabw_O8=rW+A@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_=3A_Connaissance_des_Mon?=
+	=?UTF-8?Q?stres_1_sur_un_Yuan=2Dti_=5BNouveau=5D_=285896840=29?=
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="001a1142a96cbc7d9d0555d9486a"
+
+--001a1142a96cbc7d9d0555d9486a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Hugo Damme <hugo.damme@gmail.com>
+Date: jeu. 3 ao=C3=BBt 2017 =C3=A0 15:20
+Subject: Fwd: [MountyHall] Comp=C3=A9tence : Connaissance des Monstres 1 su=
+r un
+Yuan-ti [Nouveau] (5896840)
+To: paul.similowski@gmail.com <paul.similowski@gmail.com>
+
+
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : MountyHall-Bot <bot@mountyhall.com>
+Date : 29 juillet 2017 =C3=A0 09:02
+Objet : [MountyHall] Comp=C3=A9tence : Connaissance des Monstres 1 sur un
+Yuan-ti [Nouveau] (5896840)
+=C3=80 : hugo.damme@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0108760 : Une Marmite de Bouillon Sournoise [Poss=C3=A9d=
+=C3=A9e]
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 29/07/2017 09:02:56.
+***********************************************************
+
+Vous avez utilis=C3=A9 CONNAISSANCE DES MONSTRES sur un Yuan-ti [Nouveau]
+(5896840)
+
+Le Monstre cibl=C3=A9 fait partie des : Humanoide
+
+Niveau :                Exceptionnel (entre 15 et 17)
+Points de Vie : Excellent (entre 110 et 130)
+Blessure :              30 % (approximativement)
+D=C3=A9s d'Attaque : Remarquable (entre 9 et 11)
+D=C3=A9s d'Esquive : Tr=C3=A8s Fort (entre 8 et 10)
+D=C3=A9s de D=C3=A9g=C3=A2t :  Fort (entre 5 et 7)
+D=C3=A9s de R=C3=A9g=C3=A9n. : Moyen (inf=C3=A9rieur =C3=A0 2)
+Armure :                Tr=C3=A8s Fort (entre 8 et 10)
+Vue :                   Moyen (entre 3 et 5)
+Capacit=C3=A9 sp=C3=A9ciale : Constriction - Affecte : Attaque | Esquive |
+R=C3=A9g=C3=A9n=C3=A9ration | Dur=C3=A9e 2 tour(s)
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+
+--=20
+Hugo Damme
+
+--001a1142a96cbc7d9d0555d9486a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: Hugo Damme &lt;<a href=3D"mailto:=
+hugo.damme@gmail.com">hugo.damme@gmail.com</a>&gt;<br>Date: jeu. 3 ao=C3=BB=
+t 2017 =C3=A0=C2=A015:20<br>Subject: Fwd: [MountyHall] Comp=C3=A9tence : Co=
+nnaissance des Monstres 1 sur un Yuan-ti [Nouveau] (5896840)<br>To: <a href=
+=3D"mailto:paul.similowski@gmail.com">paul.similowski@gmail.com</a> &lt;<a =
+href=3D"mailto:paul.similowski@gmail.com">paul.similowski@gmail.com</a>&gt;=
+<br></div><br><br><div dir=3D"ltr"><br><div class=3D"gmail_quote">---------=
+- Message transf=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b class=3D"gmail_sen=
+dername">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mou=
+ntyhall.com" target=3D"_blank">bot@mountyhall.com</a>&gt;</span><br>Date=C2=
+=A0: 29 juillet 2017 =C3=A0 09:02<br>Objet=C2=A0: [MountyHall] Comp=C3=A9te=
+nce : Connaissance des Monstres 1 sur un Yuan-ti [Nouveau] (5896840)<br>=C3=
+=80=C2=A0: <a href=3D"mailto:hugo.damme@gmail.com" target=3D"_blank">hugo.d=
+amme@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0108760 : Une Marmite de Bouillon Sournoise [Poss=C3=A9d=
+=C3=A9e]<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 29/07/2017 09:02:56.<br>
+***********************************************************<br>
+<br>
+Vous avez utilis=C3=A9 CONNAISSANCE DES MONSTRES sur un Yuan-ti [Nouveau] (=
+5896840)<br>
+<br>
+Le Monstre cibl=C3=A9 fait partie des : Humanoide<br>
+<br>
+Niveau :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Exceptionne=
+l (entre 15 et 17)<br>
+Points de Vie : Excellent (entre 110 et 130)<br>
+Blessure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 30 % (approximat=
+ivement)<br>
+D=C3=A9s d&#39;Attaque : Remarquable (entre 9 et 11)<br>
+D=C3=A9s d&#39;Esquive : Tr=C3=A8s Fort (entre 8 et 10)<br>
+D=C3=A9s de D=C3=A9g=C3=A2t :=C2=A0 Fort (entre 5 et 7)<br>
+D=C3=A9s de R=C3=A9g=C3=A9n. : Moyen (inf=C3=A9rieur =C3=A0 2)<br>
+Armure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Tr=C3=A8s F=
+ort (entre 8 et 10)<br>
+Vue :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0M=
+oyen (entre 3 et 5)<br>
+Capacit=C3=A9 sp=C3=A9ciale : Constriction - Affecte : Attaque | Esquive | =
+R=C3=A9g=C3=A9n=C3=A9ration | Dur=C3=A9e 2 tour(s)<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div><div dir=3D"ltr"><br><br clear=3D"all"><br>-- <br><div class=3D=
+"m_-3369685529829926562gmail_signature" data-smartmail=3D"gmail_signature">=
+<div dir=3D"ltr"><div>Hugo Damme<br></div><div><br></div></div></div>
+</div></div></div>
+
+--001a1142a96cbc7d9d0555d9486a--

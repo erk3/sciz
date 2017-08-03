@@ -37,6 +37,7 @@ class PrettyPrinter:
             self.vue = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_VUE)
             self.mm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MM)
             self.rm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_RM)
+            self.arm_phy = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ARM_PHY)
             self.capa = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_CAPA)
             self.vlc = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_VLC)
             self.att_dist = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ATT_DIST)
@@ -75,7 +76,7 @@ class PrettyPrinter:
             event.def_entity = event.def_mob
             event.s_def_nom = event.def_mob.nom + ' [' + event.def_mob.age + '] (' + str(event.def_mob.id) + ')'
 
-        event.s_pv = event.pv if event.pv else 0
+        event.s_pv = event.pv if event.pv != None else 0
         event.s_def_stats = ''
         event.s_def_stats += ' esq ' + str(event.esq) if event.esq else ''
         event.s_def_stats += ' sr ' + str(event.sr) if event.sr else ''
@@ -100,7 +101,7 @@ class PrettyPrinter:
     def __pprint_cdm(self, cdm, short, is_mob=False):
         if short and is_mob:
             return self.mob_short.format(o=cdm)
-        cdm.s_blessure = cdm.blessure if cdm.blessure else '?'
+        cdm.s_blessure = cdm.blessure if cdm.blessure != None else '?'
         cdm.s_niv = sg.str_min_max(cdm.niv_min, cdm.niv_max)
         cdm.s_pv = sg.str_min_max(cdm.pv_min, cdm.pv_max)
         cdm.s_att = sg.str_min_max(cdm.att_min, cdm.att_max)
@@ -108,6 +109,7 @@ class PrettyPrinter:
         cdm.s_deg = sg.str_min_max(cdm.deg_min, cdm.deg_max)
         cdm.s_reg = sg.str_min_max(cdm.reg_min, cdm.reg_max)
         cdm.s_vue = sg.str_min_max(cdm.vue_min, cdm.vue_max)
+        cdm.s_arm_phy = sg.str_min_max(cdm.arm_phy_min, cdm.arm_phy_max)
         cdm.s_mm = sg.str_min_max(cdm.mm_min, cdm.mm_max)
         cdm.s_rm = sg.str_min_max(cdm.rm_min, cdm.rm_max)
         if cdm.capa_tour:
@@ -119,7 +121,7 @@ class PrettyPrinter:
             
         stats = []
         if cdm.s_niv != None: # just in case is_mob=true and no cdm
-            stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue]
+            stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
         if cdm.capa_desc != None:
             stats.append(self.capa)
         if int(cdm.comp_niv) > 2 :
