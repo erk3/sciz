@@ -100,4 +100,8 @@ class TROLL(sg.SqlAlchemyBase):
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
 
     def update_from_new(self, troll):
-        sg.copy_properties(troll, self, ['pv'], False)
+        lst = ['pv']
+        if self.nom == None: # Update the name of the troll only if not known so far (on the fly troll adding case)
+            lst.append('nom')
+        sg.copy_properties(troll, self, lst, False)
+

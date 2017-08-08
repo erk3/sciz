@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import ConfigParser, sqlalchemy
+import ConfigParser, sqlalchemy, os
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from modules.sql_helper import SQLHelper
 from classes.notif import NOTIF
@@ -25,7 +25,7 @@ class Notifier:
     # Print all the notifications on stdout
     def print_all(self):
         for notif in self.sqlHelper.session.query(NOTIF).filter(NOTIF.to_push == True):
-            print notif.text.encode(sg.DEFAULT_CHARSET)
+            print notif.text.encode(sg.DEFAULT_CHARSET) + os.linesep
 
     # Set all the notification as pushed
     def flush(self):

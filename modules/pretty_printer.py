@@ -61,8 +61,10 @@ class PrettyPrinter:
             event.att_entity = event.att_troll
             if event.att_troll.user:
                 event.s_att_nom = event.att_troll.user.pseudo + ' (' + str(event.att_troll.id) + ')'
+                event.s_type_flag = 'ATT'
             else:
                 event.s_att_nom = event.att_troll.nom + ' (' + str(event.att_troll.id) + ')'
+                event.s_type_flag = 'DEF'
         else:
             event.att_entity = event.att_mob
             event.s_att_nom = event.att_mob.nom + ' [' + event.att_mob.age + '] (' + str(event.att_mob.id) + ')'
@@ -70,8 +72,10 @@ class PrettyPrinter:
             event.def_entity = event.def_troll
             if event.def_troll.user:
                 event.s_def_nom = event.def_troll.user.pseudo + ' (' + str(event.def_troll.id) + ')'
+                event.s_type_flag = 'DEF'
             else:
                 event.s_def_nom = event.def_troll.nom + ' (' + str(event.def_troll.id) + ')'
+                event.s_type_flag = 'ATT'
         else:
             event.def_entity = event.def_mob
             event.s_def_nom = event.def_mob.nom + ' [' + event.def_mob.age + '] (' + str(event.def_mob.id) + ')'
@@ -83,8 +87,11 @@ class PrettyPrinter:
         event.s_att_stats = ''
         event.s_att_stats += ' att ' + str(event.att) if event.att else ''
         event.s_att_stats += ' deg ' + str(event.deg) if event.deg else ''
-        event.s_type = event.type
+        event.s_type_short = event.type if event.type != 'Attaque' else None # N'afficher que si critique, réduit, esquivé, mortelle, etc.)
+        event.s_type_short = ' (' + event.s_type_short + ')' if event.s_type_short else ''
+        event.s_type = event.type if event.type else ''
         event.s_type += ' ' + event.subtype if event.subtype else ''
+        event.s_type = ' (' + event.s_type + ')' if event.s_type != '' else ''
         if short:
             return '@' + sg.format_time(event.time) + ' : ' + self.battle_event_short.format(o=event)
         else:
