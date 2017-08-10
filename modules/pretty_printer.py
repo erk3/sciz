@@ -25,8 +25,12 @@ class PrettyPrinter:
             self.mob_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_SHORT)
             self.cdm_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_FULL)
             self.cdm_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_SHORT)
-            self.battle_event_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_BATTLE_EVENT_SHORT)
-            self.battle_event_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_BATTLE_EVENT_FULL)
+            self.att_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_SHORT)
+            self.def_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_SHORT)
+            self.hypno_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_HYPNO_SHORT)
+            self.att_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_FULL)
+            self.def_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_FULL)
+            self.hypno_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_HYPNO_FULL)
             self.sep = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_SEP)
             self.niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_NIV)
             self.pv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_PV)
@@ -57,93 +61,49 @@ class PrettyPrinter:
             return self.__pprint_battle_event(obj, short).encode(sg.DEFAULT_CHARSET)
 
     def __pprint_battle_event(self, event, short):
-        if event.att_troll:
-            event.att_entity = event.att_troll
-            if event.att_troll.user:
-                event.s_att_nom = event.att_troll.user.pseudo + ' (' + str(event.att_troll.id) + ')'
-                event.s_type_flag = 'ATT'
-            else:
-                event.s_att_nom = event.att_troll.nom + ' (' + str(event.att_troll.id) + ')'
-                event.s_type_flag = 'DEF'
+        event.stringify()
+        format_str = None
+        format_str = self.att_short if short and (event.s_flag_type == 'ATT') else format_str
+        format_str = self.def_short if short and (event.s_flag_type == 'DEF') else format_str
+        format_str = self.hypno_short if short and (event.s_flag_type == 'HYPNO') else format_str
+        format_str = self.att_full if not short and (event.s_flag_type == 'ATT') else format_str
+        format_str = self.def_full if not short and (event.s_flag_type == 'DEF') else format_str
+        format_str = self.hypno_full if not short and (event.s_flag_type == 'HYPNO') else format_str
+        if format_str != None:
+            return '@' + sg.format_time(event.time) + ' : ' + format_str.format(o=event)
         else:
-            event.att_entity = event.att_mob
-            event.s_att_nom = event.att_mob.nom + ' [' + event.att_mob.age + '] (' + str(event.att_mob.id) + ')'
-        if event.def_troll:
-            event.def_entity = event.def_troll
-            if event.def_troll.user:
-                event.s_def_nom = event.def_troll.user.pseudo + ' (' + str(event.def_troll.id) + ')'
-                event.s_type_flag = 'DEF'
-            else:
-                event.s_def_nom = event.def_troll.nom + ' (' + str(event.def_troll.id) + ')'
-                event.s_type_flag = 'ATT'
-        else:
-            event.def_entity = event.def_mob
-            event.s_def_nom = event.def_mob.nom + ' [' + event.def_mob.age + '] (' + str(event.def_mob.id) + ')'
-
-        event.s_pv = event.pv if event.pv != None else 0
-        event.s_def_stats = ''
-        event.s_def_stats += ' esq ' + str(event.esq) if event.esq else ''
-        event.s_def_stats += ' sr ' + str(event.sr) if event.sr else ''
-        event.s_att_stats = ''
-        event.s_att_stats += ' att ' + str(event.att) if event.att else ''
-        event.s_att_stats += ' deg ' + str(event.deg) if event.deg else ''
-        event.s_type_short = event.type if event.type != 'Attaque' else None # N'afficher que si critique, réduit, esquivé, mortelle, etc.)
-        event.s_type_short = ' (' + event.s_type_short + ')' if event.s_type_short else ''
-        event.s_type = event.type if event.type else ''
-        event.s_type += ' ' + event.subtype if event.subtype else ''
-        event.s_type = ' (' + event.s_type + ')' if event.s_type != '' else ''
-        if short:
-            return '@' + sg.format_time(event.time) + ' : ' + self.battle_event_short.format(o=event)
-        else:
-            return '@' + sg.format_time(event.time) + ' : ' + self.battle_event_full.format(o=event)
+            return '' # Should never happen
 
     def __pprint_mob(self, mob, short):
-        if mob.vit_dep: # arbitrary (any stats from cdm>=3)
-            mob.comp_niv = 3
+        # Generate the string representation
+        mob.stringify()
+        if short:
+            return self.mob_short.format(o=mob)
         else:
-            mob.comp_niv = 1 # or 2, does not matter
-        return self.__pprint_cdm(mob, short, True)
-    
-    # FIXME : dirty
-    def __pprint_cdm(self, cdm, short, is_mob=False):
-        if short and is_mob:
-            return self.mob_short.format(o=cdm)
-        cdm.s_blessure = cdm.blessure if cdm.blessure != None else '?'
-        cdm.s_niv = sg.str_min_max(cdm.niv_min, cdm.niv_max)
-        cdm.s_pv = sg.str_min_max(cdm.pv_min, cdm.pv_max)
-        cdm.s_att = sg.str_min_max(cdm.att_min, cdm.att_max)
-        cdm.s_esq = sg.str_min_max(cdm.esq_min, cdm.esq_max)
-        cdm.s_deg = sg.str_min_max(cdm.deg_min, cdm.deg_max)
-        cdm.s_reg = sg.str_min_max(cdm.reg_min, cdm.reg_max)
-        cdm.s_vue = sg.str_min_max(cdm.vue_min, cdm.vue_max)
-        cdm.s_arm_phy = sg.str_min_max(cdm.arm_phy_min, cdm.arm_phy_max)
-        cdm.s_mm = sg.str_min_max(cdm.mm_min, cdm.mm_max)
-        cdm.s_rm = sg.str_min_max(cdm.rm_min, cdm.rm_max)
-        if cdm.capa_tour:
-            cdm.s_capa = cdm.capa_desc + ' (' + cdm.capa_effet + ') ' + str(cdm.capa_tour) + 'T'
-        cdm.s_vlc = 'Oui' if cdm.vlc else 'Non'
-        cdm.s_att_dist = 'Oui' if cdm.att_dist else 'Non'
-        cdm.s_vit = cdm.vit_dep
-        cdm.s_nb_att_tour = cdm.nb_att_tour
-            
-        stats = []
-        if cdm.s_niv != None: # just in case is_mob=true and no cdm
+            # Select the attributes printable
             stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
-        if cdm.capa_desc != None:
-            stats.append(self.capa)
-        if int(cdm.comp_niv) > 2 :
-            stats.extend([self.mm, self.rm, self.vlc, self.att_dist, self.vit, self.nb_att])
-            
+            if mob.capa_desc != None:
+                stats.append(self.capa)
+            if mob.vit_dep != None : #Arbitrary, any stats from CDM>=3 
+                stats.extend([self.mm, self.rm, self.vlc, self.att_dist, self.vit, self.nb_att])
+            mob.s_stats = ("\n").join(stats)
+            mob.s_stats = mob.s_stats.format(o=mob)
+            return self.mob_full.format(o=mob)
+    
+    def __pprint_cdm(self, cdm, short):
+        # Generate the string representation
+        cdm.stringify()
         if short:
             return '@' + sg.format_time(cdm.time) + ' : ' + self.cdm_short.format(o=cdm)
         else:
-            if len(stats) > 0:
-                #cdm.s_stats = (" " + self.sep + " ").join(stats)
-                cdm.s_stats = ("\n").join(stats)
-                cdm.s_stats = cdm.s_stats.format(o=cdm)
-            else:
-                return self.mob_short.format(o=cdm)
-            if is_mob:
-                return self.mob_full.format(o=cdm)
-            else:
-                return self.cdm_full.format(o=cdm)
+            # Select the attributes printable
+            stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
+            if cdm.capa_desc != None:
+                stats.append(self.capa)
+            if int(cdm.comp_niv) > 2 : 
+                stats.extend([self.mm, self.rm, self.vlc, self.att_dist, self.vit, self.nb_att])
+
+            cdm.s_stats = ("\n").join(stats)
+            cdm.s_stats = cdm.s_stats.format(o=cdm)
+            return self.cdm_full.format(o=cdm)
+

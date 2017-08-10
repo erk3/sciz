@@ -20,7 +20,7 @@ class MOB(sg.SqlAlchemyBase):
     age = Column(String(50))                                # Age
     blessure = Column(Integer)                              # Pourcentage de blessure
     niv_min = Column(Integer)                               # Niveau minimum
-    niv_max = Column(Integer)                               # Niveau maximum
+    niv_max= Column(Integer)                               # Niveau maximum
     pv_min = Column(Integer)                                # Points de Vie minimum
     pv_max = Column(Integer)                                # Points de Vie maximum
     att_min = Column(Integer)                               # Attaque minimum en D6
@@ -82,7 +82,7 @@ class MOB(sg.SqlAlchemyBase):
 
     # Update mob definition with the more accurate value
     def update_from_new(self, mob):
-        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dsit'], False)
+        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist'], False)
         
         self.niv_min = sg.do_unless_none((max), (self.niv_min, mob.niv_min))
         self.pv_min = sg.do_unless_none((max), (self.pv_min, mob.pv_min))
@@ -106,3 +106,23 @@ class MOB(sg.SqlAlchemyBase):
         self.mm_max = sg.do_unless_none((min), (self.mm_max, mob.mm_max))
         self.rm_max = sg.do_unless_none((min), (self.rm_max, mob.rm_max))
 
+    # Generate the string representation of each attribute and return the list of attributes printable
+    def stringify(self):
+        # Generate STR representation
+        self.s_blessure = self.blessure if self.blessure != None else '?'
+        self.s_niv = sg.str_min_max(self.niv_min, self.niv_max)
+        self.s_pv = sg.str_min_max(self.pv_min, self.pv_max)
+        self.s_att = sg.str_min_max(self.att_min, self.att_max)
+        self.s_esq = sg.str_min_max(self.esq_min, self.esq_max)
+        self.s_deg = sg.str_min_max(self.deg_min, self.deg_max)
+        self.s_reg = sg.str_min_max(self.reg_min, self.reg_max)
+        self.s_vue = sg.str_min_max(self.vue_min, self.vue_max)
+        self.s_arm_phy = sg.str_min_max(self.arm_phy_min, self.arm_phy_max)
+        self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
+        self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
+        if self.capa_tour:
+            self.s_capa = self.capa_desc + ' (' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+        self.s_vlc = 'Oui' if self.vlc else 'Non'
+        self.s_att_dist = 'Oui' if self.att_dist else 'Non'
+        self.s_vit = self.vit_dep
+        self.s_nb_att_tour = self.nb_att_tour

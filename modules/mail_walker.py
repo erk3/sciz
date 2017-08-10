@@ -27,6 +27,7 @@ class MailWalker:
             self.mailRegexCDM = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
             self.mailRegexATT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
+            self.mailRegexHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_HYPNO_RE)
         except ConfigParser.Error as e:
             print("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
@@ -87,6 +88,11 @@ class MailWalker:
                     #print 'Found DEF event in mail ' + msgFile._file.name
                     obj = BATTLE_EVENT()
                     obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, 'DEF')
+                elif (re.search(self.mailRegexHYPNO, self.mail_subject) is not None):
+                    # FIXME: mode verbose / logger
+                    #print 'Found HYPNO event in mail ' + msgFile._file.name
+                    obj = BATTLE_EVENT()
+                    obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, 'HYPNO')
                 
                 if obj != None:
                     self.sqlHelper.add(obj)

@@ -1,6 +1,6 @@
 # Système de Chauve-souris Interdimensionnel pour Zhumains
 
-Une base de données collaborative pour jouer en groupe à [Mountyhall](www.mountyhall.com).
+Une base de données collaborative pour jouer en groupe à [Mountyhall](https://www.mountyhall.com).
 
 # Fonctionnalités principales
 
@@ -14,7 +14,7 @@ Une base de données collaborative pour jouer en groupe à [Mountyhall](www.moun
 
 A date, SCIZ supporte l'analyse syntaxique :
   * Des Connaissances Des Monstres jusqu'au niveau 3
-  * Des rapports de combats simples
+  * Des rapports de combats simples (Attaque, Défense, Hypnotisme)
 
 # Installation
 Voir les [instructions d'installation]()
