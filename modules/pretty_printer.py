@@ -82,7 +82,7 @@ class PrettyPrinter:
         else:
             # Select the attributes printable
             stats = []
-            if self.niv: # At least one CDM
+            if mob.niv_min or mob.niv_max: # At least one CDM
                 stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
             if mob.capa_desc != None:
                 stats.append(self.capa)
