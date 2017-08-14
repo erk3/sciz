@@ -5,8 +5,9 @@ Un plugin hangoutsbot permettant de récupérer à interval régulier les notifi
 # Installation
 
   * Installer [hangoutsbot](https://github.com/hangoutsbot/hangoutsbot/blob/master/INSTALL.md)
-  * Ajouter ```sciz_events.py``` dans le dossier ```hangupsbot\plugins```
+  * Ajouter ```sciz_events.py``` dans le dossier ```hangupsbot/plugins```
   * Ajouter la configuration utile au plugin dans le ```config.json``` du bot
+  * Inviter manuellement le bot dans la conversation paramétrée (conv_title)
   * Redémarrer le bot
 
 # Exemples de notification
