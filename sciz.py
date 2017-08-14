@@ -47,14 +47,14 @@ class SCIZ:
         self.notifier.flush()
 
     # SCIZ Requester
-    def request(self, entity, args):
+    def request(self, ids, args):
         self.requester = Requester(self.config)
-        if not args and entity == 'mob':
-            print 'syntax: mob [mob_ids, caracs/*] [mob_ids, last_cdm] [mob_ids, last_event limit]'
-        elif not args and entity == 'troll':
-            print 'syntax: troll [troll_ids,/* caracs/*] [troll_ids,/* last_event limit] [troll_ids,/* dla] [troll_ids,/* pos]'
+        if ids.lower() == 'help':
+            print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls) [opts_troll] | help'
+            print 'opts_mob : stats #default# | (cdm|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
+            print 'opts_troll : stats #default# | event [limit=1] | carac[,carac]* #ordered desc by first carac#'
         else:
-            self.requester.request(entity, args)
+            self.requester.request(ids, args)
             
     # Mountyhall caller
     def mh_call(self, script, trolls):
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     parser.add_argument('-u', '--users', metavar = 'USERS_FILE', type=str, help='instruct SCIZ to create or update users from JSON')
     parser.add_argument('-i', '--init', action='store_true', help='instruct SCIZ to setup the things')
     parser.add_argument('-s', '--script', metavar='PUBLIC_SCRIPT [troll]', choices=['profil2', 'caract', 'trolls2', 'monstres'], help='instruct SCIZ to call a MountyHall Public Script / FTP')
-    parser.add_argument('-r', '--request', metavar='mob/troll ...', choices=['mob', 'troll', 'dla'], help='instruct SCIZ to pull internal data')
+    parser.add_argument('-r', '--request', metavar='REQUEST_CLI | help', type=str, help='instruct SCIZ to pull internal data')
     parser.add_argument('-w', '--walk', action='store_true', help='instruct SCIZ to walk the mails')
     parser.add_argument('-n', '--notify', action='store_true', help='instruct SCIZ to push the pending notifications')
     parser.add_argument('rargs', nargs=argparse.REMAINDER, help=argparse.SUPPRESS)

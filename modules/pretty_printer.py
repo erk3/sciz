@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-#from __future__ import unicode_literals
 import ConfigParser
+from classes.troll import TROLL
 from classes.cdm import CDM
 from classes.mob import MOB
 from classes.battle_event import BATTLE_EVENT
@@ -21,6 +21,8 @@ class PrettyPrinter:
     def check_conf(self):
         try:
             # Load Mail conf
+            self.troll_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_TROLL_FULL)
+            self.troll_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_TROLL_SHORT)
             self.mob_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_FULL)
             self.mob_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_SHORT)
             self.cdm_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_FULL)
@@ -32,33 +34,49 @@ class PrettyPrinter:
             self.def_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_FULL)
             self.hypno_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_HYPNO_FULL)
             self.sep = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_SEP)
-            self.niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_NIV)
-            self.pv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_PV)
-            self.att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ATT)
-            self.esq = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ESQ)
-            self.deg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_DEG)
-            self.reg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_REG)
-            self.vue = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_VUE)
-            self.mm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MM)
-            self.rm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_RM)
-            self.arm_phy = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ARM_PHY)
-            self.capa = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_CAPA)
-            self.vlc = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_VLC)
-            self.att_dist = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_ATT_DIST)
-            self.vit = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_VIT)
-            self.nb_att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_NB_ATT)
+            self.mob_blessure = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_BLESSURE)
+            self.mob_niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_NIV)
+            self.mob_pv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_PV)
+            self.mob_att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_ATT)
+            self.mob_esq = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_ESQ)
+            self.mob_deg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_DEG)
+            self.mob_reg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_REG)
+            self.mob_vue = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_VUE)
+            self.mob_mm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_MM)
+            self.mob_rm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_RM)
+            self.mob_arm_phy = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_ARM_PHY)
+            self.mob_capa = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_CAPA)
+            self.mob_vlc = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_VLC)
+            self.mob_att_dist = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_ATT_DIST)
+            self.mob_vit = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_VIT)
+            self.mob_nb_att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_NB_ATT)
+            self.troll_race = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_RACE)
+            self.troll_niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_NIV)
+            self.troll_pos = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_POS)
+            self.troll_dla = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_DLA)
+            self.troll_pv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_PV)
+            self.troll_att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_ATT)
+            self.troll_esq = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_ESQ)
+            self.troll_deg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_DEG)
+            self.troll_reg = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_REG)
+            self.troll_vue = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_VUE)
+            self.troll_mm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_MM)
+            self.troll_rm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_RM)
+            self.troll_arm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_ARM)
         except ConfigParser.Error as e:
             print("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
 
     # Dispatcher
-    def pretty_print(self, obj, short):
+    def pretty_print(self, obj, short, attrs=None):
         if isinstance(obj, CDM):
             return self.__pprint_cdm(obj, short).encode(sg.DEFAULT_CHARSET)
         if isinstance(obj, MOB):
-            return self.__pprint_mob(obj, short).encode(sg.DEFAULT_CHARSET)
+            return self.__pprint_mob(obj, short, attrs).encode(sg.DEFAULT_CHARSET)
         if isinstance(obj, BATTLE_EVENT):
             return self.__pprint_battle_event(obj, short).encode(sg.DEFAULT_CHARSET)
+        if isinstance(obj, TROLL):
+            return self.__pprint_troll(obj, short, attrs).encode(sg.DEFAULT_CHARSET)
 
     def __pprint_battle_event(self, event, short):
         event.stringify()
@@ -74,7 +92,7 @@ class PrettyPrinter:
         else:
             return '' # Should never happen
 
-    def __pprint_mob(self, mob, short):
+    def __pprint_mob(self, mob, short, attrs):
         # Generate the string representation
         mob.stringify()
         if short:
@@ -83,11 +101,23 @@ class PrettyPrinter:
             # Select the attributes printable
             stats = []
             if mob.niv_min or mob.niv_max: # At least one CDM
-                stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
+                stats = [self.mob_blessure, self.mob_niv, self.mob_pv, self.mob_att, self.mob_esq, self.mob_deg, self.mob_reg, self.mob_vue, self.mob_arm_phy]
             if mob.capa_desc != None:
-                stats.append(self.capa)
+                stats.append(self.mob_capa)
             if mob.vit_dep != None : #Arbitrary, any stats from CDM>=3 
-                stats.extend([self.mm, self.rm, self.vlc, self.att_dist, self.vit, self.nb_att])
+                stats.extend([self.mob_mm, self.mob_rm, self.mob_vlc, self.mob_att_dist, self.mob_vit, self.mob_nb_att])
+            # Filter out not wanted attributes
+            stats_filtered = []
+            if attrs:
+                for attr in attrs:
+                    try:
+                        val = getattr(self, 'mob_' + attr)
+                        if val in stats:
+                            stats_filtered.append(val)
+                    except:
+                        pass
+            stats = stats_filtered if len(stats_filtered) > 0 else stats
+            # Format
             mob.s_stats = ("\n").join(stats)
             mob.s_stats = mob.s_stats.format(o=mob)
             return self.mob_full.format(o=mob)
@@ -99,13 +129,41 @@ class PrettyPrinter:
             return '@' + sg.format_time(cdm.time) + ' : ' + self.cdm_short.format(o=cdm)
         else:
             # Select the attributes printable
-            stats = [self.niv, self.pv, self.att, self.esq, self.deg, self.reg, self.vue, self.arm_phy]
+            stats = [self.mob_blessure, self.mob_niv, self.mob_pv, self.mob_att, self.mob_esq, self.mob_deg, self.mob_reg, self.mob_vue, self.mob_arm_phy]
             if cdm.capa_desc != None:
-                stats.append(self.capa)
+                stats.append(self.mob_capa)
             if int(cdm.comp_niv) > 2 : 
-                stats.extend([self.mm, self.rm, self.vlc, self.att_dist, self.vit, self.nb_att])
-
+                stats.extend([self.mob_mm, self.mob_rm, self.mob_vlc, self.mob_att_dist, self.mob_vit, self.mob_nb_att])
+            # Format
             cdm.s_stats = ("\n").join(stats)
             cdm.s_stats = cdm.s_stats.format(o=cdm)
             return self.cdm_full.format(o=cdm)
+
+    def __pprint_troll(self, troll, short, attrs):
+        # Generate the string representation
+        troll.stringify()
+        if short:
+            return self.troll_short.format(o=troll)
+        else:
+            # Select the attributes printable
+            stats = []
+            if troll.niv != None: # Any attr retrieved from FTP call
+                stats.extend([self.troll_race, self.troll_niv])
+            if troll.pv != None: # Any attr retrieved from SP call
+                stats.extend([self.troll_pos, self.troll_dla, self.troll_pv, self.troll_att, self.troll_esq, self.troll_deg, self.troll_reg, self.troll_vue, self.troll_arm, self.troll_mm, self.troll_rm])
+            # Filter out not wanted attributes
+            stats_filtered = []
+            if attrs:
+                for attr in attrs:
+                    try:
+                        val = getattr(self, 'troll_' + attr)
+                        if val in stats:
+                            stats_filtered.append(val)
+                    except:
+                        pass
+                stats = stats_filtered
+            # Format
+            troll.s_stats = ("\n").join(stats)
+            troll.s_stats = troll.s_stats.format(o=troll)
+            return self.troll_full.format(o=troll)
 

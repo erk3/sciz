@@ -1,0 +1,17 @@
+{
+  "commands_enabled": true, 
+  "commands_aliases": ["/sciz"],
+  "spawn": {
+    "commands": {
+      "req": {
+        "command" : ["/usr/bin/python", "/path/to/sciz.py",  "-c",  "/path/to/confs/sciz.ini",  "-r"],
+        "allow_args": true
+      }
+    }
+  },
+  "sciz_events": {
+    "refresh_time" : 2,
+    "conv_title" : "SCIZ",
+    "cmd" : ["/usr/bin/python", "/path/to/sciz.py",  "-c",  "/path/to/confs/sciz.ini",  "-n"]
+  }
+}

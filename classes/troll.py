@@ -105,3 +105,15 @@ class TROLL(sg.SqlAlchemyBase):
             lst.append('nom')
         sg.copy_properties(troll, self, lst, False)
 
+    # Generate the string representation of each attribute and return the list of attributes printable
+    def stringify(self):
+        # Generate STR representation
+        # TODO: only use s_ attr for pprinter (based on confs/sciz.ini)? Then this will be useful
+        #plain_attrs = ['pv','niv']
+        #for attr in plain_attrs:
+        #    val = getattr(self, attr)
+        #    setattr(self, 's_' + attr, val)
+        if self.dla != None:
+            self.s_dla = sg.format_time(self.dla)
+
+
