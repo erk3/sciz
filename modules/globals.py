@@ -51,6 +51,13 @@ DEFAULT_CHARSET         = "utf-8"
 CONF_APP_SECTION        = "app"
 CONF_APP_NAME           = "name"
 
+# LOG SECTION
+CONF_LOG_SECTION        = "log"
+CONF_LOG_FILE           = "file"
+CONF_LOG_FILE_MAX_SIZE  = "file_max_size"
+CONF_LOG_FORMATTER      = "formatter"
+CONF_LOG_DEFAULT_LEVEL  = "default_level"
+
 # MAIL SECTION
 CONF_MAIL_SECTION       = "mail"
 CONF_MAIL_PATH          = "maildir_path"

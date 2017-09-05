@@ -12,10 +12,11 @@ import modules.globals as sg
 class AdminHelper:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
-        self.sqlHelper = SQLHelper(config)
+        self.sqlHelper = SQLHelper(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -23,7 +24,8 @@ class AdminHelper:
             self.json_users_tag = self.config.get(sg.CONF_JSON_SECTION, sg.CONF_JSON_USERS_TAG)
             self.json_users_id = self.config.get(sg.CONF_JSON_SECTION, sg.CONF_JSON_USERS_ID)
         except ConfigParser.Error as e:
-            print('Fail to load config file! (ConfigParser error:' + str(e) + ')')
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to load config file! (ConfigParser error:' + str(e) + ')')
             raise
 
     # Initializer, instancites the SQL schema

@@ -43,7 +43,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
     
     # Populate object from a mail and the dedicated regexp in the configuration file
-    def populate_from_mail(self, subject, body, config, flag_type):
+    def populate_from_mail(self, subject, body, config, logger, flag_type):
         
         # Load the regexp
         try:
@@ -51,7 +51,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_type = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TYPE_RE)
             re_event_time = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
 
         # FLAG
@@ -69,15 +70,15 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.time = datetime.datetime.strptime(res.group(1), '%d/%m/%Y  %H:%M:%S')
         
         if flag_type == 'ATT':
-            self.__populate_from_att_mail(subject, body, config)
+            self.__populate_from_att_mail(subject, body, config, logger)
         elif flag_type == 'DEF':
-            self.__populate_from_def_mail(subject, body, config)
+            self.__populate_from_def_mail(subject, body, config, logger)
         elif flag_type == 'HYPNO':
-            self.__populate_from_hypno_mail(subject, body, config)
+            self.__populate_from_hypno_mail(subject, body, config, logger)
         else:
             pass # Should never happen
 
-    def __populate_from_att_mail(self, subject, body, config):   
+    def __populate_from_att_mail(self, subject, body, config, logger):   
         # Load config
         try:
             re_event_desc = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DESC_RE)
@@ -88,7 +89,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_sr = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         # Event desc
         res = re.search(re_event_desc, subject)
@@ -121,7 +123,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_pv, body)
         self.pv = res.group(1) if res else self.deg # Pas d'armure
     
-    def __populate_from_def_mail(self, subject, body, config):       
+    def __populate_from_def_mail(self, subject, body, config, logger):       
         # Load config
         try:
             re_event_desc = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DESC_RE)
@@ -136,7 +138,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_sr = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         # Event desc
         res = re.search(re_event_desc, subject)
@@ -180,33 +183,35 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_capa_tour, body)
         self.capa_tour = res.group(1) if res else None
         
-    def __populate_from_hypno_mail(self, subject, body, config):       
+    def __populate_from_hypno_mail(self, subject, body, config, logger):       
         # Load config
         try:
             re_event_desc = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
             re_event_sr = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         # Event desc
-        res = re.search(re_event_desc, body)
-        self.type = 'Sortilège'
-        self.subtype = res.group(1)
-        if res.group(2) == None: # Trick matching the det (No det = Troll ?)
-            self.def_troll_nom = res.group(3)
-            self.def_troll_id = res.group(8)
-        else:
-            self.def_mob_nom = res.group(3)
-            self.def_mob_age = res.group(5)
-            self.def_mob_tag = res.group(7)
-            self.def_mob_id = res.group(8)
-        # Seuil de résistance
-        res = re.search(re_event_sr, body)
-        self.sr = res.group(1) if res else None
-        # Jet de résistance
-        res = re.search(re_event_resi, body)
-        self.resi = res.group(1) if res else None
+        self.type = 'Hypnotisme'
+        self.subtype = 'Sortilège'
+        res = re.search(re_event_desc, body) #FIXME: only work with notfication from the attacker, not the defender in TVT...
+        if res != None:
+            if res.group(2) == None: # Trick matching the det (No det = Troll ?)
+                self.def_troll_nom = res.group(3)
+                self.def_troll_id = res.group(8)
+            else:
+                self.def_mob_nom = res.group(3)
+                self.def_mob_age = res.group(5)
+                self.def_mob_tag = res.group(7)
+                self.def_mob_id = res.group(8)
+            # Seuil de résistance
+            res = re.search(re_event_sr, body)
+            self.sr = res.group(1) if res else None
+            # Jet de résistance
+            res = re.search(re_event_resi, body)
+            self.resi = res.group(1) if res else None
 
     def stringify(self):
         self.s_flag_type = self.flag_type

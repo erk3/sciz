@@ -55,7 +55,7 @@ class CDM(sg.SqlAlchemyBase):
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
     
     # Populate object from a mail and the dedicated regexp in the configuration file
-    def populate_from_mail(self, subject, body, config):
+    def populate_from_mail(self, subject, body, config, logger):
         
         # Load the regexp
         try:
@@ -80,7 +80,8 @@ class CDM(sg.SqlAlchemyBase):
             re_cdm_vlc = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VLC_RE)
             re_cdm_att_dist = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_DIST_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         
         # Event Troll

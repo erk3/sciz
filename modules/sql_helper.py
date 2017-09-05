@@ -19,11 +19,12 @@ import modules.globals as sg
 class SQLHelper:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
         self.connect()
-        self.pp = PrettyPrinter(config)
+        self.pp = PrettyPrinter(config, logger)
 
     # Configuration loader and checker
     def check_conf(self):
@@ -35,7 +36,8 @@ class SQLHelper:
             self.db_user = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_USER)
             self.db_pass = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_PASS)
         except ConfigParser.Error as e:
-            print('Fail to load config! (ConfigParser error:' + str(e) + ')')
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to load config! (ConfigParser error:' + str(e) + ')')
             raise
 
     # Init the DB
@@ -43,7 +45,8 @@ class SQLHelper:
         try:
             sg.SqlAlchemyBase.metadata.create_all(self.engine)
         except (exc.SQLAlchemyError, exc.DBAPIError) as e:
-            print 'Fail to init the DB! (SQLAlchemy error:' + str(e) + ')' 
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to init the DB! (SQLAlchemy error:' + str(e) + ')')
             raise
     
     # Connect to the DB
@@ -53,7 +56,8 @@ class SQLHelper:
             self.sessionMaker = orm.sessionmaker(bind=self.engine)
             self.session = self.sessionMaker()
         except (exc.SQLAlchemyError, exc.DBAPIError) as e:
-            print 'Fail to conect to the DB! (SQLAlchemy error:' + str(e) + ')' 
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to conect to the DB! (SQLAlchemy error:' + str(e) + ')')
             raise
 
     # Add any object (dispatcher)
@@ -73,13 +77,11 @@ class SQLHelper:
     def __add_user(self, user_new):
         try:
             user_old = self.session.query(USER).filter(USER.id == user_new.id).one() 
-            #FIXME : mode verbose / logger
-            #print 'User %s already found, updating but password...' % (user_old.id,) 
+            self.logger.info('User %s already found, updating but password...' % (user_old.id,))
             user_old.update_from_new(user_new) 
             self.session.add(user_old) 
         except orm.exc.NoResultFound:
-            #FIXME : mode verbose / logger
-            #print 'New user %s, creating...' % (user_new.id,)  
+            self.logger.info('New user %s, creating...' % (user_new.id,))
             troll = TROLL() 
             troll.id = user_new.id
             troll.sciz_notif = True
@@ -104,28 +106,24 @@ class SQLHelper:
     def __add_troll(self, troll_new):
         try:
             troll_old = self.session.query(TROLL).filter(TROLL.id == troll_new.id).one()
-            #FIXME : mode verbose / logger
-            #print "TROLL %s already found in the DB, updating it with new data" % (troll_old.id, )
+            self.logger.info("TROLL %s already found in the DB, updating it with new data" % (troll_old.id, ))
             troll_old.update_from_new(troll_new)
             self.session.add(troll_old)
         except orm.exc.NoResultFound:
-            #FIXME : mode verbose / logger
-            #print "New Troll %s, creating it on the fly" % (troll_new.id, )
+            self.logger.info("New Troll %s, creating it on the fly" % (troll_new.id, ))
             self.session.add(troll_new)
             
     # Add a MOB
     def __add_mob(self, mob_new):
         try:
             mob_old = self.session.query(MOB).filter(MOB.id == mob_new.id).one()
-            #FIXME : mode verbose / logger
-            #print "MOB %s already found in the DB, updating it with new data" % (mob_old.id, )
+            self.logger.info("MOB %s already found in the DB, updating it with new data" % (mob_old.id, ))
             mob_old.update_from_new(mob_new)
             if mob_old.metamob_id == None:
                 mob_old.link_metamob(self.session.query(METAMOB).all())
             self.session.add(mob_old)
         except orm.exc.NoResultFound:
-            #FIXME : mode verbose / logger
-            #print "New MOB %s, creating it on the fly" % (mob_new.id, )
+            self.logger.info("New MOB %s, creating it on the fly" % (mob_new.id, ))
             mob_new.sciz_notif = True
             mob_new.link_metamob(self.session.query(METAMOB).all())
             self.session.add(mob_new)

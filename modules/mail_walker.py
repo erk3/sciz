@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import email, mailbox, ConfigParser, sys, os, re
+import email, mailbox, ConfigParser, sys, os, re, traceback
 from email.header import decode_header
 from modules.sql_helper import SQLHelper
 from classes.cdm import CDM
@@ -14,10 +14,11 @@ import modules.globals as sg
 class MailWalker:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
-        self.sqlHelper = SQLHelper(config)
+        self.sqlHelper = SQLHelper(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -29,7 +30,8 @@ class MailWalker:
             self.mailRegexDEF = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
             self.mailRegexHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_HYPNO_RE)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
 
     # Utility mail parser
@@ -71,49 +73,54 @@ class MailWalker:
                 msg = email.message_from_file(msgFile)
                 self.__parse_mail(msg)
 
-                obj = None
-                # Handle CDM/ATT/DEF mails
-                if (re.search(self.mailRegexCDM, self.mail_subject) is not None):
-                    # FIXME: mode verbose / logger
-                    #print 'Found CDM in mail ' + msgFile._file.name
-                    obj = CDM()
-                    obj.populate_from_mail(self.mail_subject, self.mail_body, self.config)
-                elif (re.search(self.mailRegexATT, self.mail_subject) is not None):
-                    # FIXME: mode verbose / logger
-                    #print 'Found ATT event in mail ' + msgFile._file.name
-                    obj = BATTLE_EVENT()
-                    obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, 'ATT')
-                elif (re.search(self.mailRegexDEF, self.mail_subject) is not None):
-                    # FIXME: mode verbose / logger
-                    #print 'Found DEF event in mail ' + msgFile._file.name
-                    obj = BATTLE_EVENT()
-                    obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, 'DEF')
-                elif (re.search(self.mailRegexHYPNO, self.mail_subject) is not None):
-                    # FIXME: mode verbose / logger
-                    #print 'Found HYPNO event in mail ' + msgFile._file.name
-                    obj = BATTLE_EVENT()
-                    obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, 'HYPNO')
+                try:
+                    obj = None
+                    # Handle CDM/ATT/DEF mails
+                    if (re.search(self.mailRegexCDM, self.mail_subject) is not None):
+                        self.logger.info('Found CDM in mail ' + msgFile._file.name)
+                        obj = CDM()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger)
+                    elif (re.search(self.mailRegexATT, self.mail_subject) is not None):
+                        self.logger.info('Found ATT event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT')
+                    elif (re.search(self.mailRegexDEF, self.mail_subject) is not None):
+                        self.logger.info('Found DEF event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF')
+                    elif (re.search(self.mailRegexHYPNO, self.mail_subject) is not None):
+                        self.logger.info('Found HYPNO event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'HYPNO')
+            
+                    if obj != None:
+                        self.sqlHelper.add(obj)
+                        self.sqlHelper.session.commit()
+                        notif = self.sqlHelper.add_notif(obj)
+                        self.sqlHelper.session.commit()
+                        obj.notif_id = notif.id
+                        self.sqlHelper.add(obj)
+                        self.sqlHelper.session.commit()
                 
-                if obj != None:
-                    self.sqlHelper.add(obj)
-                    self.sqlHelper.session.commit()
-                    notif = self.sqlHelper.add_notif(obj)
-                    self.sqlHelper.session.commit()
-                    obj.notif_id = notif.id
-                    self.sqlHelper.add(obj)
-                    self.sqlHelper.session.commit()
-                
-                os.remove(msgFile._file.name)
+                    os.remove(msgFile._file.name)
+            
+                # If anything goes wrong parsing a mail, it will land here (hopefully) then continue
+                except Exception:
+                    self.logger.warning('Fail to handle mail ' + msgFile._file.name, exc_info=True)
+                    pass
 
         except OSError as e:
-            print 'Fail to scan mail directory! (I/O error: '+ str(e) + ')'
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to scan mail directory! (I/O error: '+ str(e) + ')')
             raise
         
         except IOError as e:
-            print 'Fail to scan mail directory! (I/O error: '+ str(e) + ')'
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to scan mail directory! (I/O error: '+ str(e) + ')')
             raise
 
         except mailbox.Error as e:
-            print 'Fail to scan mail directory! (MailBox error: ' + str(e) + ')'
+            e.sciz_logger_flag = True
+            self.logger.error('Fail to scan mail directory! (MailBox error: ' + str(e) + ')')
             raise
 

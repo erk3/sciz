@@ -12,10 +12,11 @@ import modules.globals as sg
 class Notifier:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
-        self.sqlHelper = SQLHelper(config)
+        self.sqlHelper = SQLHelper(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):

@@ -13,8 +13,9 @@ import modules.globals as sg
 class PrettyPrinter:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
     
     # Configuration loader and checker
@@ -64,7 +65,8 @@ class PrettyPrinter:
             self.troll_rm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_RM)
             self.troll_arm = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_ARM)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            e.sciz_logger_flag = True
+            self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
 
     # Dispatcher

@@ -13,10 +13,11 @@ import modules.globals as sg
 class MHCaller:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
-        self.sqlHelper = SQLHelper(config)
+        self.sqlHelper = SQLHelper(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -30,7 +31,7 @@ class MHCaller:
             self.ftpTrolls2 = self.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_TROLLS2)
             self.ftpMonstres = self.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_MONSTRES)
         except ConfigParser.Error as e:
-            print("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
 
     # Caller to the Profil2 SP
@@ -40,7 +41,7 @@ class MHCaller:
             mh_r = requests.get("http://%s/%s?%s=%s&%s=%s" % (self.spURL, self.spProfil2, self.spParamID, troll.id, self.spParamAPIKEY, troll.user.mh_apikey, )) 
             # Parse it
             if "Erreur" in mh_r.text:
-                print 'Error while fetching data from MH...'
+                self.logger.warning('Error while fetching data from MH for troll %s...' % (troll.id, ))
             else:
                 id, troll.pos_x, troll.pos_y, troll.pos_n, troll.pv, troll.base_pv_max, troll.pa, troll.dla, troll.base_att, troll.base_esq, troll.base_deg, troll.base_reg, troll.base_vue, troll.bonus_arm_phy, troll.base_mm, troll.base_rm, troll.nb_att_sub, troll.fatigue, troll.camouflage, troll.invisible, troll.intangible, troll.nb_parade_prog, troll.nb_ctr_att_prog, troll.base_tour, troll.bonus_tour, troll.base_arm_phy, troll.malus_base_arm_phy, troll.immobile, troll.terre, troll.course, troll.levite, troll.base_bonus_pv_max, troll.niv, troll.pi, troll.id_guilde, troll.limite_vue, troll.nb_retraite_prog, troll.dir_retraite = mh_r.text.split(';') 
                 #FIXME : MH SP error ? I got a ''
@@ -56,7 +57,7 @@ class MHCaller:
             mh_r = requests.get("http://%s/%s?%s=%s&%s=%s" % (self.spURL, self.spCaract, self.spParamID, troll.id, self.spParamAPIKEY, troll.user.mh_apikey, )) 
             # Parse it
             if "Erreur" in mh_r.text:
-                print 'Error while fetching data from MH...'
+                self.logger.warning('Error while fetching data from MH for troll %s...' % (troll.id, ))
             else:
                 bmm, bmp, car, null = mh_r.text.split("\n")
                 #BMM
@@ -117,21 +118,17 @@ class MHCaller:
             
         # Actual calls
         if script == 'trolls2':
-            #FIXME : mode verbose / logger
-            #print "Calling ftp %s..." % (script, )
+            self.logger.info("Calling ftp %s..." % (script, ))
             self.trolls2_ftp_call(oTrolls)
         elif script == 'monstres':
-            #FIXME : mode verbose / logger
-            #print "Calling ftp %s..." % (script, )
+            self.logger.info("Calling ftp %s..." % (script, ))
             self.monstres_ftp_call()
         elif script == 'profil2':
             for oTroll in oTrolls:
-                #FIXME : mode verbose / logger
-                #print "Calling script %s for Troll %s..." % (script, oTroll.id,)
+                self.logger.info("Calling script %s for Troll %s..." % (script, oTroll.id,))
                 self.profil2_sp_call(oTroll)
         elif script == 'caract':
             for oTroll in oTrolls:
-                #FIXME : mode verbose / logger
-                #print "Calling script %s for Troll %s..." % (script, oTroll.id,)
+                self.logger.info("Calling script %s for Troll %s..." % (script, oTroll.id,))
                 self.caract_sp_call(oTroll)
 

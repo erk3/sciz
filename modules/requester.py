@@ -18,11 +18,12 @@ import modules.globals as sg
 class Requester:
 
     # Constructor
-    def __init__(self, config):
+    def __init__(self, config, logger):
         self.config = config
+        self.logger = logger
         self.check_conf()
-        self.sqlHelper = SQLHelper(config)
-        self.pprinter = PrettyPrinter(config)
+        self.sqlHelper = SQLHelper(config, logger)
+        self.pprinter = PrettyPrinter(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -57,7 +58,7 @@ class Requester:
                     self.__request_troll(id, args)
             # Request on an inconsitant list of ids
             else:
-                print 'Inconsistant list of ids...'
+                self.logger.error('Inconsistant list of ids...')
 
     # Mob request
     def __request_mob(self, id, args):
