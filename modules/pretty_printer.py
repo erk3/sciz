@@ -83,14 +83,14 @@ class PrettyPrinter:
     def __pprint_battle_event(self, event, short):
         event.stringify()
         format_str = None
-        format_str = self.att_short if short and (event.s_flag_type == 'ATT') else format_str
-        format_str = self.def_short if short and (event.s_flag_type == 'DEF') else format_str
-        format_str = self.hypno_short if short and (event.s_flag_type == 'HYPNO') else format_str
-        format_str = self.att_full if not short and (event.s_flag_type == 'ATT') else format_str
-        format_str = self.def_full if not short and (event.s_flag_type == 'DEF') else format_str
-        format_str = self.hypno_full if not short and (event.s_flag_type == 'HYPNO') else format_str
+        format_str = self.att_short if short and (event.flag_type == 'ATT') else format_str
+        format_str = self.def_short if short and (event.flag_type == 'DEF') else format_str
+        format_str = self.hypno_short if short and (event.flag_type == 'HYPNO') else format_str
+        format_str = self.att_full if not short and (event.flag_type == 'ATT') else format_str
+        format_str = self.def_full if not short and (event.flag_type == 'DEF') else format_str
+        format_str = self.hypno_full if not short and (event.flag_type == 'HYPNO') else format_str
         if format_str != None:
-            return '@' + sg.format_time(event.time) + ' : ' + format_str.format(o=event)
+            return '@' + sg.format_time(event.time) + ' ' + format_str.format(o=event)
         else:
             return '' # Should never happen
 
@@ -128,7 +128,7 @@ class PrettyPrinter:
         # Generate the string representation
         cdm.stringify()
         if short:
-            return '@' + sg.format_time(cdm.time) + ' : ' + self.cdm_short.format(o=cdm)
+            return '@' + sg.format_time(cdm.time) + ' ' + self.cdm_short.format(o=cdm)
         else:
             # Select the attributes printable
             stats = [self.mob_blessure, self.mob_niv, self.mob_pv, self.mob_att, self.mob_esq, self.mob_deg, self.mob_reg, self.mob_vue, self.mob_arm_phy]

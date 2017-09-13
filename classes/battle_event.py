@@ -194,8 +194,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         # Event desc
-        self.type = 'Hypnotisme'
-        self.subtype = 'Sortilège'
+        self.type = 'Sortilège'
+        self.subtype = 'Hypnotisme'
         res = re.search(re_event_desc, body) #FIXME: only work with notfication from the attacker, not the defender in TVT...
         if res != None:
             if res.group(2) == None: # Trick matching the det (No det = Troll ?)
@@ -219,34 +219,39 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         if self.att_troll:
             self.s_att_nom = self.att_troll.nom + ' (' + str(self.att_troll.id) + ')'
             if self.att_troll.user:
-                self.s_att_nom = self.att_troll.user.pseudo + ' (' + str(self.att_troll.id) + ')'
+                self.s_att_nom = self.att_troll.user.pseudo #+ ' (' + str(self.att_troll.id) + ')'
         else:
             self.s_att_nom = self.att_mob.nom + ' [' + self.att_mob.age + '] (' + str(self.att_mob.id) + ')'
         # Défenseur
         if self.def_troll:
             self.s_def_nom = self.def_troll.nom + ' (' + str(self.def_troll.id) + ')'
             if self.def_troll.user:
-                self.s_def_nom = self.def_troll.user.pseudo + ' (' + str(self.def_troll.id) + ')'
+                self.s_def_nom = self.def_troll.user.pseudo #+ ' (' + str(self.def_troll.id) + ')'
         else:
             self.s_def_nom = self.def_mob.nom + ' [' + self.def_mob.age + '] (' + str(self.def_mob.id) + ')'
         # Stats
-        self.s_pv = '-' + str(self.pv) if (self.pv != None) and (self.pv != 0) else ''
+        self.s_pv = '-' + (str(self.pv) if self.pv != None else '0') #+ ' ' if (self.pv != None) and (self.pv != 0) else ''
         self.s_def_stats = ''
         self.s_def_stats += ' esq ' + str(self.esq) if self.esq else ''
         self.s_def_stats += ' sr ' + str(self.sr) if self.sr else ''
+        self.s_def_stats = self.s_def_stats.lstrip()
         self.s_att_stats = ''
         self.s_att_stats += ' att ' + str(self.att) if self.att else ''
+        self.s_att_stats += ' resi ' + str(self.resi) if self.resi else ''
         self.s_att_stats += ' deg ' + str(self.deg) if self.deg else ''
+        self.s_att_stats = self.s_att_stats.lstrip()
         # Type desc
         self.s_type_short = ''
         self.s_type = ''
         if self.flag_type == 'ATT' or self.flag_type == 'DEF':
-            self.s_type_short = ' (' + self.type + ')' if self.type != 'Attaque' else '' # N'afficher que si critique, réduit, esquivé, mortelle, etc.)
+            if "mortelle" in self.type:
+                self.s_flag_type += ' (MORT)'
+            #self.s_type_short = '(' + self.type + ')' if self.type != 'Attaque' else '' # N'afficher que si critique, réduit, esquivé, mortelle, etc.)
             self.s_type = self.type if self.type else ''
             self.s_type += ' ' + self.subtype if self.subtype else ''
-            self.s_type = ' (' + self.s_type + ')' if self.s_type != '' else ''
+            #self.s_type = ' ' + self.s_type + ')' if self.s_type != '' else ''
         elif self.flag_type == 'HYPNO':
             if self.resi > self.sr:
-                self.s_type_short = '(FULL)'
+                self.s_hypno_flag = '(FULL)'
             else:
-                self.s_type_short = '(REDUIT)'
+                self.s_hypno_flag = '(REDUIT)'
