@@ -20,7 +20,7 @@ A date, SCIZ supporte l'analyse syntaxique :
 Voir les [instructions d'installation]()
 
 # Exécuter SCIZ
-```python sciz.py -c conf/sciz.ini```
+```python sciz.py -h```
 
 ```
 usage: sciz.py [-h] [-c CONFIG_FILE] [-l LOGGING_LEVEL] [-t] [-u USERS_FILE]
