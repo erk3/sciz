@@ -161,7 +161,7 @@ class CDM(sg.SqlAlchemyBase):
         if res:
             self.capa_desc = res.group(1)
             self.capa_effet = res.group(2)
-            self.capa_tour = res.group(3)
+            self.capa_tour = res.group(4)
         # Mob nb att
         res = re.search(re_cdm_nb_att, body)
         if res: self.nb_att_tour = res.group(1)
@@ -207,8 +207,10 @@ class CDM(sg.SqlAlchemyBase):
         self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
         self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
         self.s_tour = sg.str_min_max(self.tour_min, self.tour_max)
+        if self.capa_desc:
+            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ')'
         if self.capa_tour:
-            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+            self.s_capa += ' ' + str(self.capa_tour) + 'T'
         if self.portee_capa:
             self.s_capa += ' (' + self.portee_capa + ')'
         self.s_vlc = 'Oui' if self.vlc else 'Non'

@@ -129,8 +129,10 @@ class MOB(sg.SqlAlchemyBase):
         self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
         self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
         self.s_tour = sg.str_min_max(self.tour_min, self.tour_max)
+        if self.capa_desc:
+            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ')'
         if self.capa_tour:
-            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+            self.s_capa += ' ' + str(self.capa_tour) + 'T'
         if self.portee_capa:
             self.s_capa += ' (' + self.portee_capa + ')' 
         self.s_vlc = 'Oui' if self.vlc else 'Non'
