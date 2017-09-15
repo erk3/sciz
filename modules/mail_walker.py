@@ -28,7 +28,8 @@ class MailWalker:
             self.mailRegexCDM = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
             self.mailRegexATT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
-            self.mailRegexHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_HYPNO_RE)
+            self.mailRegexAttHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_HYPNO_RE)
+            self.mailRegexDefHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -88,10 +89,14 @@ class MailWalker:
                         self.logger.info('Found DEF event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF')
-                    elif (re.search(self.mailRegexHYPNO, self.mail_subject) is not None):
-                        self.logger.info('Found HYPNO event in mail ' + msgFile._file.name)
+                    elif (re.search(self.mailRegexDefHYPNO, self.mail_subject) is not None):
+                        self.logger.info('Found DEF HYPNO event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
-                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'HYPNO')
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF HYPNO')
+                    elif (re.search(self.mailRegexAttHYPNO, self.mail_subject) is not None):
+                        self.logger.info('Found ATT HYPNO event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT HYPNO')
             
                     if obj != None:
                         self.sqlHelper.add(obj)
