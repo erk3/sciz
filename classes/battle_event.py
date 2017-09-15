@@ -59,10 +59,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.flag_type = flag_type
         # Event Troll
         res = re.search(re_event_troll, body)
-        if flag_type == 'ATT' or flag_type == 'HYPNO':
+        if 'ATT' in flag_type:
             self.att_troll_id = res.group(1)
             self.att_troll_nom = res.group(2)
-        elif flag_type == 'DEF':
+        elif 'DEF' in flag_type:
             self.def_troll_id = res.group(1)
             self.def_troll_nom = res.group(2)
         # Event time
@@ -73,8 +73,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.__populate_from_att_mail(subject, body, config, logger)
         elif flag_type == 'DEF':
             self.__populate_from_def_mail(subject, body, config, logger)
-        elif flag_type == 'HYPNO':
-            self.__populate_from_hypno_mail(subject, body, config, logger)
+        elif flag_type == 'ATT HYPNO':
+            self.__populate_from_att_hypno_mail(subject, body, config, logger)
+        elif flag_type == 'DEF HYPNO':
+            self.__populate_from_def_hypno_mail(subject, body, config, logger)
         else:
             pass # Should never happen
 
@@ -183,12 +185,12 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_capa_tour, body)
         self.capa_tour = res.group(1) if res else None
         
-    def __populate_from_hypno_mail(self, subject, body, config, logger):       
+    def __populate_from_att_hypno_mail(self, subject, body, config, logger):       
         # Load config
         try:
             re_event_desc = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
             re_event_sr = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_RE)
+            re_event_resi = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -196,7 +198,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         # Event desc
         self.type = 'Sortilège'
         self.subtype = 'Hypnotisme'
-        res = re.search(re_event_desc, body) #FIXME: only work with notfication from the attacker, not the defender in TVT...
+        res = re.search(re_event_desc, body)
         if res != None:
             if res.group(2) == None: # Trick matching the det (No det = Troll ?)
                 self.def_troll_nom = res.group(3)
@@ -212,6 +214,32 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             # Jet de résistance
             res = re.search(re_event_resi, body)
             self.resi = res.group(1) if res else None
+            if int(self.resi) <= int(self.sr):
+                    self.type += ' réduit'
+        else:
+            logger.error("Fail to parse the mail, regexp not maching")
+        
+    def __populate_from_def_hypno_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_subject = config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
+            re_event_resi_result = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Hypnotisme'
+        res = re.search(re_event_subject, subject)
+        if res != None:
+            self.att_troll_nom = res.group(1)
+            self.att_troll_id = res.group(2)
+            res = re.search(re_event_resi_result, body)
+            if res != None and res.group(2) == None: # Résisté
+                self.type += ' résisté'
+        else:
+            logger.error("Fail to parse the mail, rexegp not maching")
 
     def stringify(self):
         self.s_flag_type = self.flag_type
@@ -219,18 +247,18 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         if self.att_troll:
             self.s_att_nom = self.att_troll.nom + ' (' + str(self.att_troll.id) + ')'
             if self.att_troll.user:
-                self.s_att_nom = self.att_troll.user.pseudo #+ ' (' + str(self.att_troll.id) + ')'
+                self.s_att_nom = self.att_troll.user.pseudo
         else:
             self.s_att_nom = self.att_mob.nom + ' [' + self.att_mob.age + '] (' + str(self.att_mob.id) + ')'
         # Défenseur
         if self.def_troll:
             self.s_def_nom = self.def_troll.nom + ' (' + str(self.def_troll.id) + ')'
             if self.def_troll.user:
-                self.s_def_nom = self.def_troll.user.pseudo #+ ' (' + str(self.def_troll.id) + ')'
+                self.s_def_nom = self.def_troll.user.pseudo
         else:
             self.s_def_nom = self.def_mob.nom + ' [' + self.def_mob.age + '] (' + str(self.def_mob.id) + ')'
         # Stats
-        self.s_pv = '-' + (str(self.pv) if self.pv != None else '0') #+ ' ' if (self.pv != None) and (self.pv != 0) else ''
+        self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')
         self.s_def_stats = ''
         self.s_def_stats += ' esq ' + str(self.esq) if self.esq else ''
         self.s_def_stats += ' sr ' + str(self.sr) if self.sr else ''
@@ -246,12 +274,11 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         if self.flag_type == 'ATT' or self.flag_type == 'DEF':
             if "mortelle" in self.type:
                 self.s_flag_type += ' (MORT)'
-            #self.s_type_short = '(' + self.type + ')' if self.type != 'Attaque' else '' # N'afficher que si critique, réduit, esquivé, mortelle, etc.)
             self.s_type = self.type if self.type else ''
             self.s_type += ' ' + self.subtype if self.subtype else ''
-            #self.s_type = ' ' + self.s_type + ')' if self.s_type != '' else ''
-        elif self.flag_type == 'HYPNO':
-            if self.resi > self.sr:
+        elif 'HYPNO' in self.flag_type:
+            if self.type == u"Sortilège": # pas réduit/résisté
                 self.s_hypno_flag = '(FULL)'
             else:
                 self.s_hypno_flag = '(REDUIT)'
+
