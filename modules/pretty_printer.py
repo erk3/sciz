@@ -51,6 +51,10 @@ class PrettyPrinter:
             self.mob_att_dist = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_ATT_DIST)
             self.mob_vit = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_VIT)
             self.mob_nb_att = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_NB_ATT)
+            self.mob_dla = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_DLA)
+            self.mob_tour = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_TOUR)
+            self.mob_chargement = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_CHARGEMENT)
+            self.mob_bonus_malus = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_BONUS_MALUS)
             self.troll_race = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_RACE)
             self.troll_niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_NIV)
             self.troll_pos = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_TROLL_POS)
@@ -108,6 +112,8 @@ class PrettyPrinter:
                 stats.append(self.mob_capa)
             if mob.vit_dep != None : #Arbitrary, any stats from CDM>=3 
                 stats.extend([self.mob_mm, self.mob_rm, self.mob_vlc, self.mob_att_dist, self.mob_vit, self.mob_nb_att])
+            if mob.dla != None : #Arbitrary, any stats from CDM>=4
+                stats.extend([self.mob_dla, self.mob_tour, self.mob_chargement, self.mob_bonus_malus])
             # Filter out not wanted attributes
             stats_filtered = []
             if attrs:
@@ -136,6 +142,8 @@ class PrettyPrinter:
                 stats.append(self.mob_capa)
             if int(cdm.comp_niv) > 2 : 
                 stats.extend([self.mob_mm, self.mob_rm, self.mob_vlc, self.mob_att_dist, self.mob_vit, self.mob_nb_att])
+            if int(cdm.comp_niv) > 3 : 
+                stats.extend([self.mob_dla, self.mob_tour, self.mob_chargement, self.mob_bonus_malus])
             # Format
             cdm.s_stats = ("\n").join(stats)
             cdm.s_stats = cdm.s_stats.format(o=cdm)

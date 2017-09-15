@@ -20,7 +20,7 @@ class MOB(sg.SqlAlchemyBase):
     age = Column(String(50))                                # Age
     blessure = Column(Integer)                              # Pourcentage de blessure
     niv_min = Column(Integer)                               # Niveau minimum
-    niv_max= Column(Integer)                               # Niveau maximum
+    niv_max= Column(Integer)                                # Niveau maximum
     pv_min = Column(Integer)                                # Points de Vie minimum
     pv_max = Column(Integer)                                # Points de Vie maximum
     att_min = Column(Integer)                               # Attaque minimum en D6
@@ -46,7 +46,13 @@ class MOB(sg.SqlAlchemyBase):
     vit_dep = Column(String(10))                            # Vitesse de déplacement
     vlc = Column(Boolean)                                   # Voir la caché ?
     att_dist = Column(Boolean)                              # Attaque à distance ?
-    
+    dla = Column(String(50))                                # Moment de la DLA
+    tour_min = Column(Integer)                              # Tour minimum en heure
+    tour_max = Column(Integer)                              # Tour maximum en heure
+    chargement = Column(String(50))                         # Chargement de trésors
+    bonus_malus = Column(String(150))                       # Bonus et Malus en cours 
+    portee_capa = Column(String(50))                        # Portée du pouvoir (capacité spéciale)
+
     # Relationships
     cdms = relationship("CDM", back_populates="mob")
     metamob = relationship("METAMOB", back_populates="mobs")
@@ -78,11 +84,11 @@ class MOB(sg.SqlAlchemyBase):
         self.nom = obj.mob_name
         self.tag = obj.mob_tag
         self.age = obj.mob_age
-        sg.copy_properties(obj, self, ['type', 'blessure', 'niv_min', 'niv_max', 'pv_min', 'pv_max', 'att_min', 'att_max', 'esq_min', 'esq_max', 'deg_min', 'deg_max', 'reg_min', 'reg_max', 'arm_phy_min', 'arm_phy_max', 'vue_min', 'vue_max', 'capa_desc', 'capa_effet', 'capa_tour', 'mm_min', 'mm_max', 'rm_min', 'rm_max', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist'], True)
+        sg.copy_properties(obj, self, ['type', 'blessure', 'niv_min', 'niv_max', 'pv_min', 'pv_max', 'att_min', 'att_max', 'esq_min', 'esq_max', 'deg_min', 'deg_max', 'reg_min', 'reg_max', 'arm_phy_min', 'arm_phy_max', 'vue_min', 'vue_max', 'capa_desc', 'capa_effet', 'capa_tour', 'mm_min', 'mm_max', 'rm_min', 'rm_max', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist', 'dla', 'tour_min', 'tour_max', 'chargement', 'bonus_malus', 'portee_capa'], True)
 
     # Update mob definition with the more accurate value
     def update_from_new(self, mob):
-        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist'], False)
+        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist', 'dla', 'chargement', 'bonus_malus', 'portee_capa'], False)
         
         self.niv_min = sg.do_unless_none((max), (self.niv_min, mob.niv_min))
         self.pv_min = sg.do_unless_none((max), (self.pv_min, mob.pv_min))
@@ -94,6 +100,7 @@ class MOB(sg.SqlAlchemyBase):
         self.vue_min = sg.do_unless_none((max), (self.vue_min, mob.vue_min))
         self.mm_min = sg.do_unless_none((max), (self.mm_min, mob.mm_min))
         self.rm_min = sg.do_unless_none((max), (self.rm_min, mob.rm_min))
+        self.tour_min = sg.do_unless_none((max), (self.tour_min, mob.tour_min))
         
         self.niv_max = sg.do_unless_none((min), (self.niv_max, mob.niv_max))
         self.pv_max = sg.do_unless_none((min), (self.pv_max, mob.pv_max))
@@ -105,6 +112,7 @@ class MOB(sg.SqlAlchemyBase):
         self.vue_max = sg.do_unless_none((min), (self.vue_max, mob.vue_max))
         self.mm_max = sg.do_unless_none((min), (self.mm_max, mob.mm_max))
         self.rm_max = sg.do_unless_none((min), (self.rm_max, mob.rm_max))
+        self.tour_max = sg.do_unless_none((min), (self.tour_max, mob.tour_max))
 
     # Generate the string representation of each attribute and return the list of attributes printable
     def stringify(self):
@@ -120,9 +128,15 @@ class MOB(sg.SqlAlchemyBase):
         self.s_arm_phy = sg.str_min_max(self.arm_phy_min, self.arm_phy_max)
         self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
         self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
+        self.s_tour = sg.str_min_max(self.tour_min, self.tour_max)
         if self.capa_tour:
-            self.s_capa = self.capa_desc + ' (' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+        if self.portee_capa:
+            self.s_capa += ' (' + self.portee_capa + ')' 
         self.s_vlc = 'Oui' if self.vlc else 'Non'
         self.s_att_dist = 'Oui' if self.att_dist else 'Non'
         self.s_vit = self.vit_dep
         self.s_nb_att_tour = self.nb_att_tour
+        self.s_dla = self.dla
+        self.s_chargement = self.chargement
+        self.s_bonus_malus = self.bonus_malus

@@ -46,7 +46,13 @@ class CDM(sg.SqlAlchemyBase):
     vit_dep = Column(String(10))                        # Vitesse de déplacement
     vlc = Column(Boolean)                               # Voir la caché ?
     att_dist = Column(Boolean)                          # Attaque à distance ?
-    
+    dla = Column(String(50))                            # Moment de la DLA
+    tour_min = Column(Integer)                          # Tour minimum en heure
+    tour_max = Column(Integer)                          # Tour maximum en heure
+    chargement = Column(String(50))                     # Chargement de trésors
+    bonus_malus = Column(String(150))                   # Bonus et Malus en cours 
+    portee_capa = Column(String(50))                    # Portée du pouvoir (capacité spéciale)
+
     troll = relationship("TROLL", back_populates="cdms")
     mob = relationship("MOB", back_populates="cdms")
     notif = relationship("NOTIF")
@@ -79,6 +85,11 @@ class CDM(sg.SqlAlchemyBase):
             re_cdm_vit_dep = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VIT_DEP_RE)
             re_cdm_vlc = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VLC_RE)
             re_cdm_att_dist = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_DIST_RE)
+            re_cdm_dla = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DLA_RE)
+            re_cdm_tour = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_TOUR_RE)
+            re_cdm_chargement = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_CHARGEMENT_RE)
+            re_cdm_bonus_malus = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_BONUS_MALUS_RE)
+            re_cdm_portee_capa = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_PORTEE_CAPA_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -105,46 +116,46 @@ class CDM(sg.SqlAlchemyBase):
         self.blessure = res.group(1)
         # Mob min/max level
         res = re.search(re_cdm_niv, body)
-        self.niv_min = res.group(2) or (res.group(4) or None)
-        self.niv_max = res.group(3) or (res.group(5) or None)
+        self.niv_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.niv_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max pv
         res = re.search(re_cdm_pv, body)
-        self.pv_min = res.group(2) or (res.group(4) or None)
-        self.pv_max = res.group(3) or (res.group(5) or None)
+        self.pv_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.pv_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max att
         res = re.search(re_cdm_att, body)
-        self.att_min = res.group(2) or (res.group(4) or None)
-        self.att_max = res.group(3) or (res.group(5) or None)
+        self.att_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.att_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max esq
         res = re.search(re_cdm_esq, body)
-        self.esq_min = res.group(2) or (res.group(4) or None)
-        self.esq_max = res.group(3) or (res.group(5) or None)
+        self.esq_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.esq_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max deg
         res = re.search(re_cdm_deg, body)
-        self.deg_min = res.group(2) or (res.group(4) or None)
-        self.deg_max = res.group(3) or (res.group(5) or None)
+        self.deg_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.deg_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max reg
         res = re.search(re_cdm_reg, body)
-        self.reg_min = res.group(2) or (res.group(4) or None)
-        self.reg_max = res.group(3) or (res.group(5) or None)
+        self.reg_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.reg_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max arm_phy
         res = re.search(re_cdm_arm, body)
-        self.arm_phy_min = res.group(2) or (res.group(4) or None)
-        self.arm_phy_max_max = res.group(3) or (res.group(5) or None)
+        self.arm_phy_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.arm_phy_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max vue
         res = re.search(re_cdm_vue, body)
-        self.vue_min = res.group(2) or (res.group(4) or None)
-        self.vue_max = res.group(3) or (res.group(5) or None)
+        self.vue_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+        self.vue_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max mm
         res = re.search(re_cdm_mm, body)
         if res:
-            self.mm_min = res.group(2) or (res.group(4) or None)
-            self.mm_max = res.group(3) or (res.group(5) or None)
+            self.mm_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+            self.mm_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob min/max rm
         res = re.search(re_cdm_rm, body)
         if res:
-            self.rm_min = res.group(2) or (res.group(4) or None)
-            self.rm_max = res.group(3) or (res.group(5) or None)
+            self.rm_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+            self.rm_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob Capa
         res = re.search(re_cdm_capa, body)
         if res:
@@ -163,6 +174,23 @@ class CDM(sg.SqlAlchemyBase):
         # Mob att_dist
         res = re.search(re_cdm_att_dist, body)
         if res: self.att_dist = sg.parseFrenchBoolean(res.group(1))
+        # Mob dla
+        res = re.search(re_cdm_dla, body)
+        if res: self.dla = res.group(1)
+        # Mob min/max tour
+        res = re.search(re_cdm_tour, body)
+        if res:
+            self.tour_min = res.group(2) or (res.group(4) or (res.group(6) or None))
+            self.tour_max = res.group(3) or (res.group(5) or (res.group(6) or None))
+        # Mob chargement
+        res = re.search(re_cdm_chargement, body)
+        if res: self.chargement = res.group(1)
+        # Mob bonus/malus
+        res = re.search(re_cdm_bonus_malus, body)
+        if res: self.bonus_malus = res.group(1)
+        # Mob portée Capa
+        res = re.search(re_cdm_portee_capa, body)
+        if res: self.portee_capa = res.group(1)
 
     # Generate the string representation of each attribute and return the list of attributes printable
     def stringify(self):
@@ -178,9 +206,15 @@ class CDM(sg.SqlAlchemyBase):
         self.s_arm_phy = sg.str_min_max(self.arm_phy_min, self.arm_phy_max)
         self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
         self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
+        self.s_tour = sg.str_min_max(self.tour_min, self.tour_max)
         if self.capa_tour:
-            self.s_capa = self.capa_desc + ' (' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ') ' + str(self.capa_tour) + 'T'
+        if self.portee_capa:
+            self.s_capa += ' (' + self.portee_capa + ')'
         self.s_vlc = 'Oui' if self.vlc else 'Non'
         self.s_att_dist = 'Oui' if self.att_dist else 'Non'
         self.s_vit = self.vit_dep
         self.s_nb_att_tour = self.nb_att_tour
+        self.s_dla = self.dla
+        self.s_chargement = self.chargement
+        self.s_bonus_malus = self.bonus_malus

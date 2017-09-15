@@ -1,0 +1,129 @@
+Return-Path: <paul.similowski+caf_=sciz=cerv.ovh@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id 3D5A0816
+	for <sciz@cerv.ovh>; Sat,  2 Sep 2017 07:49:38 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FhdS6tAyN_yJ for <sciz@cerv.ovh>;
+	Sat,  2 Sep 2017 07:49:32 +0000 (UTC)
+Received: from mail-vk0-f52.google.com (mail-vk0-f52.google.com [209.85.213.52])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 5B22D85C
+	for <sciz@cerv.ovh>; Sat,  2 Sep 2017 07:49:32 +0000 (UTC)
+Received: by mail-vk0-f52.google.com with SMTP id j7so5535135vke.0
+        for <sciz@cerv.ovh>; Sat, 02 Sep 2017 00:49:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-original-authentication-results:x-gm-message-state:delivered-to
+         :to:subject:date:from:message-id:mime-version
+         :content-transfer-encoding;
+        bh=UHOw+J+zjRl/ik9Ck2BK7+T2J5g/LMKQ4LQPUO8bix0=;
+        b=Uhx92Iy8ZGxzjc/xdTVPi5yBQq2ydi3wZxoVgB3ZnFhpZanLNrxkP9DmUrRH396llx
+         kkXCEs11wEB3xgSO2XTIs+D7h4Z7zjKOmDBDT8ylhGwv+ps7EDNDoh7zd5iCSXUrudkU
+         qQoTR3Z/orMBuyjt/AueLKY0nUDFre+ASCKOyHE6aQ5wYtfC3b+OetW6LNqSOS7PTAoY
+         ngeaQwogvlwmSp7WLqCvq4OuHAXHsvveKEJQNGfJwbJpNUf/KBJ7qI+H9yXil5+LaHB0
+         jlD8bpEKwvj8oZ/aQ1upIL7GuKfUNnuJMvLqBKIHmhJr0dH0dg9ikAfhverrfyTxYRib
+         Y9Gw==
+X-Original-Authentication-Results: mx.google.com;       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+X-Gm-Message-State: AHPjjUjYQRUFY1rAhJK/sMrq+hjTHd7ZaDKDRpiK9bDVSKfEAGmuvBHK
+	aF15YKeYihFS8kiESEwlCvysH7h+j73Yq6tf0q01Uw==
+X-Received: by 10.31.178.75 with SMTP id b72mr2863024vkf.24.1504338571054;
+        Sat, 02 Sep 2017 00:49:31 -0700 (PDT)
+X-Forwarded-To: sciz@cerv.ovh
+X-Forwarded-For: paul.similowski@gmail.com sciz@cerv.ovh
+Delivered-To: paul.similowski@gmail.com
+Received: by 10.31.77.3 with SMTP id a3csp1887390vkb;
+        Sat, 2 Sep 2017 00:49:30 -0700 (PDT)
+X-Google-Smtp-Source: ADKCNb6MGEcGwVG4je/KPbrCK5ruNlth0hp5toL4peXCF088Eh400RlHsolHWHbACC3rsPhakse2
+X-Received: by 10.84.192.3 with SMTP id b3mr5339324pld.63.1504338570026;
+        Sat, 02 Sep 2017 00:49:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1504338569; cv=none;
+        d=google.com; s=arc-20160816;
+        b=0jmHGDg7F20qGLvWhQ0CqJY+osha7idKT9161LmOJLBgsJ1Z7EjD+gcuEy7VDhsnsc
+         CDBSo+GdTA29Ngoybk2OUX9WCqXZ/FChsjSBQiChHRSI/b+RP7frDD9Moq1r3StBwPCE
+         qtupraeFYEtEjjco8fdOCtNGKXAjMknHcnmpqkCFdHwKXBbNtuCK1R3FXnLVACiHXsWi
+         LJzXInCUfYIYW8ZixzkwnIl3OueJU0BxU/Ti2m6Sc2ymzrwJ83TzYO1hF3MVKDVGCgSe
+         L2wn/K+P0ToEAxQocoYjV8oQMp7oVBtRZJo1LjBS0zeGv0aiie942QqHdI5c7MT6kSd4
+         73JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:message-id:from:date:subject
+         :to:arc-authentication-results;
+        bh=UHOw+J+zjRl/ik9Ck2BK7+T2J5g/LMKQ4LQPUO8bix0=;
+        b=ScNQdCVfJbPVYnuYEYvpG5SHXJk03iLmK62QhI7n9dAmZKbvQ8i9vB10JUCbATAgzi
+         pC1/nSGmnrUX6iisNQmidGi6zt0Q0rrTrkptPAD4XU8nEXvQfR+P7yVqcFmiQwA2W6Gf
+         S1jCrL3/l/3d2r7/gr3eOGwVZhxwQtV7Ydbyf2r4VOLM7qrBBOBiyWicWUFVzbjD1rJF
+         jtb9Dx4xku+w+HpWw2q9u4cZ6RbQ3JPPs8m99jCJephwo/WFFWPCdGZUjC1YA9x6OrTY
+         zsO2g1CkqFicSonp5W/Q/CqtFzY7qPOCH7mSI/2BBRvP75/O6IDmgsQ8l0WXg5y+sCe9
+         eUWw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+Received: from games.mountyhall.com ([46.16.240.194])
+        by mx.google.com with ESMTP id h8si1523643pgf.422.2017.09.02.00.49.29
+        for <paul.similowski@gmail.com>;
+        Sat, 02 Sep 2017 00:49:29 -0700 (PDT)
+Received-SPF: neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) client-ip=46.16.240.194;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+Received: by games.mountyhall.com (Postfix, from userid 33)
+	id 6E4707B60A0; Sat,  2 Sep 2017 09:49:27 +0200 (CEST)
+To: paul.similowski@gmail.com
+Subject: =?iso-8859-1?Q?[MountyHall]_Comp=E9tence_:_Connaissance_des_Monstres_4_su?=  =?iso-8859-1?Q?r_un_Foudroyeur_[Immature]_(5895878)?=
+X-PHP-Originating-Script: 0:class.phpmailer.php
+Date: Sat, 2 Sep 2017 09:49:27 +0200
+From: MountyHall-Bot <bot@mountyhall.com>
+Message-ID: <7f89a3e7f7b51e889f2e505e9b838b14@smartphone.mountyhall.com>
+X-Priority: 3
+X-Mailer: PHPMailer 5.2 (http://code.google.com/a/apache-extras.org/p/phpmailer/)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="iso-8859-1"
+
+================================
+MOUNTYHALL - La Terre des Trõlls
+================================
+
+Trõll n°104126 : PõmPõmPõm
+
+Vous avez été impliqué dans un événement : COMPETENCE.
+Il était alors aux alentours de : 02/09/2017 09:49:27.
+***********************************************************
+
+Vous avez utilisé CONNAISSANCE DES MONSTRES sur un Foudroyeur [Immature] (5895878)
+
+Le Monstre ciblé fait partie des : Insecte
+
+Niveau :		Jamais vu (entre 39 et 41)
+Points de Vie :	Fort (entre 110 et 130)
+Blessure :		0 % (approximativement)
+Dés d'Attaque :	Remarquable (entre 22 et 24)
+Dés d'Esquive :	Très Fort (entre 15 et 17)
+Dés de Dégât :	Remarquable (entre 22 et 24)
+Dés de Régén. :	Fort (égal à 6) 
+Armure :		Très Fort (entre 17 et 19)
+Vue :			Faible (entre 4 et 6)
+Capacité spéciale : Attaque Electrique - Affecte : Attaque | Durée 2 tour(s)
+Maitrise Magique :			Impressionnant (entre 3000 et 3200)
+Résistance Magique :		Remarquable (entre 1900 et 2100)
+Nombre d'attaques :			1
+Vitesse de Déplacement :	Rapide
+Voir le Caché :				Non
+Attaque à distance :		Non
+DLA :			Fin
+Durée tour :	Fort (entre 5 et 7)
+Chargement :	Vide
+Bonus Malus :	Glue
+Portée du Pouvoir :	Automatique
+
+
+***********************************************************
+Vous avez configuré votre compte pour recevoir un Email
+ lorsque votre Trõll est impliqué dans un événement.
+Si vous ne désirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Trõll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
