@@ -89,7 +89,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_deg = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DEG_RE)
             re_event_pv = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_PV_RE)
             re_event_sr = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_RE)
+            re_event_resi = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -138,7 +138,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_capa_effet = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_RE)
             re_event_capa_tour = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
             re_event_sr = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_RE)
+            re_event_resi = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
