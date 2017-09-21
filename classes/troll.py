@@ -105,6 +105,28 @@ class TROLL(sg.SqlAlchemyBase):
             lst.append('nom')
         sg.copy_properties(troll, self, lst, False)
 
+    def estimate_next_dla(self):
+        try:
+            self.nextDLA = None
+            # Add base tour
+            mins = self.base_tour
+            # Add stuff weight
+            mins += self.base_poids + self.malus_poids_phy + self.malus_poids_mag
+            # Add wound malus
+            mins += (250 * (self.base_bonus_pv_max - self.pv)) // self.base_bonus_pv_max
+            # Add bonuses (templates, flies, etc.)
+            # (phy => mouches / natif equip (grimoire,etc.) ; mag => templates) et autres (pouvoirs, events) ?
+            mins += self.bonus_tour_phy + self.bonus_tour_mag # + self.bonus_tour (?.)
+            # Keep the result at minimum base tour
+            mins = max(self.base_tour, mins)
+            # Do the actual estimation
+            self.nextDLA = self.dla + datetime.timedelta(minutes = mins)
+            return self.nextDLA
+        except TypeError as e:
+            print e
+            # Missing data (probably no previous success call to MH SP)
+            return None
+    
     # Generate the string representation of each attribute and return the list of attributes printable
     def stringify(self):
         # Generate STR representation
