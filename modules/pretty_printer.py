@@ -23,8 +23,10 @@ class PrettyPrinter:
         try:
             # Load Mail conf
             self.troll_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_TROLL_FULL)
+            self.troll_full_inline = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_TROLL_FULL_INLINE)
             self.troll_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_TROLL_SHORT)
             self.mob_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_FULL)
+            self.mob_full_inline = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_FULL_INLINE)
             self.mob_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_SHORT)
             self.cdm_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_FULL)
             self.cdm_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_SHORT)
@@ -130,9 +132,18 @@ class PrettyPrinter:
                         pass
             stats = stats_filtered if len(stats_filtered) > 0 else stats
             # Format
-            mob.s_stats = ("\n").join(stats)
-            mob.s_stats = mob.s_stats.format(o=mob)
-            return self.mob_full.format(o=mob)
+            if len(stats) < 1:
+                return ''
+            elif attrs == None or len(attrs) > 1:
+                sep = "\n"
+                mob.s_stats = sep + (sep).join(stats)
+                mob.s_stats = mob.s_stats.format(o=mob)
+                return self.mob_full.format(o=mob)
+            else:
+                sep = " "
+                mob.s_stats = sep + (sep).join(stats)
+                mob.s_stats = mob.s_stats.format(o=mob)
+                return self.mob_full_inline.format(o=mob)
     
     def __pprint_cdm(self, cdm, short):
         # Generate the string representation
@@ -149,13 +160,20 @@ class PrettyPrinter:
             if int(cdm.comp_niv) > 3 : 
                 stats.extend([self.mob_dla, self.mob_tour, self.mob_chargement, self.mob_bonus_malus])
             # Format
-            cdm.s_stats = ("\n").join(stats)
-            cdm.s_stats = cdm.s_stats.format(o=cdm)
-            return self.cdm_full.format(o=cdm)
+            if len(stats) < 1:
+                return ''
+            else:
+                sep = "\n"
+                cdm.s_stats = sep + (sep).join(stats)
+                cdm.s_stats = cdm.s_stats.format(o=cdm)
+                return self.cdm_full.format(o=cdm)
 
     def __pprint_troll(self, troll, short, attrs):
         # Generate the string representation
-        troll.stringify()
+        try:
+            troll.stringify()
+        except Exception:
+            return ''
         if short:
             return self.troll_short.format(o=troll)
         else:
@@ -177,7 +195,15 @@ class PrettyPrinter:
                         pass
                 stats = stats_filtered
             # Format
-            troll.s_stats = ("\n").join(stats)
-            troll.s_stats = troll.s_stats.format(o=troll)
-            return self.troll_full.format(o=troll)
-
+            if len(stats) < 1:
+                return ''
+            elif attrs == None or len(attrs) > 1:
+                sep = "\n"
+                troll.s_stats = sep + (sep).join(stats)
+                troll.s_stats = troll.s_stats.format(o=troll)
+                return self.troll_full.format(o=troll)
+            else:
+                sep = " "
+                troll.s_stats = sep + (sep).join(stats)
+                troll.s_stats = troll.s_stats.format(o=troll)
+                return self.troll_full_inline.format(o=troll)

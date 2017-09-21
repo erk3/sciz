@@ -43,6 +43,12 @@ def str_min_max(min, max):
     else:
         return None
 
+def none_sorter(x, arg):
+    if hasattr(x, arg):
+        return (getattr(x, arg) is None, getattr(x, arg))
+    else:
+        None
+
 # GENERAL CONF
 DEFAULT_CONF_FILE               = "sciz.ini"
 DEFAULT_CHARSET                 = "utf-8"
@@ -173,11 +179,13 @@ CONF_PRINT_TROLL_VUE    	= "stat_troll_vue"
 CONF_PRINT_TROLL_MM     	= "stat_troll_mm"
 CONF_PRINT_TROLL_RM     	= "stat_troll_rm"
 CONF_PRINT_TROLL_ARM    	= "stat_troll_arm"
-CONF_MOB_FULL           	= "mob_head_full"
+CONF_MOB_FULL           	= "mob_full"
+CONF_MOB_FULL_INLINE           	= "mob_full_inline"
 CONF_MOB_SHORT          	= "mob_short"
-CONF_TROLL_FULL         	= "troll_head_full"
+CONF_TROLL_FULL         	= "troll_full"
+CONF_TROLL_FULL_INLINE         	= "troll_full_inline"
 CONF_TROLL_SHORT        	= "troll_short"
-CONF_CDM_FULL           	= "cdm_head_full"
+CONF_CDM_FULL           	= "cdm_full"
 CONF_CDM_SHORT          	= "cdm_short"
 CONF_ATT_SHORT          	= "att_short"
 CONF_DEF_SHORT          	= "def_short"

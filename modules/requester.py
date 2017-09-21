@@ -3,6 +3,7 @@
 
 # Imports
 import ConfigParser, sqlalchemy
+from operator import attrgetter
 from sqlalchemy import desc, or_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
@@ -33,13 +34,13 @@ class Requester:
     # Dispatcher
     def request(self, ids, args):
         # Request on all trolls
-        if ids.lower() == 'trolls':
+        ids = ids.lower()
+        if ids == 'trolls' or ids == 'users':
             trolls = self.sqlHelper.session.query(TROLL).all()
-            for troll in trolls:
-                self.__request_troll(troll.id, args)
-        # Request on all users trolls
-        elif ids.lower() == 'users':
-            trolls = self.sqlHelper.session.query(USER).all()
+            if ids == 'users':
+                trolls = filter(lambda x : x.user != None, trolls)
+            if len(args) == 1:
+                trolls = sorted(trolls, key=lambda x : sg.none_sorter(x, args[0])) # Work only if args == only an object attr (ex:'dla' ; not 'dla,pv' or 'event')
             for troll in trolls:
                 self.__request_troll(troll.id, args)
         else:
@@ -80,7 +81,9 @@ class Requester:
         try:        
             cdms = self.sqlHelper.session.query(CDM).filter(CDM.mob_id == id).order_by(desc(CDM.time)).limit(limit).all()
             for cdm in cdms:
-                print self.pprinter.pretty_print(cdm, False, None)
+                val = self.pprinter.pretty_print(cdm, False, None)
+                if val != '':
+                    print val
         except NoResultFound:
             pass
     
@@ -88,14 +91,18 @@ class Requester:
         try:
             events = self.sqlHelper.session.query(BATTLE_EVENT).filter(or_(BATTLE_EVENT.att_mob_id == id, BATTLE_EVENT.def_mob_id == id)).order_by(desc(BATTLE_EVENT.time)).limit(limit).all()
             for event in events:
-                print self.pprinter.pretty_print(event, False, None)
+                val = self.pprinter.pretty_print(event, False, None)
+                if val != '':
+                    print val
         except NoResultFound:
             pass
     
     def __request_mob_caracs(self, id, caracs):
         try:
             mob = self.sqlHelper.session.query(MOB).filter(MOB.id == id).one()
-            print self.pprinter.pretty_print(mob, False, caracs)
+            val = self.pprinter.pretty_print(mob, False, caracs)
+            if val != '':
+                print val
         except NoResultFound:
             pass
     
@@ -117,14 +124,18 @@ class Requester:
         try:
             events = self.sqlHelper.session.query(BATTLE_EVENT).filter(or_(BATTLE_EVENT.att_troll_id == id, BATTLE_EVENT.def_troll_id == id)).order_by(desc(BATTLE_EVENT.time)).limit(limit).all()
             for event in events:
-                print self.pprinter.pretty_print(event, False, None)
+                val = self.pprinter.pretty_print(event, False, None)
+                if val != '':
+                    print val
         except NoResultFound:
             pass
 
     def __request_troll_caracs(self, id, caracs):
         try:
             troll = self.sqlHelper.session.query(TROLL).filter(TROLL.id == id).one()
-            print self.pprinter.pretty_print(troll, False, caracs)
+            val = self.pprinter.pretty_print(troll, False, caracs)
+            if val != '':
+                print val
         except NoResultFound:
             pass
 

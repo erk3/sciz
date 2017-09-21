@@ -123,7 +123,6 @@ class TROLL(sg.SqlAlchemyBase):
             self.nextDLA = self.dla + datetime.timedelta(minutes = mins)
             return self.nextDLA
         except TypeError as e:
-            print e
             # Missing data (probably no previous success call to MH SP)
             return None
     
@@ -135,7 +134,10 @@ class TROLL(sg.SqlAlchemyBase):
         #for attr in plain_attrs:
         #    val = getattr(self, attr)
         #    setattr(self, 's_' + attr, val)
-        if self.dla != None:
-            self.s_dla = sg.format_time(self.dla)
+        self.s_nom_full = self.nom + ' (' +  str(self.id) + ')'
+        self.s_nom_short = '~' + self.user.pseudo if self.user else self.s_nom_full
+        self.s_dla = sg.format_time(self.dla) if self.dla else None
+        self.next_dla = self.estimate_next_dla()
+        self.s_next_dla = sg.format_time(self.next_dla) if self.next_dla else None
 
 

@@ -196,6 +196,8 @@ class CDM(sg.SqlAlchemyBase):
     def stringify(self):
         # Generate STR representation
         self.s_tag = ' ' + self.mob.tag if self.mob.tag else ''
+        self.s_nom_short = self.mob.nom + ' (' + str(self.mob.id) + ')'
+        self.s_nom_full = self.mob.nom + ' [' + self.mob.age + ']' + self.s_tag + ' (' + str(self.mob.id) + ')'
         self.s_blessure = self.blessure if self.blessure != None else '?'
         self.s_niv = sg.str_min_max(self.niv_min, self.niv_max)
         self.s_pv = sg.str_min_max(self.pv_min, self.pv_max)

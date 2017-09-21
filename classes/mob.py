@@ -118,6 +118,8 @@ class MOB(sg.SqlAlchemyBase):
     def stringify(self):
         # Generate STR representation
         self.s_tag = ' ' + self.tag if self.tag else ''
+        self.s_nom_short = self.nom + ' (' + str(self.id) + ')'
+        self.s_nom_full = self.nom + ' [' + self.age + ']' + self.s_tag + ' (' + str(self.id) + ')'
         self.s_blessure = self.blessure if self.blessure != None else '?'
         self.s_niv = sg.str_min_max(self.niv_min, self.niv_max)
         self.s_pv = sg.str_min_max(self.pv_min, self.pv_max)
