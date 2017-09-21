@@ -3,6 +3,7 @@
 
 # Imports
 import email, mailbox, ConfigParser, sys, os, re, traceback
+from operator import itemgetter
 from email.header import decode_header
 from modules.sql_helper import SQLHelper
 from classes.cdm import CDM
@@ -63,17 +64,18 @@ class MailWalker:
         self.mail_body = body.decode(sg.DEFAULT_CHARSET)
 
 
+
     # Main MailDir Walker
     def walk(self):
         try:
             mbox = mailbox.Maildir(self.mailDirPath)
-            
-            # Walk over the mail directory
-            for key in mbox.keys():
-                msgFile = mbox.get_file(key)
+            # Build a sorted list of key-message by 'Date' header #RFC822
+            sorted_mails = sorted(mbox.iteritems(), key=lambda x: email.utils.parsedate(x[1].get('Date')))
+            # Walk over the mail directory (iterating from the by 'Date' header sorted list)
+            for mail in sorted_mails:
+                msgFile = mbox.get_file(mail[0])
                 msg = email.message_from_file(msgFile)
                 self.__parse_mail(msg)
-
                 try:
                     obj = None
                     # Handle CDM/ATT/DEF mails
