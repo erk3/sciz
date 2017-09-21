@@ -195,6 +195,7 @@ class CDM(sg.SqlAlchemyBase):
     # Generate the string representation of each attribute and return the list of attributes printable
     def stringify(self):
         # Generate STR representation
+        self.s_tag = ' ' + self.mob.tag if self.mob.tag else ''
         self.s_blessure = self.blessure if self.blessure != None else '?'
         self.s_niv = sg.str_min_max(self.niv_min, self.niv_max)
         self.s_pv = sg.str_min_max(self.pv_min, self.pv_max)
