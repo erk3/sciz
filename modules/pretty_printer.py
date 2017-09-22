@@ -34,10 +34,14 @@ class PrettyPrinter:
             self.def_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_SHORT)
             self.att_hypno_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_HYPNO_SHORT)
             self.def_hypno_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_HYPNO_SHORT)
+            self.att_sacro_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_SACRO_SHORT)
+            self.def_sacro_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_SACRO_SHORT)
             self.att_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_FULL)
             self.def_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_FULL)
             self.att_hypno_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_HYPNO_FULL)
             self.def_hypno_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_HYPNO_FULL)
+            self.att_sacro_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_SACRO_FULL)
+            self.def_sacro_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_SACRO_FULL)
             self.sep = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_SEP)
             self.mob_blessure = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_BLESSURE)
             self.mob_niv = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PRINT_MOB_NIV)
@@ -95,10 +99,14 @@ class PrettyPrinter:
         format_str = self.def_short if short and (event.flag_type == 'DEF') else format_str
         format_str = self.att_hypno_short if short and (event.flag_type == 'ATT HYPNO') else format_str
         format_str = self.def_hypno_short if short and (event.flag_type == 'DEF HYPNO') else format_str
+        format_str = self.att_sacro_short if short and (event.flag_type == 'ATT SACRO') else format_str
+        format_str = self.def_sacro_short if short and (event.flag_type == 'DEF SACRO') else format_str
         format_str = self.att_full if not short and (event.flag_type == 'ATT') else format_str
         format_str = self.def_full if not short and (event.flag_type == 'DEF') else format_str
         format_str = self.att_hypno_full if not short and (event.flag_type == 'ATT HYPNO') else format_str
         format_str = self.def_hypno_full if not short and (event.flag_type == 'DEF HYPNO') else format_str
+        format_str = self.att_sacro_full if not short and (event.flag_type == 'ATT SACRO') else format_str
+        format_str = self.def_sacro_full if not short and (event.flag_type == 'DEF SACRO') else format_str
         if format_str != None:
             return '@' + sg.format_time(event.time) + ' ' + format_str.format(o=event)
         else:

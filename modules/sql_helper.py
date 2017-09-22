@@ -103,11 +103,11 @@ class SQLHelper:
         return notif
         
     # Add a TROLL
-    def __add_troll(self, troll_new):
+    def __add_troll(self, troll_new, event = None):
         try:
             troll_old = self.session.query(TROLL).filter(TROLL.id == troll_new.id).one()
             self.logger.info("TROLL %s already found in the DB, updating it with new data" % (troll_old.id, ))
-            troll_old.update_from_new(troll_new)
+            troll_old.update_from_new(troll_new, event)
             self.session.add(troll_old)
         except orm.exc.NoResultFound:
             self.logger.info("New Troll %s, creating it on the fly" % (troll_new.id, ))
@@ -144,14 +144,12 @@ class SQLHelper:
             att_troll = TROLL()
             att_troll.id = event.att_troll_id
             att_troll.nom = event.att_troll_nom
-            self.__add_troll(att_troll)
+            self.__add_troll(att_troll, event)
         if event.def_troll_id != None:
             def_troll = TROLL()
             def_troll.id = event.def_troll_id
             def_troll.nom = event.def_troll_nom
-            if event.att_mob_id != None: # Pas d'info en TvT
-                def_troll.pv = event.vie
-            self.__add_troll(def_troll)
+            self.__add_troll(def_troll, event)
         if event.att_mob_id != None:
             att_mob = MOB()
             att_mob.id = event.att_mob_id

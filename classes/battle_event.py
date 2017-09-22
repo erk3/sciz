@@ -19,13 +19,16 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
     att_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant réalisé l'évènement
     def_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant subi l'évènement
     notif_id = Column(Integer, ForeignKey('notifs.id'))     # Identifiant de la notifiction
-    flag_type = Column(String(50))                          # FLAG (ATT, DEF, HYPNO...)
+    flag_type = Column(String(50))                          # FLAG (ATT, DEF, HYPNO, SACRO...)
     type = Column(String(50))                               # Type d'évènement
     subtype = Column(String(50))                            # Sous type d'évènement
     att = Column(Integer)                                   # Jet d'attaque
     esq = Column(Integer)                                   # Jet d'esquive
-    deg = Column(Integer)                                   # Jet de dégâts
-    pv = Column(Integer)                                    # Points de vie perdu (avec armure)
+    deg = Column(Integer)                                   # Jet de dégâts (sans compter armure)
+    pv = Column(Integer)                                    # Points de vie perdu par la cible (avec armure)
+    vie = Column(Integer)                                   # Points de vie restants de la cible
+    soin = Column(Integer)                                  # Points de vie rendu à la cible
+    blessure = Column(Integer)                              # Blessure infligée à l'attaquant
     sr = Column(Integer)                                    # Seuil de résistance en %
     resi = Column(Integer)                                  # Jet de résistance en %
     capa_desc = Column (String(150))                        # Descritpion de la capacité spéciale
@@ -77,6 +80,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.__populate_from_att_hypno_mail(subject, body, config, logger)
         elif flag_type == 'DEF HYPNO':
             self.__populate_from_def_hypno_mail(subject, body, config, logger)
+        elif flag_type == 'ATT SACRO':
+            self.__populate_from_att_sacro_mail(subject, body, config, logger)
+        elif flag_type == 'DEF SACRO':
+            self.__populate_from_def_sacro_mail(subject, body, config, logger)
         else:
             pass # Should never happen
 
@@ -240,6 +247,58 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
                 self.type += ' résisté'
         else:
             logger.error("Fail to parse the mail, rexegp not maching")
+
+    def __populate_from_att_sacro_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_soin_att = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
+            re_event_blessure = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_BLESSURE_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Sacrifice'
+        res = re.search(re_event_soin_att, body)
+        if res != None:
+            # Cible
+            self.def_troll_nom = res.group(1)
+            self.def_troll_id = res.group(2)
+            # Soin
+            self.soin = res.group(3)
+        else:
+            logger.error("Fail to parse the mail, regexp not maching")
+        res = re.search(re_event_blessure, body)
+        if res != None:
+            self.blessure = res.group(1)
+        else:
+            logger.error("Fail to parse the mail, regexp not maching")
+
+    def __populate_from_def_sacro_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_soin_def = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_DEF_RE)
+            re_event_desc = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_DESC_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Sacrifice'
+        res = re.search(re_event_desc, body)
+        if res != None:
+            # Cible
+            self.att_troll_nom = res.group(2)
+            self.att_troll_id = res.group(3)
+        else:
+            logger.error("Fail to parse the mail, regexp not maching")
+        res = re.search(re_event_soin_def, body)
+        if res != None:
+            self.soin = res.group(1)
+        else:
+            logger.error("Fail to parse the mail, regexp not maching")
 
     def stringify(self):
         self.s_flag_type = self.flag_type
