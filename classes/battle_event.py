@@ -31,9 +31,9 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
     blessure = Column(Integer)                              # Blessure infligée à l'attaquant
     sr = Column(Integer)                                    # Seuil de résistance en %
     resi = Column(Integer)                                  # Jet de résistance en %
-    capa_desc = Column (String(150))                        # Descritpion de la capacité spéciale
-    capa_effet = Column (String(150))                       # Effet de la capacité spéciale
-    capa_tour = Column (Integer)                            # Nombre de tours d'effet de la capacité spéciale
+    capa_desc = Column(String(150))                         # Descritpion de la capacité spéciale
+    capa_effet = Column(String(150))                        # Effet de la capacité spéciale
+    capa_tour = Column(Integer)                             # Nombre de tours d'effet de la capacité spéciale
 
     # Relationships
     att_troll = relationship("TROLL", foreign_keys=[att_troll_id], back_populates="att_events")
@@ -84,6 +84,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.__populate_from_att_sacro_mail(subject, body, config, logger)
         elif flag_type == 'DEF SACRO':
             self.__populate_from_def_sacro_mail(subject, body, config, logger)
+        elif flag_type == 'DEF CAPA':
+            self.__populate_from_capa_mail(subject, body, config, logger)
         else:
             pass # Should never happen
 
@@ -184,14 +186,56 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.vie = res.group(1) if res else None
         # Capa desc
         res = re.search(re_event_capa, body)
-        self.capa = res.group(1) if res else None
+        self.capa_desc = res.group(1) if res else None
         # Capa effet
         res = re.search(re_event_capa_effet, body)
-        self.capa_effet = res.group(1) if res else None
+        self.capa_effet = res.group(2) if res else None
         # Capa tour
         res = re.search(re_event_capa_tour, body)
         self.capa_tour = res.group(1) if res else None
         
+    def __populate_from_capa_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_pv = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_PV_RE)
+            re_event_vie = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_VIE_RE)
+            re_event_capa = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_RE)
+            re_event_capa_effet = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_RE)
+            re_event_capa_tour = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_event_sr = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc & Capa desc
+        res = re.search(re_event_capa, body)
+        self.att_mob_nom = res.group(2)
+        self.att_mob_age = res.group(3)
+        self.att_mob_tag = res.group(5)
+        self.att_mob_id = res.group(1)
+        self.capa_desc = res.group(6)
+        self.type = 'Pouvoir'
+        self.subtype = res.group(6)
+        # Seuil de résistance
+        res = re.search(re_event_sr, body)
+        self.sr = res.group(1) if res else None
+        # Jet de résistance
+        res = re.search(re_event_resi, body)
+        self.resi = res.group(1) if res else None
+        # Points de vie perdus
+        res = re.search(re_event_pv, body)
+        self.pv = res.group(1) if res else None # Souffle / Aura de feu
+        # Points de vie restants
+        res = re.search(re_event_vie, body)
+        self.vie = res.group(1) if res else None # Souffle / Aura de feu
+        # Capa effet
+        res = re.search(re_event_capa_effet, body)
+        self.capa_effet = res.group(2) if res else None
+        # Capa tour
+        res = re.search(re_event_capa_tour, body)
+        self.capa_tour = res.group(1) if res else None
+    
     def __populate_from_att_hypno_mail(self, subject, body, config, logger):       
         # Load config
         try:
@@ -316,6 +360,12 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
                 self.s_def_nom = self.def_troll.user.pseudo
         else:
             self.s_def_nom = self.def_mob.nom + ' [' + self.def_mob.age + '] (' + str(self.def_mob.id) + ')'
+        # Capa
+        self.s_capa = ''
+        self.s_capa += self.capa_desc if self.capa_desc != None else ''
+        self.s_capa += ' ; ' + self.capa_effet if self.capa_effet != None else ''
+        self.s_capa += ' ' + str(self.capa_tour) + 'T' if self.capa_tour != None else ''
+        self.s_capa = ' (' + self.s_capa.lstrip() + ')' if self.s_capa != '' else ''
         # Stats
         self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')
         self.s_def_stats = ''

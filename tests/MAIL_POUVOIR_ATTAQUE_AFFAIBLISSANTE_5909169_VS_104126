@@ -1,0 +1,169 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id 346AE8AB
+	for <sciz@cerv.ovh>; Mon,  2 Oct 2017 08:32:10 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=FWK1UQyq;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id R8MOq5ZoqP8v for <sciz@cerv.ovh>;
+	Mon,  2 Oct 2017 08:32:04 +0000 (UTC)
+Received: from mail-vk0-f46.google.com (mail-vk0-f46.google.com [209.85.213.46])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 68BC0827
+	for <sciz@cerv.ovh>; Mon,  2 Oct 2017 08:32:04 +0000 (UTC)
+Received: by mail-vk0-f46.google.com with SMTP id h4so2508489vkg.0
+        for <sciz@cerv.ovh>; Mon, 02 Oct 2017 01:32:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=qpgRPaCq4TiXLFyviaJDocHHi9E1v0EXNRvS8+5Dh6I=;
+        b=FWK1UQyqnjQTfMvSnTjtV4LxH066SxxQx+DRrmZqkIqgEywNbw1hUdiOi1Ya3aGSt/
+         /+rE9FbpdK9lhajf6BHK9qUhV9Pbcf7AoY4Su8wivO/7GozTj6zq4znu2ODupR06eAuY
+         0icD//QJ44zdFqaWbfGyfR8PfWPVdHMp3olOCfOz92OQXedYTVJswEN2tKlclxkn4p9L
+         Z6Tyd1c3yY6MyDoDBFCLV2Ptj5HgGdvbefwRwoiDNIstf6UZWUhwGxgjn6JNDaeJZDbP
+         ycDnPPysgsXXG0LsQaOJOpblCAqn+6JzWP+mVyIYYqXGtA4BsYYC18LEC5wBQE2XzfJw
+         OTDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=qpgRPaCq4TiXLFyviaJDocHHi9E1v0EXNRvS8+5Dh6I=;
+        b=hLc/vRVtwYXz8lYaASBQ9pyew7O7Iwsi1L5FNaB7pCnRD9SmNJB0JD8C54kBmahY4+
+         hQ+H46jSPJm0Ng3RnBmrXyr4ONNTvGRerKH6gRVax/vyuYT5mqRg9Cr3ZvAdK7Aife1X
+         GH8Y12peGKYr043fEB2LDC+8m/yWGvALRDS7/Xpql8V5H9iAcgTGZVybkVJEgiWT0+CL
+         DXyFZ4ajKn2XRQ96DkxvPWOwM8dxMuZ2uIZewbpCd+lPbE8XYoT0k7VGV4JKSzuM9RBc
+         1IDwLWjSHT1a0v4YtpA6K5S6NI7DDdeFDhdG5RcurPDI2RR0hwWwwdhC6rtgb9kZBCK8
+         gBBA==
+X-Gm-Message-State: AHPjjUgm8KIqj3Kj6mR5RMeTZimDoqQfDgn8heF8Nw/a3VrM5/mQU4Zr
+	K9gJncYh2VWpTEMp3YUYT3O4MmflgfZL1EjYYVsNmg==
+X-Google-Smtp-Source: AOwi7QDEob19lOEhNygQvyBYKFumJGXbDvgW5pawfkk/B3/D1RDKjXaCIKpJfex84itsAA1BHHASqCINfU5H2W0jpD8=
+X-Received: by 10.31.191.81 with SMTP id p78mr6830824vkf.127.1506933122774;
+ Mon, 02 Oct 2017 01:32:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <8090b33e8977780c20d927df959b0587@localhost.localdomain>
+In-Reply-To: <8090b33e8977780c20d927df959b0587@localhost.localdomain>
+From: Censored <censored@gmail.com>
+Date: Mon, 02 Oct 2017 08:31:52 +0000
+Message-ID: <CALtH2JjQo6AyAkWov---TYH+ALB8e1vWe2gwCEFnk3uQQv-JWw@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_R=C3=A9sultat_du_pouvoir_=22Attaque_Affa?=
+	=?UTF-8?Q?iblissante=22_d=27un_Fant=C3=B4me_Mentat_=5BAncien=5D_=285909169=29?=
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="001a114dd2747bbba3055a8c35f8"
+
+--001a114dd2747bbba3055a8c35f8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: dim. 1 oct. 2017 =C3=A0 21:09
+Subject: [MountyHall] R=C3=A9sultat du pouvoir "Attaque Affaiblissante" d'u=
+n
+Fant=C3=B4me Mentat [Ancien] (5909169)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : POUVOIR=
+.
+Il =C3=A9tait alors aux alentours de : 01/10/2017 21:03:14.
+***********************************************************
+
+
+Le monstre n=C2=B05909169 (un Fant=C3=B4me Mentat [Ancien]) a utilis=C3=A9 =
+sa capacit=C3=A9
+sp=C3=A9ciale : Attaque Affaiblissante
+Elle a pour effet : D=C3=A9g=C3=A2ts : -9
+Pour une dur=C3=A9e de 2 tour(s).
+
+Seuil de R=C3=A9sistance de la Cible.....: 65 %
+Jet de R=C3=A9sistance...........................: 92
+
+La Cible subit donc pleinement l'effet de la capacit=C3=A9 sp=C3=A9ciale.
+
+ Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez donc =
+pleinement
+l'effet de la capacit=C3=A9.
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--001a114dd2747bbba3055a8c35f8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: dim. 1 oct. 201=
+7 =C3=A0=C2=A021:09<br>Subject: [MountyHall] R=C3=A9sultat du pouvoir &quot=
+;Attaque Affaiblissante&quot; d&#39;un Fant=C3=B4me Mentat [Ancien] (590916=
+9)<br>To:  &lt;<a href=3D"mailto:censored@gmail.com">censored=
+@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : POUVOIR=
+.<br>
+Il =C3=A9tait alors aux alentours de : 01/10/2017 21:03:14.<br>
+***********************************************************<br>
+<br>
+<br>
+Le monstre n=C2=B05909169 (un Fant=C3=B4me Mentat [Ancien]) a utilis=C3=A9 =
+sa capacit=C3=A9 sp=C3=A9ciale : Attaque Affaiblissante<br>
+Elle a pour effet : D=C3=A9g=C3=A2ts : -9<br>
+Pour une dur=C3=A9e de 2 tour(s).<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 65 %<br>
+Jet de R=C3=A9sistance...........................: 92<br>
+<br>
+La Cible subit donc pleinement l&#39;effet de la capacit=C3=A9 sp=C3=A9cial=
+e.<br>
+<br>
+=C2=A0Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez =
+donc pleinement l&#39;effet de la capacit=C3=A9.<br>
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--001a114dd2747bbba3055a8c35f8--

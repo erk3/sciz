@@ -29,6 +29,7 @@ class MailWalker:
             self.mailRegexCDM = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
             self.mailRegexATT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
+            self.mailRegexCAPA = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CAPA_RE)
             self.mailRegexAttHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_HYPNO_RE)
             self.mailRegexDefHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
             self.mailRegexAttSACRO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_SACRO_RE)
@@ -109,6 +110,10 @@ class MailWalker:
                         self.logger.info('Found ATT SACRO event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT SACRO')
+                    elif (re.search(self.mailRegexCAPA, self.mail_subject) is not None):
+                        self.logger.info('Found CAPA event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF CAPA')
             
                     if obj != None:
                         self.sqlHelper.add(obj)
