@@ -34,6 +34,8 @@ class MailWalker:
             self.mailRegexDefHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
             self.mailRegexAttSACRO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_SACRO_RE)
             self.mailRegexDefSACRO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_SACRO_RE)
+            self.mailRegexAttVT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_VT_RE)
+            self.mailRegexDefVT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_VT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -110,6 +112,14 @@ class MailWalker:
                         self.logger.info('Found ATT SACRO event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT SACRO')
+                    elif (re.search(self.mailRegexDefVT, self.mail_subject) is not None):
+                        self.logger.info('Found DEF VT event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF VT')
+                    elif (re.search(self.mailRegexAttVT, self.mail_subject) is not None):
+                        self.logger.info('Found ATT VT event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT VT')
                     elif (re.search(self.mailRegexCAPA, self.mail_subject) is not None):
                         self.logger.info('Found CAPA event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()

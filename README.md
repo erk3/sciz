@@ -15,7 +15,7 @@ Une base de données collaborative pour jouer en groupe à [Mountyhall](https://
 A date, SCIZ supporte l'analyse syntaxique :
   * Des Connaissances Des Monstres jusqu'au niveau 4
   * Des rapports de combats simples (Attaque, Défense, Pouvoirs)
-  * Des sortilèges : Hypnotisme, Sacrifice
+  * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée
 
 # Installation
 Voir les [instructions d'installation]()

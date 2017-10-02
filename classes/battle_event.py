@@ -84,6 +84,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.__populate_from_att_sacro_mail(subject, body, config, logger)
         elif flag_type == 'DEF SACRO':
             self.__populate_from_def_sacro_mail(subject, body, config, logger)
+        elif flag_type == 'ATT VT':
+            self.__populate_from_att_vt_mail(subject, body, config, logger)
+        elif flag_type == 'DEF VT':
+            self.__populate_from_def_vt_mail(subject, body, config, logger)
         elif flag_type == 'DEF CAPA':
             self.__populate_from_capa_mail(subject, body, config, logger)
         else:
@@ -144,7 +148,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_pv = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_PV_RE)
             re_event_vie = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_VIE_RE)
             re_event_capa = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_RE)
+            re_event_capa_effet_def = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
             re_event_capa_tour = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
             re_event_sr = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
@@ -188,7 +192,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_capa, body)
         self.capa_desc = res.group(1) if res else None
         # Capa effet
-        res = re.search(re_event_capa_effet, body)
+        res = re.search(re_event_capa_effet_def, body)
         self.capa_effet = res.group(2) if res else None
         # Capa tour
         res = re.search(re_event_capa_tour, body)
@@ -200,7 +204,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_pv = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_PV_RE)
             re_event_vie = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_VIE_RE)
             re_event_capa = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_RE)
+            re_event_capa_effet_def = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
             re_event_capa_tour = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
             re_event_sr = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
@@ -230,8 +234,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_vie, body)
         self.vie = res.group(1) if res else None # Souffle / Aura de feu
         # Capa effet
-        res = re.search(re_event_capa_effet, body)
+        res = re.search(re_event_capa_effet_def, body)
         self.capa_effet = res.group(2) if res else None
+        if res and res.group(1):
+            self.type += ' résisté'
         # Capa tour
         res = re.search(re_event_capa_tour, body)
         self.capa_tour = res.group(1) if res else None
@@ -241,7 +247,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         try:
             re_event_desc = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
             re_event_sr = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_resi_att = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -259,11 +265,13 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
                 self.def_mob_age = res.group(5)
                 self.def_mob_tag = res.group(7)
                 self.def_mob_id = res.group(8)
+            # Capa effet
+            self.capa_effet = res.group(1)
             # Seuil de résistance
             res = re.search(re_event_sr, body)
             self.sr = res.group(1) if res else None
             # Jet de résistance
-            res = re.search(re_event_resi, body)
+            res = re.search(re_event_resi_att, body)
             self.resi = res.group(1) if res else None
             if int(self.resi) <= int(self.sr):
                     self.type += ' réduit'
@@ -274,7 +282,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         # Load config
         try:
             re_event_subject = config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
-            re_event_resi_result = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+            re_event_resi_def = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -286,12 +294,78 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         if res != None:
             self.att_troll_nom = res.group(1)
             self.att_troll_id = res.group(2)
-            res = re.search(re_event_resi_result, body)
+            res = re.search(re_event_resi_def, body)
             if res != None and res.group(2) == None: # Résisté
                 self.type += ' résisté'
         else:
             logger.error("Fail to parse the mail, rexegp not maching")
 
+    def __populate_from_att_vt_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_capa_effet_att = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
+            re_event_sr = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_capa_tour = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Vue Troublée'
+        res = re.search(re_event_capa_effet_att, body)
+        if res != None:
+            if res.group(3) == None: # Trick matching the det (No det = Troll ?)
+                self.def_troll_nom = res.group(4)
+                self.def_troll_id = res.group(9)
+            else:
+                self.def_mob_nom = res.group(4)
+                self.def_mob_age = res.group(6)
+                self.def_mob_tag = res.group(8)
+                self.def_mob_id = res.group(9)
+            # Capa effet
+            self.capa_effet = res.group(1) if res else None
+            # Capa tour
+            res = re.search(re_event_capa_tour, body)
+            self.capa_tour = res.group(1) if res else None
+            # Seuil de résistance
+            res = re.search(re_event_sr, body)
+            self.sr = res.group(1) if res else None
+            # Jet de résistance
+            res = re.search(re_event_resi_att, body)
+            self.resi = res.group(1) if res else None
+            if int(self.resi) <= int(self.sr):
+                    self.type += ' réduit'
+        else:
+            logger.error("Fail to parse the mail, rexegp not maching")
+    
+    def __populate_from_def_vt_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_desc = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_capa_effet_def = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_capa_tour = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Vue Troublée'
+        res = re.search(re_event_desc, body)
+        if res != None:
+            self.att_troll_nom = res.group(1)
+            self.att_troll_id = res.group(2)
+            # Capa effet
+            res = re.search(re_event_capa_effet_def, body)
+            self.capa_effet = res.group(1) if res else None
+            # Capa tour
+            res = re.search(re_event_capa_tour, body)
+            self.capa_tour = res.group(1) if res else None
+        else:
+            logger.error("Fail to parse the mail, rexegp not maching")
+    
     def __populate_from_att_sacro_mail(self, subject, body, config, logger):       
         # Load config
         try:
@@ -362,10 +436,11 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.s_def_nom = self.def_mob.nom + ' [' + self.def_mob.age + '] (' + str(self.def_mob.id) + ')'
         # Capa
         self.s_capa = ''
-        self.s_capa += self.capa_desc if self.capa_desc != None else ''
-        self.s_capa += ' ; ' + self.capa_effet if self.capa_effet != None else ''
+        self.s_capa += self.capa_desc + ' ;' if self.capa_desc != None else ''
+        self.s_capa += ' ' + self.capa_effet if self.capa_effet != None else ''
         self.s_capa += ' ' + str(self.capa_tour) + 'T' if self.capa_tour != None else ''
-        self.s_capa = ' (' + self.s_capa.lstrip() + ')' if self.s_capa != '' else ''
+        self.s_capa = '(' + self.s_capa.lstrip() + ')' if (self.s_capa != '' and not u'Sortilège' in self.type) else self.s_capa.lstrip()
+        self.s_capa = ' ' + self.s_capa if self.s_capa != '' else ''
         # Stats
         self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')
         self.s_def_stats = ''
