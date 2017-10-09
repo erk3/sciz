@@ -1,0 +1,49 @@
+version: '2'
+
+services:
+    
+    sciz:
+        build: .
+        container_name: sciz
+        links:
+            - mysql_sciz
+        depends_on:
+            - mysql_sciz
+            - mail_sciz
+        volumes:
+            - mail_data:/mail
+            - .:/sciz
+
+    mail_sciz:
+        image: tvial/docker-mailserver
+        hostname: mail
+        domainname: ${DOMAIN_NAME}
+        container_name: mail_sciz
+        ports:
+            - "25:25"
+            - "143:143"
+            - "587:587"
+            - "993:993"
+        volumes:
+            - mail_data:/var/mail/${DOMAIN_NAME}/sciz
+            - mail_state:/var/mail-state
+            - ./docker/mail_sciz_cfg:/tmp/docker-mailserver
+        restart: always
+        env_file: .env
+        cap_add:
+            - NET_ADMIN
+
+    mysql_sciz:
+        image: mysql
+        container_name: mysql_sciz
+        ports:
+            - "3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        restart: always
+        env_file: .env
+
+volumes:
+    mysql_data:
+    mail_data:
+    mail_state:

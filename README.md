@@ -18,7 +18,7 @@ A date, SCIZ supporte l'analyse syntaxique :
   * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée
 
 # Installation
-Voir les [instructions d'installation]()
+Voir les [instructions d'installation](INSTALL.md)
 
 # Exécuter SCIZ
 ```python sciz.py -h```
