@@ -11,6 +11,8 @@ Sont à disposition, avec les privilèges suffisant à leur administration :
  - une machine hôte
  - un nom de domaine associé
 
+ (La configuration DNS, les enregistrements MX, etc., utiles au routage des mails ne sont pas décrit ici et restent à votre charge)
+
 # Prérequis
 
 Installation de Docker :
@@ -31,15 +33,15 @@ Installation de Docker :
   2. Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
       - Section db
         - host=mysql_sciz
-        - passwd=MYSQL_PASSWORD #(Remplacez DOMAIN_NAME)
+        - passwd=MYSQL_PASSWORD #(Remplacez MYSQL_PASSWORD)
 
   3. Copier l'ensemble des fichiers du dossier ```docker/``` à la racine des sources SCIZ (sans oublier le fichier ```docker/.env```)
 
   4. Pré-construire SCIZ
 
-    ```
-    docker-compose build
-    ```
+  ```
+  docker-compose build
+  ```
 
   5. Création du compte Mail SCIZ
 
@@ -85,7 +87,7 @@ Installation de Docker :
 
 # Déploiement unitaire
 
-Cas d'usages les plus propables : la machine hôte possède déjà une base de donnée MySQL ou un serveur Mail installé et en fonctionnement.
+Cas d'usages les plus probables : la machine hôte possède déjà une base de donnée MySQL et/ou un serveur Mail installés et en fonctionnement.
 
 ## Prérequis
 
@@ -117,23 +119,27 @@ Cas d'usages les plus propables : la machine hôte possède déjà une base de d
   docker run -d -it --name sciz --net=host -v "$(pwd):/sciz" -v "MAILDIR_PATH:/mail" sciz
   ```
 
-  ## Initialisation de SCIZ
+## Initialisation de SCIZ
 
   Vérifier le fichier ```sciz.log``` après chacune des commandes suivantes, aucune erreur ne doit être inscrite.
 
-```
-      # Création des tables dans la base SCIZ
-      docker-compose exec sciz python sciz.py -i
+  Les commandes sont à éxécuter à la racine des sources SCIZ.
 
-  (FIXME : édition du JSON pour ajout des utilisateurs)
+  Un exemple de fichier JSON pour l'ajout des utilsateurs est disponible dans le dossier ```examples```
 
-      # Ajout des utilisateurs
-      docker-compose exec sciz python sciz.py -u users.json
+  (Les commandes sont fournies dans le cas d'un usage full-stack, remplacez ```docker-compose``` par ```docker``` dans les commandes suivantes et dans le cas d'un usage unitaire)
 
-      # Population initiale des tables
-      docker-compose exec sciz python sciz.py -s monstres
-      docker-compose exec sciz python sciz.py -s trolls2
-      # /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
-      docker-compose exec sciz python sciz.py -s profil2
-      docker-compose exec sciz python sciz.py -s caracts
-```
+  ```
+  # Création des tables dans la base SCIZ
+  docker-compose exec sciz python sciz.py -i
+
+  # Ajout des utilisateurs
+  docker-compose exec sciz python sciz.py -u users.json
+
+  # Population initiale des tables
+  docker-compose exec sciz python sciz.py -s monstres
+  docker-compose exec sciz python sciz.py -s trolls2
+  # /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
+  docker-compose exec sciz python sciz.py -s profil2
+  docker-compose exec sciz python sciz.py -s caracts
+  ```

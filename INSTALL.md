@@ -13,66 +13,93 @@ Sont à disposition, avec les privilèges suffisant à leur administration :
   - un machine hôte sous distribution Linux
   - un nom de domaine associé
 
-(Documentation existante à date uniquement pour Debian)
+(Documentation existante à date uniquement pour Debian, toute aide pour étendre la documentation à d'autres distributions est la bienvenue)
 
 # Prérequis
 
-Installation d'outils standards :
+Installation des outils standards :
+```
+apt-get install build-essential
+apt-get install git
+```
 
-    apt-get install build-essential
-    apt-get install git
+# Installation de MySQL (minimal)
 
-# Installation de MySQL
+## Installation du serveur
+```
+apt-get install mysql-server
+```
 
-(FIXME)
+(Le mot de passe root que vous serez invité à saisir sera par la suite référencé par MYSQL_ROOT_PASSWORD)
 
-# Installation Mail
+## Configuration du serveur
+
+Le mot de passe MYSQL_PASSWORD pour l'utilisateur sciz est à remplacer.
+
+```
+mysql -u root -p MYSQL_ROOT_PASSWORD
+> create database sciz;
+> create user 'sciz@localhost' identified by 'MYSQL_PASSWORD';
+> grant all on sciz.* to 'sciz' identified by 'MYSQL_PASSWORD';
+> exit
+```
+
+# Installation Mail (minimal)
 
 (FIXME : résultat doit être un MailDir)
 
-# Installation SCIZ
+(La configuration DNS, les enregistrements MX, etc., utiles au routage des mails ne sont pas décrit ici et restent à votre charge)
 
-    git clone https://github.com/erk3/sciz.git
+# Installation SCIZ
+```
+git clone https://github.com/erk3/sciz.git
+```
 
 ## Installation de l'environnement Python
-
-    apt-get install libffi-dev
-    apt-get install python2.7
-
-(FIXME : installation pip?)
-
-    pip install -r sciz/requirements.txt
-
+```
+apt-get install libffi-dev
+apt-get install python2.7
+apt-get install python-pip
+pip install -r sciz/requirements.txt
+```
 
 ## Installation de la crontab
+```
+apt-get install cron
+cp sciz/docker/sciz-crontab /etc/cron.d/
+chmod 0644 /etc/cron.d/sciz-crontab
+```
 
-(FIXME : possibilité de modification fréquence crontab)
-
-    apt-get install cron
-    cp sciz/docker/sciz-crontab /etc/cron.d/
-    chmod 0644 /etc/cron.d/sciz-crontab
+N.B : il est possible ici de modifier les fréquences d'exécution de SCIZ (en particulier, si l'on souhaite réduire les appels au scripts publics de Mountyhall)
 
 ## Configuration de SCIZ
 
-(FIXME : modification de la première section du fichier confs/sciz.ini)
+Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
+    - Section \[mail\]
+      - maildir_path
+    - Section \[db\]
+      - host
+      - passwd
 
 ## Initialisation de SCIZ
 
 Vérifier le fichier ```sciz.log``` après chacune des commandes suivantes, aucune erreur ne doit être inscrite.
 
-    cd sciz
+Les commandes sont à éxécuter à la racine des sources SCIZ.
 
-    # Création des tables dans la base SCIZ
-    python sciz.py -i
+Un exemple de fichier JSON pour l'ajout des utilsateurs est disponible dans le dossier ```examples```
 
-(FIXME : édition du JSON pour ajout des utilisateurs)
+```
+# Création des tables dans la base SCIZ
+python sciz.py -i
 
-    # Ajout des utilisateurs
-    python sciz.py -u users.json
+# Ajout des utilisateurs
+python sciz.py -u users.json
 
-    # Population initiale des tables
-    python sciz.py -s monstres
-    python sciz.py -s trolls2
-    # /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
-    python sciz.py -s profil2
-    python sciz.py -s caracts
+# Population initiale des tables
+python sciz.py -s monstres
+python sciz.py -s trolls2
+# /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
+python sciz.py -s profil2
+python sciz.py -s caracts
+```
