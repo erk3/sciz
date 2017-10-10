@@ -9,13 +9,29 @@ Une base de données collaborative pour jouer en groupe à [Mountyhall](https://
 * Génération de notifications sur évènements
 * Moteur de requêtage des informations collectées et générées
 * Interface Zhumain Machine
-  
+
+# Avertissement
+
+SCIZ effectue des appels aux scripts publics de Mountyhall :
+  - Catégorie dynamique :
+    - Profils2
+    - Caracs
+
+Par défaut, un appel est effectué toutes les 3h par Troll inscrit dont le mot de passe d'application MH est valide et par script.
+
+Ce comportement est à date modifiable en éditant la crontab de SCIZ ou en ne saisissant pas de mot de passe d'application MH.
+
 # Limitations connues
 
 A date, SCIZ supporte l'analyse syntaxique :
   * Des Connaissances Des Monstres jusqu'au niveau 4
   * Des rapports de combats simples (Attaque, Défense, Pouvoirs)
   * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée
+
+SCIZ ne supporte pas (et plante lamentablement):
+  * Les notifications comportant une interposition
+
+Le reste des notifications sont a priori ignorées.
 
 # Installation
 Voir les [instructions d'installation](INSTALL.md)
