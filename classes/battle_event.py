@@ -213,7 +213,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
             raise
         # Event desc & Capa desc
-        res = re.search(re_event_capa, body)
+        res = re.search(re_event_capa, body, re.M)
         self.att_mob_nom = res.group(2)
         self.att_mob_age = res.group(3)
         self.att_mob_tag = res.group(5)
@@ -222,24 +222,24 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.type = 'Pouvoir'
         self.subtype = res.group(6)
         # Seuil de résistance
-        res = re.search(re_event_sr, body)
+        res = re.search(re_event_sr, body, re.M)
         self.sr = res.group(1) if res else None
         # Jet de résistance
-        res = re.search(re_event_resi, body)
+        res = re.search(re_event_resi, body, re.M)
         self.resi = res.group(1) if res else None
         # Points de vie perdus
-        res = re.search(re_event_pv, body)
+        res = re.search(re_event_pv, body, re.M)
         self.pv = res.group(1) if res else None # Souffle / Aura de feu
         # Points de vie restants
-        res = re.search(re_event_vie, body)
+        res = re.search(re_event_vie, body, re.M)
         self.vie = res.group(1) if res else None # Souffle / Aura de feu
         # Capa effet
-        res = re.search(re_event_capa_effet_def, body)
+        res = re.search(re_event_capa_effet_def, body, re.M)
         self.capa_effet = res.group(2) if res else None
         if res and res.group(1):
             self.type += ' résisté'
         # Capa tour
-        res = re.search(re_event_capa_tour, body)
+        res = re.search(re_event_capa_tour, body, re.M)
         self.capa_tour = res.group(1) if res else None
     
     def __populate_from_att_hypno_mail(self, subject, body, config, logger):       
