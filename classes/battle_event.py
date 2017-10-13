@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import re, datetime, ConfigParser
+import re, datetime, ConfigParser, copy
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -88,6 +88,10 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.__populate_from_att_vt_mail(subject, body, config, logger)
         elif flag_type == 'DEF VT':
             self.__populate_from_def_vt_mail(subject, body, config, logger)
+        elif flag_type == 'ATT EXPLO':
+            return self.__populate_from_att_explo_mail(subject, body, config, logger)
+        elif flag_type == 'DEF EXPLO':
+            self.__populate_from_def_explo_mail(subject, body, config, logger)
         elif flag_type == 'DEF CAPA':
             self.__populate_from_capa_mail(subject, body, config, logger)
         else:
@@ -340,6 +344,55 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         else:
             logger.error("Fail to parse the mail, rexegp not maching")
     
+    def __populate_from_att_explo_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_capa_effet_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
+            re_event_sr = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_first_html = config.get(sg.CONF_MAIL_SECTION, sg.CONF_FIRST_HTML_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Explosion'
+        res = re.search(re_first_html, body)
+        stop_pos = res.end()
+        last_match_endpos = 0
+        objs = []
+        p = re.compile(re_event_capa_effet_att)
+        pSR = re.compile(re_event_sr)
+        pRESI = re.compile(re_event_resi_att)
+        res = p.search(body, last_match_endpos)
+        last_match_endpos = res.end()
+        while res != None and last_match_endpos < stop_pos:
+            obj = copy.deepcopy(self)
+            if res.group(4) == None: # Trick matching the det (No det = Troll ?)
+                obj.def_troll_nom = res.group(5)
+                obj.def_troll_id = res.group(10)
+            else:
+                obj.def_mob_nom = res.group(5)
+                obj.def_mob_age = res.group(7)
+                obj.def_mob_tag = res.group(9)
+                obj.def_mob_id = res.group(10)
+            # Capa effet
+            obj.capa_effet = res.group(1) if res else None
+            obj.pv = res.group(3) if res else None
+            # Seuil de résistance
+            resSR = pSR.search(body, last_match_endpos)
+            obj.sr = resSR.group(1) if res else None
+            # Jet de résistance
+            resRESI = pRESI.search(body, last_match_endpos)
+            obj.resi = resRESI.group(1) if res else None
+            if int(obj.resi) <= int(obj.sr):
+                    obj.type += ' réduit'
+            objs.append(obj)
+            res = p.search(body, last_match_endpos)
+            last_match_endpos = res.end()
+        return objs
+    
     def __populate_from_def_vt_mail(self, subject, body, config, logger):       
         # Load config
         try:
@@ -363,6 +416,29 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             # Capa tour
             res = re.search(re_event_capa_tour, body)
             self.capa_tour = res.group(1) if res else None
+        else:
+            logger.error("Fail to parse the mail, rexegp not maching")
+    
+    def __populate_from_def_explo_mail(self, subject, body, config, logger):       
+        # Load config
+        try:
+            re_event_desc = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_capa_effet_def = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Explosion'
+        res = re.search(re_event_desc, body)
+        if res != None:
+            self.att_troll_nom = res.group(1)
+            self.att_troll_id = res.group(2)
+            # Capa effet
+            res = re.search(re_event_capa_effet_def, body)
+            self.capa_effet = res.group(1) if res else None
+            self.pv = res.group(3) if res else None
         else:
             logger.error("Fail to parse the mail, rexegp not maching")
     
@@ -439,7 +515,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.s_capa += self.capa_desc + ' ;' if self.capa_desc != None else ''
         self.s_capa += ' ' + self.capa_effet if self.capa_effet != None else ''
         self.s_capa += ' ' + str(self.capa_tour) + 'T' if self.capa_tour != None else ''
-        self.s_capa = '(' + self.s_capa.lstrip() + ')' if (self.s_capa != '' and not u'Sortilège' in self.type) else self.s_capa.lstrip()
+        self.s_capa = '(' + self.s_capa.lstrip() + ')' if (self.s_capa != '' and (self.pv != None or u"esquivée" in self.type or u"CAPA" in self.flag_type)) else self.s_capa.lstrip()
         self.s_capa = ' ' + self.s_capa if self.s_capa != '' else ''
         # Stats
         self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')

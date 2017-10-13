@@ -93,11 +93,10 @@ class SQLHelper:
         notif = NOTIF()
         notif.text = self.pp.pretty_print(obj, True)
         if notif.text:
-            if isinstance(obj, CDM) and (not obj.mob.sciz_notif or not obj.troll.sciz_notif):
-                notif.to_push = False
-            elif isinstance(obj, BATTLE_EVENT) and ((obj.att_troll != None and not obj.att_troll.sciz_notif) or (obj.att_mob != None and not obj.att_mob.sciz_notif) or (obj.def_troll != None and not obj.def_troll.sciz_notif) or (obj.def_mob != None and not obj.def_mob.sciz_notif)):
-                notif.to_push = False
-            else:
+            notif.to_push = False
+            if isinstance(obj, CDM) and (obj.mob.sciz_notif or obj.troll.sciz_notif):
+                notif.to_push = True
+            elif isinstance(obj, BATTLE_EVENT) and ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
                 notif.to_push = True
             self.session.add(notif)
         return notif

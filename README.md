@@ -26,7 +26,7 @@ Ce comportement est à date modifiable en éditant la crontab de SCIZ ou en ne s
 A date, SCIZ supporte l'analyse syntaxique :
   * Des Connaissances Des Monstres jusqu'au niveau 4
   * Des rapports de combats simples (Attaque, Défense, Pouvoirs)
-  * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée
+  * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée, Explosion
 
 SCIZ ne supporte pas (et plante lamentablement):
   * Les notifications comportant une interposition

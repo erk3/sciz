@@ -36,6 +36,8 @@ class MailWalker:
             self.mailRegexDefSACRO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_SACRO_RE)
             self.mailRegexAttVT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_VT_RE)
             self.mailRegexDefVT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_VT_RE)
+            self.mailRegexAttEXPLO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_EXPLO_RE)
+            self.mailRegexDefEXPLO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_EXPLO_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             self.logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -120,19 +122,29 @@ class MailWalker:
                         self.logger.info('Found ATT VT event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT VT')
+                    elif (re.search(self.mailRegexDefEXPLO, self.mail_subject) is not None):
+                        self.logger.info('Found DEF EXPLO event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF EXPLO')
+                    elif (re.search(self.mailRegexAttEXPLO, self.mail_subject) is not None):
+                        self.logger.info('Found ATT EXPLO event in mail ' + msgFile._file.name)
+                        obj = BATTLE_EVENT()
+                        obj = obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'ATT EXPLO')
                     elif (re.search(self.mailRegexCAPA, self.mail_subject) is not None):
                         self.logger.info('Found CAPA event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF CAPA')
-            
+                    
                     if obj != None:
-                        self.sqlHelper.add(obj)
-                        self.sqlHelper.session.commit()
-                        notif = self.sqlHelper.add_notif(obj)
-                        self.sqlHelper.session.commit()
-                        obj.notif_id = notif.id
-                        self.sqlHelper.add(obj)
-                        self.sqlHelper.session.commit()
+                        if not type(obj) is list: obj = [obj]
+                        for obj in obj:
+                            self.sqlHelper.add(obj)
+                            self.sqlHelper.session.commit()
+                            notif = self.sqlHelper.add_notif(obj)
+                            self.sqlHelper.session.commit()
+                            obj.notif_id = notif.id
+                            self.sqlHelper.add(obj)
+                            self.sqlHelper.session.commit()
                 
                     os.remove(msgFile._file.name)
             
