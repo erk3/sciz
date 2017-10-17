@@ -82,6 +82,7 @@ CONF_MAIL_CAPA_RE      	        = "reg_capa_subject"
 CONF_EVENT_TROLL_RE     	= "reg_event_troll"
 CONF_EVENT_TIME_RE      	= "reg_event_time"
 CONF_EVENT_TYPE_RE      	= "reg_event_type"
+CONF_END_MAIL_RE      	        = "reg_end_mail"
 CONF_FIRST_HTML_RE      	= "reg_first_html"
 
 # JSON SECTION

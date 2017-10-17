@@ -350,7 +350,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_capa_effet_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
             re_event_sr = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_first_html = config.get(sg.CONF_MAIL_SECTION, sg.CONF_FIRST_HTML_RE)
+            re_end_mail = config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -358,7 +358,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         # Event desc
         self.type = 'Sortilège'
         self.subtype = 'Explosion'
-        res = re.search(re_first_html, body)
+        res = re.search(re_end_mail, body)
         stop_pos = res.end()
         last_match_endpos = 0
         objs = []
@@ -390,7 +390,8 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
                     obj.type += ' réduit'
             objs.append(obj)
             res = p.search(body, last_match_endpos)
-            last_match_endpos = res.end()
+            if res:
+                last_match_endpos = res.end()
         return objs
     
     def __populate_from_def_vt_mail(self, subject, body, config, logger):       
