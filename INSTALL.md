@@ -46,7 +46,41 @@ mysql -u root -p MYSQL_ROOT_PASSWORD
 
 # Installation Mail (minimal)
 
-(FIXME : résultat doit être un MailDir)
+De nombreux serveurs mails peuvent être utilisés, le seul prérequis est l'usage d'un MailDir.
+Ci-après un exemple de configuration minimale.
+
+```
+apt-get install postfix courier-imap 
+```
+
+Sélectionnez l'option "Site Internet" a lors de la configuration du paquet.
+
+Editez ensuite le fichier ```/etc/postfix/main.cf``` et adaptez le à votre configuration réseau.
+En particulier :
+```
+home_mailbox = Maildir/
+```
+
+Modifiez ensuite le fichier ```/etc/.procmailrc``̀ :
+```
+MAILDIR=$HOME/Maildir
+DEFAULT=$MAILDIR/
+
+:0:
+$DEFAULT
+```
+
+Éditez le fichier de configuration de courier-imap ```/etc/courier/imapd```:
+
+```
+MAILDIRPATH=Maildir
+```
+
+Créez enfin le  Maildir :
+ 
+``̀ 
+mkdir ~/Maildir
+``̀ 
 
 (La configuration DNS, les enregistrements MX, etc., utiles au routage des mails ne sont pas décrit ici et restent à votre charge)
 
