@@ -1,4 +1,4 @@
-INSTALLATION DE SCIZ
+﻿INSTALLATION DE SCIZ
 ===
 
 # Introduction
@@ -46,9 +46,55 @@ mysql -u root -p MYSQL_ROOT_PASSWORD
 
 # Installation Mail (minimal)
 
-(FIXME : résultat doit être un MailDir)
+Il faut dans un premier temps installer postfix et courier-imap:
+```
+apt-get install postfix courier-imap 
+```
 
-(La configuration DNS, les enregistrements MX, etc., utiles au routage des mails ne sont pas décrit ici et restent à votre charge)
+Si postfix est déja installé, vous pouvez le reconfigurer via la commande suivante:
+```
+dpkg-reconfigure postfix
+```
+
+Dans l'écran de configuration qui va apparaitre, sélectionnez l'option "Site Internet"
+
+Il vous faut ensuite modifier le fichier de configuration de postfix /etc/postfix/main.cf
+Adaptez-le à votre configuration réseau. La ligne suivante:
+```
+home_mailbox = Maildir/
+```
+doit être présente dans le vôtre fichier de configuration. Le cas échéant, rajoutez là.
+Elle est en effet cruciale au fonctionnement de SCIZ.
+
+Modifiez ensuite le fichier /etc/.procmailrc. Si le fichier n'existe pas , il vous faudra
+le créer. Il doit contenir les informations suivantes:
+```
+MAILDIR=$HOME/Maildir
+DEFAULT=$MAILDIR/
+
+:0:
+$DEFAULT
+```
+
+Éditez le fichier de configuration de courier-imap /etc/courier/imapd:
+
+celui-ci doit contenir la ligne suivante:
+
+```
+MAILDIRPATH=Maildir
+```
+
+La configuration est maintenant terminée. Placez-vous dans votre répertoire HOME
+et entrez la commande suivante:
+
+```
+mkdir Maildir
+```
+
+Ceci créera la boîte de courriel Maildir/ dans votre HOME qui sera utilisé par SCIZ.
+
+La configuration DNS, les enregistrements MX, etc., utiles au routage des mails ne 
+sont pas décrits ici et restent à votre charge.
 
 # Installation SCIZ
 ```
