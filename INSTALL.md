@@ -1,4 +1,4 @@
-﻿INSTALLATION DE SCIZ
+INSTALLATION DE SCIZ
 ===
 
 # Introduction
