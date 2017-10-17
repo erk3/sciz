@@ -1,0 +1,11 @@
+<div class="container-fluid" style="margin: 30px;">
+  <div class="row">
+    
+    <!-- Sidebar display -->
+    <div ng-include="'app/includes/sidebar.html'"></div>
+
+    <!-- Settings display -->
+    <div ng-if="'profile' | isState" ng-include="'app/views/settings_profile.html'"></div>
+  </div>
+</div>
+

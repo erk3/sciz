@@ -5,14 +5,16 @@
 			"pseudo" : "Põm³",
 			"pwd" : "SuperMotDePasse",
 			"mh_apikey" : "MHAPIKEY",
-			"pushover_apikey" : "PUSHOVERAPIKEY"
+			"pushover_apikey" : "PUSHOVERAPIKEY",
+			"role": "4"
 		},
 		{
 			"id" : "123456",
 			"pseudo" : "PSEUDO",
 			"pwd" : "SuperMotDePasse2",
 			"mh_apikey" : "MHAPIKEY2",
-			"pushover_apikey" : "PUSHOVERAPIKEY2"
+			"pushover_apikey" : "PUSHOVERAPIKEY2",
+			"role": "2"
 		}
 	]
 }

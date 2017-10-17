@@ -2,8 +2,9 @@
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 MAILTO=root
 HOME=/sciz
-0 */6 * * * root python sciz.py -s trolls2
-0 */6 * * * root python sciz.py -s monstres
-0 */3 * * * root python sciz.py -s profil2
-0 */3 * * * root python sciz.py -s caract
-*/1 * * * * root python sciz.py -w
+0 */6 * * * python sciz.py -s trolls2
+0 */6 * * * python sciz.py -s monstres
+0 */3 * * * python sciz.py -s profil2
+0 */3 * * * python sciz.py -s caract
+*/1 * * * * python sciz.py -w
+

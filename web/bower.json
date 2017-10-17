@@ -1,0 +1,16 @@
+{
+  "name": "fountain-inject",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "^1.6.2",
+    "angular-ui-router": "1.0.0-beta.3",
+    "angular-bootstrap": ">=2.5.0",
+    "angular-animate": "^1.6.2",
+    "angular-touch": "^1.6.2",
+    "bootstrap-css-only": ">=3.0.1",
+    "angular-cookies": "*"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.6.2"
+  }
+}

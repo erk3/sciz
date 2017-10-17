@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import sys, argparse, ConfigParser, sqlalchemy, json, codecs, logging
+import sys, argparse, ConfigParser, sqlalchemy, json, codecs, logging, os
 from logging.handlers import RotatingFileHandler
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from modules.mh_caller import MHCaller
@@ -22,6 +22,12 @@ class SCIZ:
         self.confFile = confFile
         self.reload()
         # Set the logger
+        if not os.path.exists(os.path.dirname(self.logger_file)):
+            try:
+                os.makedirs(os.path.dirname(self.logger_file))
+            except OSError as exc:
+                if exc.errno != errno.EEXIST:
+                    raise
         self.logger = logging.getLogger()
         self.logger.setLevel(logging.DEBUG)
         log_file = RotatingFileHandler(self.logger_file, 'a', self.logger_file_max_size, 1)

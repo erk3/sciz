@@ -17,6 +17,7 @@ class USER(sg.SqlAlchemyBase):
     pwd = Column(String(100))                           # Password
     mh_apikey = Column(String(50))                      # Mountyhall Key
     pushover_apikey = Column(String(50))                # Pushover Key
+    role = Column(Integer())                            # Role
     
     troll = relationship("TROLL", back_populates="user")
 
@@ -31,8 +32,9 @@ class USER(sg.SqlAlchemyBase):
         self.pwd = bcrypt.hashpw(json['pwd'].encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(10)) if json['pwd'] and update_pwd else self.pwd
         self.mh_apikey = json['mh_apikey'] if json['mh_apikey'] else self.mh_apikey
         self.pushover_apikey = json['pushover_apikey'] if json['pushover_apikey'] else self.pushover_apikey
+        self.role = json['role'] if json['role'] else self.role
 
     # Update user from another USER (but password)
     def update_from_new(self, user_old):
-        sg.copy_properties(user_old, self, ['pseudo', 'mh_apikey', 'pushover_apikey'])
+        sg.copy_properties(user_old, self, ['pseudo', 'mh_apikey', 'pushover_apikey', 'role'])
 

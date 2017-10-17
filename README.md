@@ -36,7 +36,7 @@ Le reste des notifications sont a priori ignorées.
 # Installation
 Voir les [instructions d'installation](INSTALL.md)
 
-# Exécuter SCIZ
+# Exécuter SCIZ manuellement
 ```python sciz.py -h```
 
 ```
@@ -68,5 +68,8 @@ From Põm³ with love
 
 # Interagir avec SCIZ
 
-Chaque communauté de joueur utilise ses propres canaux de communication, est disponible à date :
+L'interface Web permet à date :
+  - à chaque utilisateur de modifier son profil SCIZ en self-service
+
+Chaque communauté de joueur utilise par ailleurs ses propres canaux de communication pour recueillir les notifications générées par SCIZ, est disponible à date :
   * Un ```plugin``` et exemple de configuration pour [Hangoutsbot](https://github.com/hangoutsbot/hangoutsbot)

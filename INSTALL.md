@@ -5,7 +5,7 @@ INSTALLATION DE SCIZ
 
 Cette documentation est la procédure d'installation de SCIZ, elle détaille les nombreuses étapes nécessaires au déploiement d'un nouvel environnement SCIZ.
 
-L'usage de [docker](docker/README.md) est fortement recommandé à titre d'alternative.
+**L'usage de [docker](docker/README.md) est fortement recommandé** à titre d'alternative.
 
 # Hypothèses
 
@@ -81,6 +81,36 @@ Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suiva
       - host
       - passwd
 
+## Installation de l'environnement Web
+
+L'environnement Web est basé sur NodeJS, il existe différente manière de l'installer. Par exemple :
+
+```
+curl -sL https://deb.nodesource.com/setup_8.x | bash -
+apt-get install -y nodejs
+```
+
+Une fois NodeJS installé :
+
+```
+npm -C web install
+npm -C web run postinstall
+npm -C web run build
+```
+
+## Configuration de l'application Web
+
+Editer le fichier ```web/config.js``` et modifier la valeur des variables suivantes :
+    - Objet {config.server}
+      - port_server
+    - Objet {config.db}
+      - password
+    - Objet {config.db.details}
+      - host
+      - port
+    - Objet {config.keys}
+      - secret
+
 ## Initialisation de SCIZ
 
 Vérifier le fichier ```sciz.log``` après chacune des commandes suivantes, aucune erreur ne doit être inscrite.
@@ -102,4 +132,9 @@ python sciz.py -s trolls2
 # /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
 python sciz.py -s profil2
 python sciz.py -s caracts
+```
+## Démmarage du serveur Web
+
+```
+npm -C web start
 ```

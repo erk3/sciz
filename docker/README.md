@@ -29,37 +29,33 @@ Installation de Docker :
     - DOMAIN_NAME
     - MYSQL_ROOT_PASSWORD
     - MYSQL_PASSWORD
+    - JWT_SECRET
 
-  2. Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
-      - Section db
-        - host=mysql_sciz
-        - passwd=MYSQL_PASSWORD #(Remplacez MYSQL_PASSWORD)
+  2. Copier l'ensemble des fichiers du dossier ```docker/``` à la racine des sources SCIZ (sans oublier le fichier ```docker/.env```)
 
-  3. Copier l'ensemble des fichiers du dossier ```docker/``` à la racine des sources SCIZ (sans oublier le fichier ```docker/.env```)
-
-  4. Pré-construire SCIZ
+  3. Pré-construire SCIZ
 
   ```
   docker-compose build
   ```
 
-  5. Création du compte Mail SCIZ
+  4. Création du compte Mail SCIZ
 
-  (Remplacez DOMAIN_NAME et PASSWORD)
-
-  Sous Linux / Mac :
+    Sous Linux / Mac :
 
   ```
-  ./docker/mailserver_setup.sh -c mail_sciz email add sciz@DOMAIN_NAME PASSWORD
+  ./docker/mailserver_setup.sh -c mail_sciz email add sciz@%DOMAIN_NAME% %PASSWORD%
   ```
 
   Sous Windows :
 
   ```
-  docker-compose run --rm -e MAIL_USER=sciz@DOMAIN_NAME -e MAIL_PASS=PASSWORD -ti mail_sciz /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p MAIL_PASS)"' >> docker/mail_sciz_cfg/postfix-accounts.cf
+  docker-compose run --rm -e MAIL_USER=sciz@%DOMAIN_NAME% -e MAIL_PASS=%PASSWORD% -ti mail_sciz /bin/sh -c 'echo "$MAIL_USER|$(doveadm pw -s SHA512-CRYPT -u $MAIL_USER -p MAIL_PASS)"' >> docker/mail_sciz_cfg/postfix-accounts.cf
   ```
 
-  6. Démarrage
+  N.B : %DOMAIN_NAME% et %PASSWORD% sont à remplacer
+
+  5. Démarrage
 
   ```
   docker-compose up -d
@@ -96,28 +92,27 @@ Cas d'usages les plus probables : la machine hôte possède déjà une base de d
 
 ## Première fois
 
-  1. Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
-    - Section \[mail\]
-      - maildir_path
-    - Section \[db\]
-      - host
-      - passwd
+  1. Copier les fichiers ```docker/Dockerfile``` et ```docker/sciz-crontab``` à la racine des sources SCIZ
 
-  2. Copier les fichiers ```docker/Dockerfile``` et ```docker/sciz-crontab``` à la racine des sources SCIZ
-
-  3. Pré-construire SCIZ
+  2. Pré-construire SCIZ
 
   ```
-  docker build -t sciz .
+  docker build --build-arg MYSQL_PASSWORD=MonSuperMotDePasse --build-arg JWT_SECRET=MonSuperSecret -t sciz .
+  ```
+  N.B : MonSuperMotDePasse et MonSuperSecret sont à remplacer
+
+  N.B² : des arguments de build docker sont également disponibles les valeurs suivantes.
+    - MAILDIR_PATH
+    - MYSQL_HOST
+    - MYSL_PORT
+
+  3. Démarrage
+
+  ```
+  docker run -d -it --name sciz --net=host -v "logs:/sciz/logs" -v "%MAILDIR_PATH%:/mail" sciz
   ```
 
-  4. Démarrage
-
-  (Remplacez MAILDIR_PATH)
-
-  ```
-  docker run -d -it --name sciz --net=host -v "$(pwd):/sciz" -v "MAILDIR_PATH:/mail" sciz
-  ```
+  N.B : %MAILDIR_PATH% est à remplacer
 
 ## Initialisation de SCIZ
 
