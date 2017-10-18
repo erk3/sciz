@@ -1,4 +1,4 @@
-![SCIZ LOGO](web/public/images/sciz-logo-half.png)
+![SCIZ LOGO](web/public/images/sciz-logo-quarter.png)
 # Système de Chauve-souris Interdimensionnel pour Zhumains
 
 Une base de données collaborative pour jouer en groupe à [Mountyhall](https://www.mountyhall.com).
