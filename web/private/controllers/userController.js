@@ -57,12 +57,12 @@ UserController.updateProfile = function (req, res) {
 };
 
 UserController.getProfile = function (req, res) {
-  var potentialUser = {where: {id: req.user.id}};
-
-  User.findOne({include:[{all: true}]},potentialUser)
+  var potentialUser = {where: {id: req.user.id}, include:[{all: true}]};
+  
+  User.findOne(potentialUser)
     .then(function (user) {
       if (!user) {
-        res.status(404).json({message: 'Profil inexistant'});
+        res.status(404).json({message: 'Profil inexistant !'});
       }
       else {
         if (user.troll && user.troll.blason_url && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {

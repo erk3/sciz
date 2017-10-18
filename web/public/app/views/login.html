@@ -2,14 +2,18 @@
   
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-3">SCIZ</h1>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <img src="images/sciz-logo.png" class="img-responsive" alt=""/>
+        </div>
+      </div>
       <p class="lead"><small><u>S</u>ystème de <u>C</u>hauve-souris <u>I</u>nterdimensionnel pour <u>Z</u>humain</small></p>
     </div>
   </div>
 
   <div ng-hide="authService.isAuthenticated()" class="container">
     <div class="col-md-6 col-md-offset-3">
-      <form role="form" ng-class="{'has-error':lc.errorLogin}">              
+      <form role="form" ng-class="{'has-error':lc.loginError}">              
         <div class="input-group">
           <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
           <input type="text" class="form-control" ng-model="lc.id" placeholder="Numéro de Trõll" autofocus>                                        
