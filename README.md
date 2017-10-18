@@ -31,7 +31,7 @@ A date, SCIZ supporte l'analyse syntaxique :
 SCIZ ne supporte pas (et plante lamentablement):
   * Les notifications comportant une interposition
 
-Le reste des notifications sont a priori ignorées.
+Le reste des notifications est a priori ignoré.
 
 # Installation
 Voir les [instructions d'installation](INSTALL.md)
