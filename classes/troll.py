@@ -102,12 +102,11 @@ class TROLL(sg.SqlAlchemyBase):
     def update_from_new(self, troll, event = None):
         # Update new troll with event
         if event != None:
-
             troll.pv = event.vie if event.vie != None else troll.pv
             # Heal
-            troll.pv = max(self.base_bonus_pv_max, self.pv + int(event.soin)) if event.soin != None else troll.pv
+            troll.pv = max(self.base_bonus_pv_max, self.pv + int(event.soin)) if event.soin != None and self.base_bonus_pv_max != None else troll.pv
             # Blessure
-            troll.pv = max(0, self.pv - int(event.blessure)) if event.blessure != None else troll.pv
+            troll.pv = max(0, self.pv - int(event.blessure)) if event.blessure != None and self.pv != None else troll.pv
         # Actual copy
         lst = ['pv']
         if self.nom == None: # Update the name of the troll only if not known so far (on the fly troll adding case)

@@ -520,6 +520,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.s_capa = ' ' + self.s_capa if self.s_capa != '' else ''
         # Stats
         self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')
+        self.s_pv += ' (' + str(self.vie) + ' PV)' if self.vie != None else ''
         self.s_def_stats = ''
         self.s_def_stats += ' esq ' + str(self.esq) if self.esq else ''
         self.s_def_stats += ' sr ' + str(self.sr) if self.sr else ''
