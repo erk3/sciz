@@ -1,1 +1,36 @@
-<h2>Work in progress</h2>
+<div class="container-fluid" style="margin: 30px;">
+  <div class="row">
+
+    <!-- Main event display -->
+    <div ng-if="ec.cur.cdm_id" ng-include src="'app/views/event_cdm.html'"></div>
+    <div ng-if="ec.cur.battle_event_id" ng-include src="'app/views/event_battle.html'"></div>
+
+    <!-- Events list display -->
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
+          <input type="text" class="form-control" placeholder="Numéro de monstre, trõll, etc." ng-model="ec.searchValue">
+        </div>      
+      </div>
+    </form>
+
+    <div class="col-sm-7 col-md-7">
+      <table class="table table-hover table-condensed">
+        <thead class="thead-inverse">
+          <tr>
+            <th class="text-center">Horodatage</th>
+            <th class="text-center">Évènement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)">
+            <td class="text-center"><small>{{ec.displayDate(event.sub.time)}}</small></td>
+            <td class="text-left" ng-bind-html="event.notif.substring(10)">{{event.sub.</small></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -15,8 +15,18 @@ var modelDefinition = {
   blason_url: {type: Sequelize.STRING}
 };
 
-var modelOptions = {};
+var modelOptions = {
+  hooks: {
+    afterFind: changeBlasonURL
+  }
+};
 
 var TrollModel = db.define('trolls', modelDefinition, modelOptions);
+
+function changeBlasonURL(troll) {
+  if (troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
+    troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll.id;
+  }
+}
 
 module.exports = TrollModel;

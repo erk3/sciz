@@ -16,7 +16,6 @@ class CDM(sg.SqlAlchemyBase):
     time = Column(DateTime)                             # Horodatage de la CDM
     troll_id = Column(Integer, ForeignKey('trolls.id')) # Identifiant du Troll ayant réalisé la CDM
     mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre associé à la CDM
-    notif_id = Column(Integer, ForeignKey('notifs.id'))     # Identifiant du Monstre associé à la CDM
     comp_niv = Column(Integer)                          # Niveau de compétence de la CDM
     blessure = Column(Integer)                          # Pourcentage de blessure du monstre
     niv_min = Column(Integer)                           # Niveau minimum
@@ -55,7 +54,7 @@ class CDM(sg.SqlAlchemyBase):
 
     troll = relationship("TROLL", back_populates="cdms")
     mob = relationship("MOB", back_populates="cdms")
-    notif = relationship("NOTIF")
+    event = relationship("EVENT", back_populates="cdm", uselist=False)
 
     # Constructor
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
@@ -157,11 +156,11 @@ class CDM(sg.SqlAlchemyBase):
             self.rm_min = res.group(2) or (res.group(4) or (res.group(6) or None))
             self.rm_max = res.group(3) or (res.group(5) or (res.group(6) or None))
         # Mob Capa
-        res = re.search(re_cdm_capa, body)
+        res = re.search(re_cdm_capa, body, re.DOTALL)
         if res:
             self.capa_desc = res.group(1)
-            self.capa_effet = res.group(2)
-            self.capa_tour = res.group(4)
+            self.capa_effet = re.sub(r'((<br>)?\n|\|)$', '', res.group(3))
+            self.capa_tour = res.group(5)
         # Mob nb att
         res = re.search(re_cdm_nb_att, body)
         if res: self.nb_att_tour = res.group(1)
@@ -195,6 +194,7 @@ class CDM(sg.SqlAlchemyBase):
     # Generate the string representation of each attribute and return the list of attributes printable
     def stringify(self):
         # Generate STR representation
+        self.troll.stringify();
         self.s_tag = ' ' + self.mob.tag if self.mob.tag else ''
         self.s_nom_short = self.mob.nom + ' (' + str(self.mob.id) + ')'
         self.s_nom_full = self.mob.nom + ' [' + self.mob.age + ']' + self.s_tag + ' (' + str(self.mob.id) + ')'

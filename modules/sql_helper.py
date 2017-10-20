@@ -10,7 +10,7 @@ from classes.metamob import METAMOB
 from classes.mob import MOB
 from classes.cdm import CDM
 from classes.battle_event import BATTLE_EVENT
-from classes.notif import NOTIF
+from classes.event import EVENT
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
@@ -89,17 +89,24 @@ class SQLHelper:
             self.session.add(user_new) 
 
     # Add a NOTIF
-    def add_notif(self, obj):
-        notif = NOTIF()
-        notif.text = self.pp.pretty_print(obj, True)
-        if notif.text:
-            notif.to_push = False
-            if isinstance(obj, CDM) and (obj.mob.sciz_notif or obj.troll.sciz_notif):
-                notif.to_push = True
-            elif isinstance(obj, BATTLE_EVENT) and ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
-                notif.to_push = True
-            self.session.add(notif)
-        return notif
+    def add_event(self, obj):
+        event = EVENT()
+        event.notif = self.pp.pretty_print(obj, True)
+        if event.notif:
+            event.notif_to_push = False
+            event.type = "UNKNWON"
+            if isinstance(obj, CDM):
+                if (obj.mob.sciz_notif or obj.troll.sciz_notif):
+                    event.notif_to_push = True
+                event.cdm_id = obj.id
+                event.type = "CDM"
+            elif isinstance(obj, BATTLE_EVENT):
+                if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
+                    event.notif_to_push = True
+                event.battle_event_id = obj.id
+                event.type = "BATTLE_EVENT"
+            self.session.add(event)
+        return event
         
     # Add a TROLL
     def __add_troll(self, troll_new, event = None):

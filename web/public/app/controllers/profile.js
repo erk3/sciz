@@ -20,12 +20,12 @@ function profileCtrl($http) {
     });
 
   function updateProfile() {
-    if (vm.old_pwd || vm.new_pwd || vm.pwd) {
-      if (vm.pwd !== vm.new_pwd) {
+    if (vm.oldPwd || vm.newPwd || vm.pwd) {
+      if (vm.pwd !== vm.newPwd) {
         vm.updateError = true;
         vm.updateErrorMessage = 'Les mots de passent ne correspondent pas';
         return;
-      } else if ((vm.pwd.length < 8) || (vm.new_pwd < 8)) {
+      } else if ((vm.pwd.length < 8) || (vm.newPwd < 8)) {
         vm.updateError = true;
         vm.updateErrorMessage = 'Le mot de passe doit faire au moins 8 caractères';
         return;
@@ -34,8 +34,8 @@ function profileCtrl($http) {
         vm.updateErrorMessage = 'L\'ancien mot de passe est obligatoire';
         return;
       }
-      vm.profile.old_pwd = vm.old_pwd;
-      vm.profile.new_pwd = vm.new_pwd;
+      vm.profile.oldPwd = vm.oldPwd;
+      vm.profile.newPwd = vm.newPwd;
       vm.profile.pwd = vm.pwd;
     }
 
@@ -49,8 +49,8 @@ function profileCtrl($http) {
   }
 
   function handleSuccessfulUpdate() {
-    vm.old_pwd = null;
-    vm.new_pwd = null;
+    vm.oldPwd = null;
+    vm.newPwd = null;
     vm.pwd = null;
     vm.updateError = false;
     vm.updateErrorMessage = null;
@@ -59,8 +59,8 @@ function profileCtrl($http) {
   }
 
   function handleFailedUpdate(response) {
-    vm.old_pwd = null;
-    vm.new_pwd = null;
+    vm.oldPwd = null;
+    vm.newPwd = null;
     vm.pwd = null;
     vm.updateError = true;
     vm.updateErrorMessage = 'Erreur';

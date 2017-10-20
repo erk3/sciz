@@ -65,7 +65,7 @@ AuthController.authenticate = function (req, res) {
         }
       })
       .catch(function(error) {
-        res.status(500).json({message: 'Une erreur est survenue !'});
+        res.status(500).json({message: 'Une erreur est survenue :' + error.message});
       });
   }
 }

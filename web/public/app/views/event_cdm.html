@@ -1,0 +1,115 @@
+<div class="col-sm-5 col-md-5">
+
+  <!-- Page Header -->
+  <div class="row">
+    <div class="page-header text-center">
+        <h1>Connaissance des Monstres</h1>
+        <p>(Niveau {{ec.cur.cdm.comp_niv}})</p>
+    </div>
+  </div>
+  <br/>
+
+  <!-- Header (Full name, class, level and special abilities) -->
+  <div class="row">
+    <div class="col-md-3">
+      <img ng-src="{{ec.cur.cdm.mob.metamob.blason_url}}" class="img-responsive img-rounded" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
+    </div>
+    <div class="col-md-9">
+      <blockquote>
+        <p>{{ec.cur.cdm.mob.nom}} [{{ec.cur.cdm.mob.age}}] ({{ec.cur.cdm.mob_id}})</p>
+          <cite><small>Classe : {{ec.cur.cdm.mob.type}}</small></cite>
+          <span ng-hide="ec.cur.cdm.nb_att_tour === null"><cite><small>Nombre d'attaque par tour : {{ec.cur.cdm.nb_att_tour}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.vit_dep === null"><cite><small>Vitesse de déplacement : {{ec.cur.cdm.vit_dep}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.vlc === null"><cite><small>Voir le caché : {{ec.cur.cdm.vlc}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.dla === null"><cite><small>DLA : {{ec.cur.cdm.dla}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.att_dist === null"><cite><small>Attaque à distance : {{ec.cur.cdm.att_dist}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.chargement === null"><cite><small>Chargement : {{ec.cur.cdm.chargement}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.capa == ''"><cite><small>Capacité spéciale : {{ec.cur.cdm.capa}}</small></cite></span>
+      </blockquote>
+    </div>
+  </div>
+  <br/>
+
+  <!-- Life bar -->
+  <div class="text-center"><span><i>{{ec.cur.cdm.blessure}}% de blessure</i></span><span ng-hide="ec.cur.cdm.bonus_malus === null"><i> (Bonus/Malus : {{ec.cur.cdm.bonus_malus}})</i></span></div>
+  <div class="progress">
+    <div class="progress-bar" ng-class="{'progress-bar-warning': ec.cur.cdm.life_percent < 66 && ec.cur.cdm.life_percent > 33, 'progress-bar-success': ec.cur.cdm.life_percent >= 66, 'progress-bar-danger': ec.cur.cdm.life_percent <= 33}" role="progressbar" style="width: {{(ec.cur.cdm.pv_min_blessure * 100 / ec.cur.cdm.pv_max_blessure) - ec.cur.cdm.blessure}}%">
+      <span class="pull-left" style="margin-left: 2px">0</span>
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pv_min_blessure}}</span>
+    </div>
+    <div class="progress-bar progress-bar-custom" ng-class="{'progress-bar-warning': ec.cur.cdm.life_percent < 66 && ec.cur.cdm.life_percent > 33, 'progress-bar-success': ec.cur.cdm.life_percent >= 66, 'progress-bar-danger': ec.cur.cdm.life_percent <= 33}" role="progressbar" style="width: {{100 - (ec.cur.cdm.pv_min_blessure * 100 / ec.cur.cdm.pv_max_blessure)}}%">
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pv_max_blessure}}</span>
+    </div>
+  </div>
+    
+  <br/>
+
+  <!-- Caracs -->
+  <table class="table table-condensed text-center">
+    <thead class="thead-inverse text-center">
+      <tr>
+        <th class="text-center">Caractéristique</th>
+        <th class="text-center">Min - Max</th>
+        <th class="text-center">Moyenne</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Niveau</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.niv_min, ec.cur.cdm.niv_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.niv_min, ec.cur.cdm.niv_max, 1)}}</td>
+      </tr>
+      <tr>
+        <td><b>Points de vie</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.pv_min, ec.cur.cdm.pv_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.pv_min, ec.cur.cdm.pv_max, 1)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés d'attaque (D6)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.att_min, ec.cur.cdm.att_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.att_min, ec.cur.cdm.att_max, 3)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés d'esquive (D6)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.esq_min, ec.cur.cdm.esq_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.esq_min, ec.cur.cdm.esq_max, 3)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés de dégât (D3)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.deg_min, ec.cur.cdm.deg_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.deg_min, ec.cur.cdm.deg_max, 2)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés de régénération (D3)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.reg_min, ec.cur.cdm.reg_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.reg_min, ec.cur.cdm.reg_max, 2)}}</td>
+      </tr>
+      <tr>
+        <td><b>Armure physique</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.arm_phy_min, ec.cur.cdm.arm_phy_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.arm_phy_min, ec.cur.cdm.arm_phy_max, 1)}}</td>
+      </tr>
+      <tr>
+        <td><b>Vue</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.vue_min, ec.cur.cdm.vue_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.vue_min, ec.cur.cdm.vue_max, 1)}}</td>
+      </tr>
+      <tr ng-hide="ec.cur.cdm.mm_min === null && ec.cur.cdm.mm_max === null">
+        <td><b>Maitrise magique</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.mm_min, ec.cur.cdm.mm_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.mm_min, ec.cur.cdm.mm_max, 1)}}</td>
+      </tr>
+      <tr ng-hide="ec.cur.cdm.rm_min === null && ec.cur.cdm.rm_max === null">
+        <td><b>Résistance magique</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.rm_min, ec.cur.cdm.rm_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.rm_min, ec.cur.cdm.rm_max, 1)}}</td>
+      </tr>
+      <tr ng-hide="ec.cur.cdm.tour_min === null && ec.cur.cdm.tour_max === null">
+        <td><b>Durée de tour (Heure)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.tour_min, ec.cur.cdm.tour_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.tour_min, ec.cur.cdm.tour_max, 1)}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

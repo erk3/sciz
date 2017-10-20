@@ -57,7 +57,7 @@ UserController.updateProfile = function (req, res) {
 };
 
 UserController.getProfile = function (req, res) {
-  var potentialUser = {where: {id: req.user.id}, include:[{all: true}]};
+  var potentialUser = {where: {id: req.user.id}};
   
   User.findOne(potentialUser)
     .then(function (user) {
@@ -65,9 +65,6 @@ UserController.getProfile = function (req, res) {
         res.status(404).json({message: 'Profil inexistant !'});
       }
       else {
-        if (user.troll && user.troll.blason_url && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
-          user.troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + user.id;
-        }
         res.json({
           success: true,
           id: user.id,

@@ -6,6 +6,8 @@ var bcrypt = require('bcrypt');
 var config = require('../../config.js');
 var db = require('../services/database.js');
 var TrollModel = require('./troll.js');
+var CDMModel = require('./cdm.js');
+var MobModel = require('./mob.js');
 
 var modelDefinition = {  
   id: {
@@ -34,7 +36,11 @@ var modelOptions = {
     comparePasswords: comparePasswords
   },
   hooks: {
-    beforeValidate: hashPassword
+    beforeValidate: hashPassword,
+    afterFind: changeTrollBlasonURL
+  },
+  defaultScope: {
+    include: [{model: TrollModel, as: 'troll'}]
   }
 };
 
@@ -48,6 +54,12 @@ function comparePasswords(pwd, callback) {
     }
     return callback(null, isMatch);
   });
+}
+
+function changeTrollBlasonURL(user) { 
+  if (user.troll && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
+    user.troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + user.troll.id; 
+  } 
 }
 
 function hashPassword(user) {

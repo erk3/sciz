@@ -29,21 +29,21 @@
     <br/>
     <br/>
     
-    <div class="form-group" ng-class="{'has-error':!pc.old_pwd && (pc.new_pwd || pc.pwd)}">
+    <div class="form-group" ng-class="{'has-error':!pc.oldPwd && (pc.newPwd || pc.pwd)}">
       <label class="col-sm-2 control-label">Ancien mot de passe</label>
       <div class="col-sm-5">
-        <input type="password" class="form-control" placeholder="Ancien mot de passe" ng-model="pc.old_pwd">
+        <input type="password" class="form-control" placeholder="Ancien mot de passe" ng-model="pc.oldPwd">
       </div>
     </div>
     
-    <div class="form-group" ng-class="{'has-error':pc.new_pwd.length > 0 && pc.new_pwd.length < 8, 'has-success':pc.new_pwd.length >= 8 && pc.pwd === pc.new_pwd}">
+    <div class="form-group" ng-class="{'has-error':pc.newPwd.length > 0 && pc.newPwd.length < 8, 'has-success':pc.newPwd.length >= 8 && pc.pwd === pc.newPwd}">
       <label class="col-sm-2 control-label">Nouveau mot de passe</label>
       <div class="col-sm-5">
-        <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.new_pwd">
+        <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.newPwd">
       </div>
     </div>
     
-    <div class="form-group" ng-class="{'has-error':pc.pwd !== pc.new_pwd, 'has-success':pc.pwd.length >= 8 && pc.pwd === pc.new_pwd}">
+    <div class="form-group" ng-class="{'has-error':pc.pwd !== pc.newPwd, 'has-success':pc.pwd.length >= 8 && pc.pwd === pc.newPwd}">
     <label class="col-sm-2 control-label">Confirmation</label>
     <div class="col-sm-5">
         <input type="password" class="form-control" placeholder="Confirmation" ng-model="pc.pwd">
@@ -53,7 +53,7 @@
     <br/>
     
     <div class="col-sm-offset-2 col-sm-5">
-      <button type="submit" class="btn btn-primary btl-lg" ng-click="pc.updateProfile()" ng-disabled="!pc.profile.mh_apikey || !pc.profile.pseudo || ((pc.old_pwd || pc.new_pwd || pc.pwd) && !(pc.old_pwd && pc.new_pwd.length >= 8 && pc.pwd === pc.new_pwd))">Sauvegarder</button>
+      <button type="submit" class="btn btn-primary btl-lg" ng-click="pc.updateProfile()" ng-disabled="!pc.profile.mh_apikey || !pc.profile.pseudo || ((pc.oldPwd || pc.newPwd || pc.pwd) && !(pc.oldPwd && pc.newPwd.length >= 8 && pc.pwd === pc.newPwd))">Sauvegarder</button>
       <br/>
       <br/>
       <div ng-if="pc.updateError" class="alert" ng-class="{'alert-danger':pc.updateError}">

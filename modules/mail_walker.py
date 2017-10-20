@@ -140,10 +140,7 @@ class MailWalker:
                         for obj in obj:
                             self.sqlHelper.add(obj)
                             self.sqlHelper.session.commit()
-                            notif = self.sqlHelper.add_notif(obj)
-                            self.sqlHelper.session.commit()
-                            obj.notif_id = notif.id
-                            self.sqlHelper.add(obj)
+                            event = self.sqlHelper.add_event(obj)
                             self.sqlHelper.session.commit()
                 
                     os.remove(msgFile._file.name)
