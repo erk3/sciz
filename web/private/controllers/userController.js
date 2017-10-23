@@ -26,19 +26,19 @@ UserController.updateProfile = function (req, res) {
     });
   }
 
-  if (!req.body.old_pwd && !req.body.new_pwd && !req.body.pwd) {
+  if (!req.body.oldPwd && !req.body.newPwd && !req.body.pwd) {
     update(potentialUser, data, res);
   } else {
-    if ((req.body.new_pwd.length >= 8) && (req.body.new_pwd == req.body.pwd)) {
+    if ((req.body.newPwd.length >= 8) && (req.body.newPwd == req.body.pwd)) {
       User.findOne(potentialUser)
         .then(function (user) {
           if (!user) {
             res.status(400).json({message: 'Profil inexistant !'});
           }
           else {
-            user.comparePasswords(req.body.old_pwd, function (error, isMatch) {
+            user.comparePasswords(req.body.oldPwd, function (error, isMatch) {
               if (isMatch && !error) {
-                data.pwd = req.body.new_pwd;
+                data.pwd = req.body.newPwd;
                 update(potentialUser, data, res);
               }
               else {

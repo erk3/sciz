@@ -29,7 +29,7 @@ function profileCtrl($http) {
         vm.updateError = true;
         vm.updateErrorMessage = 'Le mot de passe doit faire au moins 8 caractères';
         return;
-      } else if (vm.old_pwd.length <= 0) {
+      } else if (vm.oldPwd.length <= 0) {
         vm.updateError = true;
         vm.updateErrorMessage = 'L\'ancien mot de passe est obligatoire';
         return;
