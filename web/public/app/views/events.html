@@ -15,18 +15,18 @@
       </div>
     </form>
 
-    <div class="col-sm-7 col-md-7">
-      <table class="table table-hover table-condensed">
+    <div class="col-sm-7 col-md-7 table-responsive">
+      <table class="table table-hover table-condensed" style="vertical-align:center">
         <thead class="thead-inverse">
           <tr>
             <th class="text-center">Horodatage</th>
             <th class="text-center">Évènement</th>
           </tr>
         </thead>
-        <tbody>
-          <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)">
-            <td class="text-center"><small>{{ec.displayDate(event.sub.time)}}</small></td>
-            <td class="text-left" ng-bind-html="event.notif.substring(10)">{{event.sub.</small></td>
+        <tbody infinite-scroll="ec.loadMoreEvents()" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1">
+          <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
+            <td class="text-center" style="white-space: nowrap"><small>{{ec.displayDate(event.sub.time)}}</small></td>
+            <td class="text-left"><small ng-bind-html="event.notif.substring(10)"></small></td>
           </tr>
         </tbody>
       </table>

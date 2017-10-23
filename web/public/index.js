@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'ngCookies', 'ngSanitize']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'ngCookies', 'ngSanitize', 'infinite-scroll']);
 
 app.run([
   '$rootScope',

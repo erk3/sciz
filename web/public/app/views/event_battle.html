@@ -1,3 +1,104 @@
-<div class="col-sm5 col-md-5">
-<h1>wip</h1>
+<div class="col-sm-5 col-md-5">
+	<!-- Page Header -->
+	<div class="row">
+	 	<div ng-if="ec.cur.sub.subtype" class="page-header text-center">
+      <h1>{{ec.cur.sub.subtype}}</h1>
+  		<p>({{ec.cur.sub.type}})</p>
+	  </div>
+	 	<div ng-if="!ec.cur.sub.subtype" class="page-header text-center">
+      <h1>{{ec.cur.sub.type}}</h1>
+	  </div>
+	  <br/>
+  </div>
+  <br/>
+
+	<!-- Attacker VS Defender-->
+	<div class="row">
+	    <div class="col-md-4">
+        <img ng-src="{{ec.cur.sub.att_troll_id && ec.cur.sub.att_troll.blason_url || ec.cur.sub.att_mob.metamob.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
+	    </div>
+	    <div class="col-md-4 text-center">
+  			<h1>VS<br/><small ng-if="ec.cur.sub.pv">-{{ec.cur.sub.pv}}</small></h1>
+  			<p ng-if="ec.cur.sub.vie">({{ec.cur.sub.vie}} PV)</p>
+  		</div>
+	    <div class="col-md-4">
+	    	<div ng-class="{'container-overlay':ec.cur.isDead}">
+        <img ng-src="{{ec.cur.sub.def_troll_id && ec.cur.sub.def_troll.blason_url || ec.cur.sub.def_mob.metamob.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
+	     		<div ng-if="ec.cur.isDead" class="overlay">
+	     			<img src="images/dead_stamp.png" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="">
+	     		</div>
+	     	</div>
+     	</div>
+  	</div>
+    <br/>
+	<div class="row">
+		<div class="col-md-6">
+			<blockquote ng-if="ec.cur.sub.att_troll_id">
+			    <p>{{ec.cur.sub.att_troll.nom}} ({{ec.cur.sub.att_troll.id}})</p>
+			</blockquote>
+			<blockquote ng-if="!ec.cur.sub.att_troll_id">
+        <p>{{ec.cur.sub.att_mob.nom}} [{{ec.cur.sub.att_mob.age}}] <span ng-if="ec.cur.sub.att_mob.tag">{{ec.cur.sub.att_mob.tag}} </span>({{ec.cur.sub.att_mob.id}})</p>
+			</blockquote>
+		</div>
+		<div class="col-md-6">
+			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_troll_id">
+			  <p>{{ec.cur.sub.def_troll.nom}} ({{ec.cur.sub.def_troll.id}})</p>
+			</blockquote>
+			<blockquote class="blockquote-reverse" ng-if="!ec.cur.sub.def_troll_id">
+        <p>{{ec.cur.sub.def_mob.nom}} [{{ec.cur.sub.def_mob.age}}] <span ng-if="ec.cur.sub.def_mob.tag">{{ec.cur.sub.def_mob.tag}} </span>({{ec.cur.sub.def_mob.id}})</p>
+			</blockquote>
+		</div>
+	</div>
+  <br/>
+
+  <!-- Stats -->
+  <div class="row">
+    <table class="table table-condensed text-center" style="margin-top: 20px;">
+      <tbody>
+        <tr ng-if="(ec.cur.sub.att !== null) && (ec.cur.sub.def !== null)">
+          <td class="inverse">Jet d'attaque</td>
+          <td>{{ec.cur.sub.att}}</td>
+          <td ng-if="ec.cur.isTouched && ec.cur.isCrit"><b>Critique</b></td>
+          <td ng-if="ec.cur.isTouched && !ec.cur.isCrit">Touché</td>
+          <td ng-if="!ec.cur.isTouched"><b>Esquivé</b></td>
+          <td>{{ec.cur.sub.esq}}</td>
+          <td class="inverse">Jet d'esquive</td>
+        </tr>
+        <tr ng-if="ec.cur.sub.capa_effet">
+          <td class="inverse">Capacité</td>
+          <td>{{ec.cur.sub.capa_desc}}</td>
+          <td>{{ec.cur.sub.capa_effet}}</td>
+          <td>{{ec.cur.sub.capa_tour ? ec.cur.sub.capa_tour : '0'}}</td>
+          <td class="inverse">Tour(s)</td>
+        </tr>
+        <tr ng-if="(ec.cur.sub.resi !== null) && (ec.cur.sub.sr !== null)">
+          <td class="inverse" >Jet de résistance</td>
+          <td >{{ec.cur.sub.resi}}</td>
+          <td ng-if="ec.cur.isFull"><b>Full</b></td>
+          <td ng-if="!ec.cur.isFull"><b>Réduit</b></td>
+          <td >{{ec.cur.sub.sr}}</td>
+          <td class="inverse">Seuil de résistance</td>
+        </tr>
+        <tr ng-if="(ec.cur.sub.soin !== null)">
+          <td class="inverse">Jet de blessure</td>
+          <td>-{{ec.cur.sub.blessure ? ec.cur.sub.blessure : '?'}}</td>
+          <td>+{{ec.cur.sub.soin}}</td>
+          <td class="inverse">Soin</td>
+        </tr>
+        <tr ng-if="(ec.cur.sub.deg !== null) || (ec.cur.sub.pv !== null)">
+          <td class="inverse">Jet de dégâts</td>
+          <td>{{ec.cur.sub.deg ? ec.cur.sub.deg : '-'}}</td>
+          <td>{{ec.cur.sub.deg ? ec.cur.sub.deg - ec.cur.sub.pv : '-'}}</td>
+          <td>-{{ec.cur.sub.pv}}</td>
+          <td class="inverse">Vie perdue</td>
+        </tr>
+        <tr ng-if="(ec.cur.sub.deg !== null) || (ec.cur.sub.pv !== null)">
+          <td colspan=2></td>
+          <td class="inverse">Armure</td>
+          <td colspan=2></td>
+        </tr>
+      </tbody>
+		</table>
+		<br/>
+	</div>
 </div>

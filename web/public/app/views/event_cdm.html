@@ -33,12 +33,12 @@
   <!-- Life bar -->
   <div class="text-center"><span><i>{{ec.cur.cdm.blessure}}% de blessure</i></span><span ng-hide="ec.cur.cdm.bonus_malus === null"><i> (Bonus/Malus : {{ec.cur.cdm.bonus_malus}})</i></span></div>
   <div class="progress">
-    <div class="progress-bar" ng-class="{'progress-bar-warning': ec.cur.cdm.life_percent < 66 && ec.cur.cdm.life_percent > 33, 'progress-bar-success': ec.cur.cdm.life_percent >= 66, 'progress-bar-danger': ec.cur.cdm.life_percent <= 33}" role="progressbar" style="width: {{(ec.cur.cdm.pv_min_blessure * 100 / ec.cur.cdm.pv_max_blessure) - ec.cur.cdm.blessure}}%">
+    <div class="progress-bar" ng-class="{'progress-bar-warning': ec.cur.cdm.lifePercent < 66 && ec.cur.cdm.lifePercent > 33, 'progress-bar-success': ec.cur.cdm.lifePercent >= 66, 'progress-bar-danger': ec.cur.cdm.lifePercent <= 33}" role="progressbar" style="width: {{(ec.cur.cdm.pvMinBlessure * 100 / ec.cur.cdm.pvMaxBlessure) - ec.cur.cdm.blessure}}%">
       <span class="pull-left" style="margin-left: 2px">0</span>
-      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pv_min_blessure}}</span>
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pvMinBlessure}}</span>
     </div>
-    <div class="progress-bar progress-bar-custom" ng-class="{'progress-bar-warning': ec.cur.cdm.life_percent < 66 && ec.cur.cdm.life_percent > 33, 'progress-bar-success': ec.cur.cdm.life_percent >= 66, 'progress-bar-danger': ec.cur.cdm.life_percent <= 33}" role="progressbar" style="width: {{100 - (ec.cur.cdm.pv_min_blessure * 100 / ec.cur.cdm.pv_max_blessure)}}%">
-      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pv_max_blessure}}</span>
+    <div class="progress-bar progress-bar-custom" ng-class="{'progress-bar-warning': ec.cur.cdm.lifePercent < 66 && ec.cur.cdm.lifePercent > 33, 'progress-bar-success': ec.cur.cdm.lifePercent >= 66, 'progress-bar-danger': ec.cur.cdm.lifePercent <= 33}" role="progressbar" style="width: {{100 - (ec.cur.cdm.pvMinBlessure * 100 / ec.cur.cdm.pvMaxBlessure)}}%">
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.cdm.pvMaxBlessure}}</span>
     </div>
   </div>
     

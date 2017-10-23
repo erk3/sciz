@@ -11,7 +11,10 @@ var EventsController = {}
 
 EventsController.getEvents = function (req, res) {
   
-  Event.findAll({limit: 20, order: [['id', 'DESC']]})
+  var offset = (req.query.offset) ? parseInt(req.query.offset) : 0;
+
+
+  Event.findAll({limit: 25, offset: offset, order: [['id', 'DESC']]})
     .then(function (events) {
       res.json(events);
     })

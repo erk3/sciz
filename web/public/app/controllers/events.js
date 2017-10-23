@@ -1,45 +1,80 @@
 angular
   .module('app')
-  .controller('EventsCtrl', ['$http', eventsCtrl]);
+  .controller('EventsCtrl', ['$http', '$window', eventsCtrl]);
 
-function eventsCtrl($http) {
+function eventsCtrl($http, $window) {
   var vm = this;
   vm.searchValue = '';
   vm.events = [];
   vm.cur = {};
-
-  $http({method: 'GET', url: '/api/events'})
-    .then(function (response) {
-      if (response && response.data) {
-        vm.events = angular.fromJson(response.data);
-        for (var i = 0, len = vm.events.length; i < len; i++) {
-          vm.events[i].sub = (vm.events[i].cdm) ? vm.events[i].cdm : vm.events[i].battle_event;
-        }
-        vm.switchTrigger(vm.events[0]);
-      }
-    });
+  vm.offset = 0;
 
   vm.switchTrigger = function (event) {
     vm.cur = event;
     if (event.cdm) {
-      // Progress bar
-      vm.cur.cdm.life_percent = 100 - vm.cur.cdm.blessure;
-      var rPvMin = (vm.cur.cdm.pv_min ? vm.cur.cdm.pv_min : vm.cur.cdm.pv_max);
-      vm.cur.cdm.pv_min_blessure = Math.max(1, Math.floor(rPvMin * vm.cur.cdm.life_percent / 100));
-      var rPvMax = (vm.cur.cdm.pv_max ? vm.cur.cdm.pv_max : vm.cur.cdm.pv_mmin);
-      if (vm.cur.cdm.pv_max) {
-        vm.cur.cdm.pv_max_blessure = Math.floor(rPvMax * vm.cur.cdm.life_percent / 100);
-      } else {
-        vm.cur.cdm.pv_max_blessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.cdm.life_percent / 100) * 1.2));
-      }
-      // Capa desc
-      vm.cur.cdm.capa = '';
-      vm.cur.cdm.capa += (vm.cur.cdm.capa_desc) ? vm.cur.cdm.capa_desc : '';
-      vm.cur.cdm.capa += (vm.cur.cdm.capa_effet) ? ' - Affecte : ' + vm.cur.cdm.capa_effet : '';
-      vm.cur.cdm.capa += (vm.cur.cdm.capa_tour) ? ' - ' + vm.cur.cdm.capa_tour + 'T' : '';
-      vm.cur.cdm.capa += (vm.cur.cdm.portee_capa) ? ' (' + vm.cur.cdm.portee_capa + ')' : '';
-      vm.cur.cdm.capa = vm.cur.cdm.capa.trim();
+      vm.switchCDM();
+    } else {
+      vm.switchBATTLE();
     }
+    $window.scrollTo(0, 0);
+  };
+
+  vm.loadMoreEvents = function () {
+    if (vm.busy) {
+      return;
+    }
+    vm.busy = true;
+    $http({method: 'GET', url: '/api/events', params: {offset: vm.offset}})
+      .then(function (response) {
+        if (response && response.data) {
+          var events = angular.fromJson(response.data);
+          for (var i = 0, len = events.length; i < len; i++) {
+            events[i].sub = (events[i].cdm) ? events[i].cdm : events[i].battle_event;
+          }
+          var oldLength = vm.events.length;
+          vm.events = vm.events.concat(events);
+          if (oldLength <= 0) {
+            vm.switchTrigger(vm.events[0]);
+          }
+          if (vm.events.length > 0) {
+            vm.offset += vm.events.length;
+          }
+        }
+        vm.busy = false;
+      });
+  };
+
+  /*
+   * BATTLE logic
+   */
+  vm.switchBATTLE = function () {
+    vm.cur.isDead = (vm.cur.battle_event.type.indexOf('mortelle') !== -1);
+    vm.cur.isTouched = (vm.cur.battle_event.att > vm.cur.battle_event.esq);
+    vm.cur.isCrit = (vm.cur.battle_event.att >= vm.cur.battle_event.esq * 2);
+    vm.cur.isFull = (vm.cur.battle_event.resi >= vm.cur.battle_event.sr);
+  };
+
+  /*
+   * CDM logic
+   */
+  vm.switchCDM = function () {
+    // Progress bar
+    vm.cur.cdm.lifePercent = 100 - vm.cur.cdm.blessure;
+    var rPvMin = (vm.cur.cdm.pv_min ? vm.cur.cdm.pv_min : vm.cur.cdm.pv_max);
+    vm.cur.cdm.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.cdm.lifePercent / 100));
+    var rPvMax = (vm.cur.cdm.pv_max ? vm.cur.cdm.pv_max : vm.cur.cdm.pv_mmin);
+    if (vm.cur.cdm.pv_max) {
+      vm.cur.cdm.pvMaxBlessure = Math.floor(rPvMax * vm.cur.cdm.lifePercent / 100);
+    } else {
+      vm.cur.cdm.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.cdm.lifePercent / 100) * 1.2));
+    }
+    // Capa desc
+    vm.cur.cdm.capa = '';
+    vm.cur.cdm.capa += (vm.cur.cdm.capa_desc) ? vm.cur.cdm.capa_desc : '';
+    vm.cur.cdm.capa += (vm.cur.cdm.capa_effet) ? ' - Affecte : ' + vm.cur.cdm.capa_effet : '';
+    vm.cur.cdm.capa += (vm.cur.cdm.capa_tour) ? ' - ' + vm.cur.cdm.capa_tour + 'T' : '';
+    vm.cur.cdm.capa += (vm.cur.cdm.portee_capa) ? ' (' + vm.cur.cdm.portee_capa + ')' : '';
+    vm.cur.cdm.capa = vm.cur.cdm.capa.trim();
   };
 
   /*
@@ -76,6 +111,25 @@ function eventsCtrl($http) {
       }
       return true;
     };
+  };
+
+  vm.isRelatedToCur = function (event) {
+    // Cur Event
+    var curAttID = null;
+    curAttID = (vm.cur.battle_event) ? ((vm.cur.battle_event.att_troll_id) ? vm.cur.battle_event.att_troll_id : vm.cur.battle_event.att_mob_id) : null;
+    var curDefID = (vm.cur.cdm) ? (vm.cur.cdm.mob_id) : null;
+    curDefID = (vm.cur.battle_event) ? ((vm.cur.battle_event.def_troll_id) ? vm.cur.battle_event.def_troll_id : vm.cur.battle_event.def_mob_id) : null;
+    // Event
+    var eAttID = (event.cdm) ? (event.cdm.troll_id) : null;
+    eAttID = (event.battle_event) ? ((event.battle_event.att_troll_id) ? event.battle_event.att_troll_id : event.battle_event.att_mob_id) : null;
+    var eDefID = (event.cdm) ? (event.cdm.mob_id) : null;
+    eDefID = (event.battle_event) ? ((event.battle_event.def_troll_id) ? event.battle_event.def_troll_id : event.battle_event.def_mob_id) : null;
+    if ((curAttID !== null) && (curDefID !== null)) {
+      return ((curAttID === eAttID) && (curDefID === eDefID)) || ((curDefID === eAttID) && (curAttID === eDefID));
+    } else if (curAttID !== null) {
+      return (curAttID === eAttID) || (curAttID === eDefID);
+    }
+    return (curDefID === eAttID) || (curDefID === eDefID);
   };
 
   /*
