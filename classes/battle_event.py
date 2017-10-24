@@ -106,6 +106,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             re_event_pv = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_PV_RE)
             re_event_sr = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_soin_att = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
@@ -137,6 +138,9 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         # Jet de dégâts
         res = re.search(re_event_deg, body)
         self.deg = res.group(1) if res else None
+        # Points de vie récupérés (Vampirisme)
+        res = re.search(re_event_soin_att, body)
+        self.soin = res.group(1) if res else None
         # Points de vie perdus
         res = re.search(re_event_pv, body)
         self.pv = res.group(1) if res else self.deg # Pas d'armure
@@ -528,6 +532,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         self.s_att_stats += ' att ' + str(self.att) if self.att else ''
         self.s_att_stats += ' resi ' + str(self.resi) if self.resi else ''
         self.s_att_stats += ' deg ' + str(self.deg) if self.deg else ''
+        self.s_att_stats += ' soin ' + str(self.soin) if self.soin else ''
         self.s_att_stats = self.s_att_stats.lstrip()
         # Type desc
         self.s_type_short = ''

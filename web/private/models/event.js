@@ -37,7 +37,7 @@ EventModel.belongsTo(CDMModel, {as: 'cdm', foreignKey: 'cdm_id', targetKey: 'id'
 
 function changeTrollsBlasonURL(events) { 
   var metaChangeTrollBlasonURL = function (troll) {
-    if (troll && troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
+    if (troll && troll.blason && troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
     troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll.id;
     }
     return troll;

@@ -8,6 +8,8 @@ function eventsCtrl($http, $window) {
   vm.events = [];
   vm.cur = {};
   vm.offset = 0;
+  vm.busy = false;
+  vm.noMoreEvent = false;
 
   vm.switchTrigger = function (event) {
     vm.cur = event;
@@ -20,7 +22,7 @@ function eventsCtrl($http, $window) {
   };
 
   vm.loadMoreEvents = function () {
-    if (vm.busy) {
+    if (vm.busy || vm.noMoreEvent) {
       return;
     }
     vm.busy = true;
@@ -39,8 +41,11 @@ function eventsCtrl($http, $window) {
           if (vm.events.length > 0) {
             vm.offset += vm.events.length;
           }
+          if (events.length <= 0) {
+            vm.noMoreEvent = true;
+          }
+          vm.busy = false;
         }
-        vm.busy = false;
       });
   };
 
