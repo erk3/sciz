@@ -48,5 +48,15 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
       }
     });
 
+  $stateProvider
+    .state('admin', {
+      url: '/admin',
+      templateUrl: 'app/views/admin.html',
+      controller: 'AdminCtrl as ac',
+      data: {
+        accessLevel: staticData.accessLevels.admin
+      }
+    });
+
   $httpProvider.interceptors.push('requestInterceptor');
 }

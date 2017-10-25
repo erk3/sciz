@@ -79,7 +79,7 @@
     "test:auto": "gulp test:auto",
     "clean": "gulp clean",
     "postinstall": "bower install --allow-root",
-    "kill": "./kill.sh",
+    "stop": "./kill.sh",
     "start": "./start.sh"
   },
   "eslintConfig": {

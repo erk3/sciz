@@ -47,7 +47,7 @@ AuthController.authenticate = function (req, res) {
           user.comparePasswords(pwd, function (error, isMatch) {
             if (isMatch && !error) {
               var token = jwt.sign(
-                {id: user.id},
+                {type: 'user', id: user.id, role: user.role},
                 config.keys.secret, 
                 {expiresIn: '30m'});
               res.json({
@@ -55,7 +55,7 @@ AuthController.authenticate = function (req, res) {
                 id: user.id,
                 pseudo: user.pseudo,
                 token: 'JWT ' + token,
-                role: user.role,
+                role: user.role
                });
             }
             else {
