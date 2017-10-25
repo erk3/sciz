@@ -21,7 +21,7 @@ var APIRoutes = function(passport) {
   // GET routes
   router.get('/profile', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.user, UserController.getProfile));
   router.get('/events', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.user, EventsController.getEvents));
-  router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.test));
+  router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.getNotifs));
   router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.admin, AdminController.getHooks));
 
   // DELETE routes

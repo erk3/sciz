@@ -1,6 +1,6 @@
 'use strict';
 
-exports.allowOnlyUser = function(accessLevel, callback) {
+exports.allowOnlyUser = function (accessLevel, callback) {
   function checkUserRole(req, res) {
     if (!req.user || !(accessLevel & req.user.role)) {
       res.sendStatus(403);
@@ -11,10 +11,10 @@ exports.allowOnlyUser = function(accessLevel, callback) {
   return checkUserRole;
 };
 
-exports.allowOnlyHook = function(callback) {
-  
+exports.allowOnlyHook = function (callback) {
   function checkHookValidity(req, res) {
-    if (!req.user || req.user.revoked) {
+    var hook = req.user;
+    if (!hook || hook.revoked !== false) {
       res.sendStatus(403);
       return;
     }

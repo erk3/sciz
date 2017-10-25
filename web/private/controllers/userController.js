@@ -36,7 +36,7 @@ UserController.updateProfile = function (req, res) {
             res.status(400).json({message: 'Profil inexistant !'});
           }
           else {
-            user.comparePasswords(req.body.oldPwd, function (error, isMatch) {
+            User.comparePasswords(req.body.oldPwd, function (error, isMatch) {
               if (isMatch && !error) {
                 data.pwd = req.body.newPwd;
                 update(potentialUser, data, res);

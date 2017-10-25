@@ -32,9 +32,6 @@ var modelDefinition = {
 };
 
 var modelOptions = {
-  instanceMethods: {
-    comparePasswords: comparePasswords
-  },
   hooks: {
     beforeValidate: hashPassword,
     afterFind: changeTrollBlasonURL
@@ -47,7 +44,7 @@ var modelOptions = {
 var UserModel = db.define('users', modelDefinition, modelOptions);
 UserModel.hasOne(TrollModel, {as: 'troll', foreignKey: 'id'});
 
-function comparePasswords(pwd, callback) {
+UserModel.prototype.comparePasswords = function (pwd, callback) {
   bcrypt.compare(pwd, this.pwd, function(error, isMatch) {
     if(error) {
       return callback(error);

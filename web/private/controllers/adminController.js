@@ -5,24 +5,38 @@ var config = require('../../config.js');
 var db = require('../services/database.js');
 var User = require('../models/user.js');
 var Hook = require('../models/hook.js');
+var Event = require('../models/event.js');
 
 var AdminController = {}
 
 AdminController.addHook = function (req, res) { 
+  
   var data = {
     nom: req.body.nom,
     jwt: null, // this is created by a Sequelize hook, see models/hook.js
     revoked: false,
-    last_event_id : 0
+    last_event_id : 0 // A try to set it to real last event ID is done below
   };
 
-  Hook.create(data)
-    .then(function (result) {
-      res.json({success: true});
+  var createHook = function (data) {
+    Hook.create(data)
+      .then(function (result) {
+        res.json({success: true});
+      })
+      .catch(function(error) {
+        res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+      });
+  };
+
+  Event.scope().findOne({order: [['id', 'DESC']]})
+    .then(function (event) {
+      data.last_event_id = event.id;
+      createHook(data);
     })
     .catch(function(error) {
-      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+      createHook(data);
     });
+
 }
 
 AdminController.getHooks = function (req, res) {
