@@ -19,12 +19,19 @@ AdminController.addHook = function (req, res) {
   };
 
   var createHook = function (data) {
-    Hook.create(data)
-      .then(function (result) {
-        res.json({success: true});
-      })
-      .catch(function(error) {
-        res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    Hook.findOne({where: {nom: data.nom}})
+      .then(function (hook) {
+        if (!hook) {
+          Hook.create(data)
+            .then(function (result) {
+              res.json({success: true});
+            })
+            .catch(function(error) {
+              res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+            });
+        } else {
+          res.status(400).json({message: 'Ce hook existe déjà !'});
+        }
       });
   };
 

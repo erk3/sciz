@@ -57,11 +57,10 @@ class SCIZ:
         self.walker.walk()
 
     # SCIZ Notifier
-    def notify(self):
+    def notify(self, hook_name):
         # FIXME : maybe later, handle other push vectors like pushover or whatever not on the stdout
         self.notifier = Notifier(self.config, self.logger)
-        self.notifier.print_all()
-        self.notifier.flush()
+        self.notifier.print_flush(hook_name)
 
     # SCIZ Requester
     def request(self, ids, args):
@@ -110,7 +109,7 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--script', metavar='PUBLIC_SCRIPT [troll]', choices=['profil2', 'caract', 'trolls2', 'monstres'], help='instruct SCIZ to call a MountyHall Public Script / FTP')
     parser.add_argument('-r', '--request', metavar='REQUEST_CLI | help', type=str, help='instruct SCIZ to pull internal data')
     parser.add_argument('-w', '--walk', action='store_true', help='instruct SCIZ to walk the mails')
-    parser.add_argument('-n', '--notify', action='store_true', help='instruct SCIZ to push the pending notifications')
+    parser.add_argument('-n', '--notify', metavar='HOOK_NAME', type=str, help='instruct SCIZ to push the pending notifications for a hook')
     parser.add_argument('rargs', nargs=argparse.REMAINDER, help=argparse.SUPPRESS)
     args = parser.parse_args()
     
@@ -132,7 +131,7 @@ if __name__ == '__main__':
             sciz.mh_call(args.script, args.rargs)
         elif args.notify:
             sciz.logger.info('Calling notifier...')
-            sciz.notify()
+            sciz.notify(args.notify)
         elif args.request:
             sciz.logger.info('Requesting SCIZ...')
             sciz.request(args.request, args.rargs)

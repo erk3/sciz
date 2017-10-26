@@ -11,6 +11,7 @@ from classes.mob import MOB
 from classes.cdm import CDM
 from classes.battle_event import BATTLE_EVENT
 from classes.event import EVENT
+from classes.hook import HOOK
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 

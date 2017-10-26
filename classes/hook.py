@@ -6,7 +6,7 @@
 ###
 
 # Imports
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -15,6 +15,7 @@ class HOOK(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'hooks'
+    __table_args__ = (UniqueConstraint('nom'),)
     id = Column(Integer, primary_key=True)                      # Identifiant unique
     nom = Column(String(50))                                    # Nom du hook
     jwt = Column(String(250))                                   # JWT token sans expiration

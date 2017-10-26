@@ -5,6 +5,7 @@ var Hook = require('../models/hook.js');
 var Event = require('../models/event.js');
 
 const Op = db.Op;
+const {spawn} = require('child_process');
 
 var HookController = {}
 
@@ -27,9 +28,47 @@ HookController.getNotifs = function (req, res) {
       }
     })
     .catch(function(error) {
-      res.status(500).json({message: 'Une erreur est survenue :' + error.message});
+      res.status(500).json({message: 'Une erreur est survenue : ' + error.message});
     });
+}
 
+
+HookController.request = function (req, res) {
+  var arg1 = req.body.arg1;
+  var arg2 = req.body.arg2;
+  var arg3 = req.body.arg3;
+  
+  if (!arg1) {
+    res.status(400).json({message: 'Argument manquant !'});
+    return;
+  }
+
+  var args = ['sciz.py', '-r', arg1];
+  if (arg2) {
+    args.push(arg2);
+  }
+  if (arg3) {
+    args.push(arg3);
+  }
+
+  const child = spawn('python', args, {
+    shell: false,
+    cwd: config.sciz.bin
+  });
+
+  var data = '';
+
+  child.stdout.on('data', (data_out) => {
+    data += data_out;
+  });
+
+  child.on('close', (code) => {
+    if (data) {
+      res.json({message: data});
+    } else {
+      res.status(500).json({message: 'Une erreur est survenue !'});
+    }
+  });
 }
 
 module.exports = HookController;

@@ -15,6 +15,7 @@ var modelDefinition = {
   },
   nom: {
     type: Sequelize.STRING,
+    unique: true,
     allowNull: false
   },
   jwt: {

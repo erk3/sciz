@@ -26,7 +26,7 @@ Ce comportement est à date modifiable en éditant la crontab de SCIZ ou en ne s
 
 A date, SCIZ supporte l'analyse syntaxique :
   * Des Connaissances Des Monstres jusqu'au niveau 4
-  * Des rapports de combats simples (Attaque, Défense, Pouvoirs)
+  * Des rapports de combats simples (Attaque par compétence, Défense, Pouvoirs)
   * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée, Explosion
 
 SCIZ ne supporte pas (et plante lamentablement):
@@ -43,7 +43,7 @@ Voir les [instructions d'installation](INSTALL.md)
 ```
 usage: sciz.py [-h] [-c CONFIG_FILE] [-l LOGGING_LEVEL] [-t] [-u USERS_FILE]
                [-i] [-s PUBLIC_SCRIPT [troll]] [-r REQUEST_CLI | help] [-w]
-               [-n]
+               [-n HOOK_NAME]
 
 Système de Chauve-souris Interdimensionnel pour Zhumains
 
@@ -62,7 +62,8 @@ optional arguments:
   -r REQUEST_CLI | help, --request REQUEST_CLI | help
                         instruct SCIZ to pull internal data
   -w, --walk            instruct SCIZ to walk the mails
-  -n, --notify          instruct SCIZ to push the pending notifications
+  -n, --notify HOOK_NAME
+                        instruct SCIZ to push the pending notifications
 
 From Põm³ with love
 ```
@@ -70,7 +71,9 @@ From Põm³ with love
 # Interagir avec SCIZ
 
 L'interface Web permet à date :
+  - de consulter les évènements collectés par SCIZ
   - à chaque utilisateur de modifier son profil SCIZ en self-service
+  - aux adminsitrateurs de gérer les différents hooks
 
 Chaque communauté de joueur utilise par ailleurs ses propres canaux de communication pour recueillir les notifications générées par SCIZ, est disponible à date :
   * Un ```plugin``` et exemple de configuration pour [Hangoutsbot](https://github.com/hangoutsbot/hangoutsbot)

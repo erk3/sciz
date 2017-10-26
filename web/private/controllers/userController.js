@@ -22,7 +22,7 @@ UserController.updateProfile = function (req, res) {
       res.json({success: true});
     })
     .catch(function(error) {
-      res.status(500).json({message: 'Une erreur est survenue !'});
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
     });
   }
 
@@ -36,7 +36,7 @@ UserController.updateProfile = function (req, res) {
             res.status(400).json({message: 'Profil inexistant !'});
           }
           else {
-            User.comparePasswords(req.body.oldPwd, function (error, isMatch) {
+            user.comparePasswords(req.body.oldPwd, function (error, isMatch) {
               if (isMatch && !error) {
                 data.pwd = req.body.newPwd;
                 update(potentialUser, data, res);
@@ -48,7 +48,7 @@ UserController.updateProfile = function (req, res) {
         }
       })
       .catch(function(error) {
-        res.status(500).json({message: 'Une erreur est survenue !'});
+        res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
       });
     } else {
       res.status(400).json({message: 'Données invalides !'});

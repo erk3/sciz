@@ -3,7 +3,7 @@
 PATH_SCIZ_CONF=confs/sciz.ini
 PATH_WEB_CONF=web/config.js
 
-while getopts ":s:m:o:h:d:p:" opt; do
+while getopts ":s:m:o:h:d:p:b:" opt; do
   case $opt in
     s) secret="$OPTARG"
     ;;
@@ -17,6 +17,8 @@ while getopts ":s:m:o:h:d:p:" opt; do
     ;;
     p) node_port="$OPTARG"
     ;;
+    b) bin_path="$OPTARG"
+    ;;
     \?) echo "Invalid option -$OPTARG" >&2
     ;;
   esac
@@ -28,6 +30,9 @@ if [ ! -z "$mysql_password" ]; then
 fi
 if [ ! -z "$secret" ]; then
   sed -i -r "s/(secret: )'(.*)'/\1'$secret'/g;" $PATH_WEB_CONF
+fi
+if [ ! -z "$bin_path" ]; then
+  sed -i -r "s/(bin: )'(.*)'/\1'$bin_path'/g;" $PATH_WEB_CONF
 fi
 if [ ! -z "$node_port" ]; then
   sed -i -r "s/(port_server: )(.*)/\1$node_port/g;" $PATH_WEB_CONF
