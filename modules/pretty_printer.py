@@ -7,6 +7,7 @@ from classes.troll import TROLL
 from classes.cdm import CDM
 from classes.mob import MOB
 from classes.battle_event import BATTLE_EVENT
+from classes.piege import PIEGE
 import modules.globals as sg
 
 ## PrettyPrinter class for SCIZ
@@ -30,6 +31,8 @@ class PrettyPrinter:
             self.mob_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_MOB_SHORT)
             self.cdm_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_FULL)
             self.cdm_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CDM_SHORT)
+            self.piege_full = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PIEGE_FULL)
+            self.piege_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_PIEGE_SHORT)
             self.att_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_ATT_SHORT)
             self.def_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_DEF_SHORT)
             self.capa_short = self.config.get(sg.CONF_PRINT_SECTION, sg.CONF_CAPA_SHORT)
@@ -95,6 +98,8 @@ class PrettyPrinter:
     def pretty_print(self, obj, short, attrs=None):
         if isinstance(obj, CDM):
             return self.__pprint_cdm(obj, short).encode(sg.DEFAULT_CHARSET)
+        if isinstance(obj, PIEGE):
+            return self.__pprint_piege(obj, short).encode(sg.DEFAULT_CHARSET)
         if isinstance(obj, MOB):
             return self.__pprint_mob(obj, short, attrs).encode(sg.DEFAULT_CHARSET)
         if isinstance(obj, BATTLE_EVENT):
@@ -172,6 +177,12 @@ class PrettyPrinter:
                 mob.s_stats = sep + (sep).join(stats)
                 mob.s_stats = mob.s_stats.format(o=mob)
                 return self.mob_full_inline.format(o=mob)
+    
+    def __pprint_piege(self, piege, short):
+        # Generate the string representation
+        piege.stringify()
+        format_str = self.piege_short if short else self.piege_full
+        return '@' + sg.format_time(piege.time) + ' ' + format_str.format(o=piege)
     
     def __pprint_cdm(self, cdm, short):
         # Generate the string representation

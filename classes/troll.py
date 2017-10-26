@@ -91,10 +91,11 @@ class TROLL(sg.SqlAlchemyBase):
     dir_retraite = Column(String(10))           # Direction des retraites par ordre chronologique
 
     # Relationships
+    pieges = relationship('PIEGE', back_populates='troll')
     cdms = relationship('CDM', back_populates='troll')
     user = relationship('USER', back_populates='troll', uselist=False)
-    att_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.att_troll_id]',back_populates='att_troll')
-    def_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.def_troll_id]',back_populates='def_troll')
+    att_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.att_troll_id]', back_populates='att_troll')
+    def_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.def_troll_id]', back_populates='def_troll')
     
     # Constructor
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
@@ -142,8 +143,8 @@ class TROLL(sg.SqlAlchemyBase):
         #for attr in plain_attrs:
         #    val = getattr(self, attr)
         #    setattr(self, 's_' + attr, val)
-        self.s_nom_full = self.nom + ' (' +  str(self.id) + ')'
-        self.s_nom_short = '~' + self.user.pseudo if self.user else self.s_nom_full
+        self.s_nom_full = self.nom + ' (' +  str(self.id) + ')' if self.nom else str(self.id)
+        self.s_nom_short = '~' + self.user.pseudo if self.user and self.user.pseudo else self.s_nom_full
         self.s_dla = sg.format_time(self.dla) if self.dla else None
         self.next_dla = self.estimate_next_dla()
         self.s_next_dla = sg.format_time(self.next_dla) if self.next_dla else None

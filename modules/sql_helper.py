@@ -12,6 +12,7 @@ from classes.cdm import CDM
 from classes.battle_event import BATTLE_EVENT
 from classes.event import EVENT
 from classes.hook import HOOK
+from classes.piege import PIEGE
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
@@ -67,6 +68,8 @@ class SQLHelper:
             self.__add_mob(obj)
         elif isinstance(obj, CDM):
             self.__add_cdm(obj)
+        elif isinstance(obj, PIEGE):
+            self.__add_piege(obj)
         elif isinstance(obj, TROLL):
             self.__add_troll(obj)
         elif isinstance(obj, BATTLE_EVENT):
@@ -101,6 +104,11 @@ class SQLHelper:
                     event.notif_to_push = True
                 event.cdm_id = obj.id
                 event.type = "CDM"
+            elif isinstance(obj, PIEGE):
+                if (obj.troll.sciz_notif):
+                    event.notif_to_push = True
+                event.piege_id = obj.id
+                event.type = "PIEGE"
             elif isinstance(obj, BATTLE_EVENT):
                 if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
                     event.notif_to_push = True
@@ -134,6 +142,13 @@ class SQLHelper:
             mob_new.sciz_notif = True
             mob_new.link_metamob(self.session.query(METAMOB).all())
             self.session.add(mob_new)
+
+    # Add a PIEGE
+    def __add_piege(self, piege):
+        troll = TROLL()
+        troll.id = piege.troll_id
+        self.__add_troll(troll)
+        self.session.add(piege)
 
     # Add a CDM
     def __add_cdm(self, cdm):

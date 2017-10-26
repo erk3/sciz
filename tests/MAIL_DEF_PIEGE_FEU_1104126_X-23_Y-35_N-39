@@ -1,0 +1,145 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: sciz@cerv.ovh
+Received: from localhost (localhost [127.0.0.1])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTP id 0A9B084E
+	for <sciz@cerv.ovh>; Thu, 26 Oct 2017 12:12:57 +0000 (UTC)
+Authentication-Results: aa59502a4111.cerv.ovh; dkim=pass
+	reason="2048-bit key; unprotected key"
+	header.d=gmail.com header.i=@gmail.com header.b=KeRkw/+t;
+	dkim-adsp=pass; dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at cerv.ovh
+Received: from aa59502a4111.cerv.ovh ([127.0.0.1])
+	by localhost (aa59502a4111.cerv.ovh [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id XydWo8Veo94G for <sciz@cerv.ovh>;
+	Thu, 26 Oct 2017 12:12:55 +0000 (UTC)
+Received: from mail-ua0-f172.google.com (mail-ua0-f172.google.com [209.85.217.172])
+	by aa59502a4111.cerv.ovh (Postfix) with ESMTPS id 791896CB
+	for <sciz@cerv.ovh>; Thu, 26 Oct 2017 12:12:55 +0000 (UTC)
+Received: by mail-ua0-f172.google.com with SMTP id v27so2276133uav.7
+        for <sciz@cerv.ovh>; Thu, 26 Oct 2017 05:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=6a2SuwiqmgEMVl9oMFoSra8DKMyE2ksRwg75CGkUG9A=;
+        b=KeRkw/+t5Oi3S1fkx56/QxpWbf7mf+nNpSjCYDXEPlvvATLIr2zDRpZX8Ll1grF9F1
+         g1R7wokSZ/8r7jKVkjRsw3sCPKHVoRTucSigUSSJqwB61sy61/en5LyV0qoKORaNL7Ns
+         JEqDUfnT6VJShx6DzPR/MzKAycHvWpNyr9ucuISBa7w2qpyfnLygH4hyyRHmUW2iB6rs
+         XdEx0l9DQhZzRrv6W2u83R7kMkhALE4+3VXcAsCZHZCnlRahXmunq2b97svSaJgNv2Zs
+         cGMcJiKTILUyUOZKiQxVpf1LK5QcRoPwqp1s0ysapYHWFtd7wXnQdewEAIFM9CNeXhF3
+         vHQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=6a2SuwiqmgEMVl9oMFoSra8DKMyE2ksRwg75CGkUG9A=;
+        b=Ye27eCsEnKci5Pl/aMhLgETlVyO8LXx8oErURmPo+eXFP8bHSbBV4zu0+EF6nlHsdr
+         DYWOL6oraUcJG4hTAohmKq+R/NXzrMjVugr9rlImeyW6XyL4ue9zlTRx7zqlgeh9g2kq
+         N4GQU2vLNZjqkcfjCTWOOpu+TpiWbjCrhig40csZ3EACr2mQnEtcoWUeAQ6QIFOPvDDE
+         O73TPMf7XJ2/5X4N14ORukjc4DIgIZ0cbMIfc4EnaBfFJ9O/OKkHvedTr7bzW27KoGcR
+         w8iRatBy6VyCMGomRuyjaOvIWqDiYkmCbCSA6gA54p9nKoDskdgTqTgtjFq3MuoR42yc
+         FBkg==
+X-Gm-Message-State: AMCzsaUF5668tMDUrsSRfRSZVu7WR1yuevSdHluri30GjqZfLhjWhDMm
+	t50Abtm5D0XgLIoiyIN84Sqv4r4GilZWHZywOdN0GA==
+X-Google-Smtp-Source: ABhQp+Tc3+Og3Ykvd/r70x18SaT47SpVxnADaOZHKecQWApth25rVp5RWfy1Z/90jnA0YDECi/i5PyAy9qkpT18DL4I=
+X-Received: by 10.176.82.131 with SMTP id v3mr3870031uav.15.1509019974038;
+ Thu, 26 Oct 2017 05:12:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <f2acddf5a3460e44227ba613aeb82f36@games.mountyhall.com>
+In-Reply-To: <f2acddf5a3460e44227ba613aeb82f36@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Thu, 26 Oct 2017 12:12:43 +0000
+Message-ID: <CALtH2Jg=V_iaQA4sGLvkU7wxRd-wp=_mjU0KRcnpHksAWQnmXQ@mail.gmail.com>
+Subject: =?UTF-8?B?RndkOiBbTW91bnR5SGFsbF0gRMOpY2xlbmNoZW1lbnQgZGUgUGnDqGdl?=
+To: "sciz@cerv.ovh" <sciz@cerv.ovh>
+Content-Type: multipart/alternative; boundary="94eb2c191f9082fbc6055c721780"
+
+--94eb2c191f9082fbc6055c721780
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : PIEGE.
+Il =C3=A9tait alors aux alentours de : 09/09/2017 12:33:33.
+***********************************************************
+
+Quelqu'un a d=C3=A9clench=C3=A9 un Pi=C3=A8ge =C3=A0 Feu situ=C3=A9 en X =
+=3D -23 , Y =3D  -85 , N =3D -39.
+Vous avez =C3=A9t=C3=A9 victime de ce pi=C3=A8ge :
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 14 %
+Jet de R=C3=A9sistance...........................: 94
+
+La Cible subit donc pleinement l'effet de la comp=C3=A9tence.
+
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.
+
+Il a explos=C3=A9 et vous a inflig=C3=A9 50 points de d=C3=A9g=C3=A2ts.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--94eb2c191f9082fbc6055c721780
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : PIEGE.<=
+br>
+Il =C3=A9tait alors aux alentours de : 09/09/2017 12:33:33.<br>
+***********************************************************<br>
+<br>
+Quelqu&#39;un a d=C3=A9clench=C3=A9 un Pi=C3=A8ge =C3=A0 Feu situ=C3=A9 en =
+X =3D -23 , Y =3D=C2=A0 -85 , N =3D -39.<br>
+Vous avez =C3=A9t=C3=A9 victime de ce pi=C3=A8ge :<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 14 %<br>
+Jet de R=C3=A9sistance...........................: 94<br>
+<br>
+La Cible subit donc pleinement l&#39;effet de la comp=C3=A9tence.<br>
+<br>
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.<br>
+<br>
+Il a explos=C3=A9 et vous a inflig=C3=A9 50 points de d=C3=A9g=C3=A2ts.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--94eb2c191f9082fbc6055c721780--

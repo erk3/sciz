@@ -17,10 +17,12 @@ class EVENT(sg.SqlAlchemyBase):
     type = Column(String(50))                                           # Type d'évènement
     battle_event_id = Column(Integer, ForeignKey('battle_events.id'))   # ID de l'évènement de combat
     cdm_id = Column(Integer, ForeignKey('cdms.id'))                     # ID de l'évènement de CDM
+    piege_id = Column(Integer, ForeignKey('pieges.id'))                 # ID de l'évènement de piège
     
     # Associations
     battle_event = relationship("BATTLE_EVENT", back_populates="event")
     cdm = relationship("CDM", back_populates="event")
+    piege = relationship("PIEGE", back_populates="event")
 
     # Constructor
     # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override

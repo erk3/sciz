@@ -8,6 +8,7 @@ from email.header import decode_header
 from modules.sql_helper import SQLHelper
 from classes.cdm import CDM
 from classes.battle_event import BATTLE_EVENT
+from classes.piege import PIEGE
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
@@ -30,6 +31,7 @@ class MailWalker:
             self.mailRegexATT = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
             self.mailRegexCAPA = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CAPA_RE)
+            self.mailRegexPIEGE = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_PIEGE_RE)
             self.mailRegexAttHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_HYPNO_RE)
             self.mailRegexDefHYPNO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
             self.mailRegexAttSACRO = self.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_SACRO_RE)
@@ -134,6 +136,10 @@ class MailWalker:
                         self.logger.info('Found CAPA event in mail ' + msgFile._file.name)
                         obj = BATTLE_EVENT()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger, 'DEF CAPA')
+                    elif (re.search(self.mailRegexPIEGE, self.mail_subject) is not None):
+                        self.logger.info('Found PIEGE event in mail ' + msgFile._file.name)
+                        obj = PIEGE()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, self.config, self.logger)
                     
                     if obj != None:
                         if not type(obj) is list: obj = [obj]

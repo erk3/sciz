@@ -18,6 +18,7 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
     def_troll_id = Column(Integer, ForeignKey('trolls.id')) # Identifiant du Troll ayant subi l'evenement
     att_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant réalisé l'évènement
     def_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant subi l'évènement
+    piege_id = Column(Integer, ForeignKey('mobs.id'))       # Identifiant du piege associé à l'évènement
     flag_type = Column(String(50))                          # FLAG (ATT, DEF, HYPNO, SACRO...)
     type = Column(String(50))                               # Type d'évènement
     subtype = Column(String(50))                            # Sous type d'évènement
@@ -34,11 +35,12 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
     capa_effet = Column(String(150))                        # Effet de la capacité spéciale
     capa_tour = Column(Integer)                             # Nombre de tours d'effet de la capacité spéciale
 
-    # Relationships
+    # Associations
     att_troll = relationship("TROLL", foreign_keys=[att_troll_id], back_populates="att_events")
     def_troll = relationship("TROLL", foreign_keys=[def_troll_id], back_populates="def_events")
     att_mob = relationship("MOB", foreign_keys=[att_mob_id], back_populates="att_events")
     def_mob = relationship("MOB", foreign_keys=[def_mob_id], back_populates="def_events")
+    piege = relationship("PIEGE", back_populates='battle_event', uselist=False)
     event = relationship("EVENT", back_populates='battle_event', uselist=False)
 
     # Constructor
