@@ -24,7 +24,7 @@ class PIEGE(sg.SqlAlchemyBase):
 
     # Associations
     troll = relationship("TROLL", back_populates="pieges")
-    battle_event = relationship('BATTLE_EVENT', back_populates='piege', uselist=False)
+    battle_event = relationship('BATTLE_EVENT', foreign_keys=[battle_event_id], back_populates='piege', uselist=False)
     event = relationship('EVENT', back_populates='piege', uselist=False)
 
     # Constructor
