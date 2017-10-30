@@ -1,6 +1,6 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import asyncio, datetime, logging, time
-from asyncio.subprocess import PIPE
+import asyncio, datetime, logging, time, requests
 import hangups
 import plugins
 import threadmanager
@@ -20,8 +20,10 @@ def _initialise(bot):
             _new_config["refresh_time"] = 30
         if "conv_title" in config_sciz_events:
             _new_config["conv_title"] = "SCIZ"
-        if "cmd" in config_sciz_events:
-            _new_config["cmd"] = ["/usr/bin/false"]
+        if "jwt" in config_sciz_events:
+            _new_config["jwt"] = ["JWT YourJWTForSCIZHangoutBot"]
+        if "url" in config_sciz_events:
+            _new_config["url"] = ["http://your.sciz.domain/api/bot/hooks"]
         config_sciz_events = _new_config
 
     logger.info("timing {}".format(config_sciz_events))
@@ -42,12 +44,9 @@ def sciz_events(bot, config_sciz_events):
         if "refresh_time" in config_sciz_events and timestamp - last_run[0] > config_sciz_events["refresh_time"]:
             for conv in bot.conversations.catalog:
                 if bot.conversations.catalog[conv]["title"] == config_sciz_events["conv_title"]:
-                    exe = config_sciz_events["cmd"]
-                    exe = tuple(exe)
-                    proc = yield from asyncio.create_subprocess_exec(*exe, stdout=PIPE, stderr=PIPE)
-                    (stdout_data, stderr_data) = yield from proc.communicate()
-                    stdout_str = stdout_data.decode(encoding='utf-8').rstrip()
-		    #stderr_str = stderr_data.decode(encoding='ISO-8859-1').rstrip()
-                    if len(stdout_str) > 0:
-                        yield from bot.coro_send_message(conv, stdout_str)
+                    r = requests.get(config_sciz_events["url"], headers={'Authorization': config_sciz_events["jwt"]})
+                    if r.status_code == requests.codes.ok:
+                        for n in r.json():
+                            if n['notif']:
+                                yield from bot.coro_send_message(conv, n['notif'])
             last_run[0] = timestamp

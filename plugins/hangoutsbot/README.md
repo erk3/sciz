@@ -5,24 +5,24 @@ Un plugin hangoutsbot permettant de récupérer à interval régulier les notifi
 # Installation
 
   * Installer [hangoutsbot](https://github.com/hangoutsbot/hangoutsbot/blob/master/INSTALL.md)
-  * Ajouter ```sciz_events.py``` dans le dossier ```hangupsbot/plugins```
-  * Ajouter la configuration utile au plugin dans le ```config.json``` du bot
+  * Ajouter ```sciz_events.py``` et ̀ ``sciz_requests.py``` dans le dossier ```hangupsbot/plugins```
+  * Ajouter la configuration utile au plugin dans le ```config.json``` du bot (voir exemple)
   * Inviter manuellement le bot dans la conversation paramétrée (conv_title)
   * Redémarrer le bot
 
 # Exemples de notification
-  * @17:09:37 : CDM Succube des Abysses [Initiale] (5900891) : 0%
-  * @15:23:25 : DEF -14 (Attaque critique) Põm³ (104126)
-  * @08:21:59 : ATT -64 (Attaque critique mortelle) Elémentaire du Chaos [Initial] (5904164)
+  * @02:39:10 ~Tahini <b>DEF</b> -1 (71 PV) (Coup Perforant ; Armure : -4 1T) de Pseudo-Dragon [Novice] (5926155)
+  * @08:39:10 ~Tahini <b>DEF CAPA</b> -0 (Spores ; Esquive : -1 | Dégâts : -14 | Régénération : -8 | Vue : -2 1T) de Bouj'Dla Placide [Légendaire] (5793865)
+  * @10:16:11 ~Eneth CDM Pseudo-Dragon Cogneur (5922663) : 10%
+  * @02:25:55 ~Bac ATT (MORT) -81 sur Momie [Récente] (5932810)
+  * @09:27:22 ~Põm³ <b>ATT SACRO</b> sur Marmitte (+34 pour -45)
   
-# Note additionnelle
-
-Le plugin [Spawn](https://github.com/hangoutsbot/hangoutsbot/wiki/Spawn-Plugin) de hangoutsbot peut permettre de passer des commandes au module de requêtage de SCIZ (voir exemple de configuration)
+# Exemples de requêtes
   * /sciz req 104126 pos,pv,dla
     * TROLL PõmPõmPõm (104126)
     * X=45 Y=4 N=-31
-    * PV 175/175
-    * DLA 02:37:30 (0PA)
+    * PV 154/175
+    * DLA 21:17:30 (2PA) / 07:20:30 
   * /sciz req 5900451
     * MOB Grosse Sorcière [Nouvelle] (5900451)
     * Blessure : 0%
@@ -36,5 +36,5 @@ Le plugin [Spawn](https://github.com/hangoutsbot/hangoutsbot/wiki/Spawn-Plugin) 
     * Voir le caché : Non
     * [...]
   * /sciz req 104126 event 2
-    * @06:58:17 : COMBAT  (Attaque esquivée parfaitement) : Défenseur Põm³ (104126) esq 58 VS Attaquant Petit Bouj'Dla [Jeune] (5886988) att 23
-    * @06:03:07 : COMBAT  (Attaque esquivée) : Défenseur Põm³ (104126) esq 66 VS Attaquant Spectre Corrompu [Naissant] (5899382) att 52
+    * @07:23:14 ~Põm³ ATT -46 sur Ettin [Vétéran] (5895436) (Attaque critique Projectile Magique att 78 resi 10 deg 43 esq 5 sr 53)
+    * @17:16:05 ~Põm³ DEF -32 (50 PV) (Attaque Paralysante ; DLA +135 minutes 2T) de Alpha Essaim Sanguinaire [Imago] (5899715) (Attaque att 69 resi 32 deg 48 esq 64 sr 21)

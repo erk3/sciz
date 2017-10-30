@@ -1,17 +1,28 @@
 {
   "commands_enabled": true, 
-  "commands_aliases": ["/sciz"],
-  "spawn": {
+  "commands_aliases": [
+    "/sciz"
+  ],
+  "sciz_requests": {
+    "jwt": "JWT YourJWTForSCIZHangoutsBot",
+    "url": "http://your.sciz.domain/api/bot/hooks",
     "commands": {
-      "req": {
-        "command" : ["/usr/bin/python", "/path/to/sciz.py",  "-c",  "/path/to/confs/sciz.ini",  "-r"],
-        "allow_args": true
+      "req": {},
+      "dla": {
+        "args" : "users dla"
+      },
+      "pos": {
+        "args" : "users pos"
+      },
+      "pv": {
+        "args" : "users pv"
       }
     }
   },
   "sciz_events": {
-    "refresh_time" : 2,
-    "conv_title" : "SCIZ",
-    "cmd" : ["/usr/bin/python", "/path/to/sciz.py",  "-c",  "/path/to/confs/sciz.ini",  "-n"]
+    "refresh_time": 2,
+    "conv_title": "SCIZ",
+    "jwt": "JWT YourJWTForSCIZHangoutsBot",
+    "url": "http://your.sciz.domain/api/bot/hooks"
   }
 }
