@@ -54,7 +54,7 @@ UserModel.prototype.comparePasswords = function (pwd, callback) {
 }
 
 function changeTrollBlasonURL(user) { 
-  if (user && user.troll && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
+  if (user && user.troll && user.troll.blason_url && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
     user.troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + user.troll.id; 
   } 
 }
