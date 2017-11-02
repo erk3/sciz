@@ -6,7 +6,7 @@ Une base de données collaborative pour jouer en groupe à [Mountyhall](https://
 # Fonctionnalités principales
 
 * Décomposition analytique des courriels de notification du jeu transférés par les joueurs
-* Consolidation et croisement avec les données disponibles publiquement
+* Consolidation éventuelle et croisement avec les données disponibles publiquement
 * Génération de notifications sur évènements
 * Moteur de requêtage des informations collectées et générées
 * Interface Zhumain Machine
@@ -73,7 +73,9 @@ From Põm³ with love
 L'interface Web permet à date :
   - de consulter les évènements collectés par SCIZ
   - à chaque utilisateur de modifier son profil SCIZ en self-service
-  - aux adminsitrateurs de gérer les différents hooks
+  - aux adminsitrateurs de gérer les différents hooks pour les notifications
 
-Chaque communauté de joueur utilise par ailleurs ses propres canaux de communication pour recueillir les notifications générées par SCIZ, est disponible à date :
+Chaque communauté de joueur utilise ses propres canaux de communication pour recueillir les notifications générées par SCIZ, est disponible à date :
   * Un ```plugin``` et exemple de configuration pour [Hangoutsbot](https://github.com/hangoutsbot/hangoutsbot)
+  * Un ```plugin``` pour [Miaou](https://github.com/Canop/miaou)
+
