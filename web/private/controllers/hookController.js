@@ -43,31 +43,38 @@ HookController.request = function (req, res) {
     return;
   }
 
-  var args = ['sciz.py', '-g', groupID, '-r', arg1];
-  if (arg2) {
-    args.push(arg2);
-  }
-  if (arg3) {
-    args.push(arg3);
-  }
+  DB.Group.findOne({where: {id: groupID}})
+    .then(function (group) {
 
-  const child = spawn('python', args, {
-    shell: false,
-    cwd: config.sciz.bin
-  });
+      var args = ['sciz.py', '-g', group.flat_name, '-r', arg1];
+      if (arg2) {
+        args.push(arg2);
+      }
+      if (arg3) {
+        args.push(arg3);
+      }
 
-  var data = '';
+      const child = spawn('python', args, {
+        shell: false,
+        cwd: config.sciz.bin
+      });
 
-  child.stdout.on('data', (data_out) => {
-    data += data_out;
-  });
+      var data = '';
 
-  child.on('close', (code) => {
-    if (data) {
-      res.json({message: data});
-    } else {
-      res.status(500).json({message: 'Une erreur est survenue !'});
-    }
+      child.stdout.on('data', (data_out) => {
+        data += data_out;
+      });
+
+      child.on('close', (code) => {
+        if (data) {
+          res.json({message: data});
+        } else {
+          res.status(500).json({message: 'Une erreur est survenue !'});
+        }
+      });
+  })
+  .catch(function (error) {
+    res.status(400).json({message: 'Une erreur est survenue ! ' + error.message});
   });
 }
 

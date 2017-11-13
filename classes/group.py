@@ -13,6 +13,7 @@ class GROUP(sg.SqlAlchemyBase):
     # SQL Table Mapping
     __tablename__ = 'groups'
     id = Column(Integer, primary_key=True)
+    flat_name = Column(String(50), unique=True)
     name = Column(String(50), unique=True)
     desc = Column(String(255))
     blason_url = Column(String(255))

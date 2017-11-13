@@ -144,9 +144,12 @@ class MailWalker:
                             sg.db.add(obj)
                             event = EVENT()
                             sg.db.add(event, obj)
-                
-                    os.remove(msgFile._file.name)
-            
+                    
+                    new_file = self.mailDirPath + os.sep + group.name + os.sep + 'parsed' + os.sep + os.path.basename(msgFile._file.name)
+                    sg.createDirName(new_file)
+                    os.rename(msgFile._file.name, new_file)
+                    #os.remove(msgFile._file.name)
+
                 # If anything goes wrong parsing a mail, it will land here (hopefully) then continue
                 except Exception:
                     sg.logger.warning('Fail to handle mail %s' % (msgFile._file.name, ), exc_info=True)

@@ -63,7 +63,7 @@ AdminController.revokeHook = function (req, res) {
     .then(function () {
       res.json({success: true});
     })
-    .catch(function(error) {
+    .catch(function (error) {
       res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
     });
 }

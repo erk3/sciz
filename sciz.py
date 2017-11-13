@@ -32,12 +32,7 @@ class SCIZ:
         logger_file = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE)
         logger_file_max_size = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE_MAX_SIZE)
         logger_formatter = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FORMATTER)
-        if not os.path.exists(os.path.dirname(logger_file)):
-            try:
-                os.makedirs(os.path.dirname(logger_file))
-            except OSError as exc:
-                if exc.errno != errno.EEXIST:
-                    raise
+        sg.createDirName(logger_file);
         log_file = RotatingFileHandler(logger_file, 'a', logger_file_max_size, 1)
         log_file.setLevel(logging_level)
         log_file.setFormatter(logging.Formatter(logger_formatter))
@@ -61,12 +56,10 @@ class SCIZ:
     def walk(self):
         self.walker = MailWalker()
         self.adminHelper = AdminHelper()
-        try:
-            group_name = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_GROUP_NAME)
-            group = sg.db.session.query(GROUP).filter(GROUP.name == group_name).one()
+        if sg.group:
             # A group is already set, its conf has already been loaded
-            self.walker.walk(group)
-        except Exception as e:
+            self.walker.walk(sg.group)
+        else:
             groups = sg.db.session.query(GROUP).all()
             for group in groups:
                 # Ensure to load the conf for the group

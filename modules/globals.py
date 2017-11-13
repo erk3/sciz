@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Imports
+import os, errno
 from sqlalchemy.ext.declarative import declarative_base 
 from sqlalchemy import Table, Column, Integer, ForeignKey
 
@@ -9,6 +10,14 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 SqlAlchemyBase = declarative_base()
 
 # Utils
+def createDirName(file_path):
+    if not os.path.exists(os.path.dirname(file_path)):
+        try:
+            os.makedirs(os.path.dirname(file_path))
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise
+
 def parseFrenchBoolean(boolean):
     if isinstance (boolean, str):
         if boolean.lower() == 'oui':

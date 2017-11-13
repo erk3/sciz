@@ -47,10 +47,10 @@ class AdminHelper:
     def set_group(self, group_name):
         # Set the working group
         sg.group = None
-        group_name = group_name.lower()
-        sg.logger.info('Group has been set to %s!' % (group_name, ))
+        flat_name = group_name.lower().replace(' ', '')
+        sg.logger.info('Group has been set to %s!' % (flat_name, ))
         try:
-            sg.group = sg.db.session.query(GROUP).filter(GROUP.name == group_name).one() 
+            sg.group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one() 
             try:
                 # Group exists, load its configuration
                 confs = sg.db.session.query(CONF).filter(CONF.group_id == sg.group.id).all()
@@ -64,6 +64,7 @@ class AdminHelper:
             sg.logger.info('Creating group %s on the fly...' % (group_name, ))
             sg.group = GROUP()
             sg.group.name = group_name
+            sg.group.flat_name = flat_name
             sg.group = sg.db.add(sg.group)
             # Populate default conf for the group
             for (each_key, each_value) in sg.config.items(sg.CONF_GROUP_SECTION):
@@ -73,14 +74,9 @@ class AdminHelper:
                 conf.group_id = sg.group.id
                 sg.db.add(conf)
             # Add an entry to the postfix accounts conf file
-            if not os.path.exists(os.path.dirname(self.pf_conf_file)):
-                try:
-                    os.makedirs(os.path.dirname(self.pf_conf_file))
-                except OSError as exc:
-                    if exc.errno != errno.EEXIST:
-                        raise
+            sg.createDirName(self.pf_conf_file);
             with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:
-                fp.write("%s@%s|%s\n" % (sg.group.name, self.domain_name, sg.group.mail_pwd, ))
+                fp.write("%s@%s|%s\n" % (flat_name, self.domain_name, sg.group.mail_pwd, ))
 
     # Create or update users from JSON file, then if a group is set also do the binding and create the troll
     def add_json_users(self, json_file):

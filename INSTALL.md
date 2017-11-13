@@ -100,7 +100,9 @@ pip install -r sciz/requirements.txt
 ## Installation de la crontab
 ```
 apt-get install cron
-crontab docker/sciz-crontab
+cp docker/sciz-crontab sciz-crontab
+# Edit the sciz-crontab and change the HOME environment variable according to your setup
+crontab sciz-crontab
 ```
 
 ## Configuration minimale de SCIZ

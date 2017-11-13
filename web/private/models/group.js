@@ -16,6 +16,11 @@ GroupTemplate.modelDefinition = {
     allowNull: false,
     autoIncrement: true
   },
+  flat_name: {
+    type: sequelize.STRING,
+    unique: true,
+    allowNull: false
+  },
   name: {
     type: sequelize.STRING,
     unique: true,
