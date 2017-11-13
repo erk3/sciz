@@ -4,6 +4,9 @@ angular
 
 function profileCtrl($http, authService) {
   var vm = this;
+  const stepDynSpRefresh = 2;
+  const stepStaticSpRefresh = 0;
+
   vm.updateProfile = updateProfile;
   vm.profile = {};
 
@@ -18,6 +21,8 @@ function profileCtrl($http, authService) {
     .then(function (response) {
       if (response && response.data) {
         vm.profile = response.data;
+        vm.dynSpRefresh = (vm.profile.dyn_sp_refresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.profile.dyn_sp_refresh;
+        vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
         vm.profile.blasonUrl = vm.profile.trolls.find(function (troll) {
           return troll.blason_url !== null;
         });
@@ -44,6 +49,9 @@ function profileCtrl($http, authService) {
       vm.profile.newPwd = vm.newPwd;
       vm.profile.pwd = vm.pwd;
     }
+
+    vm.profile.dyn_sp_refresh = (vm.dynSpRefresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.dynSpRefresh;
+    vm.profile.static_sp_refresh = (vm.staticSpRefresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.staticSpRefresh;
 
     $http({
       method: 'POST',

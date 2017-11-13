@@ -117,12 +117,14 @@ class AdminHelper:
         users_static_sp = []
         sg.logger.info('Checking if an SP refresh is needed for each user...')
         for user in users:
-            if not user.last_dyn_sp_call or ((datetime.datetime.utcnow() - user.last_dyn_sp_call).total_seconds() >= (user.dyn_sp_refresh * 60)):
-                user.last_dyn_sp_call = datetime.datetime.utcnow()
-                users_dyn_sp.append(user)
-            if not user.last_static_sp_call or ((datetime.datetime.utcnow() - user.last_static_sp_call).total_seconds() >= (user.static_sp_refresh * 60)):
-                user.last_static_sp_call = datetime.datetime.utcnow()
-                users_static_sp.append(user)
+            if user.dyn_sp_refresh:
+                if not user.last_dyn_sp_call or ((datetime.datetime.utcnow() - user.last_dyn_sp_call).total_seconds() >= (user.dyn_sp_refresh * 60)):
+                    user.last_dyn_sp_call = datetime.datetime.utcnow()
+                    users_dyn_sp.append(user)
+            if user.static_sp_refresh:
+                if not user.last_static_sp_call or ((datetime.datetime.utcnow() - user.last_static_sp_call).total_seconds() >= (user.static_sp_refresh * 60)):
+                    user.last_static_sp_call = datetime.datetime.utcnow()
+                    users_static_sp.append(user)
             sg.db.add(user)
         mh = MHCaller()
         if len(users_dyn_sp) > 0:

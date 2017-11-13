@@ -12,7 +12,9 @@ UserController.updateProfile = function (req, res) {
 
   var data = {
     pseudo: req.body.pseudo,
-    mh_apikey: req.body.mh_apikey
+    mh_apikey: req.body.mh_apikey,
+    dyn_sp_refresh: req.body.dyn_sp_refresh,
+    static_sp_refresh: req.body.static_sp_refresh
   };
 
   var update = function (user, data, res) {
@@ -69,6 +71,8 @@ UserController.getProfile = function (req, res) {
           id: user.id,
           pseudo: user.pseudo,
           mh_apikey: user.mh_apikey,
+          dyn_sp_refresh: user.dyn_sp_refresh,
+          static_sp_refresh: user.static_sp_refresh,
           trolls: user.trolls,
         });
       }

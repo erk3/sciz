@@ -47,6 +47,12 @@ UserTemplate.modelDefinition = {
   mh_apikey: {
     type: sequelize.STRING,
   },
+  dyn_sp_refresh: {
+    type: sequelize.INTEGER,
+  },
+  static_sp_refresh: {
+    type: sequelize.INTEGER,
+  },
 };
 
 UserTemplate.modelOptions = {

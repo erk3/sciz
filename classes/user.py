@@ -21,11 +21,11 @@ class USER(sg.SqlAlchemyBase):
     # Mountyhall API Key
     mh_apikey = Column(String(50))
     # Minutes between a refresh of dynamic MH scripts
-    dyn_sp_refresh = Column(Integer(), default=180)
+    dyn_sp_refresh = Column(Integer(), default=240)
     # Last refresh of dynamic MH scripts
     last_dyn_sp_call = Column(DateTime())
     # Minutes between a refresh of static MH scripts
-    static_sp_refresh = Column(Integer(), default=180)
+    static_sp_refresh = Column(Integer(), default=240)
     # Last refresh of static MH scripts
     last_static_sp_call = Column(DateTime())
     

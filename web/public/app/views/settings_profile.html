@@ -15,14 +15,28 @@
     <div class="form-group" ng-class="{'has-error':!pc.profile.pseudo}">
       <label class="col-sm-2 control-label">Pseudonyme SCIZ</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" placeholder="Pseudonyme SCIZ" ng-model="pc.profile.pseudo">
+        <input type="text" class="form-control" placeholder="Pseudonyme SCIZ" ng-model="pc.profile.pseudo" required>
       </div>
     </div>
 
     <div class="form-group" ng-class="{'has-error':!pc.profile.mh_apikey}">
       <label class="col-sm-2 control-label">Mot de passe MH</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" placeholder="Mot de passe MH" ng-model="pc.profile.mh_apikey">
+        <input type="text" class="form-control" placeholder="Mot de passe MH" ng-model="pc.profile.mh_apikey" required>
+      </div>
+    </div>
+    
+    <div class="form-group" ng-class="{'has-error': pc.dynSpRefresh === null}">
+      <label class="col-sm-2 control-label">Appels aux SP MH dynamiques par jour</label>
+      <div class="col-sm-5">
+        <input type="number" min="0" step="2" max="24" class="form-control" ng-model="pc.dynSpRefresh" required>
+      </div>
+    </div>
+    
+    <div class="form-group" ng-class="{'has-error': pc.staticSpRefresh === null}">
+      <label class="col-sm-2 control-label">Appels aux SP MH statiques par jour</label>
+      <div class="col-sm-5">
+        <input type="number" min="0" step="0" max="0" class="form-control" ng-model="pc.staticSpRefresh" required>
       </div>
     </div>
     
