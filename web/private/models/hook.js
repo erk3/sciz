@@ -1,54 +1,65 @@
 'use strict'; 
 
-var Sequelize = require('sequelize');
-
+var sequelize = require('sequelize');
 var jwt = require('jsonwebtoken');
 var config = require('../../config.js');
-var db = require('../services/database.js');
+var HookTemplate = {};
 
-var modelDefinition = {  
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true
-  },
-  nom: {
-    type: Sequelize.STRING,
-    unique: true,
-    allowNull: false
-  },
-  jwt: {
-    type: Sequelize.STRING,
-  },
-  revoked: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false
-  },
-  last_event_id: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0
-  }
-};
-
-var modelOptions = {
-  hooks: {
-    afterCreate: createNoExpirationJWT
-  }
-};
-
-var HookModel = db.define('hooks', modelDefinition, modelOptions);
-
-function createNoExpirationJWT(hook) {
+/*
+ * Methods
+ */
+var createNoExpirationJWT = function (hook) {
   var token = 'JWT ' + jwt.sign(
     {
       type: 'hook',
       id: hook.id,
-      nom: hook.nom
+      group_id: hook.group_id,
+      name: hook.name
     },
     config.keys.secret
   );
-  HookModel.update({jwt: token}, {where: {id: hook.id}});
-}
+  hook.jwt = token;
+};
 
-module.exports = HookModel;
+/*
+ * Definition
+ */
+HookTemplate.name = 'Hook';
+HookTemplate.table = 'hooks';
+
+HookTemplate.modelDefinition = {  
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true
+  },
+  name: {
+    type: sequelize.STRING,
+    unique: true,
+    allowNull: false
+  },
+  jwt: {
+    type: sequelize.STRING,
+  },
+  revoked: {
+    type: sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  last_event_id: {
+    type: sequelize.INTEGER,
+    defaultValue: 0
+  }
+};
+
+HookTemplate.modelOptions = {
+  name: {
+    singular: 'hook',
+    plural: 'hooks'
+  },
+  hooks: {
+    beforeCreate: createNoExpirationJWT
+  }
+};
+
+module.exports = HookTemplate;

@@ -3,7 +3,7 @@
 
 # Imports
 import re, datetime
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -12,88 +12,132 @@ class CDM(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'cdms'
-    id = Column(Integer, primary_key=True)              # Identifiant unique de la CDM
-    time = Column(DateTime)                             # Horodatage de la CDM
-    troll_id = Column(Integer, ForeignKey('trolls.id')) # Identifiant du Troll ayant réalisé la CDM
-    mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre associé à la CDM
-    comp_niv = Column(Integer)                          # Niveau de compétence de la CDM
-    blessure = Column(Integer)                          # Pourcentage de blessure du monstre
-    niv_min = Column(Integer)                           # Niveau minimum
-    niv_max = Column(Integer)                           # Niveau maximum
-    pv_min = Column(Integer)                            # Points de Vie minimum
-    pv_max = Column(Integer)                            # Points de Vie maximum
-    att_min = Column(Integer)                           # Attaque minimum en D6
-    att_max = Column(Integer)                           # Attaque maximum en D6
-    esq_min = Column(Integer)                           # Esquive minimum en D6
-    esq_max = Column(Integer)                           # Esquive maximum en D6
-    deg_min = Column(Integer)                           # Dégâts minimum en D3
-    deg_max = Column(Integer)                           # Dégâts maximum en D3
-    reg_min = Column(Integer)                           # Régénération minimum en D3
-    reg_max = Column(Integer)                           # Régénération maximum en D3
-    arm_phy_min = Column(Integer)                       # Armure physique minimum
-    arm_phy_max = Column(Integer)                       # Armure physique maximum
-    vue_min = Column(Integer)                           # Vue minimum en nombre de cases
-    vue_max = Column(Integer)                           # Vue maximum en nombre de cases
-    capa_desc = Column (String(150))                    # Descritpion de la capacité spéciale
-    capa_effet = Column (String(150))                   # Effet de la capacité spéciale
-    capa_tour = Column (Integer)                        # Nombre de tours d'effet de la capacité spéciale
-    mm_min = Column(Integer)                            # Maitrise Magique minimum
-    mm_max = Column(Integer)                            # Maitrise Magique maximum
-    rm_min = Column(Integer)                            # Résistance Magique minimum
-    rm_max = Column(Integer)                            # Résistance Magique maximum
-    nb_att_tour = Column(Integer)                       # Nombre d'attaque par tour
-    vit_dep = Column(String(10))                        # Vitesse de déplacement
-    vlc = Column(Boolean)                               # Voir la caché ?
-    att_dist = Column(Boolean)                          # Attaque à distance ?
-    dla = Column(String(50))                            # Moment de la DLA
-    tour_min = Column(Integer)                          # Tour minimum en heure
-    tour_max = Column(Integer)                          # Tour maximum en heure
-    chargement = Column(String(50))                     # Chargement de trésors
-    bonus_malus = Column(String(150))                   # Bonus et Malus en cours 
-    portee_capa = Column(String(50))                    # Portée du pouvoir (capacité spéciale)
+    __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
+    # ID unique
+    id = Column(Integer, autoincrement=True)
+    # Horodatage de la CDM
+    time = Column(DateTime)
+    # ID du troll 
+    troll_id = Column(Integer, ForeignKey('trolls.id'))
+    # ID du monstre
+    mob_id = Column(Integer, ForeignKey('mobs.id'))
+    # ID du groupe
+    group_id = Column(Integer, ForeignKey('groups.id'))
+    # Niveau de compétence de la CDM
+    comp_niv = Column(Integer)
+    # Pourcentage de blessure du monstre
+    blessure = Column(Integer)
+    # Niveau minimum
+    niv_min = Column(Integer)
+    # Niveau maximum
+    niv_max = Column(Integer)
+    # Points de Vie minimum
+    pv_min = Column(Integer)
+    # Points de Vie maximum
+    pv_max = Column(Integer)
+    # Attaque minimum en D6
+    att_min = Column(Integer)
+    # Attaque maximum en D6
+    att_max = Column(Integer)
+    # Esquive minimum en D6
+    esq_min = Column(Integer)
+    # Esquive maximum en D6
+    esq_max = Column(Integer)
+    # Dégâts minimum en D3
+    deg_min = Column(Integer)
+    # Dégâts maximum en D3
+    deg_max = Column(Integer)
+    # Régénération minimum en D3
+    reg_min = Column(Integer)
+    # Régénération maximum en D3
+    reg_max = Column(Integer)
+    # Armure physique minimum
+    arm_phy_min = Column(Integer)
+    # Armure physique maximum
+    arm_phy_max = Column(Integer)
+    # Vue minimum en nombre de cases
+    vue_min = Column(Integer)
+    # Vue maximum en nombre de cases
+    vue_max = Column(Integer)
+    # Descritpion de la capacité spéciale
+    capa_desc = Column(String(150))
+    # Effet de la capacité spéciale
+    capa_effet = Column(String(150))
+    # Nombre de tours d'effet de la capacité spéciale
+    capa_tour = Column(Integer)
+    # Maitrise Magique minimum
+    mm_min = Column(Integer)
+    # Maitrise Magique maximum
+    mm_max = Column(Integer)
+    # Résistance Magique minimum
+    rm_min = Column(Integer)
+    # Résistance Magique maximum
+    rm_max = Column(Integer)
+    # Nombre d'attaque par tour
+    nb_att_tour = Column(Integer)
+    # Vitesse de déplacement
+    vit_dep = Column(String(10))
+    # Voir la caché ?
+    vlc = Column(Boolean)
+    # Attaque à distance ?
+    att_dist = Column(Boolean)
+    # Moment de la DLA
+    dla = Column(String(50))
+    # Tour minimum en heure
+    tour_min = Column(Integer)
+    # Tour maximum en heure
+    tour_max = Column(Integer)
+    # Chargement de trésors
+    chargement = Column(String(50))
+    # Bonus et Malus en cours 
+    bonus_malus = Column(String(150))
+    # Portée du pouvoir (capacité spéciale)
+    portee_capa = Column(String(50))
 
-    troll = relationship("TROLL", back_populates="cdms")
-    mob = relationship("MOB", back_populates="cdms")
-    event = relationship("EVENT", back_populates="cdm", uselist=False)
+    # Associations One-To-Many
+    troll = relationship("TROLL", primaryjoin="and_(CDM.troll_id==TROLL.id, CDM.group_id==TROLL.group_id)", back_populates="cdms")
+    mob = relationship("MOB", primaryjoin="and_(CDM.mob_id==MOB.id, CDM.group_id==MOB.group_id)", back_populates="cdms")
+    group = relationship("GROUP", back_populates="cdms")
+    # Association One-To-One
+    event = relationship("EVENT", primaryjoin="and_(CDM.id==EVENT.cdm_id, CDM.group_id==EVENT.group_id)", back_populates="cdm", uselist=False)
 
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    # Constructor is handled by SqlAlchemy do not override
     
     # Populate object from a mail and the dedicated regexp in the configuration file
-    def populate_from_mail(self, subject, body, config, logger):
-        
+    def populate_from_mail(self, subject, body, group):
         # Load the regexp
         try:
-            re_event_troll = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
-            re_event_time = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
-            re_cdm_desc = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DESC_RE)
-            re_cdm_type = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_TYPE_RE)
-            re_cdm_niv = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_NIV_RE)
-            re_cdm_blessure = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_BLESSURE_RE)
-            re_cdm_pv = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_PV_RE)
-            re_cdm_att = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_RE)
-            re_cdm_esq = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ESQ_RE)
-            re_cdm_deg = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DEG_RE)
-            re_cdm_reg = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_REG_RE)
-            re_cdm_arm = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ARM_RE)
-            re_cdm_vue = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VUE_RE)
-            re_cdm_mm = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_MM_RE)
-            re_cdm_rm = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_RM_RE)
-            re_cdm_capa = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_CAPA_RE)
-            re_cdm_nb_att = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_NB_ATT_RE)
-            re_cdm_vit_dep = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VIT_DEP_RE)
-            re_cdm_vlc = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VLC_RE)
-            re_cdm_att_dist = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_DIST_RE)
-            re_cdm_dla = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DLA_RE)
-            re_cdm_tour = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_TOUR_RE)
-            re_cdm_chargement = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_CHARGEMENT_RE)
-            re_cdm_bonus_malus = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_BONUS_MALUS_RE)
-            re_cdm_portee_capa = config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_PORTEE_CAPA_RE)
+            re_event_troll = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
+            re_event_time = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
+            re_cdm_desc = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DESC_RE)
+            re_cdm_type = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_TYPE_RE)
+            re_cdm_niv = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_NIV_RE)
+            re_cdm_blessure = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_BLESSURE_RE)
+            re_cdm_pv = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_PV_RE)
+            re_cdm_att = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_RE)
+            re_cdm_esq = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ESQ_RE)
+            re_cdm_deg = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DEG_RE)
+            re_cdm_reg = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_REG_RE)
+            re_cdm_arm = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ARM_RE)
+            re_cdm_vue = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VUE_RE)
+            re_cdm_mm = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_MM_RE)
+            re_cdm_rm = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_RM_RE)
+            re_cdm_capa = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_CAPA_RE)
+            re_cdm_nb_att = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_NB_ATT_RE)
+            re_cdm_vit_dep = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VIT_DEP_RE)
+            re_cdm_vlc = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_VLC_RE)
+            re_cdm_att_dist = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_ATT_DIST_RE)
+            re_cdm_dla = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_DLA_RE)
+            re_cdm_tour = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_TOUR_RE)
+            re_cdm_chargement = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_CHARGEMENT_RE)
+            re_cdm_bonus_malus = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_BONUS_MALUS_RE)
+            re_cdm_portee_capa = sg.config.get(sg.CONF_CDM_SECTION, sg.CONF_CDM_PORTEE_CAPA_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
-        
+        # GROUP
+        self.group_id = group.id
         # Event Troll
         res = re.search(re_event_troll, body)
         self.troll_id = res.group(1)

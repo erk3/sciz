@@ -3,16 +3,19 @@
 
 # Imports
 import ConfigParser
-from sqlalchemy import create_engine, exc, orm
+from sqlalchemy import create_engine, exc, orm, inspect, event, and_
+from sqlalchemy_utils import database_exists, create_database
 from classes.user import USER
 from classes.troll import TROLL
 from classes.metamob import METAMOB
 from classes.mob import MOB
 from classes.cdm import CDM
-from classes.battle_event import BATTLE_EVENT
+from classes.battle import BATTLE
 from classes.event import EVENT
 from classes.hook import HOOK
 from classes.piege import PIEGE
+from classes.conf import CONF
+from classes.group import GROUP
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
@@ -21,25 +24,22 @@ import modules.globals as sg
 class SQLHelper:
 
     # Constructor
-    def __init__(self, config, logger):
-        self.config = config
-        self.logger = logger
+    def __init__(self):
         self.check_conf()
         self.connect()
-        self.pp = PrettyPrinter(config, logger)
 
     # Configuration loader and checker
     def check_conf(self):
         try:
             # Load DB conf
-            self.db_host = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_HOST)
-            self.db_port = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_PORT)
-            self.db_name = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_NAME)
-            self.db_user = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_USER)
-            self.db_pass = self.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_PASS)
+            self.db_host = sg.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_HOST)
+            self.db_port = sg.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_PORT)
+            self.db_name = sg.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_NAME)
+            self.db_user = sg.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_USER)
+            self.db_pass = sg.config.get(sg.CONF_DB_SECTION, sg.CONF_DB_PASS)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            self.logger.error('Fail to load config! (ConfigParser error:' + str(e) + ')')
+            sg.logger.error('Fail to load config! (ConfigParser error: %s)' % (str(e), ))
             raise
 
     # Init the DB
@@ -48,54 +48,107 @@ class SQLHelper:
             sg.SqlAlchemyBase.metadata.create_all(self.engine)
         except (exc.SQLAlchemyError, exc.DBAPIError) as e:
             e.sciz_logger_flag = True
-            self.logger.error('Fail to init the DB! (SQLAlchemy error:' + str(e) + ')')
+            sg.logger.error('Fail to init the DB! (SQLAlchemy error: %s)' % (str(e), ))
             raise
     
     # Connect to the DB
     def connect(self):
         try:
-            self.engine = create_engine('mysql+mysqldb://' + self.db_user + ':' + self.db_pass + '@' + self.db_host + ':' + self.db_port + '/' + self.db_name + '?charset=utf8', encoding=sg.DEFAULT_CHARSET)
+            db_url = 'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name, )
+            self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET)
+            if self.db_name and not database_exists(self.engine.url):
+                create_database(self.engine.url)
             self.sessionMaker = orm.sessionmaker(bind=self.engine)
             self.session = self.sessionMaker()
         except (exc.SQLAlchemyError, exc.DBAPIError) as e:
             e.sciz_logger_flag = True
-            self.logger.error('Fail to conect to the DB! (SQLAlchemy error:' + str(e) + ')')
+            sg.logger.error('Fail to conect to the DB! (SQLAlchemy error: %s)' % (str(e), ))
             raise
 
     # Add any object (dispatcher)
-    def add(self, obj):
+    def add(self, obj, obj2=None):
         if isinstance(obj, MOB):
-            self.__add_mob(obj)
+            return self.__add_mob(obj)
         elif isinstance(obj, CDM):
-            self.__add_cdm(obj)
+            return self.__add_cdm(obj)
         elif isinstance(obj, PIEGE):
-            self.__add_piege(obj)
+            return self.__add_piege(obj)
         elif isinstance(obj, TROLL):
-            self.__add_troll(obj)
-        elif isinstance(obj, BATTLE_EVENT):
-            self.__add_battle_event(obj)
+            return self.__add_troll(obj, obj2)
+        elif isinstance(obj, BATTLE):
+            return self.__add_battle(obj)
         elif isinstance(obj, USER):
-            self.__add_user(obj)
+            return self.__add_user(obj)
+        elif isinstance(obj, GROUP):
+            return self.__add_group(obj)
+        elif isinstance(obj, CONF):
+            return self.__add_conf(obj)
+        elif isinstance(obj, EVENT):
+            return self.__add_event(obj, obj2)
 
-    # Add a USER
-    def __add_user(self, user_new):
+    # Insert or update a USER
+    def __add_user(self, new_user):
+        user = None
         try:
-            user_old = self.session.query(USER).filter(USER.id == user_new.id).one() 
-            self.logger.info('User %s already found, updating but password...' % (user_old.id,))
-            user_old.update_from_new(user_new) 
-            self.session.add(user_old) 
+            old_user = self.session.query(USER).filter(USER.id == new_user.id).one() 
+            user = self.session.merge(new_user)
+            sg.logger.info('Updating user %s...' % (user.id, ))
         except orm.exc.NoResultFound:
-            self.logger.info('New user %s, creating...' % (user_new.id,))
-            troll = TROLL() 
-            troll.id = user_new.id
-            troll.sciz_notif = True
-            self.__add_troll(troll)
-            self.session.add(user_new) 
+            user = new_user
+            sg.logger.info('Creating user %s...' % (user.id, ))
+        self.session.add(user)
+        self.session.commit()
+        return user
+    
+    # Add a TROLL
+    def __add_troll(self, new_troll, event=None):
+        troll = None
+        try:
+            troll = self.session.query(TROLL).filter(and_(TROLL.id == new_troll.id, TROLL.group_id == new_troll.group_id)).one()
+            sg.logger.info("Updating troll %s..." % (troll.id, ))
+            troll.update_from_new(new_troll, event)
+        except orm.exc.NoResultFound:
+            troll = new_troll
+            sg.logger.info("Creating troll %s..." % (troll.id, ))
+        self.session.add(troll)
+        self.session.commit()
+        return troll
+            
+    # Add a CONF
+    def __add_conf(self, new_conf):
+        conf = None
+        try:
+            conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.group_id == new_conf.group_id)).one() 
+            sg.logger.info('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
+            conf.value = new_conf.value
+            self.session.add(conf)
+        except orm.exc.NoResultFound:
+            sg.logger.info('Creating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
+            conf = new_conf
+        self.session.add(conf) 
+        self.session.commit()
+        return conf
+    
+    # Add a GROUP
+    def __add_group(self, new_group):
+        group = None
+        try:
+            group = self.session.query(GROUP).filter(GROUP.id == new_group.id).one()
+            sg.logger.info('Updating group %s...' % (group.name, ))
+        except orm.exc.NoResultFound:
+            group = new_group
+            sg.logger.info('Creatin group %s...' % (group.name, ))
+        self.session.add(group)
+        self.session.commit()
+        return group
 
     # Add a NOTIF
-    def add_event(self, obj):
-        event = EVENT()
-        event.notif = self.pp.pretty_print(obj, True)
+    def __add_event(self, event, obj=None):
+        if not obj:
+            return None
+        pp = PrettyPrinter()
+        event.group_id = obj.group_id
+        event.notif = pp.pretty_print(obj, True)
         if event.notif:
             event.notif_to_push = False
             event.type = "UNKNWON"
@@ -109,46 +162,43 @@ class SQLHelper:
                     event.notif_to_push = True
                 event.piege_id = obj.id
                 event.type = "PIEGE"
-            elif isinstance(obj, BATTLE_EVENT):
+            elif isinstance(obj, BATTLE):
                 if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
                     event.notif_to_push = True
-                event.battle_event_id = obj.id
-                event.type = "BATTLE_EVENT"
+                event.battle_id = obj.id
+                event.type = "BATTLE"
             self.session.add(event)
+            self.session.commit()
         return event
         
-    # Add a TROLL
-    def __add_troll(self, troll_new, event = None):
-        try:
-            troll_old = self.session.query(TROLL).filter(TROLL.id == troll_new.id).one()
-            self.logger.info("TROLL %s already found in the DB, updating it with new data" % (troll_old.id, ))
-            troll_old.update_from_new(troll_new, event)
-            self.session.add(troll_old)
-        except orm.exc.NoResultFound:
-            self.logger.info("New Troll %s, creating it on the fly" % (troll_new.id, ))
-            self.session.add(troll_new)
-            
     # Add a MOB
-    def __add_mob(self, mob_new):
+    def __add_mob(self, new_mob):
+        mob = None
         try:
-            mob_old = self.session.query(MOB).filter(MOB.id == mob_new.id).one()
-            self.logger.info("MOB %s already found in the DB, updating it with new data" % (mob_old.id, ))
-            mob_old.update_from_new(mob_new)
-            if mob_old.metamob_id == None:
-                mob_old.link_metamob(self.session.query(METAMOB).all())
-            self.session.add(mob_old)
+            mob = self.session.query(MOB).filter(and_(MOB.id == new_mob.id, MOB.group_id == new_mob.group_id)).one()
+            sg.logger.info("Updating mob %s..." % (mob.id, ))
+            mob.update_from_new(new_mob)
+            if mob.metamob_id is None:
+                mob.link_metamob(self.session.query(METAMOB).all())
+            self.session.add(mob)
         except orm.exc.NoResultFound:
-            self.logger.info("New MOB %s, creating it on the fly" % (mob_new.id, ))
-            mob_new.sciz_notif = True
-            mob_new.link_metamob(self.session.query(METAMOB).all())
-            self.session.add(mob_new)
+            mob = new_mob
+            sg.logger.info("Creating MOB %s..." % (mob.id, ))
+            mob.sciz_notif = True
+            mob.link_metamob(self.session.query(METAMOB).all())
+        self.session.add(mob)
+        self.session.commit()
+        return mob
 
     # Add a PIEGE
     def __add_piege(self, piege):
         troll = TROLL()
         troll.id = piege.troll_id
+        troll.group_id = piege.group_id
         self.__add_troll(troll)
         self.session.add(piege)
+        self.session.commit()
+        return piege
 
     # Add a CDM
     def __add_cdm(self, cdm):
@@ -157,37 +207,64 @@ class SQLHelper:
         self.__add_mob(mob)
         troll = TROLL()
         troll.id = cdm.troll_id
+        troll.group_id = cdm.group_id
         self.__add_troll(troll)
         self.session.add(cdm)
+        self.session.commit()
+        return cdm
     
-    # Add a BATTLE_EVENT
-    def __add_battle_event(self, event):
-        if event.att_troll_id != None:
+    # Add a BATTLE
+    def __add_battle(self, battle):
+        if battle.att_troll_id != None:
             att_troll = TROLL()
-            att_troll.id = event.att_troll_id
-            att_troll.nom = event.att_troll_nom
-            self.__add_troll(att_troll, event)
-        if event.def_troll_id != None:
+            att_troll.id = battle.att_troll_id
+            att_troll.group_id = battle.group_id
+            att_troll.nom = battle.att_troll_nom
+            self.__add_troll(att_troll, battle)
+        if battle.def_troll_id != None:
             def_troll = TROLL()
-            def_troll.id = event.def_troll_id
-            def_troll.nom = event.def_troll_nom
-            self.__add_troll(def_troll, event)
-        if event.att_mob_id != None:
+            def_troll.id = battle.def_troll_id
+            def_troll.group_id = battle.group_id
+            def_troll.nom = battle.def_troll_nom
+            self.__add_troll(def_troll, battle)
+        if battle.att_mob_id != None:
             att_mob = MOB()
-            att_mob.id = event.att_mob_id
-            att_mob.nom = event.att_mob_nom
-            att_mob.age = event.att_mob_age
-            att_mob.tag = event.att_mob_tag
+            att_mob.id = battle.att_mob_id
+            att_mob.group_id = battle.group_id
+            att_mob.nom = battle.att_mob_nom
+            att_mob.age = battle.att_mob_age
+            att_mob.tag = battle.att_mob_tag
             self.__add_mob(att_mob)
-        if event.def_mob_id != None:
+        if battle.def_mob_id != None:
             def_mob = MOB()
-            def_mob.id = event.def_mob_id
-            def_mob.nom = event.def_mob_nom
-            def_mob.age = event.def_mob_age
-            def_mob.tag = event.def_mob_tag
+            def_mob.id = battle.def_mob_id
+            def_mob.group_id = battle.group_id
+            def_mob.nom = battle.def_mob_nom
+            def_mob.age = battle.def_mob_age
+            def_mob.tag = battle.def_mob_tag
             self.__add_mob(def_mob)
-        self.session.add(event)
-
+        self.session.add(battle)
+        self.session.commit()
+        return battle
+    
+    # Prevent the update of attrs to None
+    @event.listens_for(TROLL, 'before_update')
+    @event.listens_for(USER, 'before_update')
+    @event.listens_for(METAMOB, 'before_update')
+    @event.listens_for(MOB, 'before_update')
+    @event.listens_for(CDM, 'before_update')
+    @event.listens_for(BATTLE, 'before_update')
+    @event.listens_for(PIEGE, 'before_update')
+    @event.listens_for(GROUP, 'before_update')
+    @event.listens_for(HOOK, 'before_update')
+    def before_udpate(mapper, connection, target):
+        state = inspect(target)
+        for attr in state.attrs:
+            hist = state.get_history(attr.key, True)
+            if hist.has_changes() and not hist.added[0]:
+                setattr(target, attr.key, hist.deleted[0])
+    
     # Destructor
     def __del__(self):
-        pass
+        if self.engine:
+            self.engine.dispose()

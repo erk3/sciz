@@ -3,63 +3,90 @@
 
 # Imports
 import re, datetime, ConfigParser, copy
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
-# Class of a Battle Event (ATT / DEF / POUVOIR / HYPNO / ... ???)
-class BATTLE_EVENT(sg.SqlAlchemyBase):
-
+# Class of a Battle
+class BATTLE(sg.SqlAlchemyBase):
+    
     # SQL Table Mapping
-    __tablename__ = 'battle_events'
-    id = Column(Integer, primary_key=True)                  # Identifiant unique de la CDM
-    time = Column(DateTime)                                 # Horodatage de l'event
-    att_troll_id = Column(Integer, ForeignKey('trolls.id')) # Identifiant du Troll ayant réalisé l'evenement
-    def_troll_id = Column(Integer, ForeignKey('trolls.id')) # Identifiant du Troll ayant subi l'evenement
-    att_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant réalisé l'évènement
-    def_mob_id = Column(Integer, ForeignKey('mobs.id'))     # Identifiant du Monstre ayant subi l'évènement
-    flag_type = Column(String(50))                          # FLAG (ATT, DEF, HYPNO, SACRO...)
-    type = Column(String(50))                               # Type d'évènement
-    subtype = Column(String(50))                            # Sous type d'évènement
-    att = Column(Integer)                                   # Jet d'attaque
-    esq = Column(Integer)                                   # Jet d'esquive
-    deg = Column(Integer)                                   # Jet de dégâts (sans compter armure)
-    pv = Column(Integer)                                    # Points de vie perdu par la cible (avec armure)
-    vie = Column(Integer)                                   # Points de vie restants de la cible
-    soin = Column(Integer)                                  # Points de vie rendu à la cible
-    blessure = Column(Integer)                              # Blessure infligée à l'attaquant
-    sr = Column(Integer)                                    # Seuil de résistance en %
-    resi = Column(Integer)                                  # Jet de résistance en %
-    capa_desc = Column(String(150))                         # Descritpion de la capacité spéciale
-    capa_effet = Column(String(150))                        # Effet de la capacité spéciale
-    capa_tour = Column(Integer)                             # Nombre de tours d'effet de la capacité spéciale
+    __tablename__ = 'battles'
+    __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
+    # ID unique
+    id = Column(Integer, autoincrement=True)
+    # Horodatage de l'event
+    time = Column(DateTime)
+    # ID du troll attaquant
+    att_troll_id = Column(Integer, ForeignKey('trolls.id'))
+    # ID du troll défenseur
+    def_troll_id = Column(Integer, ForeignKey('trolls.id'))
+    # ID du monstre attaquant
+    att_mob_id = Column(Integer, ForeignKey('mobs.id'))
+    # ID du monstre défenseur
+    def_mob_id = Column(Integer, ForeignKey('mobs.id'))
+    # ID du piège
+    piege_id = Column(Integer, ForeignKey('pieges.id'))
+    # ID du groupe
+    group_id = Column(Integer, ForeignKey('groups.id'))
+    # FLAG (ATT, DEF, HYPNO, SACRO...)
+    flag_type = Column(String(50))
+    # Type d'évènement
+    type = Column(String(50))
+    # Sous type d'évènement
+    subtype = Column(String(50))
+    # Jet d'attaque
+    att = Column(Integer)
+    # Jet d'esquive
+    esq = Column(Integer)
+    # Jet de dégâts (sans compter armure)
+    deg = Column(Integer)
+    # Points de vie perdu par la cible (avec armure)
+    pv = Column(Integer)
+    # Points de vie restants de la cible
+    vie = Column(Integer)
+    # Points de vie rendu à la cible
+    soin = Column(Integer)
+    # Blessure infligée à l'attaquant
+    blessure = Column(Integer)
+    # Seuil de résistance en %
+    sr = Column(Integer)
+    # Jet de résistance en %
+    resi = Column(Integer)
+    # Descritpion de la capacité spéciale
+    capa_desc = Column(String(150))
+    # Effet de la capacité spéciale
+    capa_effet = Column(String(150))
+    # Nombre de tours d'effet de la capacité spéciale
+    capa_tour = Column(Integer)
 
-    # Associations
-    att_troll = relationship("TROLL", foreign_keys=[att_troll_id], back_populates="att_events")
-    def_troll = relationship("TROLL", foreign_keys=[def_troll_id], back_populates="def_events")
-    att_mob = relationship("MOB", foreign_keys=[att_mob_id], back_populates="att_events")
-    def_mob = relationship("MOB", foreign_keys=[def_mob_id], back_populates="def_events")
-    piege = relationship("PIEGE", back_populates='battle_event')
-    event = relationship("EVENT", back_populates='battle_event', uselist=False)
+    # Associations One-To-Many
+    att_troll = relationship("TROLL", primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="atts")
+    def_troll = relationship("TROLL", primaryjoin="and_(BATTLE.def_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="defs")
+    att_mob = relationship("MOB", primaryjoin="and_(BATTLE.att_mob_id==MOB.id, BATTLE.group_id==MOB.group_id)", back_populates="atts")
+    def_mob = relationship("MOB", primaryjoin="and_(BATTLE.def_mob_id==MOB.id, BATTLE.group_id==MOB.group_id)", back_populates="defs")
+    piege = relationship("PIEGE", primaryjoin="and_(BATTLE.piege_id==PIEGE.id, BATTLE.group_id==PIEGE.group_id)", back_populates="battles")
+    group = relationship("GROUP", back_populates="battles")
+    # Associations One-To-One
+    event = relationship("EVENT", primaryjoin="and_(BATTLE.id==EVENT.battle_id, BATTLE.group_id==EVENT.group_id)", back_populates="battle", uselist=False)
 
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    # Constructor is handled by SqlAlchemy do not override
     
     # Populate object from a mail and the dedicated regexp in the configuration file
-    def populate_from_mail(self, subject, body, config, logger, flag_type):
-        
+    def populate_from_mail(self, subject, body, group, flag_type):
         # Load the regexp
         try:
-            re_event_troll = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
-            re_event_type = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TYPE_RE)
-            re_event_time = config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
+            re_event_troll = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
+            re_event_type = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TYPE_RE)
+            re_event_time = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
-
         # FLAG
         self.flag_type = flag_type
+        # GROUP
+        self.group_id = group.id
         # Event Troll
         res = re.search(re_event_troll, body)
         if 'ATT' in flag_type:
@@ -71,46 +98,47 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         # Event time
         res = re.search(re_event_time, body)
         self.time = datetime.datetime.strptime(res.group(1), '%d/%m/%Y  %H:%M:%S')
-        
+        # Dispatch
         if flag_type == 'ATT':
-            self.__populate_from_att_mail(subject, body, config, logger)
+            self.__populate_from_att_mail(subject, body)
         elif flag_type == 'DEF':
-            self.__populate_from_def_mail(subject, body, config, logger)
+            self.__populate_from_def_mail(subject, body)
         elif flag_type == 'ATT HYPNO':
-            self.__populate_from_att_hypno_mail(subject, body, config, logger)
+            self.__populate_from_att_hypno_mail(subject, body)
         elif flag_type == 'DEF HYPNO':
-            self.__populate_from_def_hypno_mail(subject, body, config, logger)
+            self.__populate_from_def_hypno_mail(subject, body)
         elif flag_type == 'ATT SACRO':
-            self.__populate_from_att_sacro_mail(subject, body, config, logger)
+            self.__populate_from_att_sacro_mail(subject, body)
         elif flag_type == 'DEF SACRO':
-            self.__populate_from_def_sacro_mail(subject, body, config, logger)
+            self.__populate_from_def_sacro_mail(subject, body)
         elif flag_type == 'ATT VT':
-            self.__populate_from_att_vt_mail(subject, body, config, logger)
+            self.__populate_from_att_vt_mail(subject, body)
         elif flag_type == 'DEF VT':
-            self.__populate_from_def_vt_mail(subject, body, config, logger)
+            self.__populate_from_def_vt_mail(subject, body)
         elif flag_type == 'ATT EXPLO':
-            return self.__populate_from_att_explo_mail(subject, body, config, logger)
+            return self.__populate_from_att_explo_mail(subject, body)
         elif flag_type == 'DEF EXPLO':
-            self.__populate_from_def_explo_mail(subject, body, config, logger)
+            self.__populate_from_def_explo_mail(subject, body)
         elif flag_type == 'DEF CAPA':
-            self.__populate_from_capa_mail(subject, body, config, logger)
+            self.__populate_from_capa_mail(subject, body)
         else:
-            pass # Should never happen
+            # Should never happen
+            sg.logger.warning('Unrecognized flag %s, mail not handled properly' %s (flag_type, ))
 
-    def __populate_from_att_mail(self, subject, body, config, logger):   
+    def __populate_from_att_mail(self, subject, body):   
         # Load config
         try:
-            re_event_desc = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_att = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ATT_RE)
-            re_event_esq = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ESQ_RE)
-            re_event_deg = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DEG_RE)
-            re_event_pv = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_sr = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_soin_att = config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
+            re_event_desc = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_att = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ATT_RE)
+            re_event_esq = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ESQ_RE)
+            re_event_deg = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DEG_RE)
+            re_event_pv = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_PV_RE)
+            re_event_sr = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_soin_att = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         res = re.search(re_event_desc, subject)
@@ -146,23 +174,23 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_pv, body)
         self.pv = res.group(1) if res else self.deg # Pas d'armure
     
-    def __populate_from_def_mail(self, subject, body, config, logger):       
+    def __populate_from_def_mail(self, subject, body):       
         # Load config
         try:
-            re_event_desc = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_att = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ATT_RE)
-            re_event_esq = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ESQ_RE)
-            re_event_deg = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DEG_RE)
-            re_event_pv = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_vie = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_VIE_RE)
-            re_event_capa = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet_def = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-            re_event_sr = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+            re_event_desc = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_att = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ATT_RE)
+            re_event_esq = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ESQ_RE)
+            re_event_deg = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DEG_RE)
+            re_event_pv = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_PV_RE)
+            re_event_vie = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_VIE_RE)
+            re_event_capa = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_RE)
+            re_event_capa_effet_def = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_event_sr = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         res = re.search(re_event_desc, subject)
@@ -206,19 +234,19 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_capa_tour, body)
         self.capa_tour = res.group(1) if res else None
         
-    def __populate_from_capa_mail(self, subject, body, config, logger):       
+    def __populate_from_capa_mail(self, subject, body):       
         # Load config
         try:
-            re_event_pv = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_vie = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_VIE_RE)
-            re_event_capa = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet_def = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-            re_event_sr = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+            re_event_pv = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_PV_RE)
+            re_event_vie = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_VIE_RE)
+            re_event_capa = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_RE)
+            re_event_capa_effet_def = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_event_sr = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc & Capa desc
         res = re.search(re_event_capa, body, re.M)
@@ -250,15 +278,15 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
         res = re.search(re_event_capa_tour, body, re.M)
         self.capa_tour = res.group(1) if res else None
     
-    def __populate_from_att_hypno_mail(self, subject, body, config, logger):       
+    def __populate_from_att_hypno_mail(self, subject, body):       
         # Load config
         try:
-            re_event_desc = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_sr = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_desc = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_sr = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -284,16 +312,16 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             if int(self.resi) <= int(self.sr):
                     self.type += ' réduit'
         else:
-            logger.error("Fail to parse the mail, regexp not maching")
+            sg.logger.error("Fail to parse the mail, regexp not maching")
         
-    def __populate_from_def_hypno_mail(self, subject, body, config, logger):       
+    def __populate_from_def_hypno_mail(self, subject, body):       
         # Load config
         try:
-            re_event_subject = config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
-            re_event_resi_def = config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
+            re_event_subject = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
+            re_event_resi_def = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -306,18 +334,18 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             if res != None and res.group(2) == None: # Résisté
                 self.type += ' résisté'
         else:
-            logger.error("Fail to parse the mail, rexegp not maching")
+            sg.logger.error("Fail to parse the mail, rexegp not maching")
 
-    def __populate_from_att_vt_mail(self, subject, body, config, logger):       
+    def __populate_from_att_vt_mail(self, subject, body):       
         # Load config
         try:
-            re_event_capa_effet_att = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
-            re_event_sr = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_capa_tour = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_event_capa_effet_att = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
+            re_event_sr = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -346,18 +374,18 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             if int(self.resi) <= int(self.sr):
                     self.type += ' réduit'
         else:
-            logger.error("Fail to parse the mail, rexegp not maching")
+            sg.logger.error("Fail to parse the mail, rexegp not maching")
     
-    def __populate_from_att_explo_mail(self, subject, body, config, logger):       
+    def __populate_from_att_explo_mail(self, subject, body):       
         # Load config
         try:
-            re_event_capa_effet_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
-            re_event_sr = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_end_mail = config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
+            re_event_capa_effet_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
+            re_event_sr = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_end_mail = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -398,15 +426,15 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
                 last_match_endpos = res.end()
         return objs
     
-    def __populate_from_def_vt_mail(self, subject, body, config, logger):       
+    def __populate_from_def_vt_mail(self, subject, body):       
         # Load config
         try:
-            re_event_desc = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_capa_effet_def = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_event_desc = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_capa_effet_def = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -422,16 +450,16 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             res = re.search(re_event_capa_tour, body)
             self.capa_tour = res.group(1) if res else None
         else:
-            logger.error("Fail to parse the mail, rexegp not maching")
+            sg.logger.error("Fail to parse the mail, rexegp not maching")
     
-    def __populate_from_def_explo_mail(self, subject, body, config, logger):       
+    def __populate_from_def_explo_mail(self, subject, body):       
         # Load config
         try:
-            re_event_desc = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_capa_effet_def = config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_desc = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_capa_effet_def = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -445,16 +473,16 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.capa_effet = res.group(1) if res else None
             self.pv = res.group(3) if res else None
         else:
-            logger.error("Fail to parse the mail, rexegp not maching")
+            sg.logger.error("Fail to parse the mail, rexegp not maching")
     
-    def __populate_from_att_sacro_mail(self, subject, body, config, logger):       
+    def __populate_from_att_sacro_mail(self, subject, body):       
         # Load config
         try:
-            re_event_soin_att = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
-            re_event_blessure = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_BLESSURE_RE)
+            re_event_soin_att = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
+            re_event_blessure = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_BLESSURE_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -467,21 +495,21 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             # Soin
             self.soin = res.group(3)
         else:
-            logger.error("Fail to parse the mail, regexp not maching")
+            sg.logger.error("Fail to parse the mail, regexp not maching")
         res = re.search(re_event_blessure, body)
         if res != None:
             self.blessure = res.group(1)
         else:
-            logger.error("Fail to parse the mail, regexp not maching")
+            sg.logger.error("Fail to parse the mail, regexp not maching")
 
-    def __populate_from_def_sacro_mail(self, subject, body, config, logger):       
+    def __populate_from_def_sacro_mail(self, subject, body):       
         # Load config
         try:
-            re_event_soin_def = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_DEF_RE)
-            re_event_desc = config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_soin_def = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_DEF_RE)
+            re_event_desc = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_DESC_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
-            logger.error("Fail to load config! (ConfigParser error:" + str(e) + ")")
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
         # Event desc
         self.type = 'Sortilège'
@@ -492,12 +520,12 @@ class BATTLE_EVENT(sg.SqlAlchemyBase):
             self.att_troll_nom = res.group(2)
             self.att_troll_id = res.group(3)
         else:
-            logger.error("Fail to parse the mail, regexp not maching")
+            sg.logger.error("Fail to parse the mail, regexp not maching")
         res = re.search(re_event_soin_def, body)
         if res != None:
             self.soin = res.group(1)
         else:
-            logger.error("Fail to parse the mail, regexp not maching")
+            sg.logger.error("Fail to parse the mail, regexp not maching")
 
     def stringify(self):
         self.s_flag_type = self.flag_type

@@ -1,40 +1,52 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-# Imports
-import re, datetime, bcrypt
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+# IMPORTS
+import bcrypt
+from sqlalchemy import event, Column, Integer, String, DateTime, ForeignKey, inspect
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
-# Class of a SCIZ User
+# CLASS DEFINITION
 class USER(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'users'
-    id = Column(Integer, ForeignKey('trolls.id'), primary_key=True)              # Identifiant unique du joueur
-    pseudo = Column(String(50))                         # Pseudonyme
-    pwd = Column(String(100))                           # Password
-    mh_apikey = Column(String(50))                      # Mountyhall Key
-    pushover_apikey = Column(String(50))                # Pushover Key
-    role = Column(Integer())                            # Role
+    # Unique identifier of the player
+    id = Column(Integer, primary_key=True)
+    # Pseudonyme
+    pseudo = Column(String(50))
+    # Password
+    pwd = Column(String(100))
+    # Mountyhall API Key
+    mh_apikey = Column(String(50))
+    # Minutes between a refresh of dynamic MH scripts
+    dyn_sp_refresh = Column(Integer(), default=180)
+    # Last refresh of dynamic MH scripts
+    last_dyn_sp_call = Column(DateTime())
+    # Minutes between a refresh of static MH scripts
+    static_sp_refresh = Column(Integer(), default=180)
+    # Last refresh of static MH scripts
+    last_static_sp_call = Column(DateTime())
     
-    troll = relationship("TROLL", back_populates="user")
+    # Associations Many-To-Many
+    groups = relationship("AssocUsersGroups", back_populates="user")
+    # Associations Many-To-One
+    trolls = relationship("TROLL", back_populates="user")
 
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    # Constructor is handled by SqlAlchemy, do not override
 
-    # Create a user from a JSON Object
-    def update_from_json(self, json, update_pwd):
-        self.id = json['id'] if json['id'] else self.id
-        self.pseudo = json['pseudo'] if json['pseudo'] else self.pseudo
+    # Build an instance from a JSON object
+    def build_from_json(self, json):
+        for key in json:
+            if json[key] and (hasattr(self, key) or (key == 'role')):
+                setattr(self, key, json[key]) 
+
+@event.listens_for(USER, 'before_insert')
+@event.listens_for(USER, 'before_update')
+def hashPassword(mapper, conneciton, target):
+    state = inspect(target)
+    hist = state.get_history("pwd", True)
+    if hist.has_changes() and target.pwd:
         # Rounds fixed to 10 for PHP front-end compatibility
-        self.pwd = bcrypt.hashpw(json['pwd'].encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(10)) if json['pwd'] and update_pwd else self.pwd
-        self.mh_apikey = json['mh_apikey'] if json['mh_apikey'] else self.mh_apikey
-        self.pushover_apikey = json['pushover_apikey'] if json['pushover_apikey'] else self.pushover_apikey
-        self.role = json['role'] if json['role'] else self.role
-
-    # Update user from another USER (but password)
-    def update_from_new(self, user_old):
-        sg.copy_properties(user_old, self, ['pseudo', 'mh_apikey', 'pushover_apikey', 'role'])
-
+        target.pwd = bcrypt.hashpw(target.pwd.encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(10)) 

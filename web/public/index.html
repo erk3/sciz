@@ -23,7 +23,7 @@
 
 
   <body ng-app="app">
-    <div ng-include="'app/includes/header.html'"></div>
+    <div ng-controller="HeaderCtrl" ng-include="'app/includes/header.html'"></div>
     <div ui-view></div>
     <div ng-include="'app/includes/footer.html'"></div>
   </body>

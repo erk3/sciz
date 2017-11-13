@@ -2,14 +2,18 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import sys, argparse, ConfigParser, sqlalchemy, json, codecs, logging, os
+import sys, argparse, ConfigParser, sqlalchemy, json, codecs, logging, os, traceback
 from logging.handlers import RotatingFileHandler
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy.exc import ProgrammingError
 from modules.mh_caller import MHCaller
 from modules.mail_walker import MailWalker
 from modules.admin_helper import AdminHelper
 from modules.notifier import Notifier
 from modules.requester import Requester
+from modules.sql_helper import SQLHelper
+from classes.conf import CONF
+from classes.group import GROUP
 import modules.globals as sg
 
 ## SCIZ
@@ -17,55 +21,68 @@ import modules.globals as sg
 class SCIZ:
 
     # Constructor
-    def __init__(self, confFile, loggingLevel):
-        # Load the conf
-        self.confFile = confFile
-        self.reload()
-        # Set the logger
-        if not os.path.exists(os.path.dirname(self.logger_file)):
+    def __init__(self, conf_file, logging_level, group):
+
+        # Load the default conf and store it globally
+        sg.config = ConfigParser.RawConfigParser()
+        with codecs.open(conf_file, 'r', sg.DEFAULT_CHARSET) as fp:
+            sg.config.readfp(fp)
+        
+        # Set up the logger and store it globally
+        logger_file = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE)
+        logger_file_max_size = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE_MAX_SIZE)
+        logger_formatter = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FORMATTER)
+        if not os.path.exists(os.path.dirname(logger_file)):
             try:
-                os.makedirs(os.path.dirname(self.logger_file))
+                os.makedirs(os.path.dirname(logger_file))
             except OSError as exc:
                 if exc.errno != errno.EEXIST:
                     raise
-        self.logger = logging.getLogger()
-        self.logger.setLevel(logging.DEBUG)
-        log_file = RotatingFileHandler(self.logger_file, 'a', self.logger_file_max_size, 1)
-        log_file.setLevel(loggingLevel)
-        log_file.setFormatter(logging.Formatter(self.logger_formatter))
-        self.logger.addHandler(log_file)
-    
-    # Configuration loaders
-    def reload(self):
-        self.load(self.confFile)
-
-    def load(self, confFile):
-        self.config = ConfigParser.RawConfigParser()
+        log_file = RotatingFileHandler(logger_file, 'a', logger_file_max_size, 1)
+        log_file.setLevel(logging_level)
+        log_file.setFormatter(logging.Formatter(logger_formatter))
+        sg.logger = logging.getLogger()
+        sg.logger.setLevel(logging.DEBUG)
+        sg.logger.addHandler(log_file)
+        
+        # Set up the database connection and store it globally
+        sg.db =  SQLHelper()
+        
+        # Load the stored configuration
         try:
-            with codecs.open(self.confFile, 'r', sg.DEFAULT_CHARSET) as fp:
-                self.config.readfp(fp)
-            self.logger_file = self.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE)
-            self.logger_file_max_size = self.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE_MAX_SIZE)
-            self.logger_formatter = self.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FORMATTER)
-        except Exception as e:
-            print >> sys.stderr, 'Fail to load minimal config file or its minmal log section! (' + str(e) + ')'
-            sys.exit(1)
+            confs = sg.db.session.query(CONF).filter(CONF.group_id == None).all()
+            for conf in confs:
+                sg.config.set(sg.CONF_INSTANCE_SECTION, conf.key, conf.value)
+            sg.logger.info('Loaded stored configurations for instance!')
+        except (NoResultFound, ProgrammingError) as e:
+            sg.logger.warning('No configurations for instance!')
 
     # Mail walker 
     def walk(self):
-        self.walker = MailWalker(self.config, self.logger)
-        self.walker.walk()
-
-    # SCIZ Notifier
+        self.walker = MailWalker()
+        self.adminHelper = AdminHelper()
+        try:
+            group_name = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_GROUP_NAME)
+            group = sg.db.session.query(GROUP).filter(GROUP.name == group_name).one()
+            # A group is already set, its conf has already been loaded
+            self.walker.walk(group)
+        except Exception as e:
+            groups = sg.db.session.query(GROUP).all()
+            for group in groups:
+                # Ensure to load the conf for the group
+                self.adminHelper.set_group(group.name)
+                # Then walk the mails
+                self.walker.walk(group)
+    
+    # Notifier
     def notify(self, hook_name):
-        # FIXME : maybe later, handle other push vectors like pushover or whatever not on the stdout
-        self.notifier = Notifier(self.config, self.logger)
+        self.notifier = Notifier()
         self.notifier.print_flush(hook_name)
 
-    # SCIZ Requester
+    # Requester
     def request(self, ids, args):
-        self.requester = Requester(self.config, self.logger)
-        if ids.lower() == 'help':
+        self.requester = Requester()
+        if ids.lower() is 'help':
             print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls) [opts_troll] | help'
             print 'opts_mob : stats #default# | (cdm|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
             print 'opts_troll : stats #default# | event [limit=1] | carac[,carac]* #ordered desc by first carac#'
@@ -74,21 +91,21 @@ class SCIZ:
             
     # Mountyhall caller
     def mh_call(self, script, trolls):
-        self.mhCaller = MHCaller(self.config, self.logger)
+        self.mhCaller = MHCaller()
         self.mhCaller.call(script, trolls)
             
     # Admin helper
     def admin(self, cmd, arg=None):
-        self.adminHelper = AdminHelper(self.config, self.logger)
-        if cmd == 'init':
+        self.adminHelper = AdminHelper()
+        if cmd is 'init':
             self.adminHelper.init()
-        elif cmd == 'users':
-            self.adminHelper.update_users(arg)
+        elif cmd is 'users':
+            self.adminHelper.add_json_users(arg)
+        elif cmd is 'auto':
+            self.adminHelper.auto_tasks()
+        elif cmd is 'group':
+            self.adminHelper.set_group(arg)
     
-    # Tester (WRITE ANY TEST HERE)
-    def test(self):
-        pass
-
     # Destructor
     def __del__(self):
         pass
@@ -99,48 +116,97 @@ if __name__ == '__main__':
     
     # Command line arguments handling
     parser = argparse.ArgumentParser(
-             description='Système de Chauve-souris Interdimensionnel pour Zhumains',
-             epilog='From Põm³ with love')
-    parser.add_argument('-c', '--conf', metavar='CONFIG_FILE', type=str, default='confs/sciz.ini', help='specify the .ini configuration file')
-    parser.add_argument('-l', '--logging-level', metavar='LOGGING_LEVEL', default='INFO', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'], help='specify the level of logging')
-    parser.add_argument('-t', '--test', action='store_true', help='instruct SCIZ to test your thing')
-    parser.add_argument('-u', '--users', metavar = 'USERS_FILE', type=str, help='instruct SCIZ to create or update users from JSON')
-    parser.add_argument('-i', '--init', action='store_true', help='instruct SCIZ to setup the things')
-    parser.add_argument('-s', '--script', metavar='PUBLIC_SCRIPT [troll]', choices=['profil2', 'caract', 'trolls2', 'monstres'], help='instruct SCIZ to call a MountyHall Public Script / FTP')
-    parser.add_argument('-r', '--request', metavar='REQUEST_CLI | help', type=str, help='instruct SCIZ to pull internal data')
-    parser.add_argument('-w', '--walk', action='store_true', help='instruct SCIZ to walk the mails')
-    parser.add_argument('-n', '--notify', metavar='HOOK_NAME', type=str, help='instruct SCIZ to push the pending notifications for a hook')
+            description='Système de Chauve-souris Interdimensionnel pour Zhumains',
+            epilog='From Põm³ with love')
+    
+    parser.add_argument('-c', '--conf',
+            metavar='CONFIG_FILE', type=str, default='confs/sciz.ini',
+            help='specify the .ini configuration file')
+    
+    parser.add_argument('-l', '--logging-level',
+            metavar='LOGGING_LEVEL', default='INFO', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+            help='specify the level of logging')
+    
+    parser.add_argument('-a', '--auto',
+            action='store_true',
+            help='instruct SCIZ to start the recurrent automagic things')
+    
+    parser.add_argument('-u', '--users',
+            metavar = 'USERS_FILE', type=str,
+            help='instruct SCIZ to create or update users from JSON')
+    
+    parser.add_argument('-r', '--request',
+            metavar='REQUEST_CLI | help', type=str,
+            help='instruct SCIZ to pull internal data')
+    
+    parser.add_argument('-w', '--walk',
+            action='store_true',
+            help='instruct SCIZ to walk the mails')
+    
+    parser.add_argument('-n', '--notify',
+            metavar='HOOK_NAME', type=str,
+            help='instruct SCIZ to push the pending notifications for a hook')
+    
+    parser.add_argument('-s', '--script',
+            metavar='PUBLIC_SCRIPT [troll]', choices=['profil2', 'caract', 'trolls2', 'monstres'],
+            help='instruct SCIZ to call a MountyHall Public Script / FTP')
+
+    parser.add_argument('-i', '--init',
+            action='store_true',
+            help='instruct SCIZ to setup the things')
+    
+    parser.add_argument('-g', '--group',
+            metavar='GROUP_NAME', type=str,
+            help='set the working group')
+   
     parser.add_argument('rargs', nargs=argparse.REMAINDER, help=argparse.SUPPRESS)
     args = parser.parse_args()
+
+    if args.request and not args.group:
+        parser.error('option `-r --request` requires option `-g --group`')
+    if args.notify and not args.group:
+        parser.error('option `-n --notify` requires option `-g --group`')
+    if args.walk and not args.group:
+        parser.error('option `-w --walk` requires option `-g --group`')
     
     # SCIZ startup
+    sciz = None
+    print_help = False
     try:
-        sciz = SCIZ(args.conf, args.logging_level)
-        sciz.logger.info('SCIZ woke up successfully!')
+        sciz = SCIZ(args.conf, args.logging_level, args.group)
+        sg.logger.info('SCIZ woke up successfully!')
+        if args.group and not args.auto and not args.init and not args.script:
+            sciz.admin('group', args.group)
+        else:
+            sg.group = None
         if args.init:
-            sciz.logger.info('Initializing DB...')
-            sciz.admin('init')
-        elif args.users:
-            sciz.logger.info('Updating users...')
-            sciz.admin('users', args.users)
-        elif args.walk:
-            sciz.logger.info('Walking the mails...')
-            sciz.walk()
+            sg.logger.info('Initializing DB...')
+            sciz.admin('init', args.init)
+        elif args.auto:
+            sg.logger.info('Starting recurrent tasks...')
+            sciz.admin('auto')
         elif args.script:
-            sciz.logger.info('Calling MountyHall...')
+            sg.logger.info('Calling MountyHall...')
             sciz.mh_call(args.script, args.rargs)
+        elif args.walk:
+            sg.logger.info('Walking the mails...')
+            sciz.walk()
         elif args.notify:
-            sciz.logger.info('Calling notifier...')
+            sg.logger.info('Notifying for hook %s...' %(args.notify, ))
             sciz.notify(args.notify)
         elif args.request:
-            sciz.logger.info('Requesting SCIZ...')
+            sg.logger.info('Requesting SCIZ...')
             sciz.request(args.request, args.rargs)
-        elif args.test:
-            sciz.logger.info('Testing something...')
-            sciz.test()
-        sciz.logger.info('Nothing else to do, going to sleep now.')
+        elif args.users:
+            sg.logger.info('Updating users...')
+            sciz.admin('users', args.users)
+        else:
+            parser.print_help()
+        sg.logger.info('Nothing else to do, going to sleep now.')
     except Exception as e:
-        if not hasattr(e, 'sciz_logger_flag'):
-            sciz.logger.exception(e)
-        print >> sys.stderr, 'Aborted. Check the log file, if no new line has been appended, either your logging level is unsufficient or an error occured before basically everything'
+        if sciz and sg.logger and not hasattr(e, 'sciz_logger_flag'):
+            sg.logger.exception(e)
+        else:
+            traceback.print_exc()
+        print >> sys.stderr, 'Aborted. Check the log file, if no new line has been appended, either your logging level is unsufficient or an error occured before basically everything.'
         sys.exit(1)

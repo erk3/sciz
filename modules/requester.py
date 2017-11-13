@@ -4,13 +4,13 @@
 # Imports
 import ConfigParser, sqlalchemy
 from operator import attrgetter
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
 from classes.user import USER
 from classes.mob import MOB
 from classes.cdm import CDM
-from classes.battle_event import BATTLE_EVENT
+from classes.battle import BATTLE
 from modules.sql_helper import SQLHelper
 from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
@@ -19,12 +19,9 @@ import modules.globals as sg
 class Requester:
 
     # Constructor
-    def __init__(self, config, logger):
-        self.config = config
-        self.logger = logger
+    def __init__(self):
+        self.pp = PrettyPrinter()
         self.check_conf()
-        self.sqlHelper = SQLHelper(config, logger)
-        self.pprinter = PrettyPrinter(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -36,7 +33,7 @@ class Requester:
         # Request on all trolls
         ids = ids.lower()
         if ids == 'trolls' or ids == 'users':
-            trolls = self.sqlHelper.session.query(TROLL).all()
+            trolls = sg.db.session.query(TROLL).filter(TROLL.group_id==sg.group.id).all()
             if ids == 'users':
                 trolls = filter(lambda x : x.user != None, trolls)
             if len(args) == 1:
@@ -59,7 +56,7 @@ class Requester:
                     self.__request_troll(id, args)
             # Request on an inconsitant list of ids
             else:
-                self.logger.error('Inconsistant list of ids...')
+                sg.logger.error('Inconsistant list of ids...')
 
     # Mob request
     def __request_mob(self, id, args):
@@ -79,9 +76,9 @@ class Requester:
 
     def __request_mob_cdm(self, id, limit):
         try:        
-            cdms = self.sqlHelper.session.query(CDM).filter(CDM.mob_id == id).order_by(desc(CDM.time)).limit(limit).all()
+            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
             for cdm in cdms:
-                val = self.pprinter.pretty_print(cdm, False, None)
+                val = self.pp.pretty_print(cdm, False, None)
                 if val != '':
                     print val
         except NoResultFound:
@@ -89,9 +86,9 @@ class Requester:
     
     def __request_mob_event(self, id, limit):
         try:
-            events = self.sqlHelper.session.query(BATTLE_EVENT).filter(or_(BATTLE_EVENT.att_mob_id == id, BATTLE_EVENT.def_mob_id == id)).order_by(desc(BATTLE_EVENT.time)).limit(limit).all()
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
             for event in events:
-                val = self.pprinter.pretty_print(event, False, None)
+                val = self.pp.pretty_print(event, False, None)
                 if val != '':
                     print val
         except NoResultFound:
@@ -99,8 +96,8 @@ class Requester:
     
     def __request_mob_caracs(self, id, caracs):
         try:
-            mob = self.sqlHelper.session.query(MOB).filter(MOB.id == id).one()
-            val = self.pprinter.pretty_print(mob, False, caracs)
+            mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
+            val = self.pp.pretty_print(mob, False, caracs)
             if val != '':
                 print val
         except NoResultFound:
@@ -122,9 +119,9 @@ class Requester:
     
     def __request_troll_event(self, id, limit):
         try:
-            events = self.sqlHelper.session.query(BATTLE_EVENT).filter(or_(BATTLE_EVENT.att_troll_id == id, BATTLE_EVENT.def_troll_id == id)).order_by(desc(BATTLE_EVENT.time)).limit(limit).all()
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
             for event in events:
-                val = self.pprinter.pretty_print(event, False, None)
+                val = self.pp.pretty_print(event, False, None)
                 if val != '':
                     print val
         except NoResultFound:
@@ -132,8 +129,8 @@ class Requester:
 
     def __request_troll_caracs(self, id, caracs):
         try:
-            troll = self.sqlHelper.session.query(TROLL).filter(TROLL.id == id).one()
-            val = self.pprinter.pretty_print(troll, False, caracs)
+            troll = sg.db.session.query(TROLL).filter(TROLL.group_id==sg.group.id, TROLL.id == id).one()
+            val = self.pp.pretty_print(troll, False, caracs)
             if val != '':
                 print val
         except NoResultFound:

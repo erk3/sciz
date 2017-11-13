@@ -3,7 +3,8 @@
 var router = require('express').Router();
 
 var config = require('../../config.js');
-var allowOnlyUser = require('../services/routesHelper.js').allowOnlyUser;
+var allowAuthenticated = require('../services/routesHelper.js').allowAuthenticated;
+var allowAuthorized = require('../services/routesHelper.js').allowAuthorized;
 var allowOnlyHook = require('../services/routesHelper.js').allowOnlyHook;
 var AuthController = require('../controllers/authController.js');
 var UserController = require('../controllers/userController.js');
@@ -15,18 +16,18 @@ var APIRoutes = function(passport) {
   
   // POST routes
   router.post('/authenticate', AuthController.authenticate);
-  router.post('/profile', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.user, UserController.updateProfile));
-  router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.admin, AdminController.addHook));
+  router.post('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.updateProfile));
+  router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));
   router.post('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.request));
 
   // GET routes
-  router.get('/profile', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.user, UserController.getProfile));
-  router.get('/events', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.user, EventsController.getEvents));
+  router.get('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.getProfile));
+  router.get('/events', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, EventsController.getEvents));
   router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.getNotifs));
-  router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.admin, AdminController.getHooks));
+  router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getHooks));
 
   // DELETE routes
-  router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowOnlyUser(config.accessLevels.admin, AdminController.revokeHook));
+  router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));
 
   return router;
 };

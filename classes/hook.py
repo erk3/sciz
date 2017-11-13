@@ -15,12 +15,21 @@ class HOOK(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'hooks'
-    __table_args__ = (UniqueConstraint('nom'),)
-    id = Column(Integer, primary_key=True)                      # Identifiant unique
-    nom = Column(String(50))                                    # Nom du hook
-    jwt = Column(String(250))                                   # JWT token sans expiration
-    revoked = Column(Boolean())                                 # Révoqué ?
-    last_event_id = Column(Integer())                           # ID du dernier évènement traité
-    
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    __tableargs__ = (UniqueConstraint('name', 'group_id'), )
+    # ID unique
+    id = Column(Integer, primary_key=True)
+    # ID du groupe d'appartenance
+    group_id = Column(Integer, ForeignKey('groups.id'))
+    # Nom du hook
+    name = Column(String(50))
+    # JWT token sans expiration
+    jwt = Column(String(250))
+    # Révoqué ?
+    revoked = Column(Boolean())
+    # ID du dernier évènement
+    last_event_id = Column(Integer())
+
+    # Associations One-To-Many
+    group = relationship("GROUP", back_populates="hooks")
+
+    # Constructor is handled by SqlAlchemy, do not override

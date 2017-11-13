@@ -1,14 +1,38 @@
 'use strict';
 
-exports.allowOnlyUser = function (accessLevel, callback) {
-  function checkUserRole(req, res) {
-    if (!req.user || !(accessLevel & req.user.role)) {
+exports.allowAuthenticated = function (callback) {
+  function checkUser(req, res) {
+    var user = req.user;
+    if (!user) {
       res.sendStatus(403);
       return;
     }
     callback(req, res);
   }
-  return checkUserRole;
+  return checkUser;
+};
+
+exports.allowAuthorized = function (accessLevel, callback) {
+  function checkRole(req, res) {
+    var user = req.user;
+    var groupID = req.query.groupID;
+    groupID = (groupID) ? groupID : req.body.groupID;
+    if (!user || !groupID || !user.assocs) { 
+      res.sendStatus(403);
+      return;
+    }
+    for (var i = 0; i < user.assocs.length; i++) {
+      if (user.assocs[i].group_id == groupID) {
+        if (user.assocs[i].role & accessLevel) {
+          callback(req, res);
+          return;
+        }
+        break;
+      }
+    }
+    res.sendStatus(403);
+  }
+  return checkRole;
 };
 
 exports.allowOnlyHook = function (callback) {

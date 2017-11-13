@@ -12,6 +12,7 @@ ARG MYSQL_HOST=127.0.0.1
 ARG MYSQL_PORT=3306
 ARG MYSQL_PASSWORD=ThisPasswordShouldBeChangedUsingDockerBuildArgs
 ARG JWT_SECRET=ThisSecretShouldBeChangedUsingDockerBuildArgs
+ARG DOMAIN_NAME=domaine.sciz.a.changer
 
 # Install additionals packages
 RUN apt-get update && apt-get install -y build-essential python2.7 python2.7-dev python-pip libffi-dev cron
@@ -21,7 +22,7 @@ WORKDIR /sciz
 COPY . /sciz
 
 # Configure SCIZ
-RUN ./sciz_setup.sh -d $MAILDIR_PATH -h $MYSQL_HOST -o $MYSQL_PORT -m $MYSQL_PASSWORD -s $JWT_SECRET -p $PORT
+RUN ./sciz_setup.sh -d $MAILDIR_PATH -h $MYSQL_HOST -o $MYSQL_PORT -m $MYSQL_PASSWORD -s $JWT_SECRET -p $PORT -w $DOMAIN_NAME
 
 # Setup the crontab
 RUN crontab sciz-crontab

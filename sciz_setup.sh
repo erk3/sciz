@@ -3,7 +3,7 @@
 PATH_SCIZ_CONF=confs/sciz.ini
 PATH_WEB_CONF=web/config.js
 
-while getopts ":s:m:o:h:d:p:b:" opt; do
+while getopts ":s:m:o:h:c:d:p:b:w:" opt; do
   case $opt in
     s) secret="$OPTARG"
     ;;
@@ -13,11 +13,15 @@ while getopts ":s:m:o:h:d:p:b:" opt; do
     ;;
     h) mysql_host="$OPTARG"
     ;;
+    c) pf_conf_file="$OPTARG"
+    ;;
     d) maildir_path="$OPTARG"
     ;;
     p) node_port="$OPTARG"
     ;;
     b) bin_path="$OPTARG"
+    ;;
+    w) domain_name="$OPTARG"
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
     ;;
@@ -46,5 +50,11 @@ if [ ! -z "$mysql_host" ]; then
   sed -i -r "s/(host: )'(.*)',/\1'$mysql_host',/g;" $PATH_WEB_CONF
 fi
 if [ ! -z "$maildir_path" ]; then
-  sed -i -r "s|(maildir_path = )(.*)|\1$maildir_path|g;" $PATH_SCIZ_CONF
+  sed -i -r "s|(maildirs_base_path = )(.*)|\1$maildir_path|g;" $PATH_SCIZ_CONF
+fi
+if [ ! -z "$pf_conf_file" ]; then
+  sed -i -r "s|(postfix_accounts_conf_file = )(.*)|\1$pf_conf_file|g;" $PATH_SCIZ_CONF
+fi
+if [ ! -z "$domain_name" ]; then
+  sed -i -r "s/(domain_name = )(.*)/\1$domain_name/g;" $PATH_SCIZ_CONF
 fi

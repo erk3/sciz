@@ -12,14 +12,9 @@ function authRun($rootScope, $state, $transitions, authService) {
   $rootScope.authService = authService;
   $transitions.onStart({to: '*'}, function (trans) {
     var toState = trans.to();
-    if (toState.name !== 'login') {
-      if (authService && authService.isAuthenticated()) {
-        var user = authService.getUserData();
-        if (user && toState.data && toState.data.accessLevel) {
-          if (toState.data.accessLevel & user.role) {
-            return;
-          }
-        }
+    if (toState && toState.name !== 'login' && toState.data && toState.data.accesLevel) {
+      if (authService.isAuthorized(toState.data.accessLevel)) {
+        return;
       }
       return trans.router.stateService.target('login');
     }

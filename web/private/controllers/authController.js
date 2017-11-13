@@ -1,10 +1,10 @@
 'use strict';
 
 var jwt = require('jsonwebtoken');
+var sequelize = require('sequelize');
 var config = require('../../config.js');
-var db = require('../services/database.js');
-var User = require('../models/user.js');
 
+var DB = require('../services/database.js');
 var AuthController = {};
 
 /*
@@ -31,14 +31,14 @@ AuthController.signUp = function(req, res) {
 
 AuthController.authenticate = function (req, res) {
   if (!req.body.id || !req.body.pwd) {
-    res.status(404).json({message: 'Identifiant et mot de passes requis !'});
+    res.status(404).json({message: 'Identifiant, mot de passe et groupe requis !'});
   }
   else {
     var id = req.body.id;
     var pwd = req.body.pwd;
     var potentialUser = {where: {id: id}};
 
-    User.findOne(potentialUser)
+    DB.User.findOne(potentialUser)
       .then(function (user) {
         if (!user) {
           res.status(404).json({message: 'Authentification échouée !'});
@@ -47,7 +47,7 @@ AuthController.authenticate = function (req, res) {
           user.comparePasswords(pwd, function (error, isMatch) {
             if (isMatch && !error) {
               var token = jwt.sign(
-                {type: 'user', id: user.id, role: user.role},
+                {type: 'user', id: user.id, assocs: user.assocs},
                 config.keys.secret, 
                 {expiresIn: '30m'});
               res.json({
@@ -55,7 +55,7 @@ AuthController.authenticate = function (req, res) {
                 id: user.id,
                 pseudo: user.pseudo,
                 token: 'JWT ' + token,
-                role: user.role
+                assocs: user.assocs
                });
             }
             else {

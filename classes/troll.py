@@ -3,7 +3,7 @@
 
 # Imports
 import re, datetime
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -12,93 +12,176 @@ class TROLL(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'trolls'
-    id = Column(Integer, primary_key=True)      # Numéro de Troll
-    sciz_notif = Column(Boolean)                # SCIZ notifs ?
-    nom = Column(String(50))                    # Nom
-    race = Column(String(10))                   # Race
-    niv = Column(Integer)                       # Niveau
-    nb_kill = Column(Integer)                   # Nombre de kills
-    nb_mort = Column(Integer)                   # Nombre de morts
-    nb_mouche = Column(Integer)                 # Nombre de mouches
-    id_guilde = Column(Integer)                 # Numéro de guilde
-    rang_guilde = Column(Integer)               # Numéro de rang dans la guilde
-    etat = Column(String(50))                   # Etat
-    pnj = Column(Boolean)                       # Est un PNJ ?
-    ami_mh = Column(Boolean)                    # Est un ami MH ?
-    inscription = Column(DateTime)              # Date d'inscription
-    blason_url = Column(String(150))            # URL du blason (profil public)
-    pos_x = Column(Integer)                     # Position axe X
-    pos_y = Column(Integer)                     # Position axe Y
-    pos_n = Column(Integer)                     # Posistion axe N
-    pv = Column(Integer)                        # Nombre de points de vie restants
-    bonus_pv_phy = Column(Integer)              # Bonus de PdV physique
-    bonus_pv_mag = Column(Integer)              # Bonus de PdV magique
-    base_pv_max = Column(Integer)               # Nombre maximum de points de vie (hors bonus)
-    bonus_pv_max_phy = Column(Integer)          # Bonus de PdV max physique
-    bonus_pv_max_mag = Column(Integer)          # Bonus de PdV max magique
-    base_bonus_pv_max = Column(Integer)         # Nombre maximum de points de vie avec bonus
-    pa = Column(Integer)                        # Nombre de points d'actions restants
-    dla = Column(DateTime)                      # Horodatage de la prochaine DLA
-    base_att = Column(Integer)                  # Nombre de D6 d'attaque
-    bonus_att_phy = Column(Integer)             # Bonus d'attaque physique
-    bonus_att_mag = Column(Integer)             # Bonus d'attaque magique
-    base_esq = Column(Integer)                  # Nombre de D6 d'esquive
-    bonus_esq_phy = Column(Integer)             # Bonus d'esquive physique
-    bonus_esq_mag = Column(Integer)             # Bonus d'esquive magique
-    base_deg = Column(Integer)                  # Nombre de D3 de dégâts
-    bonus_deg_phy = Column(Integer)             # Bonus de dégâts physique
-    bonus_deg_mag = Column(Integer)             # Bonus de dégâts magique
-    base_reg = Column(Integer)                  # Nombre de D3 de régénération
-    bonus_reg_phy = Column(Integer)             # Bonus de régénération physique
-    bonus_reg_mag = Column(Integer)             # Bonus de régénération magique
-    base_vue = Column(Integer)                  # Nombre de cases de vue
-    bonus_vue_phy = Column(Integer)             # Bonus de vue physique
-    bonus_vue_mag = Column(Integer)             # Bonus de vue magique
-    base_arm_phy = Column(Integer)              # Nombre de D3 d'armure physique naturelle
-    malus_base_arm_phy = Column(Integer)        # Nombre de dés d'armure en moins à ce stade du tour
-    bonus_arm_phy = Column(Integer)             # Bonus d'armure physique apporté par l'équipement
-    bonus_arm_mag = Column(Integer)             # Bonus d'armure magique
-    base_mm = Column(Integer)                   # Nombre de points de Maitrise Magique de base
-    bonus_mm_phy = Column(Integer)              # Bonus de MM physique
-    bonus_mm_mag = Column(Integer)              # Bonus de MM magique
-    base_rm = Column(Integer)                   # Nombre de points de Résistance Magique de base
-    bonus_rm_phy = Column(Integer)              # Bonus de RM physique
-    bonus_rm_mag = Column(Integer)              # Bonus de RM magique
-    nb_att_sub = Column(Integer)                # Nombre d'attaques subies dans le tour
-    fatigue = Column(Integer)                   # Nombre de points de fatigue actuels
-    intangible = Column(Boolean)                # Est intangible ?
-    camouflage = Column(Boolean)                # Est camouflé ?
-    invisible = Column(Boolean)                 # Est invisible ?
-    immobile = Column(Boolean)                  # Est immobilisé ?
-    terre = Column(Boolean)                     # Est à terre ?
-    course = Column(Boolean)                    # Est en course ?
-    levite = Column(Boolean)                    # Est en lévitation ?
-    nb_parade_prog = Column(Integer)            # Nombre de parades programmées
-    nb_ctr_att_prog = Column(Integer)           # Nombre de contre-attaques programmées
-    base_tour = Column(Integer)                 # Durée de base du tour en minutes
-    bonus_tour = Column(Integer)                # Bonus de durée du tour (???)
-    bonus_tour_phy = Column(Integer)            # Bonus de durée du tour physique
-    bonus_tour_mag = Column(Integer)            # Bonus de durée du tour magique
-    base_poids = Column(Integer)                # Poids de base en minutes
-    malus_poids_phy = Column(Integer)           # Malus de poids physique
-    malus_poids_mag = Column(Integer)           # Malus de poids magique
-    base_concentration = Column(Integer)        # Concentration de base en %
-    bonus_concentration_phy = Column(Integer)   # Bonus de concentration physique en %
-    bonus_concentration_mag = Column(Integer)   # Bonus de concentration magique en %
-    pi = Column(Integer)                        # Nombre de PI totaux
-    limite_vue = Column(Integer)                # Limite effective de la vue
-    nb_retraite_prog = Column(Integer)          # Nombre de retraite programmées
-    dir_retraite = Column(String(10))           # Direction des retraites par ordre chronologique
+    __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
+    # Numéro de Troll
+    id = Column(Integer)
+    # ID du groupe d'appartenance
+    group_id = Column(Integer, ForeignKey('groups.id'))
+    # ID de l'utilisateur de rattachement
+    user_id = Column(Integer, ForeignKey('users.id'))
+    # Condition if notifications have to be pushed for this troll
+    sciz_notif = Column(Boolean)
+    # Nom
+    nom = Column(String(50))
+    # Race
+    race = Column(String(10))
+    # Niveau
+    niv = Column(Integer)
+    # Nombre de kills
+    nb_kill = Column(Integer)
+    # Nombre de morts
+    nb_mort = Column(Integer)
+    # Nombre de mouches
+    nb_mouche = Column(Integer)
+    # Numéro de guilde
+    id_guilde = Column(Integer)
+    # Numéro de rang dans la guilde
+    rang_guilde = Column(Integer)
+    # Etat
+    etat = Column(String(50))
+    # Est un PNJ ?
+    pnj = Column(Boolean)
+    # Est un ami MH ?
+    ami_mh = Column(Boolean)
+    # Date d'inscription
+    inscription = Column(DateTime)
+    # URL du blason (profil public)
+    blason_url = Column(String(150))
+    # Position axe X
+    pos_x = Column(Integer)
+    # Position axe Y
+    pos_y = Column(Integer)
+    # Posistion axe N
+    pos_n = Column(Integer)
+    # Nombre de points de vie restants
+    pv = Column(Integer)
+    # Bonus de PdV physique
+    bonus_pv_phy = Column(Integer)
+    # Bonus de PdV magique
+    bonus_pv_mag = Column(Integer)
+    # Nombre maximum de points de vie (hors bonus)
+    base_pv_max = Column(Integer)
+    # Bonus de PdV max physique
+    bonus_pv_max_phy = Column(Integer)
+    # Bonus de PdV max magique
+    bonus_pv_max_mag = Column(Integer)
+    # Nombre maximum de points de vie avec bonus
+    base_bonus_pv_max = Column(Integer)
+    # Nombre de points d'actions restants
+    pa = Column(Integer)
+    # Horodatage de la prochaine DLA
+    dla = Column(DateTime)
+    # Nombre de D6 d'attaque
+    base_att = Column(Integer)
+    # Bonus d'attaque physique
+    bonus_att_phy = Column(Integer)
+    # Bonus d'attaque magique
+    bonus_att_mag = Column(Integer)
+    # Nombre de D6 d'esquive
+    base_esq = Column(Integer)
+    # Bonus d'esquive physique
+    bonus_esq_phy = Column(Integer)
+    # Bonus d'esquive magique
+    bonus_esq_mag = Column(Integer)
+    # Nombre de D3 de dégâts
+    base_deg = Column(Integer)
+    # Bonus de dégâts physique
+    bonus_deg_phy = Column(Integer)
+    # Bonus de dégâts magique
+    bonus_deg_mag = Column(Integer)
+    # Nombre de D3 de régénération
+    base_reg = Column(Integer)
+    # Bonus de régénération physique
+    bonus_reg_phy = Column(Integer)
+    # Bonus de régénération magique
+    bonus_reg_mag = Column(Integer)
+    # Nombre de cases de vue
+    base_vue = Column(Integer)
+    # Bonus de vue physique
+    bonus_vue_phy = Column(Integer)
+    # Bonus de vue magique
+    bonus_vue_mag = Column(Integer)
+    # Nombre de D3 d'armure physique naturelle
+    base_arm_phy = Column(Integer)
+    # Nombre de dés d'armure en moins à ce stade du tour
+    malus_base_arm_phy = Column(Integer)
+    # Bonus d'armure physique apporté par l'équipement
+    bonus_arm_phy = Column(Integer)
+    # Bonus d'armure magique
+    bonus_arm_mag = Column(Integer)
+    # Nombre de points de Maitrise Magique de base
+    base_mm = Column(Integer)
+    # Bonus de MM physique
+    bonus_mm_phy = Column(Integer)
+    # Bonus de MM magique
+    bonus_mm_mag = Column(Integer)
+    # Nombre de points de Résistance Magique de base
+    base_rm = Column(Integer)
+    # Bonus de RM physique
+    bonus_rm_phy = Column(Integer)
+    # Bonus de RM magique
+    bonus_rm_mag = Column(Integer)
+    # Nombre d'attaques subies dans le tour
+    nb_att_sub = Column(Integer)
+    # Nombre de points de fatigue actuels
+    fatigue = Column(Integer)
+    # Est intangible ?
+    intangible = Column(Boolean)
+    # Est camouflé ?
+    camouflage = Column(Boolean)
+    # Est invisible ?
+    invisible = Column(Boolean)
+    # Est immobilisé ?
+    immobile = Column(Boolean)
+    # Est à terre ?
+    terre = Column(Boolean)
+    # Est en course ?
+    course = Column(Boolean)
+    # Est en lévitation ?
+    levite = Column(Boolean)
+    # Nombre de parades programmées
+    nb_parade_prog = Column(Integer)
+    # Nombre de contre-attaques programmées
+    nb_ctr_att_prog = Column(Integer)
+    # Durée de base du tour en minutes
+    base_tour = Column(Integer)
+    # Bonus de durée du tour (???)
+    bonus_tour = Column(Integer)
+    # Bonus de durée du tour physique
+    bonus_tour_phy = Column(Integer)
+    # Bonus de durée du tour magique
+    bonus_tour_mag = Column(Integer)
+    # Poids de base en minutes
+    base_poids = Column(Integer)
+    # Malus de poids physique
+    malus_poids_phy = Column(Integer)
+    # Malus de poids magique
+    malus_poids_mag = Column(Integer)
+    # Concentration de base en %
+    base_concentration = Column(Integer)
+    # Bonus de concentration physique en %
+    bonus_concentration_phy = Column(Integer)
+    # Bonus de concentration magique en %
+    bonus_concentration_mag = Column(Integer)
+    # Nombre de PI totaux
+    pi = Column(Integer)
+    # Limite effective de la vue
+    limite_vue = Column(Integer)
+    # Nombre de retraite programmées
+    nb_retraite_prog = Column(Integer)
+    # Direction des retraites par ordre chronologique
+    dir_retraite = Column(String(10))
 
-    # Relationships
-    pieges = relationship('PIEGE', back_populates='troll')
-    cdms = relationship('CDM', back_populates='troll')
-    user = relationship('USER', back_populates='troll', uselist=False)
-    att_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.att_troll_id]', back_populates='att_troll')
-    def_events = relationship('BATTLE_EVENT', foreign_keys='[BATTLE_EVENT.def_troll_id]', back_populates='def_troll')
+    # Associations One-To-Many
+    user = relationship('USER', back_populates='trolls')
+    group = relationship('GROUP', back_populates='trolls')
+    # Associations Many-To-One
+    pieges = relationship('PIEGE', primaryjoin="and_(TROLL.id==PIEGE.troll_id, TROLL.group_id==PIEGE.group_id)", back_populates='troll')
+    cdms = relationship('CDM', primaryjoin="and_(TROLL.id==CDM.troll_id, TROLL.group_id==CDM.group_id)", back_populates='troll')
+    atts = relationship('BATTLE', primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates='att_troll')
+    defs = relationship('BATTLE', primaryjoin="and_(BATTLE.def_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates='def_troll')
     
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    # Constructor is handled by SqlAlchemy, do not override
 
     def update_from_new(self, troll, event = None):
         # Update new troll with event
@@ -148,5 +231,3 @@ class TROLL(sg.SqlAlchemyBase):
         self.s_dla = sg.format_time(self.dla) if self.dla else None
         self.next_dla = self.estimate_next_dla()
         self.s_next_dla = sg.format_time(self.next_dla) if self.next_dla else None
-
-

@@ -1,10 +1,7 @@
 'use strict';
 
-var db = require('../services/database.js');
-var Hook = require('../models/hook.js');
-var Event = require('../models/event.js');
+var DB = require('../services/database.js');
 
-const Op = db.Op;
 const {spawn} = require('child_process');
 
 var HookController = {}
@@ -12,11 +9,13 @@ var HookController = {}
 HookController.getNotifs = function (req, res) {
   
   var hook = req.user;
+  var Op = DB.Op;
 
-  Event.scope().findAndCountAll({where: {
+  DB.Event.scope().findAndCountAll({where: {
     [Op.and]: [
       {id:{[Op.gt]: hook.last_event_id}},
-      {notif_to_push: true}
+      {notif_to_push: true},
+      {group_id: hook.group_id}
     ]},
     attributes: ['id', 'notif'],
     order: [['id', 'DESC']]
@@ -24,7 +23,7 @@ HookController.getNotifs = function (req, res) {
     .then(function (result) {
       res.json(result.rows);
       if (result.count > 0) {
-        Hook.update({last_event_id: result.rows[0].id}, {where: {id: hook.id}});
+        DB.Hook.update({last_event_id: result.rows[0].id}, {where: {id: hook.id}});
       }
     })
     .catch(function(error) {
@@ -32,8 +31,9 @@ HookController.getNotifs = function (req, res) {
     });
 }
 
-
 HookController.request = function (req, res) {
+  var hook = req.user;
+  var groupID = hook.group_id;
   var arg1 = req.body.arg1;
   var arg2 = req.body.arg2;
   var arg3 = req.body.arg3;
@@ -43,7 +43,7 @@ HookController.request = function (req, res) {
     return;
   }
 
-  var args = ['sciz.py', '-r', arg1];
+  var args = ['sciz.py', '-g', groupID, '-r', arg1];
   if (arg2) {
     args.push(arg2);
   }

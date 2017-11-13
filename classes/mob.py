@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -11,56 +11,101 @@ class MOB(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'mobs'
-    id = Column(Integer, primary_key=True)                  # Identifiant unique du monstre
-    sciz_notif = Column(Boolean)                            # SCIZ notifs ?
-    metamob_id = Column(Integer, ForeignKey('metamobs.id')) # Metamob ID
-    nom = Column(String(50))                                # Nom (incluant modificateurs)
-    type = Column(String(50))                               # Type (Race) du monstre
-    tag = Column(String(50))                                # Tatouage
-    age = Column(String(50))                                # Age
-    blessure = Column(Integer)                              # Pourcentage de blessure
-    niv_min = Column(Integer)                               # Niveau minimum
-    niv_max= Column(Integer)                                # Niveau maximum
-    pv_min = Column(Integer)                                # Points de Vie minimum
-    pv_max = Column(Integer)                                # Points de Vie maximum
-    att_min = Column(Integer)                               # Attaque minimum en D6
-    att_max = Column(Integer)                               # Attaque maximum en D6
-    esq_min = Column(Integer)                               # Esquive minimum en D6
-    esq_max = Column(Integer)                               # Esquive maximum en D6
-    deg_min = Column(Integer)                               # Dégâts minimum en D3
-    deg_max = Column(Integer)                               # Dégâts maximum en D3
-    reg_min = Column(Integer)                               # Régénération minimum en D3
-    reg_max = Column(Integer)                               # Régénération maximum en D3
-    arm_phy_min = Column(Integer)                           # Armure physique minimum
-    arm_phy_max = Column(Integer)                           # Armure physique maximum
-    vue_min = Column(Integer)                               # Vue minimum en nombre de cases
-    vue_max = Column(Integer)                               # Vue maximum en nombre de cases
-    capa_desc = Column (String(150))                        # Descritpion de la capacité spéciale
-    capa_effet = Column (String(150))                       # Effet de la capacité spéciale
-    capa_tour = Column (Integer)                            # Nombre de tours d'effet de la capacité spéciale
-    mm_min = Column(Integer)                                # Maitrise Magique minimum
-    mm_max = Column(Integer)                                # Maitrise Magique maximum
-    rm_min = Column(Integer)                                # Résistance Magique minimum
-    rm_max = Column(Integer)                                # Résistance Magique maximum
-    nb_att_tour = Column(Integer)                           # Nombre d'attaque par tour
-    vit_dep = Column(String(10))                            # Vitesse de déplacement
-    vlc = Column(Boolean)                                   # Voir la caché ?
-    att_dist = Column(Boolean)                              # Attaque à distance ?
-    dla = Column(String(50))                                # Moment de la DLA
-    tour_min = Column(Integer)                              # Tour minimum en heure
-    tour_max = Column(Integer)                              # Tour maximum en heure
-    chargement = Column(String(50))                         # Chargement de trésors
-    bonus_malus = Column(String(150))                       # Bonus et Malus en cours 
-    portee_capa = Column(String(50))                        # Portée du pouvoir (capacité spéciale)
+    __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
+    # ID unique du monstre
+    id = Column(Integer)
+    # SCIZ notifs ?
+    sciz_notif = Column(Boolean)
+    # ID du groupe
+    group_id = Column(Integer, ForeignKey('groups.id'))
+    # ID du metamob
+    metamob_id = Column(Integer, ForeignKey('metamobs.id'))
+    # Nom (incluant modificateurs)
+    nom = Column(String(50))
+    # Type (Race) du monstre
+    type = Column(String(50))
+    # Tatouage
+    tag = Column(String(50))
+    # Age
+    age = Column(String(50))
+    # Pourcentage de blessure
+    blessure = Column(Integer)
+    # Niveau minimum
+    niv_min = Column(Integer)
+    # Niveau maximum
+    niv_max = Column(Integer)
+    # Points de Vie minimum
+    pv_min = Column(Integer)
+    # Points de Vie maximum
+    pv_max = Column(Integer)
+    # Attaque minimum en D6
+    att_min = Column(Integer)
+    # Attaque maximum en D6
+    att_max = Column(Integer)
+    # Esquive minimum en D6
+    esq_min = Column(Integer)
+    # Esquive maximum en D6
+    esq_max = Column(Integer)
+    # Dégâts minimum en D3
+    deg_min = Column(Integer)
+    # Dégâts maximum en D3
+    deg_max = Column(Integer)
+    # Régénération minimum en D3
+    reg_min = Column(Integer)
+    # Régénération maximum en D3
+    reg_max = Column(Integer)
+    # Armure physique minimum
+    arm_phy_min = Column(Integer)
+    # Armure physique maximum
+    arm_phy_max = Column(Integer)
+    # Vue minimum en nombre de cases
+    vue_min = Column(Integer)
+    # Vue maximum en nombre de cases
+    vue_max = Column(Integer)
+    # Descritpion de la capacité spéciale
+    capa_desc = Column(String(150))
+    # Effet de la capacité spéciale
+    capa_effet = Column(String(150))
+    # Nombre de tours d'effet de la capacité spéciale
+    capa_tour = Column(Integer)
+    # Maitrise Magique minimum
+    mm_min = Column(Integer)
+    # Maitrise Magique maximum
+    mm_max = Column(Integer)
+    # Résistance Magique minimum
+    rm_min = Column(Integer)
+    # Résistance Magique maximum
+    rm_max = Column(Integer)
+    # Nombre d'attaque par tour
+    nb_att_tour = Column(Integer)
+    # Vitesse de déplacement
+    vit_dep = Column(String(10))
+    # Voir la caché ?
+    vlc = Column(Boolean)
+    # Attaque à distance ?
+    att_dist = Column(Boolean)
+    # Moment de la DLA
+    dla = Column(String(50))
+    # Tour minimum en heure
+    tour_min = Column(Integer)
+    # Tour maximum en heure
+    tour_max = Column(Integer)
+    # Chargement de trésors
+    chargement = Column(String(50))
+    # Bonus et Malus en cours 
+    bonus_malus = Column(String(150))
+    # Portée du pouvoir (capacité spéciale)
+    portee_capa = Column(String(50))
 
-    # Relationships
-    cdms = relationship("CDM", back_populates="mob")
+    # Associations Many-To-One
+    cdms = relationship("CDM", primaryjoin="and_(MOB.id==CDM.mob_id, MOB.group_id==CDM.group_id)", back_populates="mob")
+    atts = relationship("BATTLE", primaryjoin='and_(MOB.id==BATTLE.att_mob_id, MOB.group_id==BATTLE.group_id)', back_populates="att_mob")
+    defs = relationship("BATTLE", primaryjoin='and_(MOB.id==BATTLE.def_mob_id, MOB.group_id==BATTLE.group_id)', back_populates="def_mob")
+    # Assosiations One-To-Many
     metamob = relationship("METAMOB", back_populates="mobs")
-    att_events = relationship("BATTLE_EVENT", foreign_keys = '[BATTLE_EVENT.att_mob_id]', back_populates="att_mob")
-    def_events = relationship("BATTLE_EVENT", foreign_keys = '[BATTLE_EVENT.def_mob_id]', back_populates="def_mob")
+    group = relationship("GROUP", back_populates="mobs")
 
-    # Constructor
-    # Handled by SqlAlchemy, accept keywords names matching the mapped columns, do not override
+    # Constructor is handled by SqlAlchemy do not override
     
     # Loop over every metamobs in the list to find the longest one matching the mob name...
     def link_metamob(self, metamobs):
@@ -81,6 +126,7 @@ class MOB(sg.SqlAlchemyBase):
     # Populate object from a CDM
     def populate_from_cdm(self, obj):
         self.id = obj.mob_id
+        self.group_id = obj.group_id
         self.nom = obj.mob_name
         self.tag = obj.mob_tag
         self.age = obj.mob_age

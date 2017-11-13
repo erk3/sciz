@@ -3,6 +3,7 @@
 
 # Imports
 from sqlalchemy.ext.declarative import declarative_base 
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 # SqlAlchemyBase
 SqlAlchemyBase = declarative_base()
@@ -53,10 +54,6 @@ def none_sorter(x, arg):
 DEFAULT_CONF_FILE               = "sciz.ini"
 DEFAULT_CHARSET                 = "utf-8"
 
-# APP SECTION
-CONF_APP_SECTION                = "app"
-CONF_APP_NAME                   = "name"
-
 # LOG SECTION
 CONF_LOG_SECTION                = "log"
 CONF_LOG_FILE           	= "file"
@@ -66,7 +63,9 @@ CONF_LOG_DEFAULT_LEVEL  	= "default_level"
 
 # MAIL SECTION
 CONF_MAIL_SECTION       	= "mail"
-CONF_MAIL_PATH          	= "maildir_path"
+CONF_MAIL_DOMAIN_NAME          	= "domain_name"
+CONF_MAIL_PATH          	= "maildirs_base_path"
+CONF_MAIL_POSTFIX_CONF_FILE    	= "postfix_accounts_conf_file"
 CONF_MAIL_CDM_RE        	= "reg_cdm_subject"
 CONF_MAIL_ATT_RE        	= "reg_att_subject"
 CONF_MAIL_DEF_RE        	= "reg_def_subject"
@@ -127,7 +126,7 @@ CONF_EVENT_CAPA_EFFET_ATT_RE	= "reg_event_capa_effet_att"
 CONF_EVENT_CAPA_EFFET_DEF_RE	= "reg_event_capa_effet_def"
 CONF_EVENT_CAPA_TOUR_RE 	= "reg_event_capa_tour"
 
-# CDM SECTION
+# PIEGE SECTION
 CONF_PIEGE_SECTION        	= "piege"
 CONF_PIEGE_DESC_RE        	= "reg_piege_desc"  
 
@@ -161,12 +160,17 @@ CONF_CDM_PORTEE_CAPA_RE 	= "reg_cdm_portee_capa"
 CONF_DB_SECTION         	= "db"
 CONF_DB_HOST            	= "host"
 CONF_DB_PORT            	= "port"
-CONF_DB_NAME            	= "name"
+CONF_DB_NAME                    = "name"
 CONF_DB_USER            	= "user"
 CONF_DB_PASS            	= "passwd"
 
-# PRINT SECTION
-CONF_PRINT_SECTION      	= "print"
+# INSTANCE SECTION
+CONF_INSTANCE_SECTION           = "instance"
+CONF_INSTANCE_FTP_REFRESH       = "ftp_refresh"
+CONF_INSTANCE_MAIL_REFRESH 	= "mail_refresh"
+
+# GROUP SECTION
+CONF_GROUP_SECTION      	= "group"
 CONF_PRINT_SEP          	= "stats_sep"
 CONF_PRINT_MOB_BLESSURE 	= "stat_mob_blessure"
 CONF_PRINT_MOB_NIV      	= "stat_mob_niv"
@@ -188,6 +192,7 @@ CONF_PRINT_MOB_DLA   	        = "stat_mob_dla"
 CONF_PRINT_MOB_TOUR   	        = "stat_mob_tour"
 CONF_PRINT_MOB_BONUS_MALUS   	= "stat_mob_bonus_malus"
 CONF_PRINT_MOB_CHARGEMENT   	= "stat_mob_chargement"
+CONF_PRINT_TROLL_ID   	        = "stat_troll_id"
 CONF_PRINT_TROLL_RACE   	= "stat_troll_race"
 CONF_PRINT_TROLL_POS    	= "stat_troll_pos"
 CONF_PRINT_TROLL_DLA    	= "stat_troll_dla"

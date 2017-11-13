@@ -1,22 +1,30 @@
 'use strict'; 
 
-var Sequelize = require('sequelize');
+var sequelize = require('sequelize');
+var MetamobTemplate = {};
 
-var db = require('../services/database.js');
+/*
+ * Definition
+ */
+MetamobTemplate.name = 'Metamob';
+MetamobTemplate.table = 'metamobs';
 
-var modelDefinition = {  
+MetamobTemplate.modelDefinition = {  
   id: {
-    type: Sequelize.INTEGER,
+    type: sequelize.INTEGER,
     primaryKey: true,
     allowNull: false
   },
-  nom: {type: Sequelize.STRING},
-  determinant: {type: Sequelize.STRING},
-  blason_url: {type: Sequelize.STRING}
+  nom: {type: sequelize.STRING},
+  determinant: {type: sequelize.STRING},
+  blason_url: {type: sequelize.STRING}
 };
 
-var modelOptions = {};
+MetamobTemplate.modelOptions = {
+  name: {
+    singular: 'metamob',
+    plural: 'metamobs'
+  }
+};
 
-var MetamobModel = db.define('metamobs', modelDefinition, modelOptions);
-
-module.exports = MetamobModel;
+module.exports = MetamobTemplate;

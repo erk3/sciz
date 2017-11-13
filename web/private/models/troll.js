@@ -1,32 +1,49 @@
 'use strict'; 
 
-var Sequelize = require('sequelize');
+var sequelize = require('sequelize');
+var TrollTemplate = {}
 
-var db = require('../services/database.js');
-
-var modelDefinition = {  
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false
-  },
-  nom: {type: Sequelize.STRING},
-  race: {type: Sequelize.STRING},
-  blason_url: {type: Sequelize.STRING}
-};
-
-var modelOptions = {
-  hooks: {
-    afterFind: changeBlasonURL
-  }
-};
-
-var TrollModel = db.define('trolls', modelDefinition, modelOptions);
-
-function changeBlasonURL(troll) {
-  if (troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
+/*
+ *  Methods
+ */
+TrollTemplate.changeBlasonURL = function (troll) {
+  if (troll && troll.blason_url && troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
     troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll.id;
   }
-}
+  return troll;
+};
 
-module.exports = TrollModel;
+/*
+ * Definition
+ */
+TrollTemplate.name = 'Troll';
+TrollTemplate.table = 'trolls';
+
+TrollTemplate.modelDefinition = {  
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: 'PrimaryKeyConstraint',
+    allowNull: false
+  },
+  group_id: {
+    type: sequelize.INTEGER,
+    primaryKey: 'PrimaryKeyConstraint',
+    allowNull: false
+  },
+  user_id: {type: sequelize.INTEGER},
+  nom: {type: sequelize.STRING},
+  race: {type: sequelize.STRING},
+  blason_url: {type: sequelize.STRING}
+};
+
+TrollTemplate.modelOptions = {
+  name: {
+    singular: 'troll',
+    plural: 'trolls'
+  },
+  hooks: {
+    afterFind: TrollTemplate.changeBlasonURL
+  }
+};
+module.exports = TrollTemplate;
+

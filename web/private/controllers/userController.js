@@ -2,14 +2,13 @@
 
 var jwt = require('jsonwebtoken');
 var config = require('../../config.js');
-var db = require('../services/database.js');
-var User = require('../models/user.js');
+var DB = require('../services/database.js');
 
 var UserController = {}
 
 UserController.updateProfile = function (req, res) {
   
-  var potentialUser = {where: {id: req.body.id}};
+  var potentialUser = {where: {id: req.user.id}};
 
   var data = {
     pseudo: req.body.pseudo,
@@ -17,7 +16,7 @@ UserController.updateProfile = function (req, res) {
   };
 
   var update = function (user, data, res) {
-    User.update(data, user)
+    DB.User.update(data, user)
     .then(function (result) {
       res.json({success: true});
     })
@@ -30,7 +29,7 @@ UserController.updateProfile = function (req, res) {
     update(potentialUser, data, res);
   } else {
     if ((req.body.newPwd.length >= 8) && (req.body.newPwd == req.body.pwd)) {
-      User.findOne(potentialUser)
+      DB.User.findOne(potentialUser)
         .then(function (user) {
           if (!user) {
             res.status(400).json({message: 'Profil inexistant !'});
@@ -59,7 +58,7 @@ UserController.updateProfile = function (req, res) {
 UserController.getProfile = function (req, res) {
   var potentialUser = {where: {id: req.user.id}};
   
-  User.findOne(potentialUser)
+  DB.User.findOne(potentialUser)
     .then(function (user) {
       if (!user) {
         res.status(404).json({message: 'Profil inexistant !'});
@@ -70,14 +69,12 @@ UserController.getProfile = function (req, res) {
           id: user.id,
           pseudo: user.pseudo,
           mh_apikey: user.mh_apikey,
-          nom: user.troll.nom,
-          race: user.troll.race,
-          blason_url: user.troll.blason_url
+          trolls: user.trolls,
         });
       }
     })
     .catch(function(error) {
-      res.status(500).json({message: 'Une erreur est survenue !'});
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error});
     });
 }
 

@@ -1,4 +1,5 @@
 requests==2.12.4
 SQLAlchemy==1.1.11
+SQLAlchemy_utils==0.32.19
 python_bcrypt==0.3.2
 mysql-python

@@ -1,11 +1,13 @@
 angular
   .module('app')
-  .controller('ProfileCtrl', ['$http', profileCtrl]);
+  .controller('ProfileCtrl', ['$http', 'authService', profileCtrl]);
 
-function profileCtrl($http) {
+function profileCtrl($http, authService) {
   var vm = this;
   vm.updateProfile = updateProfile;
   vm.profile = {};
+
+  vm.user = authService.refreshLocalData();
 
   vm.updateError = false;
   vm.updateErrorMessage = null;
@@ -16,6 +18,10 @@ function profileCtrl($http) {
     .then(function (response) {
       if (response && response.data) {
         vm.profile = response.data;
+        vm.profile.blasonUrl = vm.profile.trolls.find(function (troll) {
+          return troll.blason_url !== null;
+        });
+        vm.profile.blasonUrl = (vm.profile.blasonUrl) ? vm.profile.blasonUrl : 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
       }
     });
 

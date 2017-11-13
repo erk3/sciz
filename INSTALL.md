@@ -100,19 +100,19 @@ pip install -r sciz/requirements.txt
 ## Installation de la crontab
 ```
 apt-get install cron
-cp sciz/docker/sciz-crontab /etc/cron.d/
-chmod 0644 /etc/cron.d/sciz-crontab
+crontab docker/sciz-crontab
 ```
 
-N.B : il est possible ici de modifier les fréquences d'exécution de SCIZ (en particulier, si l'on souhaite réduire les appels au scripts publics de Mountyhall)
-
-## Configuration de SCIZ
+## Configuration minimale de SCIZ
 
 Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
     - Section \[mail\]
-      - maildir_path
+      - maildirs_base_path
+      - postfix_accounts_conf_file
+      - domain_name
     - Section \[db\]
       - host
+      - port
       - passwd
 
 ## Installation de l'environnement Web
@@ -135,6 +135,8 @@ npm -C web run build
 ## Configuration de l'application Web
 
 Editer le fichier ```web/config.js``` et modifier la valeur des variables suivantes :
+    - Objet {config.sciz}
+      - bin
     - Objet {config.server}
       - port_server
     - Objet {config.db}
@@ -160,13 +162,14 @@ python sciz.py -i
 # Ajout des utilisateurs
 python sciz.py -u users.json
 
+# Ajout des utilisateurs à un groupe à créer
+python sciz.py -u users.json -g group
+
 # Population initiale des tables
-python sciz.py -s monstres
-python sciz.py -s trolls2
 # /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
-python sciz.py -s profil2
-python sciz.py -s caracts
+python sciz.py -a
 ```
+
 ## Démmarage du serveur Web
 
 ```

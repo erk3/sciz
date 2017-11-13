@@ -3,6 +3,7 @@
 
 # Imports
 import ConfigParser, sqlalchemy, os
+from sqlalchemy import and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from modules.sql_helper import SQLHelper
 from classes.event import EVENT
@@ -13,11 +14,8 @@ import modules.globals as sg
 class Notifier:
 
     # Constructor
-    def __init__(self, config, logger):
-        self.config = config
-        self.logger = logger
+    def __init__(self):
         self.check_conf()
-        self.sqlHelper = SQLHelper(config, logger)
     
     # Configuration loader and checker
     def check_conf(self):
@@ -27,24 +25,14 @@ class Notifier:
     # Print all the notifications on stdout and set the new last event id for the hook
     def print_flush(self, hook_name):
         try:
-            hook = self.sqlHelper.session.query(HOOK).filter(HOOK.nom == hook_name).one()
-            
-            for event in self.sqlHelper.session.query(EVENT).filter(EVENT.id > hook.last_event_id, EVENT.notif_to_push == True):
+            hook = sg.db.session.query(HOOK).filter(HOOK.name == hook_name, HOOK.group_id==sg.group.id).one()
+            for event in sg.db.session.query(EVENT).filter(EVENT.id > hook.last_event_id, EVENT.notif_to_push == True, EVENT.group_id==sg.group.id):
                 print event.notif.encode(sg.DEFAULT_CHARSET) + os.linesep
                 hook.last_event_id = event.id
-
-            self.sqlHelper.session.add(hook)
-            self.sqlHelper.session.commit()
-
+            sg.db.session.add(hook)
+            sg.db.session.commit()
         except NoResultFound:
-            pass
-
-    # Set all the notification as pushed
-    def flush(self):
-        for event in self.sqlHelper.session.query(EVENT).filter(EVENT.notif_to_push == True):
-            event.notif_to_push = False
-            self.sqlHelper.session.add(event)
-        self.sqlHelper.session.commit()
+            sg.logger.warning('No hook or no events found matching the request...')
 
     # Destructor
     def __del__(self):

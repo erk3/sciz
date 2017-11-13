@@ -10,6 +10,7 @@ services:
             - MYSQL_HOST=mysql_sciz
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
             - JWT_SECRET=${JWT_SECRET}
+            - DOMAIN_NAME=${DOMAIN_NAME}
         container_name: sciz
         links:
             - mysql_sciz
@@ -18,7 +19,8 @@ services:
             - mail_sciz
         volumes:
             - mail_data:/mail
-            - ./logs:/sciz/logs
+            - mail_config:/mail/config
+            - sciz_logs:/sciz/logs
         ports:
             - ${SERVER_PORT}:${DOCKER_SERVER_PORT}
 
@@ -33,9 +35,9 @@ services:
             - "587:587"
             - "993:993"
         volumes:
-            - mail_data:/var/mail/${DOMAIN_NAME}/sciz
+            - mail_data:/var/mail/${DOMAIN_NAME}
             - mail_state:/var/mail-state
-            - ./docker/mail_sciz_cfg:/tmp/docker-mailserver
+            - mail_config:/tmp/docker-mailserver
         restart: always
         env_file: .env
         cap_add:
@@ -52,6 +54,8 @@ services:
         env_file: .env
 
 volumes:
+    sciz_logs:
     mysql_data:
     mail_data:
+    mail_config:
     mail_state:

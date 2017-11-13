@@ -1,11 +1,10 @@
 {
-	"sciz_users": [
+  "sciz_users": [
 		{
 			"id" : "104126",
 			"pseudo" : "Põm³",
 			"pwd" : "SuperMotDePasse",
 			"mh_apikey" : "MHAPIKEY",
-			"pushover_apikey" : "PUSHOVERAPIKEY",
 			"role": "4"
 		},
 		{
@@ -13,7 +12,6 @@
 			"pseudo" : "PSEUDO",
 			"pwd" : "SuperMotDePasse2",
 			"mh_apikey" : "MHAPIKEY2",
-			"pushover_apikey" : "PUSHOVERAPIKEY2",
 			"role": "2"
 		}
 	]

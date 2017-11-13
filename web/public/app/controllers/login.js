@@ -10,6 +10,8 @@ function loginCtrl($state, authService) {
 
   vm.login = login;
 
+  vm.user = authService.refreshLocalData();
+
   function login() {
     vm.loginError = false;
     vm.loginErrorMessage = null;
@@ -23,12 +25,10 @@ function loginCtrl($state, authService) {
     authService.login(vm.id, vm.pwd)
       .then(handleSuccessfulLogin)
       .catch(handleFailedLogin);
-
-    $state.go('events');
   }
 
   function handleSuccessfulLogin() {
-    $state.go('index');
+    $state.go('events');
   }
 
   function handleFailedLogin(response) {

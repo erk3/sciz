@@ -1,70 +1,67 @@
 'use strict'; 
 
-var Sequelize = require('sequelize');
 var bcrypt = require('bcrypt');
+var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
+var UserTemplate = {}
 
-var config = require('../../config.js');
-var db = require('../services/database.js');
-var TrollModel = require('./troll.js');
-var CDMModel = require('./cdm.js');
-var MobModel = require('./mob.js');
-
-var modelDefinition = {  
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false
-  },
-  pseudo: {
-    type: Sequelize.STRING,
-  },
-  pwd: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  mh_apikey: {
-    type: Sequelize.STRING,
-  },
-  role: {
-    type: Sequelize.INTEGER,
-    defaultValue: config.userRoles.user
-  }
-};
-
-var modelOptions = {
-  hooks: {
-    beforeValidate: hashPassword,
-    afterFind: changeTrollBlasonURL
-  },
-  defaultScope: {
-    include: [{model: TrollModel, as: 'troll'}]
-  }
-};
-
-var UserModel = db.define('users', modelDefinition, modelOptions);
-UserModel.hasOne(TrollModel, {as: 'troll', foreignKey: 'id'});
-
-UserModel.prototype.comparePasswords = function (pwd, callback) {
-  bcrypt.compare(pwd, this.pwd, function(error, isMatch) {
-    if(error) {
+/*
+ * Methods
+ */
+UserTemplate.comparePasswords = function (pwd, callback) {
+  bcrypt.compare(pwd, this.pwd, function (error, isMatch) {
+    if (error) {
       return callback(error);
     }
     return callback(null, isMatch);
   });
 }
 
-function changeTrollBlasonURL(user) { 
-  if (user && user.troll && user.troll.blason_url && user.troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) { 
-    user.troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + user.troll.id; 
-  } 
-}
-
-function hashPassword(user) {
-  if(user.changed('pwd')) {
-    return bcrypt.hash(user.pwd, 10).then(function(pwd) {
+UserTemplate.hashPassword = function (user) {
+  if (user.changed('pwd')) {
+    return bcrypt.hash(user.pwd, 10).then(function (pwd) {
       user.pwd = pwd;
     });
   }
 }
 
-module.exports = UserModel;
+/*
+ * Definition
+ */
+UserTemplate.name = 'User';
+UserTemplate.table = 'users';
+
+UserTemplate.modelDefinition = {  
+  id: {
+    type: sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  },
+  pseudo: {
+    type: sequelize.STRING,
+  },
+  pwd: {
+    type: sequelize.STRING,
+    allowNull: false
+  },
+  mh_apikey: {
+    type: sequelize.STRING,
+  },
+};
+
+UserTemplate.modelOptions = {
+  name: {
+    singular: 'user',
+    plural: 'users',
+  },
+  hooks: {
+    beforeValidate: UserTemplate.hashPassword,
+    afterFind: function (user) {
+      if (user && user.trolls) {
+        user.trolls.forEach(TrollTemplate.changeBlasonURL);
+      }
+    }
+  }
+};
+
+module.exports = UserTemplate;

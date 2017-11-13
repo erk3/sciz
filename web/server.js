@@ -43,7 +43,7 @@ app.use(express.static('./dist-public'));
 
 // Catch all non-api routes and send them to AngularJS app
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, './dist-public/', 'index.html'));
+  res.sendFile(path.join(__dirname, './dist-public/', 'index.html'));
 });
 
 // Start the server

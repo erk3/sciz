@@ -2,10 +2,8 @@
 
 var JWTStrategy = require('passport-jwt').Strategy;
 var ExtractJwt = require('passport-jwt').ExtractJwt;
-
-var User = require('./../models/user.js');
-var Hook = require('./../models/hook.js');
 var config = require('./../../config.js');
+var DB = require('../services/database.js');
 
 function hookJWTStrategy(passport) {
   var options = {};
@@ -16,7 +14,7 @@ function hookJWTStrategy(passport) {
 
   passport.use(new JWTStrategy(options, function (JWTPayload, callback) {
     if (JWTPayload.type === 'user') {
-      User.findOne({where: {id: JWTPayload.id}})
+      DB.User.findOne({where: {id: JWTPayload.id}})
         .then(function (user) {
           if(!user) {
             callback(null, false);
@@ -25,7 +23,7 @@ function hookJWTStrategy(passport) {
           callback(null, user);
         });
     } else if (JWTPayload.type === 'hook') {
-      Hook.findOne({where: {id: JWTPayload.id}})
+      DB.Hook.findOne({where: {name: JWTPayload.name, group_id: JWTPayload.group_id}})
         .then(function (hook) {
           if(!hook) {
             callback(null, false);

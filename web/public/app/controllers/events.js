@@ -1,8 +1,8 @@
 angular
   .module('app')
-  .controller('EventsCtrl', ['$http', '$window', eventsCtrl]);
+  .controller('EventsCtrl', ['$http', '$window', 'authService', eventsCtrl]);
 
-function eventsCtrl($http, $window) {
+function eventsCtrl($http, $window, authService) {
   var vm = this;
   vm.searchValue = '';
   vm.events = [];
@@ -11,12 +11,16 @@ function eventsCtrl($http, $window) {
   vm.busy = false;
   vm.noMoreEvent = false;
 
+  vm.user = authService.refreshLocalData();
+
   vm.switchTrigger = function (event) {
     vm.cur = event;
     if (event.cdm) {
       vm.switchCDM();
-    } else {
+    } else if (event.battle) {
       vm.switchBATTLE();
+    } else if (event.piege) {
+      vm.switchPIEGE();
     }
     $window.scrollTo(0, 0);
   };
@@ -26,12 +30,14 @@ function eventsCtrl($http, $window) {
       return;
     }
     vm.busy = true;
-    $http({method: 'GET', url: '/api/events', params: {offset: vm.offset}})
+    $http({method: 'GET', url: '/api/events', params: {offset: vm.offset, groupID: vm.user.currentGroupID}})
       .then(function (response) {
         if (response && response.data) {
           var events = angular.fromJson(response.data);
           for (var i = 0, len = events.length; i < len; i++) {
-            events[i].sub = (events[i].cdm) ? events[i].cdm : events[i].battle_event;
+            events[i].sub = (events[i].cdm_id === null) ? events[i].sub : events[i].cdm;
+            events[i].sub = (events[i].battle_id === null) ? events[i].sub : events[i].battle;
+            events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
           }
           var oldLength = vm.events.length;
           vm.events = vm.events.concat(events);
@@ -50,13 +56,19 @@ function eventsCtrl($http, $window) {
   };
 
   /*
+   * PIEGE logic
+   */
+
+  vm.switchPIEGE = function () {};
+
+  /*
    * BATTLE logic
    */
   vm.switchBATTLE = function () {
-    vm.cur.isDead = (vm.cur.battle_event.type.indexOf('mortelle') !== -1);
-    vm.cur.isTouched = (vm.cur.battle_event.att > vm.cur.battle_event.esq);
-    vm.cur.isCrit = (vm.cur.battle_event.att >= vm.cur.battle_event.esq * 2);
-    vm.cur.isFull = (vm.cur.battle_event.resi >= vm.cur.battle_event.sr);
+    vm.cur.isDead = (vm.cur.battle.type.indexOf('mortelle') !== -1);
+    vm.cur.isTouched = (vm.cur.battle.att > vm.cur.battle.esq);
+    vm.cur.isCrit = (vm.cur.battle.att >= vm.cur.battle.esq * 2);
+    vm.cur.isFull = (vm.cur.battle.resi >= vm.cur.battle.sr);
   };
 
   /*
@@ -121,14 +133,14 @@ function eventsCtrl($http, $window) {
   vm.isRelatedToCur = function (event) {
     // Cur Event
     var curAttID = null;
-    curAttID = (vm.cur.battle_event) ? ((vm.cur.battle_event.att_troll_id) ? vm.cur.battle_event.att_troll_id : vm.cur.battle_event.att_mob_id) : null;
+    curAttID = (vm.cur.battle) ? ((vm.cur.battle.att_troll_id) ? vm.cur.battle.att_troll_id : vm.cur.battle.att_mob_id) : curAttID;
     var curDefID = (vm.cur.cdm) ? (vm.cur.cdm.mob_id) : null;
-    curDefID = (vm.cur.battle_event) ? ((vm.cur.battle_event.def_troll_id) ? vm.cur.battle_event.def_troll_id : vm.cur.battle_event.def_mob_id) : null;
+    curDefID = (vm.cur.battle) ? ((vm.cur.battle.def_troll_id) ? vm.cur.battle.def_troll_id : vm.cur.battle.def_mob_id) : curDefID;
     // Event
     var eAttID = (event.cdm) ? (event.cdm.troll_id) : null;
-    eAttID = (event.battle_event) ? ((event.battle_event.att_troll_id) ? event.battle_event.att_troll_id : event.battle_event.att_mob_id) : null;
+    eAttID = (event.battle) ? ((event.battle.att_troll_id) ? event.battle.att_troll_id : event.battle.att_mob_id) : eAttID;
     var eDefID = (event.cdm) ? (event.cdm.mob_id) : null;
-    eDefID = (event.battle_event) ? ((event.battle_event.def_troll_id) ? event.battle_event.def_troll_id : event.battle_event.def_mob_id) : null;
+    eDefID = (event.battle) ? ((event.battle.def_troll_id) ? event.battle.def_troll_id : event.battle.def_mob_id) : eDefID;
     if ((curAttID !== null) && (curDefID !== null)) {
       return ((curAttID === eAttID) && (curDefID === eDefID)) || ((curDefID === eAttID) && (curAttID === eDefID));
     } else if (curAttID !== null) {

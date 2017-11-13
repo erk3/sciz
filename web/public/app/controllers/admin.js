@@ -1,8 +1,8 @@
 angular
   .module('app')
-  .controller('AdminCtrl', ['$http', adminCtrl]);
+  .controller('AdminCtrl', ['$http', 'authService', adminCtrl]);
 
-function adminCtrl($http) {
+function adminCtrl($http, authService) {
   var vm = this;
   vm.newHook = null;
   vm.hooks = [];
@@ -10,6 +10,8 @@ function adminCtrl($http) {
   vm.addHook = addHook;
   vm.getHooks = getHooks;
   vm.revokeHook = revokeHook;
+
+  vm.user = authService.refreshLocalData();
 
   vm.updateError = false;
   vm.updateErrorMessage = null;
@@ -21,7 +23,10 @@ function adminCtrl($http) {
   function getHooks() {
     $http({
       method: 'GET',
-      url: '/api/admin/hooks'
+      url: '/api/admin/hooks',
+      params: {
+        groupID: vm.user.currentGroupID
+      }
     })
     .then(handleSuccessfulGet);
   }
@@ -37,7 +42,7 @@ function adminCtrl($http) {
     $http({
       method: 'DELETE',
       url: '/api/admin/hooks',
-      params: {id: hook.id}
+      params: {id: hook.id, groupID: vm.user.currentGroupID}
     })
     .then(handleSuccessfulDelete)
     .catch(handleFailedDelete);
@@ -66,7 +71,8 @@ function adminCtrl($http) {
       method: 'POST',
       url: '/api/admin/hooks',
       data: {
-        nom: vm.newHook
+        name: vm.newHook,
+        groupID: vm.user.currentGroupID
       }
     })
     .then(handleSuccessfulAdd)

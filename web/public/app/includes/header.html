@@ -16,17 +16,27 @@
           <li class="active"><a href="/">Accueil</a></li>
           <li class="active" ng-hide="!authService.isAuthenticated()"><a href="/events">Événements</a></li>
         </ul>
-
+        <!-- User menu -->
         <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
-          <li uib-dropdown><a uib-dropdown-toggle>{{authService.getUserData().pseudo}}<b class="caret"></b></a>
+          <li uib-dropdown><a uib-dropdown-toggle>{{user.pseudo}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li><a href="/settings"><i class="icon-cog"></i>Préférences</a></li>
-              <li ng-if="authService.getUserData().role === 4"><a href="/admin"><i class="icon-cog"></i>Administration</a></li>
+              <li ng-if="authService.isAuthorized(4);"><a href="/admin"><i class="icon-cog"></i>Administration</a></li>
               <li class="divider"></li>
               <li><a href="" ng-click="authService.logout()"><i class="icon-off"></i>Déconnexion</a></li>
             </ul>
           </li>
-        </ul>
+        </ul><!-- User menu-->
+        <!-- Group menu -->
+        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
+          <li uib-dropdown><a uib-dropdown-toggle>Groupe : {{user.currentGroupName}}<b class="caret"></b></a>
+            <ul uib-dropdown-menu>
+              <li ng-repeat='assoc in user.assocs'>
+                <a href="" ng-click="authService.changeGroup(assoc.group_id)"><i class="icon-cog"></i>{{assoc.group.name}}</a>
+              </li>
+            </ul>
+          </li>
+        </ul><!-- Group menu-->
       </div>
     </div>
   </nav>
