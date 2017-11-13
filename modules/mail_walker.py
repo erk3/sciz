@@ -73,8 +73,8 @@ class MailWalker:
     def walk(self, group=None):
         group = group if group else sg.group
         try:
-            sg.logger.info('Walking the mails for group %s...' % (group.name, ))
-            mbox = mailbox.Maildir(self.mailDirPath + os.sep + group.name)
+            sg.logger.info('Walking the mails for group %s...' % (group.flat_name, ))
+            mbox = mailbox.Maildir(self.mailDirPath + os.sep + group.flat_name)
             # Build a sorted list of key-message by 'Date' header #RFC822
             sorted_mails = sorted(mbox.iteritems(), key=lambda x: email.utils.parsedate(x[1].get('Date')))
             # Walk over the mail directory (iterating from the by 'Date' header sorted list)
@@ -145,10 +145,9 @@ class MailWalker:
                             event = EVENT()
                             sg.db.add(event, obj)
                     
-                    new_file = self.mailDirPath + os.sep + group.name + os.sep + 'parsed' + os.sep + os.path.basename(msgFile._file.name)
+                    new_file = self.mailDirPath + os.sep + group.flat_name + os.sep + 'parsed' + os.sep + os.path.basename(msgFile._file.name)
                     sg.createDirName(new_file)
                     os.rename(msgFile._file.name, new_file)
-                    #os.remove(msgFile._file.name)
 
                 # If anything goes wrong parsing a mail, it will land here (hopefully) then continue
                 except Exception:

@@ -63,7 +63,7 @@ class SCIZ:
             groups = sg.db.session.query(GROUP).all()
             for group in groups:
                 # Ensure to load the conf for the group
-                self.adminHelper.set_group(group.name)
+                self.adminHelper.set_group(group.flat_name)
                 # Then walk the mails
                 self.walker.walk(group)
     
