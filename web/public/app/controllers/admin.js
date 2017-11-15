@@ -104,6 +104,7 @@ function adminCtrl($http, authService) {
 
   function updateGroup() {
     authService.updateGroup(vm.user.currentAssoc.group);
+    vm.user.currentAssoc.group.groupID = vm.user.currentAssoc.group.id;
     $http({
       method: 'POST',
       url: '/api/admin/group',
