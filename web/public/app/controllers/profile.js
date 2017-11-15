@@ -9,6 +9,7 @@ function profileCtrl($http, authService) {
 
   vm.updateProfile = updateProfile;
   vm.profile = {};
+  vm.view = 'profile';
 
   vm.user = authService.refreshLocalData();
 
@@ -23,10 +24,12 @@ function profileCtrl($http, authService) {
         vm.profile = response.data;
         vm.dynSpRefresh = (vm.profile.dyn_sp_refresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.profile.dyn_sp_refresh;
         vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
-        vm.profile.blasonUrl = vm.profile.trolls.find(function (troll) {
-          return troll.blason_url !== null;
-        });
-        vm.profile.blasonUrl = (vm.profile.blasonUrl) ? vm.profile.blasonUrl.blason_url : 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+        if (vm.profile.trolls && vm.profile.trolls[0]) {
+          vm.profile.blasonUrl = vm.profile.trolls[0].blason_url;
+          vm.profile.nom = vm.profile.trolls[0].nom;
+        } else {
+          vm.profile.blasonURL = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+        }
       }
     });
 

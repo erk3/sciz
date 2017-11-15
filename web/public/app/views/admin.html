@@ -5,7 +5,8 @@
     <div ng-include="'app/includes/sidebar_admin.html'"></div>
 
     <!-- Settings display -->
-    <div ng-if="'admin' | isState" ng-include="'app/views/admin_hooks.html'"></div>
+    <div ng-if="ac.view === 'group';" ng-include="'app/views/admin_group.html'"></div>
+    <div ng-if="ac.view === 'hooks';" ng-include="'app/views/admin_hooks.html'"></div>
   </div>
 </div>
 

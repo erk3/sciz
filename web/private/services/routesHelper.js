@@ -17,6 +17,8 @@ exports.allowAuthorized = function (accessLevel, callback) {
     var user = req.user;
     var groupID = req.query.groupID;
     groupID = (groupID) ? groupID : req.body.groupID;
+    groupID = (groupID) ? groupID : req.query.group_id;
+    groupID = (groupID) ? groupID : req.body.group_id;
     if (!user || !groupID || !user.assocs) { 
       res.sendStatus(403);
       return;

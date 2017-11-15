@@ -30,7 +30,7 @@ function eventsCtrl($http, $window, authService) {
       return;
     }
     vm.busy = true;
-    $http({method: 'GET', url: '/api/events', params: {offset: vm.offset, groupID: vm.user.currentGroupID}})
+    $http({method: 'GET', url: '/api/events', params: {offset: vm.offset, groupID: vm.user.currentAssoc.group_id}})
       .then(function (response) {
         if (response && response.data) {
           var events = angular.fromJson(response.data);

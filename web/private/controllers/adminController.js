@@ -68,4 +68,36 @@ AdminController.revokeHook = function (req, res) {
     });
 }
 
+AdminController.updateGroup = function (req, res) {
+
+  var potentialGroup = {where: {id: req.body.groupID}};
+
+  var data = {
+    name: req.body.name,
+    blason_url: req.body.blason_url,
+    desc: req.body.desc,
+  };
+
+  var update = function (group, data, res) {
+    DB.Group.update(data, group)
+    .then(function (result) {
+      res.json({success: true});
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    });
+  };
+
+  DB.Group.findOne(potentialGroup)
+    .then(function (group) {
+      if (!group) {
+        res.status(400).json({message: 'Groupe inexistant !'});
+      }
+      else {
+        update(potentialGroup, data, res);
+      }
+    });
+}
+                            
+
 module.exports = AdminController;

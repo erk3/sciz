@@ -3,81 +3,101 @@
   
   <!-- Page header -->
   <div class="row">
-    <div class="page-header text-center">
-      <h1>Mon compte</h1>
+    <div class="page-header text-left">
+      <div class="row">
+        <h2 class="col-sm-8 col-md-8">Mon profil</h2>
+        <button style="margin-top: 20px;" type="submit" class="col-sm-offset-2 col-md-offset-2 btn btn-primary" ng-click="pc.updateProfile()" ng-disabled="!pc.profile.mh_apikey || !pc.profile.pseudo || ((pc.oldPwd || pc.newPwd || pc.pwd) && !(pc.oldPwd && pc.newPwd.length >= 8 && pc.pwd === pc.newPwd))">Sauvegarder</button>
+      </div>
+      </br>
+      <div ng-if="pc.updateError">
+        </br>
+        <div class="alert" ng-class="{'alert-danger':pc.updateError}">
+          {{pc.updateErrorMessage}}
+        </div>
+      </div>
+      <div ng-if="pc.updateStatus">
+        </br>
+        <div class="alert" ng-class="{'alert-success':pc.updateStatus}">
+          {{pc.updateStatusMessage}}
+        </div>
+      </div>
     </div>
   </div>
   <br/>
 
   <!-- Page content -->
   <form class="form-horizontal">
+    <ol class="breadcrumb">
+      <li class="active"><h4><strong>SCIZ</strong></h4></li>
+    </ol>
     
     <div class="form-group" ng-class="{'has-error':!pc.profile.pseudo}">
-      <label class="col-sm-2 control-label">Pseudonyme SCIZ</label>
-      <div class="col-sm-5">
+      <label class="col-sm-5 col-md-4 control-label">Pseudonyme</label>
+      <div class="col-sm-4 col-md-3">
         <input type="text" class="form-control" placeholder="Pseudonyme SCIZ" ng-model="pc.profile.pseudo" required>
       </div>
-    </div>
-
-    <div class="form-group" ng-class="{'has-error':!pc.profile.mh_apikey}">
-      <label class="col-sm-2 control-label">Mot de passe MH</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" placeholder="Mot de passe MH" ng-model="pc.profile.mh_apikey" required>
-      </div>
-    </div>
-    
-    <div class="form-group" ng-class="{'has-error': pc.dynSpRefresh === null}">
-      <label class="col-sm-2 control-label">Appels aux SP MH dynamiques par jour</label>
-      <div class="col-sm-5">
-        <input type="number" min="0" step="2" max="24" class="form-control" ng-model="pc.dynSpRefresh" required>
-      </div>
-    </div>
-    
-    <div class="form-group" ng-class="{'has-error': pc.staticSpRefresh === null}">
-      <label class="col-sm-2 control-label">Appels aux SP MH statiques par jour</label>
-      <div class="col-sm-5">
-        <input type="number" min="0" step="0" max="0" class="form-control" ng-model="pc.staticSpRefresh" required>
-      </div>
-    </div>
-    
+    </div>  
     <br/>
     <br/>
     
-    <div class="form-group" ng-class="{'has-error':!pc.oldPwd && (pc.newPwd || pc.pwd)}">
-      <label class="col-sm-2 control-label">Ancien mot de passe</label>
-      <div class="col-sm-5">
-        <input type="password" class="form-control" placeholder="Ancien mot de passe" ng-model="pc.oldPwd">
+    <div class="row">
+      <div class="form-group" ng-class="{'has-error':!pc.oldPwd && (pc.newPwd || pc.pwd)}">
+        <label class="col-sm-5 col-md-4 control-label">Ancien mot de passe</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="password" class="form-control" placeholder="Ancien mot de passe" ng-model="pc.oldPwd">
+        </div>
       </div>
-    </div>
-    
-    <div class="form-group" ng-class="{'has-error':pc.newPwd.length > 0 && pc.newPwd.length < 8, 'has-success':pc.newPwd.length >= 8 && pc.pwd === pc.newPwd}">
-      <label class="col-sm-2 control-label">Nouveau mot de passe</label>
-      <div class="col-sm-5">
-        <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.newPwd">
+      <div class="form-group" ng-class="{'has-error':pc.newPwd.length > 0 && pc.newPwd.length < 8, 'has-success':pc.newPwd.length >= 8 && pc.pwd === pc.newPwd}">
+        <label class="col-sm-5 col-md-4 control-label">Nouveau mot de passe</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.newPwd">
+        </div>
       </div>
-    </div>
-    
-    <div class="form-group" ng-class="{'has-error':pc.pwd !== pc.newPwd, 'has-success':pc.pwd.length >= 8 && pc.pwd === pc.newPwd}">
-    <label class="col-sm-2 control-label">Confirmation</label>
-    <div class="col-sm-5">
-        <input type="password" class="form-control" placeholder="Confirmation" ng-model="pc.pwd">
+      <div class="form-group" ng-class="{'has-error':pc.pwd !== pc.newPwd, 'has-success':pc.pwd.length >= 8 && pc.pwd === pc.newPwd}">
+      <label class="col-sm-5 col-md-4 control-label">Confirmation</label>
+      <div class="col-sm-4 col-md-3">
+          <input type="password" class="form-control" placeholder="Confirmation" ng-model="pc.pwd">
+        </div>
       </div>
-    </div>
-    
-    <br/>
-    
-    <div class="col-sm-offset-2 col-sm-5">
-      <button type="submit" class="btn btn-primary btl-lg" ng-click="pc.updateProfile()" ng-disabled="!pc.profile.mh_apikey || !pc.profile.pseudo || ((pc.oldPwd || pc.newPwd || pc.pwd) && !(pc.oldPwd && pc.newPwd.length >= 8 && pc.pwd === pc.newPwd))">Sauvegarder</button>
       <br/>
-      <br/>
-      <div ng-if="pc.updateError" class="alert" ng-class="{'alert-danger':pc.updateError}">
-        {{pc.updateErrorMessage}}
-      </div>
-      <div ng-if="pc.updateStatus" class="alert" ng-class="{'alert-success':pc.updateStatus}">
-        {{pc.updateStatusMessage}}
+    </div>
+    
+    <ol class="breadcrumb">
+      <li class="active"><h4><strong>Mountyhall</strong></h4></li>
+    </ol>
+    
+    <div class="alert alert-warning" role="alert">
+      <strong>Attention !</strong> Mountyhall fixe des <a href="http://sp.mountyhall.com">limites journalières</a> par trõll, veillez à ne pas les dépasser tous outils tiers confondus !
+    </div>
+    <br/>
+    
+    <div class="row">
+      <div class="form-group" ng-class="{'has-error':!pc.profile.mh_apikey}">
+        <label class="col-sm-5 col-md-4 control-label">Mot de passe MH</label>
+        <div class="col-sm-4 col-md-3">
+          <input type="text" class="form-control" placeholder="Mot de passe MH" ng-model="pc.profile.mh_apikey" required>
+        </div>
       </div>
     </div>
-
+    
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-5 col-md-4 control-label">Maximum d'appels aux SP dynamiques MH par jour</label>
+        <div class="col-sm-2 col-md-1">
+          <input type="number" min="0" step="2" max="24" class="form-control" ng-model="pc.dynSpRefresh" ng-class="{'has-error': pc.dynSpRefresh === null}" required>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-5 col-md-4 control-label">Maximum d'appels aux SP statiques MH par jour </label>
+        <div class="col-sm-2 col-md-1">
+          <input type="number" min="0" step="0" max="0" class="form-control" ng-model="pc.staticSpRefresh" ng-class="{'has-error': pc.staticSpRefresh === null}" required>
+        </div>
+      </div>
+    </div>
+    
   </form>
 </div>
 

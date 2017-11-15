@@ -17,6 +17,7 @@ function authService($http, $cookies, $state, $window) {
     isAuthorized: isAuthorized,
     refreshLocalData: refreshLocalData,
     updateLocalData: updateLocalData,
+    updateGroup: updateGroup,
     changeGroup: changeGroup,
     dataWrap: {}
   };
@@ -42,12 +43,12 @@ function authService($http, $cookies, $state, $window) {
         user.pseudo = response.pseudo;
         user.assocs = response.assocs;
         user.token = response.token;
-        if (user.assocs !== null) {
-          user.currentGroupID = user.assocs[0].group_id;
-          user.currentGroupName = user.assocs[0].group.name;
-        }
-
         authService.dataWrap.user = user;
+        if (user.assocs !== null) {
+          authService.changeGroup(user.assocs[0].group_id);
+        }
+        authService.dataWrap.user = user;
+
         authService.updateLocalData();
       }
     });
@@ -63,12 +64,31 @@ function authService($http, $cookies, $state, $window) {
     return authService.dataWrap.user && authService.dataWrap.user !== 'undefined';
   }
 
+  function updateGroup(group) {
+    var user = authService.dataWrap.user;
+    for (var i = 0; i < user.assocs.length; i++) {
+      if (user.assocs[i].group_id === group.id) {
+        user.assocs[i].group.name = group.name;
+        user.assocs[i].group.blason_url = group.blason_url;
+        user.assocs[i].group.desc = group.desc;
+        user.currentAssoc = user.assocs[i];
+        if (user.currentAssoc.group.blason_url === null) {
+          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ_MyNameIsNobody.gif';
+        }
+      }
+    }
+    authService.dataWrap.user = user;
+    return authService.updateLocalData();
+  }
+
   function changeGroup(index) {
     var user = authService.dataWrap.user;
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id === index) {
-        user.currentGroupID = index;
-        user.currentGroupName = user.assocs[i].group.name;
+        user.currentAssoc = user.assocs[i];
+        if (user.currentAssoc.group.blason_url === null) {
+          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ_MyNameIsNobody.gif';
+        }
       }
     }
     authService.dataWrap.user = user;
@@ -99,7 +119,7 @@ function authService($http, $cookies, $state, $window) {
     var user = authService.dataWrap.user;
     if (user.assocs !== null) {
       for (var i = 0; i < user.assocs.length; i++) {
-        if ((user.assocs[i].group_id === user.currentGroupID) && (levelAccess & user.assocs[i].role)) {
+        if ((user.assocs[i].group_id === user.currentAssoc.group_id) && (levelAccess & user.assocs[i].role)) {
           return true;
         }
       }

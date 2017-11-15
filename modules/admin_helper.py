@@ -65,6 +65,7 @@ class AdminHelper:
             sg.group = GROUP()
             sg.group.name = group_name
             sg.group.flat_name = flat_name
+            sg.group.mail = flat_name + '@' + self.domain_name
             sg.group = sg.db.add(sg.group)
             # Populate default conf for the group
             for (each_key, each_value) in sg.config.items(sg.CONF_GROUP_SECTION):

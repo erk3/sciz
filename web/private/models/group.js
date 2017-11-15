@@ -29,6 +29,9 @@ GroupTemplate.modelDefinition = {
   desc: {
     type: sequelize.STRING,
   },
+  mail: {
+    type: sequelize.STRING,
+  },
   blason_url: {
     type: sequelize.STRING,
   }

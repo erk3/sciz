@@ -18,6 +18,7 @@ var APIRoutes = function(passport) {
   router.post('/authenticate', AuthController.authenticate);
   router.post('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.updateProfile));
   router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));
+  router.post('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateGroup));
   router.post('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.request));
 
   // GET routes

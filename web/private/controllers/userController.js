@@ -74,6 +74,7 @@ UserController.getProfile = function (req, res) {
           dyn_sp_refresh: user.dyn_sp_refresh,
           static_sp_refresh: user.static_sp_refresh,
           trolls: user.trolls,
+          assocs: user.assocs,
         });
       }
     })

@@ -1,0 +1,29 @@
+<!-- Settings display -->
+<div class="col-sm-9 col-md-9">
+  <!-- Page header -->
+  <div class="row">
+    <div class="page-header text-left">
+      <h2>Mes groupes</h2>
+    </div>
+  </div>
+  <!-- Page content -->
+  <div class="alert alert-danger" role="alert">
+    <strong>Attention !</strong> Evitez de diffuser vos noms de groupes ou adresses mails, des trõlls malveillants pourraient s'en servir pour forger de fausses chauve-souris...
+  </div>
+  <br/>
+  <div class="row" ng-repeat="assoc in pc.profile.assocs">
+    <div class="col-md-2">
+      <img ng-src="{{assoc.group.blason_url}}" class="img-responsive" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
+    </div>
+    <div class="col-md-10">
+      <blockquote>
+        <p>{{assoc.group.name}}</p>
+          <cite><small>Mail : {{assoc.group.mail}}</small></cite>
+          <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
+      </blockquote>
+    </div>
+    <br/>
+    <br/>
+  </div>
+</div>
+

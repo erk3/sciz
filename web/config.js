@@ -8,13 +8,13 @@ config.sciz = {
 };
 
 config.server = {
-  port_server: 8080
+  port_server: 80
 };
 
 config.db = {
   name: 'sciz', 
   user: 'sciz', 
-  password: 'db_password'
+  password: 'db_passwd'
 };
 
 config.db.details = {

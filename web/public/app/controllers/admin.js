@@ -7,16 +7,19 @@ function adminCtrl($http, authService) {
   vm.newHook = null;
   vm.hooks = [];
 
+  vm.view = 'group';
+
   vm.addHook = addHook;
   vm.getHooks = getHooks;
   vm.revokeHook = revokeHook;
+  vm.updateGroup = updateGroup;
 
   vm.user = authService.refreshLocalData();
 
-  vm.updateError = false;
-  vm.updateErrorMessage = null;
-  vm.updateStatus = false;
-  vm.updateStatusMessage = null;
+  vm.updateErrorHook = false;
+  vm.updateErrorHookMessage = null;
+  vm.updateStatusHook = false;
+  vm.updateStatusHookMessage = null;
 
   vm.getHooks();
 
@@ -25,13 +28,13 @@ function adminCtrl($http, authService) {
       method: 'GET',
       url: '/api/admin/hooks',
       params: {
-        groupID: vm.user.currentGroupID
+        groupID: vm.user.currentAssoc.group_id
       }
     })
-    .then(handleSuccessfulGet);
+    .then(handleSuccessfulGetHooks);
   }
 
-  function handleSuccessfulGet(response) {
+  function handleSuccessfulGetHooks(response) {
     if (response && response.data) {
       var hooks = angular.fromJson(response.data);
       vm.hooks = hooks;
@@ -42,28 +45,28 @@ function adminCtrl($http, authService) {
     $http({
       method: 'DELETE',
       url: '/api/admin/hooks',
-      params: {id: hook.id, groupID: vm.user.currentGroupID}
+      params: {id: hook.id, groupID: vm.user.currentAssoc.group_id}
     })
-    .then(handleSuccessfulDelete)
-    .catch(handleFailedDelete);
+    .then(handleSuccessfulDeleteHook)
+    .catch(handleFailedDeleteHook);
   }
 
-  function handleFailedDelete(response) {
-    vm.updateError = true;
-    vm.updateErrorMessage = 'Erreur';
-    vm.updateStatus = false;
-    vm.updateStatusMessage = null;
+  function handleFailedDeleteHook(response) {
+    vm.updateErrorHook = true;
+    vm.updateErrorHookMessage = 'Erreur';
+    vm.updateStatusHook = false;
+    vm.updateStatusHookMessage = null;
     if (response && response.data) {
-      vm.updateErrorMessage += ': ' + response.data.message;
+      vm.updateErrorHookMessage += ': ' + response.data.message;
     }
   }
 
-  function handleSuccessfulDelete() {
+  function handleSuccessfulDeleteHook() {
     vm.getHooks();
-    vm.updateError = false;
-    vm.updateErrorMessage = null;
-    vm.updateStatus = true;
-    vm.updateStatusMessage = 'Hook révoqué';
+    vm.updateErrorHook = false;
+    vm.updateErrorHookMessage = null;
+    vm.updateStatusHook = true;
+    vm.updateStatusHookMessage = 'Hook révoqué !';
   }
 
   function addHook() {
@@ -72,30 +75,59 @@ function adminCtrl($http, authService) {
       url: '/api/admin/hooks',
       data: {
         name: vm.newHook,
-        groupID: vm.user.currentGroupID
+        groupID: vm.user.currentAssoc.group_id
       }
     })
-    .then(handleSuccessfulAdd)
-    .catch(handleFailedAdd);
+    .then(handleSuccessfulAddHook)
+    .catch(handleFailedAddHook);
   }
 
-  function handleSuccessfulAdd() {
+  function handleSuccessfulAddHook() {
     vm.getHooks();
     vm.newHook = null;
-    vm.updateError = false;
-    vm.updateErrorMessage = null;
-    vm.updateStatus = true;
-    vm.updateStatusMessage = 'Hook ajouté';
+    vm.updateErrorHook = false;
+    vm.updateErrorHookMessage = null;
+    vm.updateStatusHook = true;
+    vm.updateStatusHookMessage = 'Hook ajouté !';
   }
 
-  function handleFailedAdd(response) {
+  function handleFailedAddHook(response) {
     vm.newHook = null;
-    vm.updateError = true;
-    vm.updateErrorMessage = 'Erreur';
-    vm.updateStatus = false;
-    vm.updateStatusMessage = null;
+    vm.updateErrorHook = true;
+    vm.updateErrorHookMessage = 'Erreur';
+    vm.updateStatusHook = false;
+    vm.updateStatusHookMessage = null;
     if (response && response.data) {
-      vm.updateErrorMessage += ': ' + response.data.message;
+      vm.updateErrorHookMessage += ': ' + response.data.message;
+    }
+  }
+
+  function updateGroup() {
+    authService.updateGroup(vm.user.currentAssoc.group);
+    $http({
+      method: 'POST',
+      url: '/api/admin/group',
+      data: JSON.stringify(vm.user.currentAssoc.group)
+    })
+    .then(handleSuccessfulAddGroup)
+    .catch(handleFailedAddGroup);
+  }
+
+  function handleSuccessfulAddGroup() {
+    vm.user = authService.updateLocalData();
+    vm.updateErrorGroup = false;
+    vm.updateErrorGroupMessage = null;
+    vm.updateStatusGroup = true;
+    vm.updateStatusGroupMessage = 'Modifications enregistrées !';
+  }
+
+  function handleFailedAddGroup(response) {
+    vm.updateErrorGroup = true;
+    vm.updateErrorGroupMessage = 'Erreur';
+    vm.updateStatusGroup = false;
+    vm.updateStatusGroupMessage = null;
+    if (response && response.data) {
+      vm.updateErrorHookMessage += ': ' + response.data.message;
     }
   }
 }

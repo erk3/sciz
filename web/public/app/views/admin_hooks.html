@@ -3,33 +3,52 @@
   
   <!-- Page header -->
   <div class="row">
-    <div class="page-header text-center">
-      <h1>Gestion des hooks</h1>
+    <div class="page-header text-left">
+      <h2>Gestion des hooks</h2>
     </div>
+  </div>
+
+  <!-- Page content -->
+  <div class="bs-callout bs-callout-info">
+    <h4>Hook</h4>
+    Un hook permet d'autoriser à un tiers, généralement un bot ou un plugin, de récupérer les notifications de votre groupe et d'effectuer des requêtes en lecture seule sur les informations de celui-ci.
   </div>
   <br/>
 
-  <!-- Page content -->
-  <div class="row">
-    <h3>Créer un nouveau hook</h3>
+  <form class="form-horizontal">
+    <div class="col-sm-5 input-group input-group-lg">
+      <input type="text" class="form-control" ng-model="ac.newHook" placeholder="Créer un hook">
+      <span class="input-group-btn"> 
+        <button class="btn btn-primary btl-lg" type="button" ng-disabled="!ac.newHook" ng-click="ac.addHook()">
+          <span class="glyphicon glyphicon-send"></span>
+        </button>
+      </span> 
+    </div>
+  </form>
+  <br/>
+
+  <div ng-if="ac.updateError">
+    <div class="alert alert-danger">
+      {{ac.updateErrorMessage}}
+    </div>
     <br/>
-    <form class="form-horizontal">
-      <div class="col-sm-5 input-group input-group-lg">
-        <input type="text" class="form-control" ng-model="ac.newHook" placeholder="Nom du hook">
-        <span class="input-group-btn"> 
-          <button class="btn btn-primary btl-lg" type="button" ng-disabled="!ac.newHook" ng-click="ac.addHook()">
-            <span class="glyphicon glyphicon-send"></span>
-          </button>
-        </span> 
-      </div>
-    </form>
+  </div>
+  <div ng-if="ac.updateStatus"> 
+    <div class="alert alert-success">
+      {{ac.updateStatusMessage}}
+    </div>
     <br/>
-    <div ng-if="ac.updateError" class="alert alert-danger">{{ac.updateErrorMessage}}</div>
-    <div ng-if="ac.updateStatus" class="alert alert-success">{{ac.updateStatusMessage}}</div>
   </div>
   
-  <div class="row">
-    <h3>Hooks existants</h3>
+  <br/>
+  <div ng-if="ac.hooks.length" class="row">
+    <ol class="breadcrumb">
+      <li class="active"><h4><strong>Liste des hooks<strong></h4></li>
+    </ol>
+    
+    <div class="alert alert-danger" role="alert">
+      <strong>Attention !</strong> Ne diffusez jamais le JWT associé à un hook, celui-ci permettrait à n'importe qui d'accéder à vos données. Vous pouvez créer ou révoquer un hook à tout instant. 
+    </div>
     <br/>
 
     <div class="form-group" ng-repeat="hook in ac.hooks | filter: {revoked: false}">

@@ -17,6 +17,7 @@ class GROUP(sg.SqlAlchemyBase):
     name = Column(String(50), unique=True)
     desc = Column(String(255))
     blason_url = Column(String(255))
+    mail = Column(String(150))
     mail_pwd = Column(String(255))
     
     # Associations Many-To-Many
