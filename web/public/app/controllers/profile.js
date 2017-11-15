@@ -25,7 +25,7 @@ function profileCtrl($http, authService) {
         vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
         vm.profile.blasonUrl = vm.profile.trolls.find(function (troll) {
           return troll.blason_url !== null;
-        };
+        });
         vm.profile.blasonUrl = (vm.profile.blasonUrl) ? vm.profile.blasonUrl.blason_url : 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
       }
     });

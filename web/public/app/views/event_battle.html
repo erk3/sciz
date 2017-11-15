@@ -22,7 +22,7 @@
   			<p ng-if="ec.cur.sub.vie">({{ec.cur.sub.vie}} PV)</p>
   		</div>
 	    <div class="col-md-4">
-	    	<div ng-class="{'container-overlay':ec.cur.isDead}">
+        <div ng-class="{'container-overlay':ec.cur.isDead}">
         <img ng-src="{{ec.cur.sub.def_troll_id && ec.cur.sub.def_troll.blason_url || ec.cur.sub.def_mob.metamob.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
 	     		<div ng-if="ec.cur.isDead" class="overlay">
 	     			<img src="images/dead_stamp.png" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="">

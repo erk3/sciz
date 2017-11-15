@@ -15,11 +15,11 @@ function eventsCtrl($http, $window, authService) {
 
   vm.switchTrigger = function (event) {
     vm.cur = event;
-    if (event.cdm) {
+    if (event.cdm_id !== null) {
       vm.switchCDM();
-    } else if (event.battle) {
+    } else if (event.battle_id !== null) {
       vm.switchBATTLE();
-    } else if (event.piege) {
+    } else if (event.piege_id !== null) {
       vm.switchPIEGE();
     }
     $window.scrollTo(0, 0);
