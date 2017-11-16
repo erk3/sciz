@@ -124,11 +124,25 @@ DB.AssocUsersGroups.addScope('defaultScope', {include: [{model: DB.Group}]}, {ov
 // Mob
 DB.Mob.addScope('defaultScope', {include: [{model: DB.Metamob}]}, {override: true});
 // Battle
-DB.Battle.addScope('defaultScope', {include: [{model: DB.Mob, as: 'att_mob'}, {model: DB.Troll, as: 'att_troll'}, {model: DB.Mob, as: 'def_mob'}, {model: DB.Troll, as: 'def_troll'}]}, {override: true});
+DB.Battle.addScope('defaultScope', {
+  include: [
+    {model: DB.Mob, as: 'att_mob', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->att_mob.group_id')), required: false},
+    {model: DB.Mob, as: 'def_mob', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_mob.group_id')), required: false},
+    {model: DB.Troll, as: 'att_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->att_troll.group_id')), required: false},
+    {model: DB.Troll, as: 'def_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
 // CDM
-DB.CDM.addScope('defaultScope', {include: [{model: DB.Mob}, {model: DB.Troll}]}, {override: true});
+DB.CDM.addScope('defaultScope', {
+  include: [
+    {model: DB.Mob, where: sequelize.where(sequelize.col('cdm.group_id'), sequelize.col('cdm->mob.group_id')), required: false},
+    {model: DB.Troll, where: sequelize.where(sequelize.col('cdm.group_id'), sequelize.col('cdm->troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
 // User
-DB.User.addScope('defaultScope', {include: [{model: DB.Troll},{model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
+DB.User.addScope('defaultScope', {include: [{model: DB.Troll}, {model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
 // Events
 DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}]}, {override: true});
 
