@@ -382,6 +382,7 @@ class BATTLE(sg.SqlAlchemyBase):
             re_event_capa_effet_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
             re_event_sr = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
             re_event_resi_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_mort_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_MORT_ATT_RE)
             re_end_mail = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
@@ -390,16 +391,22 @@ class BATTLE(sg.SqlAlchemyBase):
         # Event desc
         self.type = 'Sortilège'
         self.subtype = 'Explosion'
+        # Regexp search scope calibration
         res = re.search(re_end_mail, body)
-        stop_pos = res.end()
-        last_match_endpos = 0
-        objs = []
-        p = re.compile(re_event_capa_effet_att)
+        stop_match = res.end()
+        start_match = 0
+        end_match = stop_match
+        pEFFET = re.compile(re_event_capa_effet_att)
         pSR = re.compile(re_event_sr)
         pRESI = re.compile(re_event_resi_att)
-        res = p.search(body, last_match_endpos)
-        last_match_endpos = res.end()
-        while res != None and last_match_endpos < stop_pos:
+        pMORT = re.compile(re_event_mort_att)
+        # Loop over the explosion reports
+        objs = []
+        res = pEFFET.search(body, start_match, end_match)
+        start_match = res.end()
+        res_next = pEFFET.search(body, start_match, stop_match)
+        end_match = res_next.end() if res_next else end_match
+        while res != None and start_match < stop_match:
             obj = copy.deepcopy(self)
             if res.group(4) == None: # Trick matching the det (No det = Troll ?)
                 obj.def_troll_nom = res.group(5)
@@ -413,17 +420,23 @@ class BATTLE(sg.SqlAlchemyBase):
             obj.capa_effet = res.group(1) if res else None
             obj.pv = res.group(3) if res else None
             # Seuil de résistance
-            resSR = pSR.search(body, last_match_endpos)
-            obj.sr = resSR.group(1) if res else None
+            resSR = pSR.search(body, start_match, end_match)
+            obj.sr = resSR.group(1) if resSR else None
             # Jet de résistance
-            resRESI = pRESI.search(body, last_match_endpos)
-            obj.resi = resRESI.group(1) if res else None
+            resRESI = pRESI.search(body, start_match, end_match)
+            obj.resi = resRESI.group(1) if resRESI else None
             if int(obj.resi) <= int(obj.sr):
-                    obj.type += ' réduit'
+                obj.type += ' réduit'
+            # Mort
+            resMORT = pMORT.search(body, start_match, end_match)
+            if resMORT:
+                obj.type += ' mortel'
+            # Prepare next loop
             objs.append(obj)
-            res = p.search(body, last_match_endpos)
-            if res:
-                last_match_endpos = res.end()
+            res = res_next
+            start_match = end_match
+            res_next = pEFFET.search(body, start_match, stop_match)
+            end_match = res_next.end() if res_next else stop_match
         return objs
     
     def __populate_from_def_vt_mail(self, subject, body):       
@@ -566,14 +579,14 @@ class BATTLE(sg.SqlAlchemyBase):
         # Type desc
         self.s_type_short = ''
         self.s_type = ''
-        if self.flag_type == 'ATT' or self.flag_type == 'DEF':
-            if "mortelle" in self.type:
+        if 'ATT' in self.flag_type or 'DEF' in self.flag_type:
+            if "mortel" in self.type:
                 self.s_flag_type += ' (MORT)'
             self.s_type = self.type if self.type else ''
             self.s_type += ' ' + self.subtype if self.subtype else ''
-        elif 'HYPNO' in self.flag_type:
-            if self.type == u"Sortilège": # pas réduit/résisté
-                self.s_hypno_flag = '(FULL)'
-            else:
-                self.s_hypno_flag = '(REDUIT)'
+            if 'HYPNO' in self.flag_type:
+                if self.type == u"Sortilège": # pas réduit/résisté
+                    self.s_hypno_flag = '(FULL)'
+                else:
+                    self.s_hypno_flag = '(REDUIT)'
 

@@ -8,7 +8,7 @@ config.sciz = {
 };
 
 config.server = {
-  port_server: 80
+  port_server: 8080
 };
 
 config.db = {

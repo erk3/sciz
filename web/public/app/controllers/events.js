@@ -65,7 +65,7 @@ function eventsCtrl($http, $window, authService) {
    * BATTLE logic
    */
   vm.switchBATTLE = function () {
-    vm.cur.isDead = (vm.cur.battle.type.indexOf('mortelle') !== -1);
+    vm.cur.isDead = (vm.cur.battle.type.indexOf('mortel') !== -1);
     vm.cur.isTouched = (vm.cur.battle.att > vm.cur.battle.esq);
     vm.cur.isCrit = (vm.cur.battle.att >= vm.cur.battle.esq * 2);
     vm.cur.isFull = (vm.cur.battle.resi >= vm.cur.battle.sr);
