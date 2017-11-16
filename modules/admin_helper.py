@@ -106,6 +106,7 @@ class AdminHelper:
     def auto_tasks(self):
         self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
         self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
+        self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
         self.__auto_task_per_user_check()
 
     def __auto_task_per_user_check(self):
@@ -153,6 +154,13 @@ class AdminHelper:
         groups = sg.db.session.query(GROUP).all()
         for group in groups:
             mw.walk(group)
+
+    def __auto_task_mail_purge(self):
+        sg.logger.info('Purging mails for all...',)
+        mw = MailWalker()
+        groups = sg.db.session.query(GROUP).all()
+        for group in groups:
+            mw.purge(group)
 
     # Destructor
     def __del__(self):

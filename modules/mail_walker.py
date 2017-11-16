@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import email, mailbox, ConfigParser, sys, os, re, traceback
+import email, mailbox, ConfigParser, sys, os, re, traceback, datetime
 from operator import itemgetter
 from email.header import decode_header
 from modules.sql_helper import SQLHelper
@@ -68,6 +68,21 @@ class MailWalker:
                 body = body.decode(msg.get_content_charset())
                 body = body.encode(sg.DEFAULT_CHARSET)
         self.mail_body = body.decode(sg.DEFAULT_CHARSET)
+
+    def purge(self, group=None):
+        group = group if group else sg.group
+        dir_path = self.mailDirPath + os.sep + group.flat_name + os.sep + 'parsed' + os.sep
+        mail_max_retention = sg.config.get(sg.CONF_INSTANCE_SECTION, sg.CONF_INSTANCE_MAIL_RETENTION)
+        now = datetime.datetime.now()
+        ago = now - datetime.timedelta(minutes = int(mail_max_retention))
+        try:
+            for f in os.listdir(dir_path):
+                last_modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(dir_path + os.sep + f))
+                if last_modified_date < ago:
+                    os.remove(dir_path + os.sep + f)
+        except (OSError, IOError) as e:
+            sg.logger.error('Fail to purge %s mail directory! (I/O error: %s)' % (group.flat_name, str(e), ))
+            pass
 
     # Main MailDir Walker
     def walk(self, group=None):

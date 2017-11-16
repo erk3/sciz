@@ -1,0 +1,157 @@
+Return-Path: <naudin.augustin@gmail.com>
+Delivered-To: bruchasses@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id denhE/+JDVrZLQAAEkUYHA
+	for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 12:52:15 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id 35544A2D
+	for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 12:52:15 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.216.171; helo=mail-qt0-f171.google.com; envelope-from=naudin.augustin@gmail.com; receiver=bruchasses@sciz.cerv.ovh 
+Received: from mail-qt0-f171.google.com (mail-qt0-f171.google.com [209.85.216.171])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id C860EA1D
+	for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 12:52:14 +0000 (UTC)
+Received: by mail-qt0-f171.google.com with SMTP id h42so20421519qtk.11
+        for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 04:52:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=XhSxKoCV+Mh2LXZlN4MssUzsi1/X1ydrvq4HJiPwDuU=;
+        b=gdzibLJ+5PbESpB01M7zSumDZ6zl/V13kLuW5CfHw/hFJaFvgIfBpalSd/U9Xk6Ye1
+         bXRAQYKO7v66LNTvwTnFdcD6m/fenQBa1bynhIgGFdsrOnyKJYUu6ycft0pv/qFlky33
+         QGTjsj4Zt1uG4Gu+L9VlGTYM6jpeY/mMffitJB06ALOMg2EBbza2cyiSm8OFUqVlsuOs
+         GT+0t5ppIj0jGG/U68EdzTO3J6IcD/tkLTcS4VaoAtPJY3UE7x8N7Ga6sphUxlBtdvJa
+         5tAYkh2FoKF9d9MH3RkYWI0UCR5k8Xbc1wVj+jAGTIrj3XWk6TYTIpGv9t3yS5KPFk9B
+         bbYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=XhSxKoCV+Mh2LXZlN4MssUzsi1/X1ydrvq4HJiPwDuU=;
+        b=QMTkIfBDojRS5tszrr8c2KNu3qu3H4QdP4edzs0Rvo8nL6xahHh6XYXEdYHnG/mj23
+         360FZtobUi8psl3PBiocMKclsxJJgTV4EhvsWjcdVlvrVRlkgauqBSUvINpi2ZocsrWx
+         GtChYhR3jP6SSGdPdvAUyp5yt+FIRCyq03U28hQ6uCBQkK6aWkJ7ZykRZ9PFgX2c3QED
+         uz9QaKxtopSa7NlvRb+wiyp2GEsiK6SFcajcV4Y2Gw+PUXWH0QjpAjHHC9d1ClAlJbCp
+         MI6kj38MLBbWpkaJHlwIyBNA0QdD6jXEEJdKRB56Nj8VZF6/5XQn1d9rFsQTMdOW85Kf
+         4i4w==
+X-Gm-Message-State: AJaThX5+RqvoZvfw5S7j1ffwsjR+1tFbeRI/mXZkjHP4APs9DAXhj4wL
+	YlpNDM+WooeDss2W/yl7hxTjqUOECY8DK0HKgHM=
+X-Google-Smtp-Source: AGs4zMYK2UhUT1WakAhnGXCtQNzuEUm3cGWtAYSUmSXy3GhbR5vDR4G/R7oVafzyv8KXv1/CB3nwMbz1IHWDmqCZOe0=
+X-Received: by 10.237.38.197 with SMTP id q63mr2074768qtd.190.1510836733070;
+ Thu, 16 Nov 2017 04:52:13 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.55.50.80 with HTTP; Thu, 16 Nov 2017 04:51:52 -0800 (PST)
+In-Reply-To: <e41ee8bb2f5970d4cbe64754eaf0f4b8@games.mountyhall.com>
+References: <e41ee8bb2f5970d4cbe64754eaf0f4b8@games.mountyhall.com>
+From: Augustin Naudin <naudin.augustin@gmail.com>
+Date: Thu, 16 Nov 2017 13:51:52 +0100
+Message-ID: <CAMO4vGfys9z+aEXfbc3XCG+vMkaZCOYERQ6fH9aYhmB4bAF7aQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Sortil=C3=A8ge_=3A_Identification_des_tr?=
+	=?UTF-8?Q?=C3=A9sors?=
+To: bruchasses@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="94eb2c076fd2c9d682055e19161a"
+
+--94eb2c076fd2c9d682055e19161a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : MountyHall-Bot <bot@mountyhall.com>
+Date : 31 juillet 2017 =C3=A0 10:40
+Objet : [MountyHall] Sortil=C3=A8ge : Identification des tr=C3=A9sors
+=C3=80 : naudin.augustin@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 31/07/2017 10:40:43.
+***********************************************************
+
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : IDENTIFICATION DES TR=C3=A9SORS
+
+
+L'identification a donn=C3=A9 le r=C3=A9sultat suivant : 12548017 - Bottes =
+ (ESQ : +2)
+
+Le tr=C3=A9sor se trouve =C3=A0 vos pieds                                 e=
+n X=3D-80,
+Y=3D3, N=3D-72
+
+
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--94eb2c076fd2c9d682055e19161a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Message transf=
+=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b class=3D"gmail_sendername">MountyH=
+all-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot=
+@mountyhall.com</a>&gt;</span><br>Date=C2=A0: 31 juillet 2017 =C3=A0 10:40<=
+br>Objet=C2=A0: [MountyHall] Sortil=C3=A8ge : Identification des tr=C3=A9so=
+rs<br>=C3=80=C2=A0: <a href=3D"mailto:naudin.augustin@gmail.com">naudin.aug=
+ustin@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 31/07/2017 10:40:43.<br>
+******************************<wbr>*****************************<br>
+<br>
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : IDENTIFICATION DES TR=C3=A9SORS<=
+br>
+<br>
+<br>
+L&#39;identification a donn=C3=A9 le r=C3=A9sultat suivant : 12548017 - Bot=
+tes=C2=A0 (ESQ : +2)<br>
+<br>
+Le tr=C3=A9sor se trouve =C3=A0 vos pieds=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0en X=3D-80, Y=3D3, N=3D-72<br>
+<br>
+<br>
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/<wbr>Forum</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br></div>
+
+--94eb2c076fd2c9d682055e19161a--
