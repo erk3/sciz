@@ -20,7 +20,7 @@ class TROLL(sg.SqlAlchemyBase):
     # ID de l'utilisateur de rattachement
     user_id = Column(Integer, ForeignKey('users.id'))
     # Condition if notifications have to be pushed for this troll
-    sciz_notif = Column(Boolean)
+    sciz_notif = Column(Boolean, default=True)
     # Nom
     nom = Column(String(50))
     # Race
