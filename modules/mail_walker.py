@@ -6,6 +6,7 @@ import email, mailbox, ConfigParser, sys, os, re, traceback, datetime
 from operator import itemgetter
 from email.header import decode_header
 from modules.sql_helper import SQLHelper
+from modules.mail_helper import MailHelper
 from classes.cdm import CDM
 from classes.battle import BATTLE
 from classes.piege import PIEGE
@@ -28,6 +29,7 @@ class MailWalker:
             self.mailDirPath = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_PATH)
             self.mailRegexCDM = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
             self.mailRegexMSG = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_MSG_RE)
+            self.mailRegexGMAIL = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_GMAIL_RE)
             self.mailRegexATT = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
             self.mailRegexCAPA = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CAPA_RE)
@@ -103,6 +105,10 @@ class MailWalker:
                     # Handle mails
                     if (re.search(self.mailRegexMSG, self.mail_subject) is not None):
                         sg.logger.info('Found MSG in mail %s, ignored' % (msgFile._file.name, ))
+                    elif (re.search(self.mailRegexGMAIL, self.mail_subject) is not None):
+                        sg.logger.info('Found GMAIL confirmation in mail %s' % (msgFile._file.name, ))
+                        mh = MailHelper()
+                        mh.answer_gmail_forward_confirmation(self.mail_subject, self.mail_body, group)
                     elif (re.search(self.mailRegexCDM, self.mail_subject) is not None):
                         sg.logger.info('Found CDM in mail %s' % (msgFile._file.name, ))
                         obj = CDM()

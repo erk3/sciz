@@ -70,12 +70,25 @@ CONF_LOG_FILE_MAX_SIZE  	= "file_max_size"
 CONF_LOG_FORMATTER      	= "formatter"
 CONF_LOG_DEFAULT_LEVEL  	= "default_level"
 
+# SMTP SECTION
+CONF_SMTP_SECTION       	= "smtp"
+CONF_SMTP_FROM          	= "from"
+CONF_SMTP_HOST          	= "host"
+CONF_SMTP_PORT          	= "port"
+CONF_SMTP_PWD            	= "pwd"
+
+# GMAIL SECTION
+CONF_GMAIL_SECTION       	= "gmail"
+CONF_GMAIL_DESC_RE         	= "reg_gmail_desc"
+CONF_GMAIL_CODE_RE          	= "reg_gmail_code"
+
 # MAIL SECTION
 CONF_MAIL_SECTION       	= "mail"
 CONF_MAIL_DOMAIN_NAME          	= "domain_name"
 CONF_MAIL_PATH          	= "maildirs_base_path"
 CONF_MAIL_POSTFIX_CONF_FILE    	= "postfix_accounts_conf_file"
 CONF_MAIL_CDM_RE        	= "reg_cdm_subject"
+CONF_MAIL_GMAIL_RE        	= "reg_gmail_fwd_subject"
 CONF_MAIL_MSG_RE        	= "reg_msg_subject"
 CONF_MAIL_ATT_RE        	= "reg_att_subject"
 CONF_MAIL_DEF_RE        	= "reg_def_subject"
