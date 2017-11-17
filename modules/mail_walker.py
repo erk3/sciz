@@ -27,6 +27,7 @@ class MailWalker:
             # Load Mail conf
             self.mailDirPath = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_PATH)
             self.mailRegexCDM = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
+            self.mailRegexMSG = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_MSG_RE)
             self.mailRegexATT = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
             self.mailRegexCAPA = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CAPA_RE)
@@ -100,7 +101,9 @@ class MailWalker:
                 try:
                     obj = None
                     # Handle mails
-                    if (re.search(self.mailRegexCDM, self.mail_subject) is not None):
+                    if (re.search(self.mailRegexMSG, self.mail_subject) is not None):
+                        sg.logger.info('Found MSG in mail %s, ignored' % (msgFile._file.name, ))
+                    elif (re.search(self.mailRegexCDM, self.mail_subject) is not None):
                         sg.logger.info('Found CDM in mail %s' % (msgFile._file.name, ))
                         obj = CDM()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, group)
