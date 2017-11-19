@@ -39,7 +39,7 @@
           </li>
         </ul><!-- Group menu-->
         <!-- Aide menu -->
-        <ul class="nav navbar-nav pull-right">
+        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
           <li class="active"><a href="/help"><i class="icon-cog"></i>Besoin d'aide ?</a></li>
         </ul><!-- Aide menu-->
       </div>
