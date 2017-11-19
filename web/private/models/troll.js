@@ -9,6 +9,8 @@ var TrollTemplate = {}
 TrollTemplate.changeBlasonURL = function (troll) {
   if (troll && troll.blason_url && troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
     troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll.id;
+  } else if (troll && !troll.blason_url) {
+    troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
   }
   return troll;
 };

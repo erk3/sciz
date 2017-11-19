@@ -153,13 +153,11 @@ function eventsCtrl($http, $window, authService) {
    * Utils
    */
   vm.displayDate = function (date) {
+    var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false};
+    var dtf = new Intl.DateTimeFormat('fr-FR', options);
     var d = new Date(date);
-    var day = ('0' + d.getDate()).slice(-2);
-    var mon = ('0' + (d.getMonth() + 1)).slice(-2);
-    var hou = ('0' + d.getHours()).slice(-2);
-    var min = ('0' + d.getMinutes()).slice(-2);
-    var sec = ('0' + d.getSeconds()).slice(-2);
-    return day + '/' + mon + ' ' + hou + ':' + min + ':' + sec;
+    d.setTime(d.getTime() + (new Date(date).getTimezoneOffset() * 60 * 1000));
+    return dtf.format(d);
   };
 
   vm.displayMinMax = function (min, max, short) {

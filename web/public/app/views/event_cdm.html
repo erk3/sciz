@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-9">
       <blockquote>
-        <p>{{ec.cur.cdm.mob.nom}} [{{ec.cur.cdm.mob.age}}] ({{ec.cur.cdm.mob_id}})</p>
+        <p>{{ec.cur.cdm.mob.nom}} [{{ec.cur.cdm.mob.age}}] (<a href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.cdm.mob_id}}">{{ec.cur.cdm.mob_id}}</a>)</p>
           <cite><small>Classe : {{ec.cur.cdm.mob.type}}</small></cite>
           <span ng-hide="ec.cur.cdm.nb_att_tour === null"><cite><small>Nombre d'attaque par tour : {{ec.cur.cdm.nb_att_tour}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.vit_dep === null"><cite><small>Vitesse de déplacement : {{ec.cur.cdm.vit_dep}}</small></cite></span>

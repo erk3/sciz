@@ -4,6 +4,16 @@ var sequelize = require('sequelize');
 var MobTemplate = {};
 
 /*
+ * Methods
+ */
+MobTemplate.changeBlasonURL = function (mob) {
+  if (mob && mob.metamob && mob.metamob.blason_url && !mob.metamob.blason_url) {
+    mob.metamob.blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+  }
+  return mob;
+};
+
+/*
  * Definition
  */
 MobTemplate.name = 'Mob';
@@ -65,6 +75,9 @@ MobTemplate.modelOptions = {
   name: {
     singular: 'mob',
     plural: 'mobs'
+  },
+  hooks: {
+    afterFind: MobTemplate.changeBlasonURL
   }
 };
 
