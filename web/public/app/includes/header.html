@@ -8,6 +8,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="/">SCIZ</a>
       </div>
@@ -17,7 +18,7 @@
           <li class="active" ng-hide="!authService.isAuthenticated()"><a href="/events">Événements</a></li>
         </ul>
         <!-- User menu -->
-        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
+        <ul class="nav navbar-nav pull-right" style="margin-right: 30px;" ng-hide="!authService.isAuthenticated()">
           <li uib-dropdown><a uib-dropdown-toggle>{{user.pseudo}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li><a href="/settings"><i class="icon-cog"></i>Préférences</a></li>
@@ -37,6 +38,10 @@
             </ul>
           </li>
         </ul><!-- Group menu-->
+        <!-- Aide menu -->
+        <ul class="nav navbar-nav pull-right">
+          <li class="active"><a href="/help"><i class="icon-cog"></i>Besoin d'aide ?</a></li>
+        </ul><!-- Aide menu-->
       </div>
     </div>
   </nav>

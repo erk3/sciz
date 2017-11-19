@@ -58,5 +58,15 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
       }
     });
 
+  $stateProvider
+    .state('help', {
+      url: '/help',
+      templateUrl: 'app/views/help.html',
+      controller: 'HelpCtrl as hc',
+      data: {
+        accessLevel: staticData.accessLevels.user
+      }
+    });
+
   $httpProvider.interceptors.push('requestInterceptor');
 }
