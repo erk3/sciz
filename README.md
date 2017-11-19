@@ -15,18 +15,6 @@ Une base de données collaborative pour jouer en groupe à [Mountyhall](https://
 
 SCIZ effectue des appels aux scripts publics de Mountyhall, chaque utilisateur peut modifier ce comportement dans son profil utilisateur via l'interface web.
 
-# Limitations connues
-
-A date, SCIZ supporte l'analyse syntaxique :
-  * Des Connaissances Des Monstres jusqu'au niveau 4
-  * Des rapports de combats simples (Attaque par compétence, Défense, Pouvoirs)
-  * Des sortilèges : Hypnotisme, Sacrifice, Vue Troublée, Explosion
-
-SCIZ ne supporte pas (et plante lamentablement):
-  * Les notifications comportant une interposition
-
-Le reste des notifications est a priori ignoré.
-
 # Installation
 Voir les [instructions d'installation](INSTALL.md)
 
@@ -66,12 +54,13 @@ From Põm³ with love
 
 # Interagir avec SCIZ
 
-L'interface Web permet à date :
+SCIZ est livré avec une interface Web permettant :
   - de consulter les évènements collectés par SCIZ pour chaque groupe
   - à chaque utilisateur de modifier son profil SCIZ en self-service
-  - aux adminsitrateurs de gérer les différents hooks pour les notifications de groupe
+  - aux adminsitrateurs de groupe de gérer les différents hooks
 
-Chaque communauté de joueur utilise ses propres canaux de communication pour recueillir les notifications générées par SCIZ, est disponible à date :
-  * Un ```plugin``` et exemple de configuration pour [Hangoutsbot](https://github.com/hangoutsbot/hangoutsbot)
-  * Un ```plugin``` pour [Miaou](https://github.com/Canop/miaou)
+Chaque communauté de joueur utilise cependant ses propres canaux de communication pour s'interfacer avec SCIZ par le biais de plugins.
 
+# Aller plus loin...
+
+Consultez le [WIKI](https://github.com/erk3/sciz/wiki)
