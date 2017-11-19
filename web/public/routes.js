@@ -62,7 +62,6 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
     .state('help', {
       url: '/help',
       templateUrl: 'app/views/help.html',
-      controller: 'HelpCtrl as hc',
       data: {
         accessLevel: staticData.accessLevels.user
       }
