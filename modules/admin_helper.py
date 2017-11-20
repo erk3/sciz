@@ -11,6 +11,7 @@ from classes.user import USER
 from classes.conf import CONF
 from classes.group import GROUP
 from classes.troll import TROLL
+from classes.hook import HOOK
 from classes.assoc_users_groups import AssocUsersGroups
 import modules.globals as sg
 
@@ -107,6 +108,7 @@ class AdminHelper:
         self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
         self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
         self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
+        self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
         self.__auto_task_per_user_check()
 
     def __auto_task_per_user_check(self):
@@ -161,6 +163,12 @@ class AdminHelper:
         groups = sg.db.session.query(GROUP).all()
         for group in groups:
             mw.purge(group)
+
+    def __auto_task_hook_push(self):
+        sg.logger.info('Triggering the reverse hooks for all...',)
+        rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None).all()
+        for rhook in rhooks:
+            rhook.trigger()
 
     # Destructor
     def __del__(self):

@@ -13,9 +13,13 @@ class MailHelper:
     # Constructor
     def __init__(self):
         self.check_conf()
-        self.smtp = smtplib.SMTP(self.smtp_host, int(self.smtp_port), None, 5)
-        self.smtp.set_debuglevel(1)
-        self.smtp.login(self.smtp_from, self.smtp_pwd)
+        self.smtp = None
+        try:
+            self.smtp = smtplib.SMTP(self.smtp_host, int(self.smtp_port), None, 5)
+            self.smtp.set_debuglevel(1)
+            self.smtp.login(self.smtp_from, self.smtp_pwd)
+        except Exception as e:
+            sg.logger.warning('Failed to bind to smtp server')
 
     # Configuration loader and checker
     def check_conf(self):
@@ -58,6 +62,9 @@ class MailHelper:
         self.send_mail(to, subject, text, html)
 
     def send_mail(self, to, subject, body_text, body_html):
+        if not self.smtp:
+            sg.logger.warning('An attempt was made to send a mail but no previous bind to a SMTP server was successful')
+            return
         msg = MIMEMultipart('alternative')
         msg['Subject'] = subject
         msg['From'] = self.smtp_from

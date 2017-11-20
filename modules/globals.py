@@ -193,6 +193,7 @@ CONF_DB_PASS            	= "passwd"
 CONF_INSTANCE_SECTION           = "instance"
 CONF_INSTANCE_FTP_REFRESH       = "ftp_refresh"
 CONF_INSTANCE_MAIL_REFRESH 	= "mail_refresh"
+CONF_INSTANCE_HOOK_REFRESH 	= "hook_refresh"
 CONF_INSTANCE_MAIL_RETENTION 	= "mail_max_retention"
 
 # GROUP SECTION

@@ -6,8 +6,11 @@
 ###
 
 # Imports
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint
+import requests, ConfigParser
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint, desc
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.orm import relationship
+from classes.event import EVENT
 import modules.globals as sg
 
 # Class of a SCIZ hook
@@ -22,8 +25,10 @@ class HOOK(sg.SqlAlchemyBase):
     group_id = Column(Integer, ForeignKey('groups.id'))
     # Nom du hook
     name = Column(String(50))
-    # JWT token sans expiration
+    # JWT token sans expiration (ou simple secret dans le cas d'un reverse hook)
     jwt = Column(String(250))
+    # URL de post pour un reverse hook
+    url = Column(String(250))
     # Révoqué ?
     revoked = Column(Boolean())
     # ID du dernier évènement
@@ -33,3 +38,28 @@ class HOOK(sg.SqlAlchemyBase):
     group = relationship("GROUP", back_populates="hooks")
 
     # Constructor is handled by SqlAlchemy, do not override
+    
+    # Reverse hook triggering
+    def trigger(self):
+        if not self.revoked and self.url != None:
+            try:
+                # Find the events
+                events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == self.group_id).order_by(desc(EVENT.id)).all()
+                res = []
+                for event in events:
+                    res.append({'id': event.id, 'notif': event.notif.encode(sg.DEFAULT_CHARSET)})
+                # Send the data
+                if len(res) > 0 :
+                    try:
+                        headers = {'Authorization': self.jwt}
+                        r = requests.post(self.url, headers = headers, json = res, timeout = 1)
+                        # Update the hook
+                        self.last_event_id = events[0].id
+                        sg.db.session.add(self)
+                        sg.db.session.commit()
+                    except requests.RequestException as e:
+                        sg.logger.warning('Unable to send events for reverse hook %s (%s) and url %s : %s' % (self.name, self.id, self.url, str(e), ))
+            except NoResultFound:
+                sg.logger.warning('No event found corresponding to the reverse hook %s (%s)' % (self.name, self.id, ))
+
+

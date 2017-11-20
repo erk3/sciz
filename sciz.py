@@ -75,7 +75,7 @@ class SCIZ:
     # Requester
     def request(self, ids, args):
         self.requester = Requester()
-        if ids.lower() is 'help':
+        if ids.lower() == 'help':
             print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls) [opts_troll] | help'
             print 'opts_mob : stats #default# | (cdm|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
             print 'opts_troll : stats #default# | event [limit=1] | carac[,carac]* #ordered desc by first carac#'
