@@ -9,16 +9,16 @@
         <button style="margin-top: 20px;" type="submit" class="col-sm-offset-2 col-md-offset-2 btn btn-primary" ng-click="ac.updateGroup()" ng-disabled="!ac.user.currentAssoc.group.name">Sauvegarder</button>
       </div>
       </br>
-      <div ng-if="ac.updateError">
+      <div ng-if="ac.updateErrorGroup">
         </br>
-        <div class="alert" ng-class="{'alert-danger':ac.updateError}">
-          {{ac.updateErrorMessage}}
+        <div class="alert" ng-class="{'alert-danger':ac.updateErrorGroup}">
+          {{ac.updateErrorGroupMessage}}
         </div>
       </div>
-      <div ng-if="pc.updateStatus">
+      <div ng-if="ac.updateStatusGroup">
         </br>
-        <div class="alert" ng-class="{'alert-success':ac.updateStatus}">
-          {{ac.updateStatusMessage}}
+        <div class="alert" ng-class="{'alert-success':ac.updateStatusGroup}">
+          {{ac.updateStatusGroupMessage}}
         </div>
       </div>
     </div>

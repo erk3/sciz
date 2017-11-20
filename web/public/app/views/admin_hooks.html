@@ -12,12 +12,16 @@
   <div class="bs-callout bs-callout-info">
     <h4>Hook</h4>
     Un hook permet d'autoriser à un tiers, généralement un bot ou un plugin, de récupérer les notifications de votre groupe et d'effectuer des requêtes en lecture seule sur les informations de celui-ci.
+    <br/>
+    Un hook peut être passif : le tiers accès aux données via {{ac.hostname}}) ; ou bien actif  : le hook envoi de lui même les notifications à l'URL enregistrée
   </div>
   <br/>
 
   <form class="form-horizontal">
     <div class="col-sm-5 input-group input-group-lg">
-      <input type="text" class="form-control" ng-model="ac.newHook" placeholder="Créer un hook">
+      <input type="text" class="form-control" ng-model="ac.newHook" placeholder="Nom hook">
+      <span class="input-group-addon">@</span>
+      <input type="text" class="form-control" ng-model="ac.newHookURL" placeholder="URL (optionnel)">
       <span class="input-group-btn"> 
         <button class="btn btn-primary btl-lg" type="button" ng-disabled="!ac.newHook" ng-click="ac.addHook()">
           <span class="glyphicon glyphicon-send"></span>
@@ -27,15 +31,15 @@
   </form>
   <br/>
 
-  <div ng-if="ac.updateError">
+  <div ng-if="ac.updateErrorHook">
     <div class="alert alert-danger">
-      {{ac.updateErrorMessage}}
+      {{ac.updateErrorHookMessage}}
     </div>
     <br/>
   </div>
-  <div ng-if="ac.updateStatus"> 
+  <div ng-if="ac.updateStatusHook"> 
     <div class="alert alert-success">
-      {{ac.updateStatusMessage}}
+      {{ac.updateStatusHookMessage}}
     </div>
     <br/>
   </div>
@@ -52,7 +56,7 @@
     <br/>
 
     <div class="form-group" ng-repeat="hook in ac.hooks | filter: {revoked: false}">
-      <div class="col-lg-4">
+      <div class="col-lg-8">
         <div class="input-group">
           <span class="input-group-btn">
             <button class="btn btn-primary" ngclipboard data-clipboard-text="{{hook.jwt}}" type="button">
@@ -60,6 +64,8 @@
             </button>
           </span>
           <input type="text" class="form-control" readonly=readonly ng-model="hook.name">
+          <span class="input-group-addon">@</span>
+          <input type="text" class="form-control" readonly=readonly ng-model="hook.url">
           <span class="input-group-btn">
             <button class="btn btn-danger" type="button" ng-click="ac.revokeHook(hook)">
               <span class="glyphicon glyphicon-remove"></span>

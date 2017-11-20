@@ -33,7 +33,7 @@
           <li uib-dropdown><a uib-dropdown-toggle>Groupe : {{user.currentAssoc.group.name}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li ng-repeat='assoc in user.assocs'>
-                <a href="" ng-click="authService.changeGroup(assoc.group_id)"><i class="icon-cog"></i>{{assoc.group.name}}</a>
+                <a href="" ng-click="authService.changeGroup(assoc.group_id, true)"><i class="icon-cog"></i>{{assoc.group.name}}</a>
               </li>
             </ul>
           </li>

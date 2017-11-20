@@ -11,6 +11,7 @@ AdminController.addHook = function (req, res) {
   var groupID = (req.body.groupID) ? parseInt(req.body.groupID) : 0;
   var data = {
     name: req.body.name,
+    url: req.body.url,
     group_id: groupID,
     jwt: null, // this is created by a Sequelize hook, see models/hook.js
     revoked: false,

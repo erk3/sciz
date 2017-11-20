@@ -18,7 +18,7 @@ function loginCtrl($state, authService) {
     vm.pwd = 'test';
     vm.login();
   }
-  
+
   function login() {
     vm.loginError = false;
     vm.loginErrorMessage = null;

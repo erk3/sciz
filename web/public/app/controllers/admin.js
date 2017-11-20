@@ -1,12 +1,14 @@
 angular
   .module('app')
-  .controller('AdminCtrl', ['$http', 'authService', adminCtrl]);
+  .controller('AdminCtrl', ['$http', '$window', 'authService', adminCtrl]);
 
-function adminCtrl($http, authService) {
+function adminCtrl($http, $window, authService) {
   var vm = this;
   vm.newHook = null;
+  vm.newHookURL = null;
   vm.hooks = [];
 
+  vm.hostname = 'http://' + $window.location.hostname + '/api/bot/hooks';
   vm.view = 'group';
 
   vm.addHook = addHook;
@@ -20,6 +22,10 @@ function adminCtrl($http, authService) {
   vm.updateErrorHookMessage = null;
   vm.updateStatusHook = false;
   vm.updateStatusHookMessage = null;
+  vm.updateErrorGroup = false;
+  vm.updateErrorGroupMessage = null;
+  vm.updateStatusGroup = false;
+  vm.updateStatusGroupMessage = null;
 
   vm.getHooks();
 
@@ -75,6 +81,7 @@ function adminCtrl($http, authService) {
       url: '/api/admin/hooks',
       data: {
         name: vm.newHook,
+        url: vm.newHookURL,
         groupID: vm.user.currentAssoc.group_id
       }
     })
@@ -85,6 +92,7 @@ function adminCtrl($http, authService) {
   function handleSuccessfulAddHook() {
     vm.getHooks();
     vm.newHook = null;
+    vm.newHookURL = null;
     vm.updateErrorHook = false;
     vm.updateErrorHookMessage = null;
     vm.updateStatusHook = true;
@@ -93,6 +101,7 @@ function adminCtrl($http, authService) {
 
   function handleFailedAddHook(response) {
     vm.newHook = null;
+    vm.newHookURL = null;
     vm.updateErrorHook = true;
     vm.updateErrorHookMessage = 'Erreur';
     vm.updateStatusHook = false;
@@ -128,7 +137,7 @@ function adminCtrl($http, authService) {
     vm.updateStatusGroup = false;
     vm.updateStatusGroupMessage = null;
     if (response && response.data) {
-      vm.updateErrorHookMessage += ': ' + response.data.message;
+      vm.updateErrorGroupMessage += ': ' + response.data.message;
     }
   }
 }

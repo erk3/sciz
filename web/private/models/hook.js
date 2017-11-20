@@ -42,6 +42,9 @@ HookTemplate.modelDefinition = {
   jwt: {
     type: sequelize.STRING,
   },
+  url: {
+    type: sequelize.STRING,
+  },
   revoked: {
     type: sequelize.BOOLEAN,
     defaultValue: false

@@ -45,7 +45,7 @@ function authService($http, $cookies, $state, $window) {
         user.token = response.token;
         authService.dataWrap.user = user;
         if (user.assocs !== null) {
-          authService.changeGroup(user.assocs[0].group_id);
+          authService.changeGroup(user.assocs[0].group_id, false);
         }
         authService.dataWrap.user = user;
 
@@ -81,7 +81,7 @@ function authService($http, $cookies, $state, $window) {
     return authService.updateLocalData();
   }
 
-  function changeGroup(index) {
+  function changeGroup(index, reload) {
     var user = authService.dataWrap.user;
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id === index) {
@@ -93,7 +93,9 @@ function authService($http, $cookies, $state, $window) {
     }
     authService.dataWrap.user = user;
     authService.updateLocalData();
-    $window.location.reload();
+    if (reload) {
+      $window.location.reload();
+    }
   }
 
   function refreshLocalData() {
