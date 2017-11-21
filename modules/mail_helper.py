@@ -37,6 +37,8 @@ class MailHelper:
         try:
             re_gmail_desc = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_DESC_RE)
             re_gmail_code = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_CODE_RE)
+            re_gmail_desc_en = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_DESC_EN_RE)
+            re_gmail_code_en = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_CODE_EN_RE)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
@@ -44,9 +46,15 @@ class MailHelper:
         group = group if group else sg.group
         # Get the code and the sender
         res = re.search(re_gmail_desc, body)
-        to = res.group(1)
+        to = res.group(1) if res else None
+        if not to:
+            res = re.search(re_gmail_desc_en, body)
+            to = res.group(1)
         res = re.search(re_gmail_code, body)
-        code = res.group(1)
+        code = res.group(1) if res else None
+        if not code:
+            res = re.search(re_gmail_code_en, body)
+            code = res.group(1)
         # Build the answer
         subject = "[SCIZ] Code de confirmation de transfert GMAIL vers %s" % (group.mail, )
         text = "Votre code de transfert GMAIL pour %s est : %s" % (group.mail, code, )

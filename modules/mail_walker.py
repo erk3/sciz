@@ -30,6 +30,7 @@ class MailWalker:
             self.mailRegexCDM = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CDM_RE)
             self.mailRegexMSG = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_MSG_RE)
             self.mailRegexGMAIL = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_GMAIL_RE)
+            self.mailRegexGMAIL_EN = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_GMAIL_EN_RE)
             self.mailRegexATT = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_RE)
             self.mailRegexDEF = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_RE)
             self.mailRegexCAPA = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_CAPA_RE)
@@ -105,7 +106,7 @@ class MailWalker:
                     # Handle mails
                     if (re.search(self.mailRegexMSG, self.mail_subject) is not None):
                         sg.logger.info('Found MSG in mail %s, ignored' % (msgFile._file.name, ))
-                    elif (re.search(self.mailRegexGMAIL, self.mail_subject) is not None):
+                    elif ((re.search(self.mailRegexGMAIL, self.mail_subject) is not None) or (re.search(self.mailRegexGMAIL_EN, self.mail_subject) is not None)):
                         sg.logger.info('Found GMAIL confirmation in mail %s' % (msgFile._file.name, ))
                         mh = MailHelper()
                         mh.answer_gmail_forward_confirmation(self.mail_subject, self.mail_body, group)
