@@ -50,13 +50,13 @@
       <div class="form-group" ng-class="{'has-error':pc.newPwd.length > 0 && pc.newPwd.length < 8, 'has-success':pc.newPwd.length >= 8 && pc.pwd === pc.newPwd}">
         <label class="col-sm-5 col-md-4 control-label">Nouveau mot de passe</label>
         <div class="col-sm-4 col-md-3">
-          <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.newPwd">
+          <input type="password" class="form-control" placeholder="Nouveau mot de passe" ng-model="pc.newPwd" tooltips tooltip-template="8 caractères minimum" tooltip-class="tooltip" tooltip-side="right">
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error':pc.pwd !== pc.newPwd, 'has-success':pc.pwd.length >= 8 && pc.pwd === pc.newPwd}">
       <label class="col-sm-5 col-md-4 control-label">Confirmation</label>
       <div class="col-sm-4 col-md-3">
-          <input type="password" class="form-control" placeholder="Confirmation" ng-model="pc.pwd">
+        <input type="password" class="form-control" placeholder="Confirmation" ng-model="pc.pwd" tooltips tooltip-template="8 caractères minimum" tooltip-class="tooltip" tooltip-side="right">
         </div>
       </div>
       <br/>

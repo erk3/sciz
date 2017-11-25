@@ -122,6 +122,11 @@ body {
     width: 100%;
 }
 
+/* Angular Tooltip */
+.tooltip {
+  width: max-content;
+}
+
 /* Editor styling */
 .ta-toolbar {
   background-color: #F0F0F0;
