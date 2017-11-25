@@ -1,5 +1,5 @@
 <div class="container-fluid" style="margin: 30px;">
-  <div class="row">
+  <div class="row" style="overflow: hidden;">
 
     <!-- Main event display -->
     <div ng-if="ec.cur.cdm_id" ng-include src="'app/views/event_cdm.html'"></div>
@@ -17,20 +17,24 @@
     </form>
 
     <div class="col-sm-7 col-md-7 table-responsive">
-      <table class="table table-hover table-condensed" style="vertical-align:center">
+      <table class="table table-hover table-condensed" style="margin-bottom: 0px;">
         <thead class="thead-inverse">
           <tr>
             <th class="text-center">Horodatage</th>
             <th class="text-center">Évènement</th>
           </tr>
         </thead>
-        <tbody infinite-scroll="ec.loadMoreEvents()" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1">
-          <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
-            <td class="text-center" style="white-space: nowrap"><small>{{ec.displayDate(event.sub.time)}}</small></td>
-            <td class="text-left"><small ng-bind-html="event.notif.substring(10)"></small></td>
-          </tr>
-        </tbody>
       </table>
+      <div class="table-responsive pre-scrollable" style="max-height:60vh;">
+        <table class="table table-hover table-condensed">
+          <tbody infinite-scroll="ec.loadMoreEvents()" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1" infinite-scroll-container="'.pre-scrollable'">
+            <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
+              <td class="text-center" style="white-space: nowrap"><small>{{ec.displayDate(event.sub.time)}}</small></td>
+              <td class="text-left"><small ng-bind-html="event.notif.substring(10)"></small></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </div>
