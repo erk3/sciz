@@ -47,12 +47,12 @@ class MailHelper:
         # Get the code and the sender
         res = re.search(re_gmail_desc, body)
         to = res.group(1) if res else None
-        if not to:
+        if to is None:
             res = re.search(re_gmail_desc_en, body)
             to = res.group(1)
         res = re.search(re_gmail_code, body)
         code = res.group(1) if res else None
-        if not code:
+        if code is None:
             res = re.search(re_gmail_code_en, body)
             code = res.group(1)
         # Build the answer

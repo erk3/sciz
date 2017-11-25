@@ -66,7 +66,7 @@ class AdminHelper:
             sg.group = GROUP()
             sg.group.name = group_name
             sg.group.flat_name = flat_name
-            sg.group.mail = flat_name + '@' + self.domain_name
+            sg.group.generate_random_mail(self.domain_name)
             sg.group = sg.db.add(sg.group)
             # Populate default conf for the group
             for (each_key, each_value) in sg.config.items(sg.CONF_GROUP_SECTION):
@@ -78,7 +78,7 @@ class AdminHelper:
             # Add an entry to the postfix accounts conf file
             sg.createDirName(self.pf_conf_file);
             with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:
-                fp.write("%s@%s|%s\n" % (flat_name, self.domain_name, sg.group.mail_pwd, ))
+                fp.write("%s|%s\n" % (sg.group.mail, sg.group.mail_pwd, ))
 
     # Create or update users from JSON file, then if a group is set also do the binding and create the troll
     def add_json_users(self, json_file):
