@@ -8,7 +8,7 @@ function adminCtrl($http, $window, authService) {
   vm.newHookURL = null;
   vm.hooks = [];
 
-  vm.hostname = 'http://' + $window.location.hostname + '/api/bot/hooks';
+  vm.hostname = $window.location.protocol + '//' + $window.location.hostname + '/api/bot/hooks';
   vm.view = 'group';
 
   vm.addHook = addHook;
