@@ -1,4 +1,5 @@
 ![SCIZ LOGO](web/public/images/sciz-logo-quarter.png)
+[![Chat on Miaou](https://dystroy.org/miaou/static/shields/room-fr.svg?v=1)](https://dystroy.org/miaou/2603?SCIZ)
 # Système de Chauve-souris Interdimensionnel pour Zhumains
 
 Une base de données collaborative pour jouer en groupe à [Mountyhall](https://www.mountyhall.com).
