@@ -39,6 +39,8 @@ class MailWalker:
             self.mailRegexDefHYPNO = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
             self.mailRegexAttSACRO = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_SACRO_RE)
             self.mailRegexDefSACRO = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_SACRO_RE)
+            self.mailRegexAttFA = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_FA_RE)
+            self.mailRegexDefFA = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_FA_RE)
             self.mailRegexAttVT = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_VT_RE)
             self.mailRegexDefVT = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_VT_RE)
             self.mailRegexAttEXPLO = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_ATT_EXPLO_RE)
@@ -138,6 +140,14 @@ class MailWalker:
                         sg.logger.info('Found ATT SACRO event in mail %s' % (msgFile._file.name, ))
                         obj = BATTLE()
                         obj.populate_from_mail(self.mail_subject, self.mail_body, group, 'ATT SACRO')
+                    elif (re.search(self.mailRegexDefFA, self.mail_subject) is not None):
+                        sg.logger.info('Found DEF FA event in mail %s' % (msgFile._file.name, ))
+                        obj = BATTLE()
+                        obj.populate_from_mail(self.mail_subject, self.mail_body, group, 'DEF FA')
+                    elif (re.search(self.mailRegexAttFA, self.mail_subject) is not None):
+                        sg.logger.info('Found ATT FA event in mail %s' % (msgFile._file.name, ))
+                        obj = BATTLE()
+                        obj = obj.populate_from_mail(self.mail_subject, self.mail_body, group, 'ATT FA')
                     elif (re.search(self.mailRegexDefVT, self.mail_subject) is not None):
                         sg.logger.info('Found DEF VT event in mail %s' % (msgFile._file.name, ))
                         obj = BATTLE()

@@ -115,6 +115,10 @@ class BATTLE(sg.SqlAlchemyBase):
             self.__populate_from_att_vt_mail(subject, body)
         elif flag_type == 'DEF VT':
             self.__populate_from_def_vt_mail(subject, body)
+        elif flag_type == 'ATT FA':
+            return self.__populate_from_att_fa_mail(subject, body)
+        elif flag_type == 'DEF FA':
+            self.__populate_from_def_fa_mail(subject, body)
         elif flag_type == 'ATT EXPLO':
             return self.__populate_from_att_explo_mail(subject, body)
         elif flag_type == 'DEF EXPLO':
@@ -438,6 +442,69 @@ class BATTLE(sg.SqlAlchemyBase):
             res_next = pEFFET.search(body, start_match, stop_match)
             end_match = res_next.end() if res_next else stop_match
         return objs
+
+    def __populate_from_att_fa_mail(self, subject, body):       
+        # Load config
+        try:
+            re_event_capa_effet_att = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
+            re_event_sr = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_SR_RE)
+            re_event_resi_att = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+            re_end_mail = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Flash Aveuglant'
+        # Regexp search scope calibration
+        res = re.search(re_end_mail, body)
+        stop_match = res.end()
+        start_match = 0
+        end_match = stop_match
+        pEFFET = re.compile(re_event_capa_effet_att)
+        pSR = re.compile(re_event_sr)
+        pRESI = re.compile(re_event_resi_att)
+        pTOUR = re.compile(re_event_capa_tour)
+        # Loop over the explosion reports
+        objs = []
+        res = pEFFET.search(body, start_match, end_match)
+        start_match = res.end() if res else None
+        if start_match is None:
+            return None # Flash with nobody on the case
+        res_next = pEFFET.search(body, start_match, stop_match)
+        end_match = res_next.end() if res_next else end_match
+        while res != None and start_match < stop_match:
+            obj = copy.deepcopy(self)
+            if res.group(5) is None: # Trick matching the det (No det = Troll ?)
+                obj.def_troll_nom = res.group(6)
+                obj.def_troll_id = res.group(11)
+            else:
+                obj.def_mob_nom = res.group(6)
+                obj.def_mob_age = res.group(8)
+                obj.def_mob_tag = res.group(10)
+                obj.def_mob_id = res.group(11)
+            # Capa effet
+            obj.capa_effet = res.group(1) if res else None
+            # Capa tour
+            resTOUR = pTOUR.search(body, start_match, end_match)
+            obj.capa_tour = resTOUR.group(1) if resTOUR else None
+            # Seuil de résistance
+            resSR = pSR.search(body, start_match, end_match)
+            obj.sr = resSR.group(1) if resSR else None
+            # Jet de résistance
+            resRESI = pRESI.search(body, start_match, end_match)
+            obj.resi = resRESI.group(1) if resRESI else None
+            if int(obj.resi) <= int(obj.sr):
+                obj.type += ' réduit'
+            # Prepare next loop
+            objs.append(obj)
+            res = res_next
+            start_match = end_match
+            res_next = pEFFET.search(body, start_match, stop_match)
+            end_match = res_next.end() if res_next else stop_match
+        return objs
     
     def __populate_from_def_vt_mail(self, subject, body):       
         # Load config
@@ -459,6 +526,32 @@ class BATTLE(sg.SqlAlchemyBase):
             # Capa effet
             res = re.search(re_event_capa_effet_def, body)
             self.capa_effet = res.group(1) if res else None
+            # Capa tour
+            res = re.search(re_event_capa_tour, body)
+            self.capa_tour = res.group(1) if res else None
+        else:
+            sg.logger.error("Fail to parse the mail, rexegp not maching")
+
+    def __populate_from_def_fa_mail(self, subject, body):       
+        # Load config
+        try:
+            re_event_desc = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_DESC_RE)
+            re_event_capa_effet_def = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
+            re_event_capa_tour = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
+        except ConfigParser.Error as e:
+            e.sciz_logger_flag = True
+            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
+            raise
+        # Event desc
+        self.type = 'Sortilège'
+        self.subtype = 'Flash Aveuglant'
+        res = re.search(re_event_desc, body)
+        if res != None:
+            self.att_troll_nom = res.group(1)
+            self.att_troll_id = res.group(2)
+            # Capa effet
+            res = re.search(re_event_capa_effet_def, body)
+            self.capa_effet = re.sub(r'\n', ' ', res.group(1)) if res else None
             # Capa tour
             res = re.search(re_event_capa_tour, body)
             self.capa_tour = res.group(1) if res else None

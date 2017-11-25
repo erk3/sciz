@@ -34,6 +34,8 @@ class PrettyPrinter:
             self.att_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_SHORT)
             self.def_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_SHORT)
             self.capa_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_CAPA_SHORT)
+            self.att_fa_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_FA_SHORT)
+            self.def_fa_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_FA_SHORT)
             self.att_vt_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_VT_SHORT)
             self.def_vt_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_VT_SHORT)
             self.att_hypno_short = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_HYPNO_SHORT)
@@ -45,6 +47,8 @@ class PrettyPrinter:
             self.att_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_FULL)
             self.def_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_FULL)
             self.capa_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_CAPA_FULL)
+            self.att_fa_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_FA_FULL)
+            self.def_fa_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_FA_FULL)
             self.att_vt_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_VT_FULL)
             self.def_vt_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_DEF_VT_FULL)
             self.att_hypno_full = sg.config.get(sg.CONF_GROUP_SECTION, sg.CONF_ATT_HYPNO_FULL)
@@ -120,6 +124,8 @@ class PrettyPrinter:
         format_str = self.def_explo_short if short and (event.flag_type == 'DEF EXPLO') else format_str
         format_str = self.att_vt_short if short and (event.flag_type == 'ATT VT') else format_str
         format_str = self.def_vt_short if short and (event.flag_type == 'DEF VT') else format_str
+        format_str = self.att_fa_short if short and (event.flag_type == 'ATT FA') else format_str
+        format_str = self.def_fa_short if short and (event.flag_type == 'DEF FA') else format_str
         format_str = self.att_full if not short and (event.flag_type == 'ATT') else format_str
         format_str = self.def_full if not short and (event.flag_type == 'DEF') else format_str
         format_str = self.capa_full if not short and (event.flag_type == 'DEF CAPA') else format_str
@@ -131,6 +137,8 @@ class PrettyPrinter:
         format_str = self.def_explo_full if not short and (event.flag_type == 'DEF EXPLO') else format_str
         format_str = self.att_vt_full if not short and (event.flag_type == 'ATT VT') else format_str
         format_str = self.def_vt_full if not short and (event.flag_type == 'DEF VT') else format_str
+        format_str = self.att_fa_full if not short and (event.flag_type == 'ATT FA') else format_str
+        format_str = self.def_fa_full if not short and (event.flag_type == 'DEF FA') else format_str
         if format_str != None:
             return '@' + sg.format_time(event.time) + ' ' + format_str.format(o=event)
         else:
