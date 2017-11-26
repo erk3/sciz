@@ -95,7 +95,7 @@ class MailWalker:
         group = group if group else sg.group
         try:
             sg.logger.info('Walking the mails for group %s...' % (group.flat_name, ))
-            mbox = mailbox.Maildir(self.mailDirPath + os.sep + group.flat_name)
+            mbox = mailbox.Maildir(self.mailDirPath + os.sep + group.mail.split('@')[0])
             # Build a sorted list of key-message by 'Date' header #RFC822
             sorted_mails = sorted(mbox.iteritems(), key=lambda x: email.utils.parsedate(x[1].get('Date')))
             # Walk over the mail directory (iterating from the by 'Date' header sorted list)
