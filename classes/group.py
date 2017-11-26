@@ -38,7 +38,7 @@ class GROUP(sg.SqlAlchemyBase):
         if (self.flat_name is None) or (domain_name is None):
             self.mail = None
         else:
-            r = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(8))
+            r = ''.join(random.SystemRandom().choice(string.ascii_lowercase + string.digits) for _ in range(8))
             self.mail = '{}.{}@{}'.format(self.flat_name, r, domain_name)
 
 @event.listens_for(GROUP, 'before_insert')
