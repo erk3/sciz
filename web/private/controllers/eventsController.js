@@ -10,7 +10,7 @@ EventsController.getEvents = function (req, res) {
   var offset = (req.query.offset) ? parseInt(req.query.offset) : 0;
   var groupID = (req.query.groupID) ? parseInt(req.query.groupID) : 0;
 
-  DB.Event.findAll({limit: 25, where: {group_id: groupID}, offset: offset, order: [['id', 'DESC']]})
+  DB.Event.findAll({limit: 25, where: {group_id: groupID}, offset: offset, order: [['time', 'DESC']]})
     .then(function (events) {
       res.json(events);
     })

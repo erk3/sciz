@@ -14,6 +14,8 @@ class EVENT(sg.SqlAlchemyBase):
     __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
     # ID unique
     id = Column(Integer, autoincrement=True)
+    # Date de la notification
+    time = Column(DateTime())
     # Texte de la notification
     notif = Column(String(250))
     # Notification a pousser ?

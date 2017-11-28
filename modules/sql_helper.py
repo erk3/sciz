@@ -149,6 +149,7 @@ class SQLHelper:
         pp = PrettyPrinter()
         event.group_id = obj.group_id
         event.notif = pp.pretty_print(obj, True)
+        event.time = obj.time
         if event.notif:
             event.notif_to_push = False
             event.type = "UNKNWON"

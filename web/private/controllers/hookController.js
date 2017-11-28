@@ -18,7 +18,7 @@ HookController.getNotifs = function (req, res) {
       {group_id: hook.group_id}
     ]},
     attributes: ['id', 'notif'],
-    order: [['id', 'DESC']]
+    order: [['time', 'DESC']]
   })
     .then(function (result) {
       res.json(result.rows);
