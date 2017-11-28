@@ -180,7 +180,7 @@ class MailWalker:
                             event = EVENT()
                             sg.db.add(event, obj)
                     
-                    new_file = self.mailDirPath + os.sep + group.flat_name + os.sep + 'parsed' + os.sep + os.path.basename(msgFile._file.name)
+                    new_file = self.mailDirPath + os.sep + group.mail.split('@')[0] + os.sep + 'parsed' + os.sep + os.path.basename(msgFile._file.name)
                     sg.createDirName(new_file)
                     os.rename(msgFile._file.name, new_file)
 
