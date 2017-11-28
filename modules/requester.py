@@ -77,20 +77,26 @@ class Requester:
     def __request_mob_cdm(self, id, limit):
         try:        
             cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
-            for cdm in cdms:
-                val = self.pp.pretty_print(cdm, False, None)
-                if val != '':
-                    print val
+            if len(cdms) > 0:
+                for cdm in cdms:
+                    val = self.pp.pretty_print(cdm, False, None)
+                    if val != '':
+                        print val
+            else:
+                print 'Aucune CDM pour le montre n°%s' % (id, )
         except NoResultFound:
             pass
     
     def __request_mob_event(self, id, limit):
         try:
             events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
-            for event in events:
-                val = self.pp.pretty_print(event, False, None)
-                if val != '':
-                    print val
+            if len(events) > 0:
+                for event in events:
+                    val = self.pp.pretty_print(event, False, None)
+                    if val != '':
+                        print val
+            else:
+                print 'Aucun évènement pour le monstre n°%s' % (id, )
         except NoResultFound:
             pass
     
@@ -100,7 +106,10 @@ class Requester:
             val = self.pp.pretty_print(mob, False, caracs)
             if val != '':
                 print val
+            else:
+                print 'Aucune donnée pour le monstre n°%s' % (id, )
         except NoResultFound:
+            print 'Aucune donnée pour le monstre n°%s' % (id, )
             pass
     
     # Trol request        
@@ -120,10 +129,13 @@ class Requester:
     def __request_troll_event(self, id, limit):
         try:
             events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
-            for event in events:
-                val = self.pp.pretty_print(event, False, None)
-                if val != '':
-                    print val
+            if len(events) > 0:
+                for event in events:
+                    val = self.pp.pretty_print(event, False, None)
+                    if val != '':
+                        print val
+            else:
+                print 'Aucun évènement pour troll n°%s' % (id, )
         except NoResultFound:
             pass
 
@@ -133,7 +145,10 @@ class Requester:
             val = self.pp.pretty_print(troll, False, caracs)
             if val != '':
                 print val
+            else:
+                print 'Aucune donnée pour le troll n°%s' % (id, )
         except NoResultFound:
+            print 'Aucune donnée pour le troll n°%s' % (id, )
             pass
 
     # Destructor
