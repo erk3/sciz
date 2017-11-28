@@ -23,7 +23,7 @@ HookController.getNotifs = function (req, res) {
     .then(function (result) {
       res.json(result.rows);
       if (result.count > 0) {
-        DB.Hook.update({last_event_id: result.rows[0].id}, {where: {id: hook.id}});
+        DB.Hook.update({last_event_id: Math.max.apply(Math, result.rows.map(function(o){return o.id;}))}, {where: {id: hook.id}});
       }
     })
     .catch(function(error) {
