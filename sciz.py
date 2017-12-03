@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import sys, argparse, ConfigParser, sqlalchemy, json, codecs, logging, os, traceback
+import sys, argparse, ConfigParser, sqlalchemy, codecs, logging, os, traceback
 from logging.handlers import RotatingFileHandler
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.exc import ProgrammingError
@@ -45,7 +45,7 @@ class SCIZ:
         
         # Load the stored configuration
         try:
-            confs = sg.db.session.query(CONF).filter(CONF.group_id == None).all()
+            confs = sg.db.session.query(CONF).filter(CONF.group_id == None, CONF.section == sg.CONF_INSTANCE_SECTION).all()
             for conf in confs:
                 sg.config.set(sg.CONF_INSTANCE_SECTION, conf.key, conf.value)
             sg.logger.info('Loaded stored configurations for instance!')
@@ -76,9 +76,9 @@ class SCIZ:
     def request(self, ids, args):
         self.requester = Requester()
         if ids.lower() == 'help':
-            print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls) [opts_troll] | help'
-            print 'opts_mob : stats #default# | (cdm|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
-            print 'opts_troll : stats #default# | event [limit=1] | carac[,carac]* #ordered desc by first carac#'
+            print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls|users) [opts_troll] | help'
+            print 'opts_mob : '' #default=all caracs# | (cdm|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
+            print 'opts_troll : '' #default=all caracs# | event [limit=1] | carac[,carac]* #ordered desc by first carac#'
         else:
             self.requester.request(ids, args)
             

@@ -42,32 +42,32 @@ class PIEGE(sg.SqlAlchemyBase):
 
     # Constructor is handled by SqlAlchemy, do not override
 
-    def populate_from_mail(self, subject, body, group):
-        try:
-            re_event_troll = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
-            re_event_time = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
-            re_piege_desc = sg.config.get(sg.CONF_PIEGE_SECTION, sg.CONF_PIEGE_DESC_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # GROUP
-        self.group_id = group.id
-        # Event Troll
-        res = re.search(re_event_troll, body)
-        self.troll_id = res.group(1)
-        # Event time
-        res = re.search(re_event_time, body)
-        self.time = datetime.datetime.strptime(res.group(1), '%d/%m/%Y  %H:%M:%S')
-        # Piege
-        res = re.search(re_piege_desc, body)
-        self.type = res.group(1)
-        self.posx = res.group(2)
-        self.posy = res.group(3)
-        self.posn = res.group(4)
-        self.mm = res.group(5)
+    # Additional build logic (see MailParser)
+    def build(self):
+        self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
 
-    # Generate the string representation of each attribute and return the list of attributes printable
-    def stringify(self):
-        # Generate STR representation
-        self.troll.stringify();
+    def stringify(self, reprs, short, attrs):
+        # Build the string representations provided
+        for (key, value) in reprs:
+            if key.startswith('s_'):
+                setattr(self, key, value)
+            elif hasattr(self, key):
+                if getattr(self, key) is not None and getattr(self, key):
+                    setattr(self, 's_' + key, value.format(getattr(self, key)))
+                else:
+                    setattr(self, 's_' + key, '')
+            else:
+                setattr(self, 's_' + key, None)
+        # Add the time
+        self.s_time = '@' + sg.format_time(self.time)
+        # Add the troll name
+        self.s_nom_full = self.troll.stringify_name()
+        # Return the final formated representation
+        if short:
+            res = self.s_short
+        else:
+            res = self.s_long
+        res = res.format(o=self)
+        res = re.sub(r' +', ' ', res)
+        return res
+

@@ -16,7 +16,6 @@ from classes.hook import HOOK
 from classes.piege import PIEGE
 from classes.conf import CONF
 from classes.group import GROUP
-from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
 ## SCIZ SQL Help
@@ -83,8 +82,6 @@ class SQLHelper:
             return self.__add_group(obj)
         elif isinstance(obj, CONF):
             return self.__add_conf(obj)
-        elif isinstance(obj, EVENT):
-            return self.__add_event(obj, obj2)
 
     # Insert or update a USER
     def __add_user(self, new_user):
@@ -101,12 +98,12 @@ class SQLHelper:
         return user
     
     # Add a TROLL
-    def __add_troll(self, new_troll, event=None):
+    def __add_troll(self, new_troll, battle=None):
         troll = None
         try:
             troll = self.session.query(TROLL).filter(and_(TROLL.id == new_troll.id, TROLL.group_id == new_troll.group_id)).one()
             sg.logger.info("Updating troll %s..." % (troll.id, ))
-            troll.update_from_new(new_troll, event)
+            troll.update_from_new(new_troll, battle)
         except orm.exc.NoResultFound:
             troll = new_troll
             sg.logger.info("Creating troll %s..." % (troll.id, ))
@@ -118,7 +115,7 @@ class SQLHelper:
     def __add_conf(self, new_conf):
         conf = None
         try:
-            conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.group_id == new_conf.group_id)).one() 
+            conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.section == new_conf.section, CONF.group_id == new_conf.group_id)).one() 
             sg.logger.info('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
             conf.value = new_conf.value
             self.session.add(conf)
@@ -142,34 +139,31 @@ class SQLHelper:
         self.session.commit()
         return group
 
-    # Add a NOTIF
-    def __add_event(self, event, obj=None):
-        if not obj:
-            return None
-        pp = PrettyPrinter()
+    # Add an EVENT
+    def add_event(self, obj):
+        event = EVENT()
         event.group_id = obj.group_id
-        event.notif = pp.pretty_print(obj, True)
         event.time = obj.time
-        if event.notif:
-            event.notif_to_push = False
-            event.type = "UNKNWON"
-            if isinstance(obj, CDM):
-                if (obj.mob.sciz_notif or obj.troll.sciz_notif):
-                    event.notif_to_push = True
-                event.cdm_id = obj.id
-                event.type = "CDM"
-            elif isinstance(obj, PIEGE):
-                if (obj.troll.sciz_notif):
-                    event.notif_to_push = True
-                event.piege_id = obj.id
-                event.type = "PIEGE"
-            elif isinstance(obj, BATTLE):
-                if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
-                    event.notif_to_push = True
-                event.battle_id = obj.id
-                event.type = "BATTLE"
-            self.session.add(event)
-            self.session.commit()
+        event.notif = sg.pretty_print(obj, True)
+        event.notif_to_push = False
+        event.type = "UNKNWON"
+        if isinstance(obj, CDM):
+            if (obj.mob.sciz_notif or obj.troll.sciz_notif):
+                event.notif_to_push = True
+            event.cdm_id = obj.id
+            event.type = "CDM"
+        elif isinstance(obj, PIEGE):
+            if (obj.troll.sciz_notif):
+                event.notif_to_push = True
+            event.piege_id = obj.id
+            event.type = "PIEGE"
+        elif isinstance(obj, BATTLE):
+            if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
+                event.notif_to_push = True
+            event.battle_id = obj.id
+            event.type = "BATTLE"
+        self.session.add(event)
+        self.session.commit()
         return event
         
     # Add a MOB

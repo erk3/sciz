@@ -28,8 +28,10 @@
         <table class="table table-hover table-condensed">
           <tbody infinite-scroll="ec.loadMoreEvents()" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1" infinite-scroll-container="'.pre-scrollable'">
             <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
+              <!--
               <td class="text-center" style="white-space: nowrap"><small>{{ec.displayDate(event.sub.time)}}</small></td>
-              <td class="text-left"><small ng-bind-html="event.notif.substring(10)"></small></td>
+              -->
+              <td class="text-left"><small ng-bind-html="event.notif"></small></td>
             </tr>
           </tbody>
         </table>

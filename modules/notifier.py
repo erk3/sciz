@@ -27,7 +27,7 @@ class Notifier:
         try:
             hook = sg.db.session.query(HOOK).filter(HOOK.name == hook_name, HOOK.group_id == sg.group.id).one()
             for event in sg.db.session.query(EVENT).filter(EVENT.id > hook.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == sg.group.id):
-                print event.notif.encode(sg.DEFAULT_CHARSET) + os.linesep
+                print event.getNotif(True) + os.linesep
                 hook.last_event_id = event.id
             sg.db.session.add(hook)
             sg.db.session.commit()

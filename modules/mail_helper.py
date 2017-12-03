@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 import modules.globals as sg
 
 ## MailHelper class for SCIZ
-class MailHelper:
+class MAILHELPER:
 
     # Constructor
     def __init__(self):
@@ -33,31 +33,10 @@ class MailHelper:
             sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
             raise
     
-    def answer_gmail_forward_confirmation(self, subject, body, group=None):
-        try:
-            re_gmail_desc = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_DESC_RE)
-            re_gmail_code = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_CODE_RE)
-            re_gmail_desc_en = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_DESC_EN_RE)
-            re_gmail_code_en = sg.config.get(sg.CONF_GMAIL_SECTION, sg.CONF_GMAIL_CODE_EN_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
-            raise
-        group = group if group else sg.group
-        # Get the code and the sender
-        res = re.search(re_gmail_desc, body)
-        to = res.group(1) if res else None
-        if to is None:
-            res = re.search(re_gmail_desc_en, body)
-            to = res.group(1)
-        res = re.search(re_gmail_code, body)
-        code = res.group(1) if res else None
-        if code is None:
-            res = re.search(re_gmail_code_en, body)
-            code = res.group(1)
+    def build_gmail(self):
         # Build the answer
-        subject = "[SCIZ] Code de confirmation de transfert GMAIL vers %s" % (group.mail, )
-        text = "Votre code de transfert GMAIL pour %s est : %s" % (group.mail, code, )
+        subject = "[SCIZ] Code de confirmation de transfert GMAIL vers %s" % (self.group_mail, )
+        text = "Votre code de transfert GMAIL pour %s est : %s" % (self.group_mail, self.code, )
         html = """\
         <html>
             <head></head>
@@ -65,9 +44,9 @@ class MailHelper:
                 <p>Votre code de transfert pour %s est : %s</p>
             </body>
         </html>
-        """ % (group.mail, code, )
+        """ % (self.group_mail, self.code, )
         # Send the mail
-        self.send_mail(to, subject, text, html)
+        self.send_mail(self.sender, subject, text, html)
 
     def send_mail(self, to, subject, body_text, body_html):
         if not self.smtp:

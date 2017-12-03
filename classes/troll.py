@@ -218,16 +218,58 @@ class TROLL(sg.SqlAlchemyBase):
             # Missing data (probably no previous success call to MH SP)
             return None
     
-    # Generate the string representation of each attribute and return the list of attributes printable
-    def stringify(self):
-        # Generate STR representation
-        # TODO: only use s_ attr for pprinter (based on confs/sciz.ini)? Then this will be useful
-        #plain_attrs = ['pv','niv']
-        #for attr in plain_attrs:
-        #    val = getattr(self, attr)
-        #    setattr(self, 's_' + attr, val)
-        self.s_nom_full = self.nom + ' (' +  str(self.id) + ')' if self.nom else str(self.id)
-        self.s_nom_short = '~' + self.user.pseudo if self.user and self.user.pseudo else self.s_nom_full
-        self.s_dla = sg.format_time(self.dla) if self.dla else None
-        self.next_dla = self.estimate_next_dla()
-        self.s_next_dla = sg.format_time(self.next_dla) if self.next_dla else None
+    def stringify_name(self):
+        self.s_nom_troll = ('%s (%d)' % (self.nom, self.id))
+        if self.user and self.user.pseudo:
+            self.s_nom_troll = ('%s (%d)' % (self.user.pseudo, self.id))
+        return self.s_nom_troll
+
+    def stringify(self, reprs, short, attrs):
+        self.s_troll_nom = self.stringify_name()
+        # Build the string representations provided
+        for (key, value) in reprs:
+            s = ''
+            if key.startswith('s_'):
+                setattr(self, key, value)
+                continue
+            elif hasattr(self, key) and getattr(self, key) is not None:
+                if isinstance(getattr(self, key), bool):
+                    s = value.format(sg.boolean2French(getattr(self, key)))
+                else:
+                    s = value.format(getattr(self, key))
+            elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
+                s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                s = value.format(s) if s is not None else ''
+            setattr(self, 's_' + key, s)
+        # Compute some things
+        self.s_dla = sg.format_time(self.dla) if self.dla else ''
+        self.s_next_dla = sg.format_time(self.estimate_next_dla())
+        self.s_dla_full = self.s_dla_full.format(o=self) if self.s_dla != '' else ''
+        self.s_pos = self.s_pos.format(o=self) if self.s_pos_x != '' else ''
+        self.s_pv_ratio = self.s_pv_ratio.format(o=self) if self.s_pv != '' else ''
+        self.s_att = self.s_att.format(o=self) if self.s_base_att != '' else ''
+        self.s_esq = self.s_esq.format(o=self) if self.s_base_esq != '' else ''
+        self.s_deg = self.s_deg.format(o=self) if self.s_base_deg != '' else ''
+        self.s_reg = self.s_reg.format(o=self) if self.s_base_reg != '' else ''
+        self.s_arm = self.s_arm.format(o=self) if self.s_base_arm_phy != '' else ''
+        self.s_vue = self.s_vue.format(o=self) if self.s_base_vue != '' else ''
+        self.s_mm = self.s_mm.format(o=self) if self.s_base_mm != '' else ''
+        self.s_rm = self.s_rm.format(o=self) if self.s_base_rm != '' else ''
+        # Filter out attrs not wanted (but separator)
+        if attrs is not None:
+            for match in re.findall('\{o\.s_(.+?)\}', self.s_troll_stats):
+                if match not in attrs and match != "sep":
+                    self.s_troll_stats = re.sub(r'\{o\.s_%s\}' % (match), '', self.s_troll_stats)
+        # Return the final formated representation
+        self.s_troll_stats = self.s_troll_stats.format(o=self)
+        res = self.s_long
+        res = res.format(o=self)
+        res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
+        # Adjust some things about spacing and line break
+        res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
+        res = re.sub(r'%s$' % self.s_sep, '', res)
+        if attrs is not None and len(attrs) == 1:
+            res = re.sub(r'%s' % self.s_sep, ' ', res)
+        res = re.sub(r' +', ' ', res)
+        return res
+

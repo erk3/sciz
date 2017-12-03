@@ -92,6 +92,13 @@ function eventsCtrl($http, $window, authService) {
     vm.cur.cdm.capa += (vm.cur.cdm.capa_tour) ? ' - ' + vm.cur.cdm.capa_tour + 'T' : '';
     vm.cur.cdm.capa += (vm.cur.cdm.portee_capa) ? ' (' + vm.cur.cdm.portee_capa + ')' : '';
     vm.cur.cdm.capa = vm.cur.cdm.capa.trim();
+    // VLC & ATT DIST
+    if (vm.cur.cdm.vlc !== null) {
+      vm.cur.cdm.vlc = vm.boolean2French(vm.cur.cdm.vlc);
+    }
+    if (vm.cur.cdm.att_dist !== null) {
+      vm.cur.cdm.att_dist = vm.boolean2French(vm.cur.cdm.att_dist);
+    }
   };
 
   /*
@@ -152,6 +159,11 @@ function eventsCtrl($http, $window, authService) {
   /*
    * Utils
    */
+
+  vm.boolean2French = function (bool) {
+    return (bool) ? 'Oui' : 'Non';
+  };
+
   vm.displayDate = function (date) {
     var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false};
     var dtf = new Intl.DateTimeFormat('fr-FR', options);

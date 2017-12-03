@@ -12,11 +12,12 @@ class CONF(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
     __tablename__ = 'confs'
-    __table_args__ = (UniqueConstraint('group_id', 'key'), )
+    __table_args__ = (UniqueConstraint('section', 'group_id', 'key'), )
     id = Column(Integer, primary_key=True)
     group_id = Column(Integer, ForeignKey('groups.id'))
+    section = Column(String(50))
     key = Column(String(50))
-    value = Column(String(255))
+    value = Column(String(500))
     last_fetch = Column(DateTime, onupdate=datetime.datetime.utcnow())
     
     # Associations One-To-Many

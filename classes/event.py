@@ -16,8 +16,8 @@ class EVENT(sg.SqlAlchemyBase):
     id = Column(Integer, autoincrement=True)
     # Date de la notification
     time = Column(DateTime())
-    # Texte de la notification
-    notif = Column(String(250))
+    # Notification
+    notif = Column(String(255))
     # Notification a pousser ?
     notif_to_push = Column(Boolean)
     # Type d'évènement
@@ -40,3 +40,11 @@ class EVENT(sg.SqlAlchemyBase):
 
     # Constructor is handled by SqlAlchemy, do not override
 
+    # Get the actual notification associated to this event
+    def getNotif(self, short):
+        notif = ''
+        obj = None
+        obj = self.battle if self.battle_id is not None else obj
+        obj = self.cdm if self.cdm_id is not None else obj
+        obj = self.piege if self.piege_id is not None else obj
+        return sg.pretty_print(obj, short)

@@ -4,6 +4,7 @@
 # Imports
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
+import re
 import modules.globals as sg
 
 # Class of a Mob
@@ -119,9 +120,9 @@ class MOB(sg.SqlAlchemyBase):
             if result_id > 0:
                 self.metamob_id = result_id
             else:
-                print 'Cannot match name of mob to a metamob'
+                sg.logger.warning('Cannot match \'%s\' to a metamob' % self.nom)
         else:
-            print 'Mob has no name, cannot search for a metamob to link'
+            sg.logger.error('Mob has no name, cannot search for a metamob to link')
 
     # Populate object from a CDM
     def populate_from_cdm(self, obj):
@@ -160,34 +161,50 @@ class MOB(sg.SqlAlchemyBase):
         self.rm_max = sg.do_unless_none((min), (self.rm_max, mob.rm_max))
         self.tour_max = sg.do_unless_none((min), (self.tour_max, mob.tour_max))
 
-    # Generate the string representation of each attribute and return the list of attributes printable
-    def stringify(self):
-        # Generate STR representation
-        self.s_tag = ' ' + self.tag if self.tag else ''
-        self.s_nom_short = self.nom + ' (' + str(self.id) + ')'
-        self.s_nom_full = self.nom + ' [' + self.age + ']' + self.s_tag + ' (' + str(self.id) + ')'
-        self.s_blessure = self.blessure if self.blessure != None else '?'
-        self.s_niv = sg.str_min_max(self.niv_min, self.niv_max)
-        self.s_pv = sg.str_min_max(self.pv_min, self.pv_max)
-        self.s_att = sg.str_min_max(self.att_min, self.att_max)
-        self.s_esq = sg.str_min_max(self.esq_min, self.esq_max)
-        self.s_deg = sg.str_min_max(self.deg_min, self.deg_max)
-        self.s_reg = sg.str_min_max(self.reg_min, self.reg_max)
-        self.s_vue = sg.str_min_max(self.vue_min, self.vue_max)
-        self.s_arm_phy = sg.str_min_max(self.arm_phy_min, self.arm_phy_max)
-        self.s_mm = sg.str_min_max(self.mm_min, self.mm_max)
-        self.s_rm = sg.str_min_max(self.rm_min, self.rm_max)
-        self.s_tour = sg.str_min_max(self.tour_min, self.tour_max)
-        if self.capa_desc:
-            self.s_capa = self.capa_desc + ' (Affecte : ' + self.capa_effet + ')'
-        if self.capa_tour:
-            self.s_capa += ' ' + str(self.capa_tour) + 'T'
-        if self.portee_capa:
-            self.s_capa += ' (' + self.portee_capa + ')' 
-        self.s_vlc = 'Oui' if self.vlc else 'Non'
-        self.s_att_dist = 'Oui' if self.att_dist else 'Non'
-        self.s_vit = self.vit_dep
-        self.s_nb_att_tour = self.nb_att_tour
-        self.s_dla = self.dla
-        self.s_chargement = self.chargement
-        self.s_bonus_malus = self.bonus_malus
+    
+    def stringify_name(self):
+        if self.tag:
+            return '%s [%s] %s (%d)' % (self.nom, self.age, self.tag, self.id)
+        else:
+            return '%s [%s] (%d)' % (self.nom, self.age, self.id)
+
+    def stringify(self, reprs, short, attrs):
+        self.s_mob_nom = self.stringify_name()
+        # Build the string representations provided
+        for (key, value) in reprs:
+            s = ''
+            if key.startswith('s_'):
+                setattr(self, key, value)
+                continue
+            elif hasattr(self, key) and getattr(self, key) is not None:
+                if isinstance(getattr(self, key), bool):
+                    s = value.format(sg.boolean2French(getattr(self, key)))
+                else:
+                    s = value.format(getattr(self, key))
+            elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
+                s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                s = value.format(s) if s is not None else ''
+            setattr(self, 's_' + key, s)
+        # Add the capa
+        self.s_capa = self.s_capa_effet
+        if self.s_capa_tour:
+            self.s_capa = '%s %s %s' % (self.s_capa, self.s_delimiter, self.s_capa_tour)
+        if self.s_capa_desc:
+            self.s_capa = '%s %s %s' % (self.s_capa_desc, self.s_delimiter, self.s_capa)
+        # Filter out attrs not wanted (but separator)
+        if attrs is not None:
+            for match in re.findall('\{o\.s_(.+?)\}', self.s_mob_stats):
+                if match not in attrs and match != "sep":
+                    self.s_mob_stats = re.sub(r'\{o\.s_%s\}' % (match), '', self.s_mob_stats)
+        # Return the final formated representation
+        self.s_mob_stats = self.s_mob_stats.format(o=self)
+        res = self.s_long
+        res = res.format(o=self)
+        res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
+        # Adjust some things about spacing and line break
+        res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
+        res = re.sub(r'%s$' % self.s_sep, '', res)
+        if attrs is not None and len(attrs) == 1:
+            res = re.sub(r'%s' % self.s_sep, ' ', res)
+        res = re.sub(r' +', ' ', res)
+        return res

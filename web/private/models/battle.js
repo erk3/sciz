@@ -25,12 +25,12 @@ BattleTemplate.modelDefinition = {
   def_troll_id: {type: sequelize.INTEGER},
   att_mob_id: {type: sequelize.INTEGER},
   def_mob_id: {type: sequelize.INTEGER},
-  flag_type: {type: sequelize.STRING},
   type: {type: sequelize.STRING},
   subtype: {type: sequelize.STRING},
   att: {type: sequelize.INTEGER},
   esq: {type: sequelize.INTEGER},
   deg: {type: sequelize.INTEGER},
+  arm: {type: sequelize.INTEGER},
   pv: {type: sequelize.INTEGER},
   vie: {type: sequelize.INTEGER},
   soin: {type: sequelize.INTEGER},
@@ -39,7 +39,9 @@ BattleTemplate.modelDefinition = {
   resi: {type: sequelize.INTEGER},
   capa_desc: {type: sequelize.STRING},
   capa_effet: {type: sequelize.STRING},
-  capa_tour: {type: sequelize.INTEGER}
+  capa_tour: {type: sequelize.INTEGER},
+  resist: {type: sequelize.BOOLEAN},
+  dead: {type: sequelize.BOOLEAN}
 };
 
 BattleTemplate.modelOptions = {

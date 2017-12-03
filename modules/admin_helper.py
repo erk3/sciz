@@ -40,6 +40,7 @@ class AdminHelper:
         # Populate default conf for the instance
         for (each_key, each_value) in sg.config.items(sg.CONF_INSTANCE_SECTION):
             conf = CONF()
+            conf.section = sg.CONF_INSTANCE_SECTION
             conf.key = each_key
             conf.value = each_value
             sg.db.add(conf)
@@ -56,7 +57,7 @@ class AdminHelper:
                 # Group exists, load its configuration
                 confs = sg.db.session.query(CONF).filter(CONF.group_id == sg.group.id).all()
                 for conf in confs:
-                    sg.config.set(sg.CONF_GROUP_SECTION, conf.key, conf.value)
+                    sg.config.set(conf.section, conf.key, conf.value)
                 sg.logger.info('Loaded stored configurations for group %s!' % (sg.group.name, ))
             except NoResultFound as e:
                 sg.logger.warning('No stored configurations found for group %s!' % (sg.group.name, ))
@@ -69,12 +70,15 @@ class AdminHelper:
             sg.group.generate_random_mail(self.domain_name)
             sg.group = sg.db.add(sg.group)
             # Populate default conf for the group
-            for (each_key, each_value) in sg.config.items(sg.CONF_GROUP_SECTION):
-                conf = CONF()
-                conf.key = each_key
-                conf.value = each_value
-                conf.group_id = sg.group.id
-                sg.db.add(conf)
+            for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT]:
+                if sg.config.has_section(section):
+                    for (each_key, each_value) in sg.config.items(section):
+                        conf = CONF()
+                        conf.section = section
+                        conf.key = each_key
+                        conf.value = each_value
+                        conf.group_id = sg.group.id
+                        sg.db.add(conf)
             # Add an entry to the postfix accounts conf file
             sg.createDirName(self.pf_conf_file);
             with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:

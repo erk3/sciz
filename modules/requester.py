@@ -12,7 +12,6 @@ from classes.mob import MOB
 from classes.cdm import CDM
 from classes.battle import BATTLE
 from modules.sql_helper import SQLHelper
-from modules.pretty_printer import PrettyPrinter
 import modules.globals as sg
 
 ## Requester class for SCIZ
@@ -20,7 +19,6 @@ class Requester:
 
     # Constructor
     def __init__(self):
-        self.pp = PrettyPrinter()
         self.check_conf()
     
     # Configuration loader and checker
@@ -79,7 +77,7 @@ class Requester:
             cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
             if len(cdms) > 0:
                 for cdm in cdms:
-                    val = self.pp.pretty_print(cdm, False, None)
+                    val = sg.pretty_print(cdm, False, None)
                     if val != '':
                         print val
             else:
@@ -92,7 +90,7 @@ class Requester:
             events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
             if len(events) > 0:
                 for event in events:
-                    val = self.pp.pretty_print(event, False, None)
+                    val = sg.pretty_print(event, False, None)
                     if val != '':
                         print val
             else:
@@ -103,7 +101,7 @@ class Requester:
     def __request_mob_caracs(self, id, caracs):
         try:
             mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
-            val = self.pp.pretty_print(mob, False, caracs)
+            val = sg.pretty_print(mob, False, caracs)
             if val != '':
                 print val
             else:
@@ -131,7 +129,7 @@ class Requester:
             events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
             if len(events) > 0:
                 for event in events:
-                    val = self.pp.pretty_print(event, False, None)
+                    val = sg.pretty_print(event, False, None)
                     if val != '':
                         print val
             else:
@@ -142,7 +140,7 @@ class Requester:
     def __request_troll_caracs(self, id, caracs):
         try:
             troll = sg.db.session.query(TROLL).filter(TROLL.group_id==sg.group.id, TROLL.id == id).one()
-            val = self.pp.pretty_print(troll, False, caracs)
+            val = sg.pretty_print(troll, False, caracs)
             if val != '':
                 print val
             else:

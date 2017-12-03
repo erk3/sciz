@@ -29,8 +29,6 @@ class BATTLE(sg.SqlAlchemyBase):
     piege_id = Column(Integer, ForeignKey('pieges.id'))
     # ID du groupe
     group_id = Column(Integer, ForeignKey('groups.id'))
-    # FLAG (ATT, DEF, HYPNO, SACRO...)
-    flag_type = Column(String(50))
     # Type d'évènement
     type = Column(String(50))
     # Sous type d'évènement
@@ -41,6 +39,8 @@ class BATTLE(sg.SqlAlchemyBase):
     esq = Column(Integer)
     # Jet de dégâts (sans compter armure)
     deg = Column(Integer)
+    # Armure
+    arm = Column(Integer)
     # Points de vie perdu par la cible (avec armure)
     pv = Column(Integer)
     # Points de vie restants de la cible
@@ -59,6 +59,10 @@ class BATTLE(sg.SqlAlchemyBase):
     capa_effet = Column(String(150))
     # Nombre de tours d'effet de la capacité spéciale
     capa_tour = Column(Integer)
+    # Evènement résisté ?
+    resist = Column(Boolean)
+    # Cible décédée ?
+    dead = Column(Boolean)
 
     # Associations One-To-Many
     att_troll = relationship("TROLL", primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="atts")
@@ -72,614 +76,114 @@ class BATTLE(sg.SqlAlchemyBase):
 
     # Constructor is handled by SqlAlchemy do not override
     
-    # Populate object from a mail and the dedicated regexp in the configuration file
-    def populate_from_mail(self, subject, body, group, flag_type):
-        # Load the regexp
-        try:
-            re_event_troll = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TROLL_RE)
-            re_event_type = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TYPE_RE)
-            re_event_time = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_EVENT_TIME_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # FLAG
-        self.flag_type = flag_type
-        # GROUP
-        self.group_id = group.id
-        # Event Troll
-        res = re.search(re_event_troll, body)
-        if 'ATT' in flag_type:
-            self.att_troll_id = res.group(1)
-            self.att_troll_nom = res.group(2)
-        elif 'DEF' in flag_type:
-            self.def_troll_id = res.group(1)
-            self.def_troll_nom = res.group(2)
-        # Event time
-        res = re.search(re_event_time, body)
-        self.time = datetime.datetime.strptime(res.group(1), '%d/%m/%Y  %H:%M:%S')
-        # Dispatch
-        if flag_type == 'ATT':
-            self.__populate_from_att_mail(subject, body)
-        elif flag_type == 'DEF':
-            self.__populate_from_def_mail(subject, body)
-        elif flag_type == 'ATT HYPNO':
-            self.__populate_from_att_hypno_mail(subject, body)
-        elif flag_type == 'DEF HYPNO':
-            self.__populate_from_def_hypno_mail(subject, body)
-        elif flag_type == 'ATT SACRO':
-            self.__populate_from_att_sacro_mail(subject, body)
-        elif flag_type == 'DEF SACRO':
-            self.__populate_from_def_sacro_mail(subject, body)
-        elif flag_type == 'ATT VT':
-            self.__populate_from_att_vt_mail(subject, body)
-        elif flag_type == 'DEF VT':
-            self.__populate_from_def_vt_mail(subject, body)
-        elif flag_type == 'ATT FA':
-            return self.__populate_from_att_fa_mail(subject, body)
-        elif flag_type == 'DEF FA':
-            self.__populate_from_def_fa_mail(subject, body)
-        elif flag_type == 'ATT EXPLO':
-            return self.__populate_from_att_explo_mail(subject, body)
-        elif flag_type == 'DEF EXPLO':
-            self.__populate_from_def_explo_mail(subject, body)
-        elif flag_type == 'DEF CAPA':
-            self.__populate_from_capa_mail(subject, body)
+    # Additional build logics (see MailParser)
+    def build(self):
+        self.type = self.type.capitalize()
+        if self.subtype:
+            self.subtype = self.subtype.capitalize()
         else:
-            # Should never happen
-            sg.logger.warning('Unrecognized flag %s, mail not handled properly' %s (flag_type, ))
+            self.subtype = 'Attaque normale' if self.pv else 'Attaque normale esquivée'
+        self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else 0
+        self.pv = self.pv or self.deg # Pas d'armure
+        self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
+        if hasattr(self, 'resist') :
+            self.resist = self.resist is not None
+        if hasattr(self, 'dead'):
+            self.dead = self.dead is not None 
+        self.dead |= "mort" in self.type
 
-    def __populate_from_att_mail(self, subject, body):   
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_att = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ATT_RE)
-            re_event_esq = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_ESQ_RE)
-            re_event_deg = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_DEG_RE)
-            re_event_pv = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_sr = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_soin_att = sg.config.get(sg.CONF_ATT_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        res = re.search(re_event_desc, subject)
-        self.type = res.group(2)
-        self.subtype = res.group(3)
-        if res.group(4) == None: # Trick matching the det (only mobs have it)
-            self.def_troll_nom = res.group(5)
-            self.def_troll_id = res.group(10)
+    def build_att(self):
+        # Common
+        self.att_troll_id = self.troll_id
+        self.att_troll_nom = self.troll_nom
+        # ATT
+        if hasattr(self, 'det') and self.det is not None: # Trick matching the det (only mobs have it)
+            self.def_mob_nom = self.def_nom
+            self.def_mob_age = self.age
+            self.def_mob_tag = self.tag
+            self.def_mob_id = self.def_id
+        elif hasattr(self, 'def_nom'): # Flash on an empty case for example
+            self.def_troll_nom = self.def_nom
+            self.def_troll_id = self.def_id
+        if hasattr(self, 'resist') and self.resist is not None:
+            self.type += u' réduit'
+        self.build()
+   
+    def build_def(self):
+        # Common
+        self.def_troll_id = self.troll_id
+        self.def_troll_nom = self.troll_nom
+        # DEF
+        if hasattr(self, 'det') and self.det is not None: # Trick matching the det (only mobs have it)
+            self.att_mob_nom = self.att_nom
+            self.att_mob_age = self.age
+            self.att_mob_tag = self.tag
+            self.att_mob_id = self.att_id
         else:
-            self.def_mob_nom = res.group(5)
-            self.def_mob_age = res.group(7)
-            self.def_mob_tag = res.group(9)
-            self.def_mob_id = res.group(10)
-        # Jet d'attaque
-        res = re.search(re_event_att, body)
-        self.att = res.group(1) if res else None
-        # Jet d'esquive
-        res = re.search(re_event_esq, body)
-        self.esq = res.group(1) if res else None
-        # Seuil de résistance
-        res = re.search(re_event_sr, body)
-        self.sr = res.group(1) if res else None
-        # Jet de résistance
-        res = re.search(re_event_resi, body)
-        self.resi = res.group(1) if res else None
-        # Jet de dégâts
-        res = re.search(re_event_deg, body)
-        self.deg = res.group(1) if res else None
-        # Points de vie récupérés (Vampirisme)
-        res = re.search(re_event_soin_att, body)
-        self.soin = res.group(1) if res else None
-        # Points de vie perdus
-        res = re.search(re_event_pv, body)
-        self.pv = res.group(1) if res else self.deg # Pas d'armure
+            self.att_troll_nom = self.att_nom
+            self.att_troll_id = self.att_id
+        if hasattr(self, 'resist') and self.resist is not None:
+            self.type += u' résisté'
+        if self.capa_effet:
+            self.capa_effet = re.sub(r'(\n|\|$)', ' ', self.capa_effet)
+        self.build()
+ 
+    def build_capa(self):       
+        self.build_def()
     
-    def __populate_from_def_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_att = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ATT_RE)
-            re_event_esq = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_ESQ_RE)
-            re_event_deg = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_DEG_RE)
-            re_event_pv = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_vie = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_VIE_RE)
-            re_event_capa = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet_def = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-            re_event_sr = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = sg.config.get(sg.CONF_DEF_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        res = re.search(re_event_desc, subject)
-        self.type = res.group(2)
-        if res.group(3) == 'de': # Trick matching the det
-            self.att_troll_nom = res.group(4)
-            self.att_troll_id = res.group(9)
-        else:
-            self.att_mob_nom = res.group(4)
-            self.att_mob_age = res.group(6)
-            self.att_mob_tag = res.group(8)
-            self.att_mob_id = res.group(9)
-        # Jet d'attaque
-        res = re.search(re_event_att, body)
-        self.att = res.group(1) if res else None
-        # Jet d'esquive
-        res = re.search(re_event_esq, body)
-        self.esq = res.group(1) if res else None
-        # Seuil de résistance
-        res = re.search(re_event_sr, body)
-        self.sr = res.group(1) if res else None
-        # Jet de résistance
-        res = re.search(re_event_resi, body)
-        self.resi = res.group(1) if res else None
-        # Jet de dégâts
-        res = re.search(re_event_deg, body)
-        self.deg = res.group(1) if res else None
-        # Points de vie perdus
-        res = re.search(re_event_pv, body)
-        self.pv = res.group(1) if res else self.deg # Pas d'armure
-        # Points de vie restants
-        res = re.search(re_event_vie, body)
-        self.vie = res.group(1) if res else None
-        # Capa desc
-        res = re.search(re_event_capa, body)
-        self.capa_desc = res.group(1) if res else None
-        # Capa effet
-        res = re.search(re_event_capa_effet_def, body)
-        self.capa_effet = res.group(2) if res else None
-        # Capa tour
-        res = re.search(re_event_capa_tour, body)
-        self.capa_tour = res.group(1) if res else None
+    def build_att_sort(self):
+        self.build_att()
         
-    def __populate_from_capa_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_pv = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_PV_RE)
-            re_event_vie = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_VIE_RE)
-            re_event_capa = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_RE)
-            re_event_capa_effet_def = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-            re_event_sr = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi = sg.config.get(sg.CONF_CAPA_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc & Capa desc
-        res = re.search(re_event_capa, body, re.M)
-        self.att_mob_nom = res.group(2)
-        self.att_mob_age = res.group(3)
-        self.att_mob_tag = res.group(5)
-        self.att_mob_id = res.group(1)
-        self.capa_desc = res.group(6)
-        self.type = 'Pouvoir'
-        self.subtype = res.group(6)
-        # Seuil de résistance
-        res = re.search(re_event_sr, body, re.M)
-        self.sr = res.group(1) if res else None
-        # Jet de résistance
-        res = re.search(re_event_resi, body, re.M)
-        self.resi = res.group(1) if res else None
-        # Points de vie perdus
-        res = re.search(re_event_pv, body, re.M)
-        self.pv = res.group(1) if res else None # Souffle / Aura de feu
-        # Points de vie restants
-        res = re.search(re_event_vie, body, re.M)
-        self.vie = res.group(1) if res else None # Souffle / Aura de feu
-        # Capa effet
-        res = re.search(re_event_capa_effet_def, body, re.M)
-        self.capa_effet = res.group(2) if res else None
-        if res and res.group(1):
-            self.type += ' résisté'
-        # Capa tour
-        res = re.search(re_event_capa_tour, body, re.M)
-        self.capa_tour = res.group(1) if res else None
+    def build_def_sort(self):
+        self.build_def()
     
-    def __populate_from_att_hypno_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_sr = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Hypnotisme'
-        res = re.search(re_event_desc, body)
-        if res != None:
-            if res.group(2) == None: # Trick matching the det (No det = Troll ?)
-                self.def_troll_nom = res.group(3)
-                self.def_troll_id = res.group(8)
-            else:
-                self.def_mob_nom = res.group(3)
-                self.def_mob_age = res.group(5)
-                self.def_mob_tag = res.group(7)
-                self.def_mob_id = res.group(8)
-            # Capa effet
-            self.capa_effet = res.group(1)
-            # Seuil de résistance
-            res = re.search(re_event_sr, body)
-            self.sr = res.group(1) if res else None
-            # Jet de résistance
-            res = re.search(re_event_resi_att, body)
-            self.resi = res.group(1) if res else None
-            if int(self.resi) <= int(self.sr):
-                    self.type += ' réduit'
-        else:
-            sg.logger.error("Fail to parse the mail, regexp not maching")
-        
-    def __populate_from_def_hypno_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_subject = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DEF_HYPNO_RE)
-            re_event_resi_def = sg.config.get(sg.CONF_HYPNO_SECTION, sg.CONF_EVENT_RESI_DEF_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Hypnotisme'
-        res = re.search(re_event_subject, subject)
-        if res != None:
-            self.att_troll_nom = res.group(1)
-            self.att_troll_id = res.group(2)
-            res = re.search(re_event_resi_def, body)
-            if res != None and res.group(2) == None: # Résisté
-                self.type += ' résisté'
-        else:
-            sg.logger.error("Fail to parse the mail, rexegp not maching")
-
-    def __populate_from_att_vt_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_capa_effet_att = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
-            re_event_sr = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Vue Troublée'
-        res = re.search(re_event_capa_effet_att, body)
-        if res != None:
-            if res.group(3) == None: # Trick matching the det (No det = Troll ?)
-                self.def_troll_nom = res.group(4)
-                self.def_troll_id = res.group(9)
-            else:
-                self.def_mob_nom = res.group(4)
-                self.def_mob_age = res.group(6)
-                self.def_mob_tag = res.group(8)
-                self.def_mob_id = res.group(9)
-            # Capa effet
-            self.capa_effet = res.group(1) if res else None
-            # Capa tour
-            res = re.search(re_event_capa_tour, body)
-            self.capa_tour = res.group(1) if res else None
-            # Seuil de résistance
-            res = re.search(re_event_sr, body)
-            self.sr = res.group(1) if res else None
-            # Jet de résistance
-            res = re.search(re_event_resi_att, body)
-            self.resi = res.group(1) if res else None
-            if int(self.resi) <= int(self.sr):
-                    self.type += ' réduit'
-        else:
-            sg.logger.error("Fail to parse the mail, rexegp not maching")
-    
-    def __populate_from_att_explo_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_capa_effet_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
-            re_event_sr = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_mort_att = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_MORT_ATT_RE)
-            re_end_mail = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Explosion'
-        # Regexp search scope calibration
-        res = re.search(re_end_mail, body)
-        stop_match = res.end()
-        start_match = 0
-        end_match = stop_match
-        pEFFET = re.compile(re_event_capa_effet_att)
-        pSR = re.compile(re_event_sr)
-        pRESI = re.compile(re_event_resi_att)
-        pMORT = re.compile(re_event_mort_att)
-        # Loop over the explosion reports
-        objs = []
-        res = pEFFET.search(body, start_match, end_match)
-        start_match = res.end()
-        res_next = pEFFET.search(body, start_match, stop_match)
-        end_match = res_next.end() if res_next else end_match
-        while res != None and start_match < stop_match:
-            obj = copy.deepcopy(self)
-            if res.group(4) == None: # Trick matching the det (No det = Troll ?)
-                obj.def_troll_nom = res.group(5)
-                obj.def_troll_id = res.group(10)
-            else:
-                obj.def_mob_nom = res.group(5)
-                obj.def_mob_age = res.group(7)
-                obj.def_mob_tag = res.group(9)
-                obj.def_mob_id = res.group(10)
-            # Capa effet
-            obj.capa_effet = res.group(1) if res else None
-            obj.pv = res.group(3) if res else None
-            # Seuil de résistance
-            resSR = pSR.search(body, start_match, end_match)
-            obj.sr = resSR.group(1) if resSR else None
-            # Jet de résistance
-            resRESI = pRESI.search(body, start_match, end_match)
-            obj.resi = resRESI.group(1) if resRESI else None
-            if int(obj.resi) <= int(obj.sr):
-                obj.type += ' réduit'
-            # Mort
-            resMORT = pMORT.search(body, start_match, end_match)
-            if resMORT:
-                obj.type += ' mortel'
-            # Prepare next loop
-            objs.append(obj)
-            res = res_next
-            start_match = end_match
-            res_next = pEFFET.search(body, start_match, stop_match)
-            end_match = res_next.end() if res_next else stop_match
-        return objs
-
-    def __populate_from_att_fa_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_capa_effet_att = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_EFFET_ATT_RE)
-            re_event_sr = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_SR_RE)
-            re_event_resi_att = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_RESI_ATT_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-            re_end_mail = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_END_MAIL_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Flash Aveuglant'
-        # Regexp search scope calibration
-        res = re.search(re_end_mail, body)
-        stop_match = res.end()
-        start_match = 0
-        end_match = stop_match
-        pEFFET = re.compile(re_event_capa_effet_att)
-        pSR = re.compile(re_event_sr)
-        pRESI = re.compile(re_event_resi_att)
-        pTOUR = re.compile(re_event_capa_tour)
-        # Loop over the explosion reports
-        objs = []
-        res = pEFFET.search(body, start_match, end_match)
-        start_match = res.end() if res else None
-        if start_match is None:
-            return None # Flash with nobody on the case
-        res_next = pEFFET.search(body, start_match, stop_match)
-        end_match = res_next.end() if res_next else end_match
-        while res != None and start_match < stop_match:
-            obj = copy.deepcopy(self)
-            if res.group(5) is None: # Trick matching the det (No det = Troll ?)
-                obj.def_troll_nom = res.group(6)
-                obj.def_troll_id = res.group(11)
-            else:
-                obj.def_mob_nom = res.group(6)
-                obj.def_mob_age = res.group(8)
-                obj.def_mob_tag = res.group(10)
-                obj.def_mob_id = res.group(11)
-            # Capa effet
-            obj.capa_effet = res.group(1) if res else None
-            # Capa tour
-            resTOUR = pTOUR.search(body, start_match, end_match)
-            obj.capa_tour = resTOUR.group(1) if resTOUR else None
-            # Seuil de résistance
-            resSR = pSR.search(body, start_match, end_match)
-            obj.sr = resSR.group(1) if resSR else None
-            # Jet de résistance
-            resRESI = pRESI.search(body, start_match, end_match)
-            obj.resi = resRESI.group(1) if resRESI else None
-            if int(obj.resi) <= int(obj.sr):
-                obj.type += ' réduit'
-            # Prepare next loop
-            objs.append(obj)
-            res = res_next
-            start_match = end_match
-            res_next = pEFFET.search(body, start_match, stop_match)
-            end_match = res_next.end() if res_next else stop_match
-        return objs
-    
-    def __populate_from_def_vt_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_capa_effet_def = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_VT_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Vue Troublée'
-        res = re.search(re_event_desc, body)
-        if res != None:
-            self.att_troll_nom = res.group(1)
-            self.att_troll_id = res.group(2)
-            # Capa effet
-            res = re.search(re_event_capa_effet_def, body)
-            self.capa_effet = res.group(1) if res else None
-            # Capa tour
-            res = re.search(re_event_capa_tour, body)
-            self.capa_tour = res.group(1) if res else None
-        else:
-            sg.logger.error("Fail to parse the mail, rexegp not maching")
-
-    def __populate_from_def_fa_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_capa_effet_def = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-            re_event_capa_tour = sg.config.get(sg.CONF_FA_SECTION, sg.CONF_EVENT_CAPA_TOUR_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Flash Aveuglant'
-        res = re.search(re_event_desc, body)
-        if res != None:
-            self.att_troll_nom = res.group(1)
-            self.att_troll_id = res.group(2)
-            # Capa effet
-            res = re.search(re_event_capa_effet_def, body)
-            self.capa_effet = re.sub(r'\n', ' ', res.group(1)) if res else None
-            # Capa tour
-            res = re.search(re_event_capa_tour, body)
-            self.capa_tour = res.group(1) if res else None
-        else:
-            sg.logger.error("Fail to parse the mail, rexegp not maching")
-    
-    def __populate_from_def_explo_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_desc = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_DESC_RE)
-            re_event_capa_effet_def = sg.config.get(sg.CONF_EXPLO_SECTION, sg.CONF_EVENT_CAPA_EFFET_DEF_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Explosion'
-        res = re.search(re_event_desc, body)
-        if res != None:
-            self.att_troll_nom = res.group(1)
-            self.att_troll_id = res.group(2)
-            # Capa effet
-            res = re.search(re_event_capa_effet_def, body)
-            self.capa_effet = res.group(1) if res else None
-            self.pv = res.group(3) if res else None
-        else:
-            sg.logger.error("Fail to parse the mail, rexegp not maching")
-    
-    def __populate_from_att_sacro_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_soin_att = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_ATT_RE)
-            re_event_blessure = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_BLESSURE_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Sacrifice'
-        res = re.search(re_event_soin_att, body)
-        if res != None:
-            # Cible
-            self.def_troll_nom = res.group(1)
-            self.def_troll_id = res.group(2)
-            # Soin
-            self.soin = res.group(3)
-        else:
-            sg.logger.error("Fail to parse the mail, regexp not maching")
-        res = re.search(re_event_blessure, body)
-        if res != None:
-            self.blessure = res.group(1)
-        else:
-            sg.logger.error("Fail to parse the mail, regexp not maching")
-
-    def __populate_from_def_sacro_mail(self, subject, body):       
-        # Load config
-        try:
-            re_event_soin_def = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_SOIN_DEF_RE)
-            re_event_desc = sg.config.get(sg.CONF_SACRO_SECTION, sg.CONF_EVENT_DESC_RE)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
-            raise
-        # Event desc
-        self.type = 'Sortilège'
-        self.subtype = 'Sacrifice'
-        res = re.search(re_event_desc, body)
-        if res != None:
-            # Cible
-            self.att_troll_nom = res.group(2)
-            self.att_troll_id = res.group(3)
-        else:
-            sg.logger.error("Fail to parse the mail, regexp not maching")
-        res = re.search(re_event_soin_def, body)
-        if res != None:
-            self.soin = res.group(1)
-        else:
-            sg.logger.error("Fail to parse the mail, regexp not maching")
-
-    def stringify(self):
-        self.s_flag_type = self.flag_type
-        # Attaquant
-        if self.att_troll:
-            self.s_att_nom = self.att_troll.nom + ' (' + str(self.att_troll.id) + ')'
-            if self.att_troll.user:
-                self.s_att_nom = self.att_troll.user.pseudo
-        else:
-            self.s_att_nom = self.att_mob.nom + ' [' + self.att_mob.age + '] (' + str(self.att_mob.id) + ')'
-        # Défenseur
-        if self.def_troll:
-            self.s_def_nom = self.def_troll.nom + ' (' + str(self.def_troll.id) + ')'
-            if self.def_troll.user:
-                self.s_def_nom = self.def_troll.user.pseudo
-        else:
-            self.s_def_nom = self.def_mob.nom + ' [' + self.def_mob.age + '] (' + str(self.def_mob.id) + ')'
-        # Capa
-        self.s_capa = ''
-        self.s_capa += self.capa_desc + ' ;' if self.capa_desc != None else ''
-        self.s_capa += ' ' + self.capa_effet if self.capa_effet != None else ''
-        self.s_capa += ' ' + str(self.capa_tour) + 'T' if self.capa_tour != None else ''
-        self.s_capa = '(' + self.s_capa.lstrip() + ')' if (self.s_capa != '' and (self.pv != None or u"esquivée" in self.type or u"CAPA" in self.flag_type)) else self.s_capa.lstrip()
-        self.s_capa = ' ' + self.s_capa if self.s_capa != '' else ''
-        # Stats
-        self.s_pv = '-' + (str(self.pv) if self.pv != None else '0')
-        self.s_pv += ' (' + str(self.vie) + ' PV)' if self.vie != None else ''
-        self.s_def_stats = ''
-        self.s_def_stats += ' esq ' + str(self.esq) if self.esq else ''
-        self.s_def_stats += ' sr ' + str(self.sr) if self.sr else ''
-        self.s_def_stats = self.s_def_stats.lstrip()
-        self.s_att_stats = ''
-        self.s_att_stats += ' att ' + str(self.att) if self.att else ''
-        self.s_att_stats += ' resi ' + str(self.resi) if self.resi else ''
-        self.s_att_stats += ' deg ' + str(self.deg) if self.deg else ''
-        self.s_att_stats += ' soin ' + str(self.soin) if self.soin else ''
-        self.s_att_stats = self.s_att_stats.lstrip()
-        # Type desc
-        self.s_type_short = ''
-        self.s_type = ''
-        if 'ATT' in self.flag_type or 'DEF' in self.flag_type:
-            if "mortel" in self.type:
-                self.s_flag_type += ' (MORT)'
-            self.s_type = self.type if self.type else ''
-            self.s_type += ' ' + self.subtype if self.subtype else ''
-            if 'HYPNO' in self.flag_type:
-                if self.type == u"Sortilège": # pas réduit/résisté
-                    self.s_hypno_flag = '(FULL)'
+    def stringify(self, reprs, short, attrs):
+        # Build the string representations provided
+        for (key, value) in reprs:
+            if key.startswith('s_'):
+                setattr(self, key, value)
+            elif hasattr(self, key):
+                if getattr(self, key) is not None and getattr(self, key):
+                    setattr(self, 's_' + key, value.format(getattr(self, key)))
                 else:
-                    self.s_hypno_flag = '(REDUIT)'
-
+                    setattr(self, 's_' + key, '')
+            else:
+                setattr(self, 's_' + key, None)
+        # Add the time
+        self.s_time = '@' + sg.format_time(self.time)
+        # Add the att an def troll/mob names
+        if self.att_troll:
+            self.s_att_nom = self.att_troll.stringify_name()
+        elif self.att_mob:
+            self.s_att_nom = self.att_mob.stringify_name()
+        else:
+            self.s_att_nom = 'MountyHall'
+        if self.def_troll:
+            self.s_def_nom = self.def_troll.stringify_name()
+        elif self.def_mob:
+            self.s_def_nom = self.def_mob.stringify_name()
+        else:
+            self.s_def_nom = 'une case vide'
+        # Add the capa
+        self.s_capa = self.s_capa_effet
+        if self.s_capa_tour:
+            self.s_capa = '%s %s' % (self.s_capa, self.s_capa_tour)
+        if self.s_capa_desc:
+            self.s_capa = '%s %s %s' % (self.s_capa_desc, self.s_delimiter, self.s_capa)
+        # Enclose some things
+        if self.soin and self.blessure is None and self.pv is not None: # Not sacrifice 
+            self.s_soin = '%s%s%s' % (self.s_before, self.s_soin, self.s_after)
+        if self.capa_effet and self.pv is not None: # Pouvoir
+            self.s_capa = '%s%s%s' % (self.s_before, self.s_capa, self.s_after)
+        # Return the final formated representation
+        if short: 
+            res = self.s_short
+        else:
+            res = self.s_long
+        res = res.format(o=self)
+        res = re.sub(r'\s*:\s*$', '', res)
+        res = re.sub(r' +', ' ', res)
+        res = re.sub(r'\(\s', '(', res)
+        res = re.sub(r'\s\)', ')', res)
+        return res
+        
