@@ -156,7 +156,7 @@ class CDM(sg.SqlAlchemyBase):
                 s = value.format(s) if s is not None else ''
             setattr(self, 's_' + key, s)
         # Add the time
-        self.s_time = '@' + sg.format_time(self.time)
+        self.s_time = sg.format_time(self.time, self.s_time)
         # Add the att an def troll/mob names
         self.s_troll_nom = self.troll.stringify_name()
         self.s_mob_nom = self.mob.stringify_name()

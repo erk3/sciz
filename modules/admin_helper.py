@@ -69,20 +69,35 @@ class AdminHelper:
             sg.group.flat_name = flat_name
             sg.group.generate_random_mail(self.domain_name)
             sg.group = sg.db.add(sg.group)
-            # Populate default conf for the group
-            for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT]:
-                if sg.config.has_section(section):
-                    for (each_key, each_value) in sg.config.items(section):
-                        conf = CONF()
-                        conf.section = section
-                        conf.key = each_key
-                        conf.value = each_value
-                        conf.group_id = sg.group.id
-                        sg.db.add(conf)
             # Add an entry to the postfix accounts conf file
             sg.createDirName(self.pf_conf_file);
             with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:
                 fp.write("%s|%s\n" % (sg.group.mail, sg.group.mail_pwd, ))
+        self.__push_group_conf(sg.group, False)
+
+    def reset_groups_conf(self):
+        sg.logger.info('Reseting conf for all groups...',)
+        groups = sg.db.session.query(GROUP).all()
+        for group in groups:
+            self.__push_group_conf(group, True)
+
+    # Routine for pushing conf to a group
+    def __push_group_conf(self, group, force=False):
+        for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT]:
+            if sg.config.has_section(section):
+                for (each_key, each_value) in sg.config.items(section):
+                    conf = CONF()
+                    to_add = False
+                    try:
+                        conf = sg.db.session.query(CONF).filter(CONF.group_id == group.id, CONF.section == section, conf.key == each_key).one()
+                    except NoResultFound as e:
+                        to_add = True
+                    if to_add or force:
+                        conf.section = section
+                        conf.key = each_key
+                        conf.value = each_value
+                        conf.group_id = group.id
+                        sg.db.add(conf)
 
     # Create or update users from JSON file, then if a group is set also do the binding and create the troll
     def add_json_users(self, json_file):

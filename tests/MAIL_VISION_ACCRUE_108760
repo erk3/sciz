@@ -1,0 +1,107 @@
+Return-Path: <censored+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com>
+Delivered-To: desobjetsquibougent@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id ywjfMaZfJFqkHgAAEkUYHA
+	for <desobjetsquibougent@sciz.cerv.ovh>; Sun, 03 Dec 2017 20:33:42 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id BD35A3AD5
+	for <desobjetsquibougent@sciz.cerv.ovh>; Sun,  3 Dec 2017 20:33:42 +0000 (UTC)
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.180; helo=mail-wr0-f180.google.com; envelope-from=censored+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com; receiver=desobjetsquibougent@sciz.cerv.ovh 
+Received: from mail-wr0-f180.google.com (mail-wr0-f180.google.com [209.85.128.180])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id 7DF5D3AD3
+	for <desobjetsquibougent@sciz.cerv.ovh>; Sun,  3 Dec 2017 20:33:42 +0000 (UTC)
+Received: by mail-wr0-f180.google.com with SMTP id o2so15114298wro.5
+        for <desobjetsquibougent@sciz.cerv.ovh>; Sun, 03 Dec 2017 12:33:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-original-authentication-results:x-gm-message-state:delivered-to
+         :to:subject:date:from:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ZMUqkrpVBNzyLyMPkt2GAE+Jp77bx+uCapiKCZuloh0=;
+        b=KOg2hcYWCtvSWuAl4FbTk4iygdukoUGrp/RTqATmpq97DbC1qQYvmnn5tcYgayBtEl
+         CJAZCL8CpPifliJy4I0Kv9swr115xZBNQMcdIuDkoddMybxcXZSTnm4Nt3lJBpsk0dm/
+         ZQN/+XHkskyYO7UUIl2orGjkeSCkVIVIg9BpCG4egea9kTp9imuMMCjhxdcGgBp7rV/W
+         qjfypuyIWPzQzQyH/ltIpiqqS/PKiQkijiQqqrmT2Nwd2nBBIRfSujL8c5E63byIuHL+
+         sFmisdUmZoZBQCW80BNSG/q/NeybrGM+TDUOWU9gUg/ASMP7nqnhxyHRXIdPwZ5DgpRm
+         4tFA==
+X-Original-Authentication-Results: mx.google.com;       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+X-Gm-Message-State: AJaThX7teCbNOU84hdU6vpkDyMMU7j0cYDKz0SDlqAq1mwTUVPwndWjM
+	o2nu3PR+z7VemzQk2FlDyioLS6TQGENVk3Z15l0VpGabDLvFsiU=
+X-Received: by 10.223.162.137 with SMTP id s9mr11803116wra.272.1512333221913;
+        Sun, 03 Dec 2017 12:33:41 -0800 (PST)
+X-Forwarded-To: desobjetsquibougent@sciz.cerv.ovh
+X-Forwarded-For: censored@gmail.com desobjetsquibougent@sciz.cerv.ovh
+Delivered-To: censored@gmail.com
+Received: by 10.28.196.143 with SMTP id u137csp3560563wmf;
+        Sun, 3 Dec 2017 12:33:40 -0800 (PST)
+X-Google-Smtp-Source: AGs4zMbwwgw5dEIgcv5pgqkw/kxIDgkSrQK4k0NIRLOPh30+W8PRiJVIIGhZSXWz8WhaIQ3lEOmL
+X-Received: by 10.80.173.170 with SMTP id a39mr27284781edd.49.1512333220532;
+        Sun, 03 Dec 2017 12:33:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1512333220; cv=none;
+        d=google.com; s=arc-20160816;
+        b=u1ekz1XaXh4uC4BBhlgrdq8EDUuRrKt/xo0WmAX0dSvbFjTBeOY3elBUOUiNvRUT7E
+         xDEgEuJtjeBSIo0tzzLLDzooo+/o/cNT4BOCRrDvm7XFCxuXDFEcpMRlsBd/82AZWuG4
+         rh4RT7xCtgG+mjH20GlqynWQsh+lQibBmngCTb9pE3ENfBKCfHetj4Yp/20MhClbg/aW
+         RRs43S2uKGJMpRBXXpmkEwTFBnXGHHii3sMZHvAWzBh4wfSFoFwANROAm4K3oCZR6GC+
+         rMArdZK7/Hy+cRZD8kd5Z2B8Trx08KvmhZu+T8ZoE/cea5ltx2XDqeHXhIGvV7XBxKLo
+         fPeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:message-id:from:date:subject
+         :to:arc-authentication-results;
+        bh=ZMUqkrpVBNzyLyMPkt2GAE+Jp77bx+uCapiKCZuloh0=;
+        b=emxyhCbx96YiMuv9a7LPlJgpozC2verXaP4RsMXlMShV/C5uyOWsSGlyNVkFqG7jdD
+         o2qnThBWKLQIyBwu1o2CJItJoA1k9MBXsy0vE40dOvzVnutWSmDbSJHZny2genUQ2sX8
+         TPhniAFnVkMXlaPZbexwg+e1T+PDefTfumasK7Ftn2kYtDfiWmGMT3jt4giEsN+J2aCk
+         fsATR5utUstvOZRL7jVZHUx/+Yrej7ZDicHqbKPtGOv9zMOR5Lq92IkR13OkFQpT/04I
+         PktuJIvYxM5iS7adQTfzE6RPMctXTvTFP21RyN6nTkQuY7uutXKtE1rJyvEQATtVV+1H
+         E/NQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+Received: from games.mountyhall.com ([46.16.240.194])
+        by mx.google.com with ESMTP id a60si3073202ede.391.2017.12.03.12.33.40
+        for <censored@gmail.com>;
+        Sun, 03 Dec 2017 12:33:40 -0800 (PST)
+Received-SPF: neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) client-ip=46.16.240.194;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
+Received: by games.mountyhall.com (Postfix, from userid 33)
+	id 475A47B6089; Sun,  3 Dec 2017 21:33:40 +0100 (CET)
+To: censored@gmail.com
+Subject: =?iso-8859-1?Q?[MountyHall]_Sortil=E8ge_:_Vision_Accrue?=
+X-PHP-Originating-Script: 0:class.phpmailer.php
+Date: Sun, 3 Dec 2017 21:33:40 +0100
+From: MountyHall-Bot <bot@mountyhall.com>
+Message-ID: <3881a068a0f60c1ae0e859980c4a0561@games.mountyhall.com>
+X-Priority: 3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="iso-8859-1"
+
+================================
+MOUNTYHALL - La Terre des Trõlls
+================================
+
+Trõll n°108760 : Une Marmite de Bouillon Sournoise [Possédée]
+
+Vous avez été impliqué dans un événement : SORTILEGE.
+Il était alors aux alentours de : 03/12/2017 21:33:40.
+***********************************************************
+
+Vous avez lancé le Sortilège Vision Accrue
+Le sortilège a eu l'effet théorique suivant (hors décumul) : Vue : +16
+
+
+Pour une durée de 2 tour(s).
+
+
+***********************************************************
+Vous avez configuré votre compte pour recevoir un Email
+ lorsque votre Trõll est impliqué dans un événement.
+Si vous ne désirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Trõll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+

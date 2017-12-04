@@ -90,14 +90,16 @@ class SCIZ:
     # Admin helper
     def admin(self, cmd, arg=None):
         self.adminHelper = AdminHelper()
-        if cmd is 'init':
+        if cmd == 'init':
             self.adminHelper.init()
-        elif cmd is 'users':
+        elif cmd == 'users':
             self.adminHelper.add_json_users(arg)
-        elif cmd is 'auto':
+        elif cmd == 'auto':
             self.adminHelper.auto_tasks()
-        elif cmd is 'group':
+        elif cmd == 'group':
             self.adminHelper.set_group(arg)
+        elif cmd == 'reset-confs':
+            self.adminHelper.reset_groups_conf()
     
     # Destructor
     def __del__(self):
@@ -148,6 +150,10 @@ if __name__ == '__main__':
             action='store_true',
             help='instruct SCIZ to setup the things')
     
+    parser.add_argument('-z', '--reset-confs',
+            action='store_true',
+            help='instruct SCIZ to reset the confs for all groups')
+    
     parser.add_argument('-g', '--group',
             metavar='GROUP_NAME', type=str,
             help='set the working group')
@@ -175,6 +181,8 @@ if __name__ == '__main__':
         if args.init:
             sg.logger.info('Initializing DB...')
             sciz.admin('init', args.init)
+        elif args.reset_confs:
+            sciz.admin('reset-confs', args.reset_confs)
         elif args.auto:
             sg.logger.info('Starting recurrent tasks...')
             sciz.admin('auto')

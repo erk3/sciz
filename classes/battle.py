@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import re, datetime, ConfigParser, copy
+import re, datetime, ConfigParser, copy, os
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -61,6 +61,8 @@ class BATTLE(sg.SqlAlchemyBase):
     capa_tour = Column(Integer)
     # Evènement résisté ?
     resist = Column(Boolean)
+    # Critique ?
+    crit = Column(Boolean)
     # Cible décédée ?
     dead = Column(Boolean)
 
@@ -88,6 +90,8 @@ class BATTLE(sg.SqlAlchemyBase):
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
         if hasattr(self, 'resist') :
             self.resist = self.resist is not None
+        if hasattr(self, 'att') and self.att is not None and hasattr(self, 'esq') and self.esq is not None:
+            self.crit = int(self.att) > int(self.esq) * 2
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
         self.dead |= "mort" in self.type
@@ -97,14 +101,16 @@ class BATTLE(sg.SqlAlchemyBase):
         self.att_troll_id = self.troll_id
         self.att_troll_nom = self.troll_nom
         # ATT
-        if hasattr(self, 'det') and self.det is not None: # Trick matching the det (only mobs have it)
-            self.def_mob_nom = self.def_nom
-            self.def_mob_age = self.age
-            self.def_mob_tag = self.tag
-            self.def_mob_id = self.def_id
-        elif hasattr(self, 'def_nom'): # Flash on an empty case for example
-            self.def_troll_nom = self.def_nom
-            self.def_troll_id = self.def_id
+        if hasattr(self, 'def_id') and self.def_id is not None:
+            if len(self.def_id) >= 7: # Mob
+                res = re.search('(?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?', self.def_name)
+                self.def_mob_nom = res.groupdict()['mob_name']
+                self.def_mob_age = res.groupdict()['mob_age']
+                self.def_mob_tag = res.groupdict()['mob_tag']
+                self.def_mob_id = self.def_id
+            else:
+                self.def_troll_nom = self.def_name
+                self.def_troll_id = self.def_id
         if hasattr(self, 'resist') and self.resist is not None:
             self.type += u' réduit'
         self.build()
@@ -114,18 +120,20 @@ class BATTLE(sg.SqlAlchemyBase):
         self.def_troll_id = self.troll_id
         self.def_troll_nom = self.troll_nom
         # DEF
-        if hasattr(self, 'det') and self.det is not None: # Trick matching the det (only mobs have it)
-            self.att_mob_nom = self.att_nom
-            self.att_mob_age = self.age
-            self.att_mob_tag = self.tag
-            self.att_mob_id = self.att_id
-        else:
-            self.att_troll_nom = self.att_nom
-            self.att_troll_id = self.att_id
+        if hasattr(self, 'att_id') and self.att_id is not None:
+            if len(self.att_id) >= 7: # Mob
+                res = re.search('(?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?', self.att_name)
+                self.att_mob_nom = res.groupdict()['mob_name']
+                self.att_mob_age = res.groupdict()['mob_age']
+                self.att_mob_tag = res.groupdict()['mob_tag']
+                self.att_mob_id = self.att_id
+            else:
+                self.att_troll_nom = self.att_name
+                self.att_troll_id = self.att_id
         if hasattr(self, 'resist') and self.resist is not None:
             self.type += u' résisté'
         if self.capa_effet:
-            self.capa_effet = re.sub(r'(\n|\|$)', ' ', self.capa_effet)
+            self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
         self.build()
  
     def build_capa(self):       
@@ -137,6 +145,9 @@ class BATTLE(sg.SqlAlchemyBase):
     def build_def_sort(self):
         self.build_def()
     
+    def build_def_piege(self):
+        self.build_def()
+    
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
         for (key, value) in reprs:
@@ -144,26 +155,30 @@ class BATTLE(sg.SqlAlchemyBase):
                 setattr(self, key, value)
             elif hasattr(self, key):
                 if getattr(self, key) is not None and getattr(self, key):
-                    setattr(self, 's_' + key, value.format(getattr(self, key)))
+                    setattr(self, 's_' + key, re.sub(r'\n', ' ', value.format(getattr(self, key))))
                 else:
                     setattr(self, 's_' + key, '')
             else:
                 setattr(self, 's_' + key, None)
         # Add the time
-        self.s_time = '@' + sg.format_time(self.time)
+        self.s_time = sg.format_time(self.time, self.s_time)
         # Add the att an def troll/mob names
+        self.s_det_att = 'de'
+        self.s_det_def = 'sur'
         if self.att_troll:
             self.s_att_nom = self.att_troll.stringify_name()
         elif self.att_mob:
             self.s_att_nom = self.att_mob.stringify_name()
         else:
-            self.s_att_nom = 'MountyHall'
+            self.s_det_att = ''
+            self.s_att_nom = ''
         if self.def_troll:
             self.s_def_nom = self.def_troll.stringify_name()
         elif self.def_mob:
             self.s_def_nom = self.def_mob.stringify_name()
         else:
-            self.s_def_nom = 'une case vide'
+            self.s_det_def = ''
+            self.s_def_nom = ''
         # Add the capa
         self.s_capa = self.s_capa_effet
         if self.s_capa_tour:
@@ -181,9 +196,10 @@ class BATTLE(sg.SqlAlchemyBase):
         else:
             res = self.s_long
         res = res.format(o=self)
-        res = re.sub(r'\s*:\s*$', '', res)
+        res = re.sub(r'\s*:(\s*|\n|\\n)*$', '', res)
         res = re.sub(r' +', ' ', res)
-        res = re.sub(r'\(\s', '(', res)
-        res = re.sub(r'\s\)', ')', res)
+        res = re.sub(r'(\(\s*)+', '(', res)
+        res = re.sub(r'(\s*\))+', ')', res)
+        res = re.sub(r'\)\(', '', res)
         return res
         

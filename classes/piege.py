@@ -59,7 +59,7 @@ class PIEGE(sg.SqlAlchemyBase):
             else:
                 setattr(self, 's_' + key, None)
         # Add the time
-        self.s_time = '@' + sg.format_time(self.time)
+        self.s_time = sg.format_time(self.time, self.s_time)
         # Add the troll name
         self.s_nom_full = self.troll.stringify_name()
         # Return the final formated representation

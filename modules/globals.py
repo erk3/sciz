@@ -32,8 +32,9 @@ def parseFrenchBoolean(boolean):
             return False
     return boolean
 
-def format_time(val):
-    return str(val.hour).zfill(2) + ':' + str(val.minute).zfill(2) + ':' + str(val.second).zfill(2) if val else None
+def format_time(val, form=None):
+    form = form if form else '@%H:%M:%S'
+    return val.strftime(form) 
 
 def copy_properties(src, dst, names, with_none):
     for n in names:
