@@ -41,6 +41,9 @@ EventTemplate.modelOptions = {
         if (events[e].cdm && events[e].cdm.troll) {
           events[e].cdm.troll = TrollTemplate.changeBlasonURL(events[e].cdm.troll);
         }
+        if (events[e].piege && events[e].piege.troll) {
+          events[e].piege.troll = TrollTemplate.changeBlasonURL(events[e].piege.troll);
+        }
         if (events[e].battle && events[e].battle.att_troll) {
           events[e].battle.att_troll = TrollTemplate.changeBlasonURL(events[e].battle.att_troll);
         }

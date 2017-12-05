@@ -10,6 +10,7 @@ function eventsCtrl($http, $window, authService) {
   vm.offset = 0;
   vm.busy = false;
   vm.noMoreEvent = false;
+  vm.blasonError = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
 
   vm.user = authService.refreshLocalData();
 
@@ -65,10 +66,9 @@ function eventsCtrl($http, $window, authService) {
    * BATTLE logic
    */
   vm.switchBATTLE = function () {
-    vm.cur.isDead = (vm.cur.battle.type.indexOf('mortel') !== -1);
+    vm.cur.attBlason = (vm.cur.sub.att_troll_id) ? vm.cur.sub.att_troll.blason_url : ((vm.cur.sub.att_mob_id) ? vm.cur.sub.att_mob.metamob.blason_url : vm.blasonError);
+    vm.cur.defBlason = (vm.cur.sub.def_troll_id) ? vm.cur.sub.def_troll.blason_url : ((vm.cur.sub.def_mob_id) ? vm.cur.sub.def_mob.metamob.blason_url : vm.blasonError);
     vm.cur.isTouched = (vm.cur.battle.att > vm.cur.battle.esq);
-    vm.cur.isCrit = (vm.cur.battle.att >= vm.cur.battle.esq * 2);
-    vm.cur.isFull = (vm.cur.battle.resi >= vm.cur.battle.sr);
   };
 
   /*

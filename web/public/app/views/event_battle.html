@@ -15,16 +15,18 @@
 	<!-- Attacker VS Defender-->
 	<div class="row">
     <div class="col-md-4">
-      <img ng-src="{{ec.cur.sub.att_troll_id && ec.cur.sub.att_troll.blason_url || ec.cur.sub.att_mob.metamob.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
+      <img ng-src="{{ec.cur.attBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src=ec.blasonError;">
     </div>
     <div class="col-md-4 text-center">
-      <h1>VS<br/><small ng-if="ec.cur.sub.pv">-{{ec.cur.sub.pv}}</small></h1>
-      <p ng-if="ec.cur.sub.vie">({{ec.cur.sub.vie}} PV)</p>
+      <div ng-if="ec.cur.sub.def_troll_id || ec.cur.sub.def_mob_id">
+        <h1>VS<br/><small ng-if="ec.cur.sub.pv">-{{ec.cur.sub.pv}}</small></h1>
+        <p ng-if="ec.cur.sub.vie">({{ec.cur.sub.vie}} PV)</p>
+      </div>
     </div>
     <div class="col-md-4">
-      <div ng-class="{'container-overlay':ec.cur.isDead}">
-      <img ng-src="{{ec.cur.sub.def_troll_id && ec.cur.sub.def_troll.blason_url || ec.cur.sub.def_mob.metamob.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';">
-        <div ng-if="ec.cur.isDead" class="overlay">
+      <div ng-class="{'container-overlay':ec.cur.sub.dead}">
+      <img ng-if="ec.cur.sub.def_troll_id || ec.cur.sub.def_mob_id" ng-src="{{ec.cur.defBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src=ec.blasonError;">
+        <div ng-if="ec.cur.sub.dead" class="overlay">
           <img src="images/dead_stamp.png" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="">
         </div>
       </div>
@@ -36,7 +38,7 @@
 			<blockquote ng-if="ec.cur.sub.att_troll_id">
         <p>{{ec.cur.sub.att_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.att_troll.id}}">{{ec.cur.sub.att_troll.id}}</a>)</p>
 			</blockquote>
-			<blockquote ng-if="!ec.cur.sub.att_troll_id">
+			<blockquote ng-if="ec.cur.sub.att_mob_id">
         <p>{{ec.cur.sub.att_mob.nom}} [{{ec.cur.sub.att_mob.age}}] <span ng-if="ec.cur.sub.att_mob.tag">{{ec.cur.sub.att_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.att_mob.id}}">{{ec.cur.sub.att_mob.id}}</a>)</p>
 			</blockquote>
 		</div>
@@ -44,7 +46,7 @@
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_troll_id">
 			  <p>{{ec.cur.sub.def_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.def_troll.id}}">{{ec.cur.sub.def_troll.id}}</a>)</p>
 			</blockquote>
-			<blockquote class="blockquote-reverse" ng-if="!ec.cur.sub.def_troll_id">
+			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_mob_id">
         <p>{{ec.cur.sub.def_mob.nom}} [{{ec.cur.sub.def_mob.age}}] <span ng-if="ec.cur.sub.def_mob.tag">{{ec.cur.sub.def_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.def_mob.id}}">{{ec.cur.sub.def_mob.id}}</a>)</p>
 			</blockquote>
 		</div>
@@ -58,8 +60,8 @@
         <tr ng-if="(ec.cur.sub.att !== null) && (ec.cur.sub.def !== null)">
           <td class="inverse">Jet d'attaque</td>
           <td>{{ec.cur.sub.att}}</td>
-          <td ng-if="ec.cur.isTouched && ec.cur.isCrit"><b>Critique</b></td>
-          <td ng-if="ec.cur.isTouched && !ec.cur.isCrit">Touché</td>
+          <td ng-if="ec.cur.isTouched && ec.cur.sub.crit"><b>Critique</b></td>
+          <td ng-if="ec.cur.isTouched && !ec.cur.sub.crit">Touché</td>
           <td ng-if="!ec.cur.isTouched"><b>Esquivé</b></td>
           <td>{{ec.cur.sub.esq}}</td>
           <td class="inverse">Jet d'esquive</td>
@@ -74,8 +76,8 @@
         <tr ng-if="(ec.cur.sub.resi !== null) && (ec.cur.sub.sr !== null)">
           <td class="inverse" >Jet de résistance</td>
           <td >{{ec.cur.sub.resi}}</td>
-          <td ng-if="ec.cur.isFull"><b>Full</b></td>
-          <td ng-if="!ec.cur.isFull"><b>Réduit</b></td>
+          <td ng-if="!ec.cur.sub.resist"><b>Full</b></td>
+          <td ng-if="ec.cur.sub.resist"><b>Réduit</b></td>
           <td >{{ec.cur.sub.sr}}</td>
           <td class="inverse">Seuil de résistance</td>
         </tr>

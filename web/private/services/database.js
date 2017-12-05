@@ -141,6 +141,13 @@ DB.CDM.addScope('defaultScope', {
   ]},
   {override: true}
 );
+// PIEGE
+DB.Piege.addScope('defaultScope', {
+  include: [
+    {model: DB.Troll, where: sequelize.where(sequelize.col('piege.group_id'), sequelize.col('piege->troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
 // User
 DB.User.addScope('defaultScope', {include: [{model: DB.Troll}, {model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
 // Events
