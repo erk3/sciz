@@ -205,7 +205,7 @@ function requestSCIZ(ct, p, arg1, arg2, arg3){
 				json: {'arg1': arg1, 'arg2': arg2, 'arg3': arg3}
 			};
 			request(options, function(error, response, body){
-				if (!error) {
+				if (body && !error) {
 					if (response.statusCode === 200) {
 						ws.botMessage(p.bot, ct.shoe.room.id, body.message);
 					}
