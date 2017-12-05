@@ -68,7 +68,7 @@ exports.init = function(miaou){
 			+ " les joueurs peuvent faire agir leur Troll en dépensant jusqu'à 6 Points d'Actions.*\n"
 			+ "Donner ce tag à une salle Miaou apporte de nombreuses fonctions liées au jeu MountyHall."
 	});
-	db.upgrade(exports.name, path.resolve(__dirname, 'sql'))
+	return db.upgrade(exports.name, path.resolve(__dirname, 'sql'))
 		.then(function(){
 			return db.on(providers)
 				.each(initProvider)
