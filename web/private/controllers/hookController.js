@@ -18,9 +18,10 @@ HookController.getNotifs = function (req, res) {
       {group_id: hook.group_id}
     ]},
     attributes: ['id', 'notif'],
-    order: [['time', 'DESC']]
+    order: [['time', 'ASC']]
   })
     .then(function (result) {
+      console.log(result.rows);
       res.json(result.rows);
       if (result.count > 0) {
         DB.Hook.update({last_event_id: Math.max.apply(Math, result.rows.map(function(o){return o.id;}))}, {where: {id: hook.id}});
