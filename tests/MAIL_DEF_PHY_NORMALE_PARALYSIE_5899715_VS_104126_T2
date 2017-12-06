@@ -1,0 +1,195 @@
+Return-Path: <paul.similowski@gmail.com>
+Delivered-To: desobjetsquibougent@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id BcCNNlDlJ1oqJAAAEkUYHA
+	for <desobjetsquibougent@sciz.cerv.ovh>; Wed, 06 Dec 2017 12:41:06 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id 667C13875
+	for <desobjetsquibougent@sciz.cerv.ovh>; Wed,  6 Dec 2017 12:41:06 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.171; helo=mail-wr0-f171.google.com; envelope-from=paul.similowski@gmail.com; receiver=desobjetsquibougent@sciz.cerv.ovh 
+Received: from mail-wr0-f171.google.com (mail-wr0-f171.google.com [209.85.128.171])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id 1463D3C39
+	for <desobjetsquibougent@sciz.cerv.ovh>; Wed,  6 Dec 2017 12:41:05 +0000 (UTC)
+Received: by mail-wr0-f171.google.com with SMTP id s66so3748775wrc.9
+        for <desobjetsquibougent@sciz.cerv.ovh>; Wed, 06 Dec 2017 04:41:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=G5ygzPst8flAJ1nBIy10blEFJT4aLmKW6r/91axn0jg=;
+        b=s+LRwkcojH0s/fwlm5V9ScJ00n25u9a/18O+ImNuDiK7F90Mifr/wH4thB8Hbl6mn5
+         4RyTpiKROb71cJOQ2P7jRuxQkUKrYdTXtVUro9b2vDWRGohkHbk6/glYq31UptJ9oHTK
+         FP52JUu/GSGcXRCJka3f/1+XeWBNRqlENy2VXHtvH5fd59x1F4g+/yRmtLKceipmwr33
+         USX7OqnXsBkXzc+ivzdv31mA9Nw2aa7WS++zUC1DJmv0PvRM9AumX9iVdsd0/Lj6IrI+
+         KJOlJvAHn4b5u50OQ47b9doAl+hyEGCbFDO1smdqEy+o+fpRdLpf/aMxFWg2VYUd2kik
+         +L1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=G5ygzPst8flAJ1nBIy10blEFJT4aLmKW6r/91axn0jg=;
+        b=D0ka3RtxUNVOMfim5sX/xb2NKB10qwI5RHfyGYbWSWP9YtJvpGOhA2oC0H+Bzsps99
+         sQKU+GjZFbpuNZl6svZZd9KC/ehQQUD5vcqUionbX432mEwQZ1oPbkHlsVdTPl4g+XSK
+         CEpBlBV1UdFiM63Iq3kTfypntcBmEzENs6ShyPt7U6XxWilRi5BNwPXDbki8HLWQF7Qu
+         u+d5ssq6MEtUxtSvRYXTXp8WBS2/JqwB9ozXPKr8JyodoICaZIXhWZ/A0bdQUK0iAnrK
+         7Bv3opM3kIyCDohlzvlBZ4U8Smk4fnfp3MyZA3VPYutrVjvnpYZ8x/XJPwSKRNmIowNN
+         kLeA==
+X-Gm-Message-State: AJaThX63Uaz+tdjU0aNVFPr7C5W+znS8Vac6QD6KIpHnZ0sGHJV3SyqY
+	HcjPiWsYKgfI45sfdx0J6RNw3YVZzcO4WEFYz8ETTg==
+X-Google-Smtp-Source: AGs4zMY+wjCZcoecDS+bvcHnDkxZcw4qpssSq+FhUOcw09y/tx3dLSVZ/+tGQ0OgxtSeGnnyWGbx4IlfNWGdubUAXu4=
+X-Received: by 10.223.188.81 with SMTP id a17mr20846683wrh.146.1512564065586;
+ Wed, 06 Dec 2017 04:41:05 -0800 (PST)
+MIME-Version: 1.0
+References: <0d1189914772e8fbeb6b595076531e51@localhost.localdomain>
+In-Reply-To: <0d1189914772e8fbeb6b595076531e51@localhost.localdomain>
+From: Paul S <paul.similowski@gmail.com>
+Date: Wed, 06 Dec 2017 12:40:55 +0000
+Message-ID: <CALtH2JjTtrAOVWzt1okEWVT_UyPtUvOzUVv=MA4i1xLrYs+dag@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_D=C3=A9fenseur_=2D_Attaque_d=27un_Alpha_Es?=
+	=?UTF-8?Q?saim_Sanguinaire_=5BImago=5D_=285899715=29?=
+To: "desobjetsquibougent@sciz.cerv.ovh" <desobjetsquibougent@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="089e0820b530d453f1055fab431d"
+
+--089e0820b530d453f1055fab431d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mer. 25 oct. 2017 =C3=A0 17:16
+Subject: [MountyHall] D=C3=A9fenseur - Attaque d'un Alpha Essaim Sanguinair=
+e
+[Imago] (5899715)
+To: <paul.similowski@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 25/10/2017 17:16:05.
+***********************************************************
+
+Le Monstre n=C2=B05899715 (un Alpha Essaim Sanguinaire [Imago]) vous a atta=
+qu=C3=A9.
+
+Son jet d'Attaque est de......................: 75
+Votre jet d'Esquive est de....................: 66
+
+ Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89
+
+ Il vous a inflig=C3=A9  67 points de d=C3=A9g=C3=A2ts.
+ Votre Armure vous prot=C3=A8ge et vous ne perdrez que 47 points de vie.
+Sous le choc votre course s'arr=C3=AAte.
+ Vous serez, de plus, fragilis=C3=A9 lors des prochaines esquives.
+ Il vous reste actuellement 128 points de vie.
+
+Votre Robe de mage a =C3=A9t=C3=A9 tr=C3=A8s abim=C3=A9e par ce coup.
+De plus, le monstre a utilis=C3=A9 sa capacit=C3=A9 sp=C3=A9ciale : Attaque=
+ Paralysante
+Elle a pour effet : DLA : +135 minutes.
+Pour une dur=C3=A9e de 2 tour(s).
+
+Seuil de R=C3=A9sistance de la Cible.....: 21 %
+Jet de R=C3=A9sistance...........................: 58
+
+La Cible subit donc pleinement l'effet de la capacit=C3=A9 sp=C3=A9ciale.
+
+ Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez donc =
+pleinement
+l'effet de la capacit=C3=A9.
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.
+
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--089e0820b530d453f1055fab431d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: mer. 25 oct. 20=
+17 =C3=A0=C2=A017:16<br>Subject: [MountyHall] D=C3=A9fenseur - Attaque d&#3=
+9;un Alpha Essaim Sanguinaire [Imago] (5899715)<br>To:  &lt;<a href=3D"mail=
+to:paul.similowski@gmail.com">paul.similowski@gmail.com</a>&gt;<br></div><b=
+r><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 25/10/2017 17:16:05.<br>
+***********************************************************<br>
+<br>
+Le Monstre n=C2=B05899715 (un Alpha Essaim Sanguinaire [Imago]) vous a atta=
+qu=C3=A9.<br>
+<br>
+Son jet d&#39;Attaque est de......................: 75<br>
+Votre jet d&#39;Esquive est de....................: 66<br>
+<br>
+=C2=A0Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89<br>
+<br>
+=C2=A0Il vous a inflig=C3=A9=C2=A0 67 points de d=C3=A9g=C3=A2ts.<br>
+=C2=A0Votre Armure vous prot=C3=A8ge et vous ne perdrez que 47 points de vi=
+e.<br>
+Sous le choc votre course s&#39;arr=C3=AAte.<br>
+=C2=A0Vous serez, de plus, fragilis=C3=A9 lors des prochaines esquives.<br>
+=C2=A0Il vous reste actuellement 128 points de vie.<br>
+<br>
+Votre Robe de mage a =C3=A9t=C3=A9 tr=C3=A8s abim=C3=A9e par ce coup.<br>
+De plus, le monstre a utilis=C3=A9 sa capacit=C3=A9 sp=C3=A9ciale : Attaque=
+ Paralysante<br>
+Elle a pour effet : DLA : +135 minutes.<br>
+Pour une dur=C3=A9e de 2 tour(s).<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 21 %<br>
+Jet de R=C3=A9sistance...........................: 58<br>
+<br>
+La Cible subit donc pleinement l&#39;effet de la capacit=C3=A9 sp=C3=A9cial=
+e.<br>
+<br>
+=C2=A0Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez =
+donc pleinement l&#39;effet de la capacit=C3=A9.<br>
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.<br>
+<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--089e0820b530d453f1055fab431d--

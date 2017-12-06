@@ -17,7 +17,7 @@ class MailParser:
         pass
 
     # Utility mail parser
-    def __parse_mail(self, msg):
+    def parse_mail(self, msg):
         # Subject
         subject = email.header.decode_header(msg['subject'])[0][0]
         if msg.get_content_charset():
@@ -45,7 +45,7 @@ class MailParser:
         return (mail_subject, mail_body)
 
     # Utility regexps loader from sections of the .ini file
-    def __load_regexps(self, sections):
+    def __load_regexps_section(self, sections):
         try:
             res = []
             for section in sections:
@@ -64,24 +64,24 @@ class MailParser:
             if match is not None:
                 return (k, match.groupdict())
         return (None, None)
-
+    
     # Main regexp dispatcher and CLASS.populate dispatcher
-    def parse(self, mail, group):
+    def parse(self, subject, body, group):
         # Dictionary of dictionaries with the results of the regexp matching
         # The first item has all the regexps matching at least one time
         # The following items are for occurences of regexps matching several times
         # At the end all the regexps of the first item not in the others are copied
         res = {0: {}}
         # Actually parse the mail
-        (subject, body) = self.__parse_mail(mail)
+        # (subject, body) = self.__parse_mail(mail)
         # Loop over the regexp for ignored subject matching
-        ignored_regexps = self.__load_regexps(['ignored_subjects'])
+        ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(ignored_regexps, subject)
         if key is not None: 
             sg.logger.warning('Ignored mail, aborting...')
             return None
         # Loop over the regexp for subject matching
-        regexps = self.__load_regexps(['subjects'])
+        regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(regexps, subject)
         if key is None:
             sg.logger.warning('No regexp matching mail subject \'%s\', aborting...' % (subject))
@@ -98,7 +98,7 @@ class MailParser:
         # The .ini config file must also have a section named as the
         # key that previously matched or at least the class name with all the
         # associated regexps to match in the mail
-        regexps = self.__load_regexps(['common', _class, key])
+        regexps = self.__load_regexps_section([sg.CONF_SECTION_COMMON, _class, key])
         matchs = map(lambda (k, r): (k, r.finditer(body)), regexps)
         for (key, matchall) in matchs:
             i = 0

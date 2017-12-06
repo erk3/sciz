@@ -131,6 +131,14 @@ CONF_INSTANCE_MAIL_REFRESH 	= "mail_refresh"
 CONF_INSTANCE_HOOK_REFRESH 	= "hook_refresh"
 CONF_INSTANCE_MAIL_RETENTION 	= "mail_max_retention"
 
+# SECTION
+CONF_SECTION_COMMON             = "common"
+CONF_SECTION_SUBJECTS           = "subjects"
+CONF_SECTION_IGNORED_SUBJECTS   = "ignored_subjects"
+CONF_SECTION_BATTLE             = "battle"
+CONF_NOTIF_TIME                 = "re_time"
+CONF_NOTIF_VIE                  = "re_vie"
+
 # GROUP SECTION
 CONF_GROUP_BATTLE_FORMAT      	= "battle_format"
 CONF_GROUP_TROLL_FORMAT      	= "troll_format"
