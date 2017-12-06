@@ -34,8 +34,8 @@ AdminController.addHook = function (req, res) {
         }
       });
   };
-
-  DB.Event.scope().findOne({where: {group_id: data.groupID},order: [['id', 'DESC']]})
+  
+  DB.Event.scope().findOne({where: {group_id: data.group_id}, order: [['id', 'DESC']]})
     .then(function (event) {
       data.last_event_id = event.id;
       createHook(data);

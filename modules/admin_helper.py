@@ -55,6 +55,7 @@ class AdminHelper:
             sg.group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one() 
             try:
                 # Group exists, load its configuration
+                self.__push_group_conf(sg.group, False)
                 confs = sg.db.session.query(CONF).filter(CONF.group_id == sg.group.id).all()
                 for conf in confs:
                     sg.config.set(conf.section, conf.key, conf.value)
@@ -73,7 +74,7 @@ class AdminHelper:
             sg.createDirName(self.pf_conf_file);
             with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:
                 fp.write("%s|%s\n" % (sg.group.mail, sg.group.mail_pwd, ))
-        self.__push_group_conf(sg.group, False)
+            self.__push_group_conf(sg.group, False)
 
     def reset_groups_conf(self):
         sg.logger.info('Reseting conf for all groups...',)
