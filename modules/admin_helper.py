@@ -89,15 +89,17 @@ class AdminHelper:
                 for (each_key, each_value) in sg.config.items(section):
                     conf = CONF()
                     to_add = False
-                    try:
-                        conf = sg.db.session.query(CONF).filter(CONF.group_id == group.id, CONF.section == section, conf.key == each_key).one()
-                    except NoResultFound as e:
-                        to_add = True
+                    if not force:
+                        try:
+                            conf = sg.db.session.query(CONF).filter(CONF.group_id == group.id, CONF.section == section, CONF.key == each_key).one()
+                        except NoResultFound as e:
+                            to_add = True
                     if to_add or force:
                         conf.section = section
                         conf.key = each_key
                         conf.value = each_value
                         conf.group_id = group.id
+                        conf.touch()
                         sg.db.add(conf)
 
     # Create or update users from JSON file, then if a group is set also do the binding and create the troll
@@ -175,6 +177,7 @@ class AdminHelper:
         mw = MailWalker()
         groups = sg.db.session.query(GROUP).all()
         for group in groups:
+            self.set_group(group.flat_name)
             mw.walk(group)
 
     def __auto_task_mail_purge(self):

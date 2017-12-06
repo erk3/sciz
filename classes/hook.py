@@ -7,7 +7,7 @@
 
 # Imports
 import requests, ConfigParser
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint, desc
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint, desc, asc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.orm import relationship
 from classes.event import EVENT
@@ -44,10 +44,11 @@ class HOOK(sg.SqlAlchemyBase):
         if not self.revoked and self.url != None:
             try:
                 # Find the events
-                events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == self.group_id).order_by(desc(EVENT.id)).all()
+                events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == self.group_id).order_by(asc(EVENT.time)).all()
                 res = []
                 for event in events:
                     res.append({'id': event.id, 'notif': event.notif.encode(sg.DEFAULT_CHARSET)})
+                print res
                 # Send the data
                 if len(res) > 0 :
                     try:
