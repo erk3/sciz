@@ -46,7 +46,9 @@ class HOOK(sg.SqlAlchemyBase):
                 # Find the events
                 events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == self.group_id).order_by(asc(EVENT.time)).all()
                 res = []
+                max_id = 0
                 for event in events:
+                    max_id = max(event.id, max_id)
                     res.append({'id': event.id, 'notif': event.notif.encode(sg.DEFAULT_CHARSET)})
                 print res
                 # Send the data
@@ -55,7 +57,7 @@ class HOOK(sg.SqlAlchemyBase):
                         headers = {'Authorization': self.jwt}
                         r = requests.post(self.url, headers = headers, json = res, timeout = 1)
                         # Update the hook
-                        self.last_event_id = events[0].id
+                        self.last_event_id = max_id
                         sg.db.session.add(self)
                         sg.db.session.commit()
                     except requests.RequestException as e:
