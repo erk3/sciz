@@ -59,7 +59,7 @@ class MailWalker:
             re_vie = re.compile(sg.config.get(sg.CONF_SECTION_BATTLE, sg.CONF_NOTIF_VIE))
             parsed_mails_with_attrs = map(lambda (n, (s, b)) : (n, s, b, re_time.search(b), re_vie.search(b)), parsed_mails)
             parsed_mails_with_attrs = map(lambda (n, s, b, t, v) : (n, s, b,
-                datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else None,
+                datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.utcnow(),
                 v.groupdict()['vie'] if v else None), parsed_mails_with_attrs)
             sorted_mails = sorted(parsed_mails_with_attrs, key=itemgetter(3, 4))
             # Finally walk over the mails
