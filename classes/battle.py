@@ -200,6 +200,7 @@ class BATTLE(sg.SqlAlchemyBase):
         res = re.sub(r' +', ' ', res)
         res = re.sub(r'(\(\s*)+', '(', res)
         res = re.sub(r'(\s*\))+', ')', res)
-        res = re.sub(r'\)\(', '', res)
+        res = re.sub(r'(\)\()|(\(\))', '', res)
+        res = re.sub(r'\\n', '\n', res)
         return res
         
