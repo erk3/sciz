@@ -50,7 +50,6 @@ class HOOK(sg.SqlAlchemyBase):
                 for event in events:
                     max_id = max(event.id, max_id)
                     res.append({'id': event.id, 'notif': event.notif.encode(sg.DEFAULT_CHARSET)})
-                print res
                 # Send the data
                 if len(res) > 0 :
                     try:
