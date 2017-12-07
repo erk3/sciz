@@ -46,7 +46,7 @@ function eventsCtrl($http, $window, authService) {
             vm.switchTrigger(vm.events[0]);
           }
           if (vm.events.length > 0) {
-            vm.offset += vm.events.length;
+            vm.offset = vm.events.length;
           }
           if (events.length <= 0) {
             vm.noMoreEvent = true;
