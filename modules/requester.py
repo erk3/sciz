@@ -4,7 +4,7 @@
 # Imports
 import ConfigParser, sqlalchemy
 from operator import attrgetter
-from sqlalchemy import desc, or_, and_
+from sqlalchemy import asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
 from classes.user import USER
@@ -74,7 +74,7 @@ class Requester:
 
     def __request_mob_cdm(self, id, limit):
         try:        
-            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
+            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(asc(CDM.time)).limit(limit).all()
             if len(cdms) > 0:
                 for cdm in cdms:
                     val = sg.pretty_print(cdm, False, None)
@@ -87,7 +87,7 @@ class Requester:
     
     def __request_mob_event(self, id, limit):
         try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(asc(BATTLE.time)).limit(limit).all()
             if len(events) > 0:
                 for event in events:
                     val = sg.pretty_print(event, False, None)
@@ -126,7 +126,7 @@ class Requester:
     
     def __request_troll_event(self, id, limit):
         try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(asc(BATTLE.time)).limit(limit).all()
             if len(events) > 0:
                 for event in events:
                     val = sg.pretty_print(event, False, None)
