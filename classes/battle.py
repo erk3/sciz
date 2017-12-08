@@ -196,11 +196,11 @@ class BATTLE(sg.SqlAlchemyBase):
         else:
             res = self.s_long
         res = res.format(o=self)
-        res = re.sub(r'\s*:(\s*|\n|\\n)*$', '', res)
-        res = re.sub(r' +', ' ', res)
         res = re.sub(r'(\(\s*)+', '(', res)
         res = re.sub(r'(\s*\))+', ')', res)
-        res = re.sub(r'(\)\()|(\(\))', '', res)
+        res = re.sub(r'(\)\()|(\(\))', ' ', res)
+        res = re.sub(r'\s*:(\s*|\n|\\n)*$', '', res)
+        res = re.sub(r' +', ' ', res)
         res = re.sub(r'\\n', '\n', res)
         return res
         

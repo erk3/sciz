@@ -4,7 +4,7 @@
 # Imports
 import ConfigParser, sqlalchemy
 from operator import attrgetter
-from sqlalchemy import asc, or_, and_
+from sqlalchemy import desc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
 from classes.user import USER
@@ -61,7 +61,7 @@ class Requester:
         if len(args) > 0:
             limit = 1
             if len(args) > 1 and args[1].isdigit():
-                limit = int(args[1])
+                limit = int(args[1]) if int(args[1]) > 0 else limit
             if args[0].lower() == 'cdm':
                 self.__request_mob_cdm(id, limit)
             elif args[0].lower() == 'event':
@@ -74,12 +74,14 @@ class Requester:
 
     def __request_mob_cdm(self, id, limit):
         try:        
-            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(asc(CDM.time)).limit(limit).all()
-            if len(cdms) > 0:
-                for cdm in cdms:
-                    val = sg.pretty_print(cdm, False, None)
+            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
+            i = len(cdms) - 1
+            if i >= 0:
+                while i >= 0:
+                    val = sg.pretty_print(cdms[i], False, None)
                     if val != '':
                         print val
+                    i -= 1
             else:
                 print 'Aucune CDM pour le montre n°%s' % (id, )
         except NoResultFound:
@@ -87,12 +89,14 @@ class Requester:
     
     def __request_mob_event(self, id, limit):
         try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(asc(BATTLE.time)).limit(limit).all()
-            if len(events) > 0:
-                for event in events:
-                    val = sg.pretty_print(event, False, None)
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
+            i = len(events) - 1
+            if i >= 0:
+                while i >= 0:
+                    val = sg.pretty_print(events[i], False, None)
                     if val != '':
                         print val
+                    i -= 1
             else:
                 print 'Aucun évènement pour le monstre n°%s' % (id, )
         except NoResultFound:
@@ -115,7 +119,7 @@ class Requester:
         if len(args) > 0:
             limit = 1
             if len(args) > 1 and args[1].isdigit():
-                limit = int(args[1])
+                limit = int(args[1]) if int(args[1]) > 0 else limit
             if args[0].lower() == 'event':
                 self.__request_troll_event(id, limit)
             else:
@@ -126,12 +130,14 @@ class Requester:
     
     def __request_troll_event(self, id, limit):
         try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(asc(BATTLE.time)).limit(limit).all()
-            if len(events) > 0:
-                for event in events:
-                    val = sg.pretty_print(event, False, None)
+            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
+            i = len(events) - 1
+            if i >= 0:
+                while i >= 0:
+                    val = sg.pretty_print(events[i], False, None)
                     if val != '':
                         print val
+                    i -= 1
             else:
                 print 'Aucun évènement pour troll n°%s' % (id, )
         except NoResultFound:
