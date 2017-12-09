@@ -116,7 +116,7 @@ class SQLHelper:
         conf = None
         try:
             conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.section == new_conf.section, CONF.group_id == new_conf.group_id)).one() 
-            sg.logger.info('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
+            # sg.logger.info('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
             conf.value = new_conf.value
             self.session.add(conf)
         except orm.exc.NoResultFound:

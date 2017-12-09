@@ -99,7 +99,7 @@ class SCIZ:
         elif cmd == 'group':
             self.adminHelper.set_group(arg)
         elif cmd == 'reset-confs':
-            self.adminHelper.reset_groups_conf()
+            self.adminHelper.reset_groups_conf(arg)
     
     # Destructor
     def __del__(self):
@@ -151,7 +151,7 @@ if __name__ == '__main__':
             help='instruct SCIZ to setup the things')
     
     parser.add_argument('-z', '--reset-confs',
-            action='store_true',
+            metavar='GROUP_NAME', type=str, nargs='?', const=True, default=None,
             help='instruct SCIZ to reset the confs for all groups')
     
     parser.add_argument('-g', '--group',
@@ -174,7 +174,7 @@ if __name__ == '__main__':
     try:
         sciz = SCIZ(args.conf, args.logging_level, args.group)
         sg.logger.info('SCIZ woke up successfully!')
-        if args.group and not args.auto and not args.init and not args.script:
+        if args.group and not args.auto and not args.init and not args.script and not args.reset_confs:
             sciz.admin('group', args.group)
         else:
             sg.group = None
@@ -193,7 +193,7 @@ if __name__ == '__main__':
             sg.logger.info('Walking the mails...')
             sciz.walk()
         elif args.notify:
-            sg.logger.info('Notifying for hook %s...' %(args.notify, ))
+            sg.logger.info('Notifying for hook %s...' % (args.notify, ))
             sciz.notify(args.notify)
         elif args.request:
             sg.logger.info('Requesting SCIZ...')

@@ -49,4 +49,4 @@ def hashPassword(mapper, conneciton, target):
     hist = state.get_history("pwd", True)
     if hist.has_changes() and target.pwd:
         # Rounds fixed to 10 for PHP front-end compatibility
-        target.pwd = bcrypt.hashpw(target.pwd.encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(10)) 
+        target.pwd = bcrypt.hashpw(target.pwd.encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(10))

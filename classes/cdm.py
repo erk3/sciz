@@ -143,17 +143,20 @@ class CDM(sg.SqlAlchemyBase):
         # Build the string representations provided
         for (key, value) in reprs:
             s = ''
-            if key.startswith('s_'):
-                setattr(self, key, value)
-                continue
-            elif hasattr(self, key) and getattr(self, key) is not None:
-                if isinstance(getattr(self, key), bool):
-                    s = value.format(sg.boolean2French(getattr(self, key)))
-                else:
-                    s = value.format(getattr(self, key))
-            elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
-                s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
-                s = value.format(s) if s is not None else ''
+            try:
+                if key.startswith('s_'):
+                    setattr(self, key, value)
+                    continue
+                elif hasattr(self, key) and getattr(self, key) is not None:
+                    if isinstance(getattr(self, key), bool):
+                        s = value.format(sg.boolean2French(getattr(self, key)))
+                    else:
+                        s = value.format(getattr(self, key))
+                elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
+                    s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                    s = value.format(s) if s is not None else ''
+            except KeyError as e:
+                pass
             setattr(self, 's_' + key, s)
         # Add the time
         self.s_time = sg.format_time(self.time, self.s_time)
@@ -174,7 +177,14 @@ class CDM(sg.SqlAlchemyBase):
         self.s_cdm_stats = self.s_cdm_stats.format(o=self)
         res = res.format(o=self)
         res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
+        res = re.sub(r'None', '', res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
         res = re.sub(r' +', ' ', res)
         return res
+
+    def __getattr__(self, name):
+        if hasattr(self, name) or name.startswith('_'):
+            return super().__getattr__(name)
+        else:
+            return None # Trick for the stringify logic (avoiding the raise of an error)

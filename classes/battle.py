@@ -151,31 +151,30 @@ class BATTLE(sg.SqlAlchemyBase):
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
         for (key, value) in reprs:
-            if key.startswith('s_'):
-                setattr(self, key, value)
-            elif hasattr(self, key):
-                if getattr(self, key) is not None and getattr(self, key):
-                    setattr(self, 's_' + key, re.sub(r'\n', ' ', value.format(getattr(self, key))))
-                else:
-                    setattr(self, 's_' + key, '')
-            else:
-                setattr(self, 's_' + key, None)
+            s = ''
+            try:
+                if key.startswith('s_'):
+                    setattr(self, key, value)
+                    continue
+                elif hasattr(self, key) and (getattr(self, key) is not None) and getattr(self, key):
+                    s = re.sub(r'\n', ' ', value.format(getattr(self, key)))
+            except KeyError as e:
+                pass
+            setattr(self, 's_' + key, s)
         # Add the time
         self.s_time = sg.format_time(self.time, self.s_time)
         # Add the att an def troll/mob names
-        self.s_det_att = 'de'
-        self.s_det_def = 'sur'
         if self.att_troll:
-            self.s_att_nom = self.att_troll.stringify_name()
+            self.s_att_nom = self.att_troll.stringify_name(self.s_nom_troll)
         elif self.att_mob:
-            self.s_att_nom = self.att_mob.stringify_name()
+            self.s_att_nom = self.att_mob.stringify_name(self.s_nom_mob)
         else:
             self.s_det_att = ''
             self.s_att_nom = ''
         if self.def_troll:
-            self.s_def_nom = self.def_troll.stringify_name()
+            self.s_def_nom = self.def_troll.stringify_name(self.s_nom_troll)
         elif self.def_mob:
-            self.s_def_nom = self.def_mob.stringify_name()
+            self.s_def_nom = self.def_mob.stringify_name(self.s_nom_mob)
         else:
             self.s_det_def = ''
             self.s_def_nom = ''
@@ -196,6 +195,7 @@ class BATTLE(sg.SqlAlchemyBase):
         else:
             res = self.s_long
         res = res.format(o=self)
+        res = re.sub(r'None', '', res)
         res = re.sub(r'(\(\s*)+', '(', res)
         res = re.sub(r'(\s*\))+', ')', res)
         res = re.sub(r'(\)\()|(\(\))', ' ', res)
@@ -203,4 +203,10 @@ class BATTLE(sg.SqlAlchemyBase):
         res = re.sub(r' +', ' ', res)
         res = re.sub(r'\\n', '\n', res)
         return res
-        
+
+    def __getattr__(self, name):
+        if hasattr(self, name) or name.startswith('_'):
+            return super().__getattr__(name)
+        else:
+            print name
+            return None # Trick for the stringify logic (avoiding the raise of an error)

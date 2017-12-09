@@ -6,6 +6,48 @@ var DB = require('../services/database.js');
 
 var AdminController = {}
 
+/*
+ * Confs
+ */
+function isUnboxConfValueValid(conf) {
+  return !(conf.value === '' || conf.value === undefined || conf.value === null) &&
+    !conf.value.match(/{[^}]*({|$)/ig) &&
+    !conf.value.match(/((^)|})[^{]*}/ig) &&
+    !conf.value.match(/{o\.[^{}]*\W[^{}]*}/ig);
+}
+
+AdminController.getConfs = function (req, res) {
+  var groupID = (req.query.groupID) ? parseInt(req.query.groupID) : 0;
+  DB.Conf.findAll({where: {group_id: groupID}})
+    .then(function (confs) {
+      res.json(confs);
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    });
+}
+
+AdminController.updateConfs = function (req, res) {
+  var groupID = (req.body.groupID) ? parseInt(req.body.groupID) : 0;
+  var confs = JSON.parse(req.body.confs);
+  for (var i = 0 ; i < confs.length; i++) {
+    if (isUnboxConfValueValid(confs[i])) {
+      var potentialConf = {where: {group_id: groupID, section: confs[i].section, key: confs[i].key}};
+      var data = {
+        value: confs[i].value
+      };
+      // FIXME : wait for the result of all the updates before returning a result ?
+      DB.Conf.update(data, potentialConf)
+        .then(function (result) {})
+        .catch(function(error) {});
+    }
+  }
+  res.json({success: true});
+}
+
+/*
+ * Hooks
+ */
 AdminController.addHook = function (req, res) { 
   
   var groupID = (req.body.groupID) ? parseInt(req.body.groupID) : 0;
@@ -69,6 +111,9 @@ AdminController.revokeHook = function (req, res) {
     });
 }
 
+/*
+ * Group
+ */
 AdminController.updateGroup = function (req, res) {
 
   var potentialGroup = {where: {id: req.body.groupID}};

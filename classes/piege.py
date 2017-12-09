@@ -49,15 +49,16 @@ class PIEGE(sg.SqlAlchemyBase):
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
         for (key, value) in reprs:
-            if key.startswith('s_'):
-                setattr(self, key, value)
-            elif hasattr(self, key):
-                if getattr(self, key) is not None and getattr(self, key):
-                    setattr(self, 's_' + key, value.format(getattr(self, key)))
-                else:
-                    setattr(self, 's_' + key, '')
-            else:
-                setattr(self, 's_' + key, None)
+            s = ''
+            try:
+                if key.startswith('s_'):
+                    setattr(self, key, value)
+                    continue
+                elif hasattr(self, key) and getattr(self, key) is not None and getattr(self, key):
+                    s = value.format(getattr(self, key))
+            except KeyError as e:
+                pass
+            setattr(self, 's_' + key, s)
         # Add the time
         self.s_time = sg.format_time(self.time, self.s_time)
         # Add the troll name
@@ -68,6 +69,12 @@ class PIEGE(sg.SqlAlchemyBase):
         else:
             res = self.s_long
         res = res.format(o=self)
+        res = re.sub(r'None', '', res)
         res = re.sub(r' +', ' ', res)
         return res
 
+    def __getattr__(self, name):
+        if hasattr(self, name) or name.startswith('_'):
+            return super().__getattr__(name)
+        else:
+            return None # Trick for the stringify logic (avoiding the raise of an error)

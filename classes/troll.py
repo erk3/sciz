@@ -5,6 +5,7 @@
 import re, datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 import modules.globals as sg
 
 # Class of a troll
@@ -172,6 +173,12 @@ class TROLL(sg.SqlAlchemyBase):
     # Direction des retraites par ordre chronologique
     dir_retraite = Column(String(10))
 
+    @hybrid_property
+    def pseudo(self):
+        if self.user and self.user.pseudo:
+            return self.user.pseudo
+        return None
+
     # Associations One-To-Many
     user = relationship('USER', back_populates='trolls')
     group = relationship('GROUP', back_populates='trolls')
@@ -218,32 +225,37 @@ class TROLL(sg.SqlAlchemyBase):
             # Missing data (probably no previous success call to MH SP)
             return None
     
-    def stringify_name(self):
+    def stringify_name(self, str_format=None):
+        if str_format:
+            return str_format.format(o=self)
         self.s_nom_troll = ('%s (%d)' % (self.nom, self.id))
         if self.user and self.user.pseudo:
             self.s_nom_troll = ('%s (%d)' % (self.user.pseudo, self.id))
         return self.s_nom_troll
 
     def stringify(self, reprs, short, attrs):
-        self.s_troll_nom = self.stringify_name()
         # Build the string representations provided
         for (key, value) in reprs:
             s = ''
-            if key.startswith('s_'):
-                setattr(self, key, value)
-                continue
-            elif hasattr(self, key) and getattr(self, key) is not None:
-                if isinstance(getattr(self, key), bool):
-                    s = value.format(sg.boolean2French(getattr(self, key)))
-                else:
-                    s = value.format(getattr(self, key))
-            elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
-                s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
-                s = value.format(s) if s is not None else ''
+            try:
+                if key.startswith('s_'):
+                    setattr(self, key, value)
+                    continue
+                elif hasattr(self, key) and getattr(self, key) is not None:
+                    if isinstance(getattr(self, key), bool):
+                        s = value.format(sg.boolean2French(getattr(self, key)))
+                    else:
+                        s = value.format(getattr(self, key))
+                elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
+                    s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                    s = value.format(s) if s is not None else ''
+            except KeyError as e:
+                pass
             setattr(self, 's_' + key, s)
         # Compute some things
-        self.s_dla = sg.format_time(self.dla) if self.dla else ''
-        self.s_next_dla = sg.format_time(self.estimate_next_dla())
+        self.s_troll_nom = self.stringify_name()
+        self.s_dla = sg.format_time(self.dla, self.s_time) if self.dla else ''
+        self.s_next_dla = sg.format_time(self.estimate_next_dla(), self.s_time)
         self.s_dla_full = self.s_dla_full.format(o=self) if self.s_dla != '' else ''
         self.s_pos = self.s_pos.format(o=self) if self.s_pos_x != '' else ''
         self.s_pv_ratio = self.s_pv_ratio.format(o=self) if self.s_pv != '' else ''
@@ -265,7 +277,8 @@ class TROLL(sg.SqlAlchemyBase):
         res = self.s_long
         res = res.format(o=self)
         res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
-        # Adjust some things about spacing and line break
+        # Adjust some things about spacing, None values and line break
+        res = re.sub(r'None', '', res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
         if attrs is not None and len(attrs) == 1:
@@ -273,3 +286,8 @@ class TROLL(sg.SqlAlchemyBase):
         res = re.sub(r' +', ' ', res)
         return res
 
+    def __getattr__(self, name):
+        if hasattr(self, name) or name.startswith('_'):
+            return super().__getattr__(name)
+        else:
+            return None # Trick for the stringify logic (avoiding the raise of an error)

@@ -76,11 +76,20 @@ class AdminHelper:
                 fp.write("%s|%s\n" % (sg.group.mail, sg.group.mail_pwd, ))
             self.__push_group_conf(sg.group, False)
 
-    def reset_groups_conf(self):
-        sg.logger.info('Reseting conf for all groups...',)
-        groups = sg.db.session.query(GROUP).all()
-        for group in groups:
-            self.__push_group_conf(group, True)
+    def reset_groups_conf(self, group_name=None):
+        if group_name and isinstance(group_name, str) and group_name != '':
+            flat_name = group_name.lower().replace(' ', '')
+            sg.logger.info('Reseting conf for group %s...' % flat_name)
+            try:
+                group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one()
+                self.__push_group_conf(group, True)
+            except NoResultFound as e:
+                sg.logger.warning('No group %s, aborting reset confs...' % (flat_name))
+        else:
+            sg.logger.info('Reseting conf for all groups...')
+            groups = sg.db.session.query(GROUP).all()
+            for group in groups:
+                self.__push_group_conf(group, True)
 
     # Routine for pushing conf to a group
     def __push_group_conf(self, group, force=False):

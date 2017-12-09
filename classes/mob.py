@@ -161,29 +161,33 @@ class MOB(sg.SqlAlchemyBase):
         self.rm_max = sg.do_unless_none((min), (self.rm_max, mob.rm_max))
         self.tour_max = sg.do_unless_none((min), (self.tour_max, mob.tour_max))
 
-    
-    def stringify_name(self):
+    def stringify_name(self, str_format=None):
+        if str_format:
+            return str_format.format(o=self)
         if self.tag:
             return '%s [%s] %s (%d)' % (self.nom, self.age, self.tag, self.id)
         else:
             return '%s [%s] (%d)' % (self.nom, self.age, self.id)
-
+    
     def stringify(self, reprs, short, attrs):
         self.s_mob_nom = self.stringify_name()
         # Build the string representations provided
         for (key, value) in reprs:
             s = ''
-            if key.startswith('s_'):
-                setattr(self, key, value)
-                continue
-            elif hasattr(self, key) and getattr(self, key) is not None:
-                if isinstance(getattr(self, key), bool):
-                    s = value.format(sg.boolean2French(getattr(self, key)))
-                else:
-                    s = value.format(getattr(self, key))
-            elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
-                s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
-                s = value.format(s) if s is not None else ''
+            try:
+                if key.startswith('s_'):
+                    setattr(self, key, value)
+                    continue
+                elif hasattr(self, key) and getattr(self, key) is not None:
+                    if isinstance(getattr(self, key), bool):
+                        s = value.format(sg.boolean2French(getattr(self, key)))
+                    else:
+                        s = value.format(getattr(self, key))
+                elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
+                    s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                    s = value.format(s) if s is not None else ''
+            except KeyError as e:
+                pass
             setattr(self, 's_' + key, s)
         # Add the capa
         self.s_capa = self.s_capa_effet
@@ -201,10 +205,17 @@ class MOB(sg.SqlAlchemyBase):
         res = self.s_long
         res = res.format(o=self)
         res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
-        # Adjust some things about spacing and line break
+        # Adjust some things about spacing, None values and line break
+        res = re.sub(r'None', '', res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
         if attrs is not None and len(attrs) == 1:
             res = re.sub(r'%s' % self.s_sep, ' ', res)
         res = re.sub(r' +', ' ', res)
         return res
+
+    def __getattr__(self, name):
+        if hasattr(self, name) or name.startswith('_'):
+            return super().__getattr__(name)
+        else:
+            return None # Trick for the stringify logic (avoiding the raise of an error)

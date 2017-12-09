@@ -4,20 +4,30 @@ angular
 
 function adminCtrl($http, $window, authService) {
   var vm = this;
+
+  /*
+   * Init
+   */
   vm.newHook = null;
   vm.newHookURL = null;
   vm.hooks = [];
+  vm.confs = {};
 
   vm.hostname = $window.location.protocol + '//' + $window.location.hostname + '/api/bot/hooks';
-  vm.view = 'group';
 
   vm.addHook = addHook;
   vm.getHooks = getHooks;
   vm.revokeHook = revokeHook;
+  vm.getConfs = getConfs;
+  vm.updateConfs = updateConfs;
   vm.updateGroup = updateGroup;
+  vm.switchView = switchView;
+  vm.isUnboxConfValueValid = isUnboxConfValueValid;
 
-  vm.user = authService.refreshLocalData();
-
+  vm.updateErrorConf = false;
+  vm.updateErrorConfConfMessage = null;
+  vm.updateStatusConf = false;
+  vm.updateStatusConfMessage = null;
   vm.updateErrorHook = false;
   vm.updateErrorHookMessage = null;
   vm.updateStatusHook = false;
@@ -27,8 +37,127 @@ function adminCtrl($http, $window, authService) {
   vm.updateStatusGroup = false;
   vm.updateStatusGroupMessage = null;
 
-  vm.getHooks();
+  vm.user = authService.refreshLocalData();
+  vm.switchView('group');
+  vm.confSection = 'battle_format';
 
+  /*
+   * View Switcher
+   */
+  function switchView(view) {
+    if (view === 'hooks') {
+      vm.getHooks();
+    } else if (view === 'confs') {
+      vm.getConfs();
+    }
+    vm.view = view;
+  }
+
+  /*
+   * Confs
+   */
+  function isUnboxConfValueValid(conf) {
+    if (conf.key.startsWith('s_')) {
+      return !(conf.value === '' || conf.value === undefined || conf.value === null) &&
+        !conf.value.match(/{[^}]*({|$)/ig) &&
+        !conf.value.match(/((^)|})[^{]*}/ig) &&
+        !conf.value.match(/{[^{}]*\W[^{}]*}/ig);
+    }
+    return !(conf.value === '' || conf.value === undefined || conf.value === null) &&
+      !conf.value.match(/{[^}]*({|$)/ig) &&
+      !conf.value.match(/((^)|})[^{]*}/ig);
+  }
+
+  function unboxConf(conf) {
+    var newVal = conf.value.replace(/{o\.s_([^}]+)}/g, function (str, group) {
+      return '{' + group + '}';
+    });
+    if (newVal === conf.value) {
+      newVal = conf.value.replace(/{o\.([^}]+)}/g, function (str, group) {
+        return '{' + group + '}';
+      });
+      if (newVal === conf.value) {
+        conf.prefix = '';
+      } else {
+        conf.prefix = 'o.';
+      }
+    } else {
+      conf.prefix = 'o.s_';
+    }
+    conf.value = newVal;
+    return conf;
+  }
+
+  function boxConfValue(conf) {
+    var res = conf.value;
+    if (conf.key.startsWith('s_')) {
+      res = conf.value.replace(/{([^}]+)}/g, function (str, group) {
+        return '{' + conf.prefix + group + '}';
+      });
+    }
+    return res;
+  }
+
+  function getConfs() {
+    $http({
+      method: 'GET',
+      url: '/api/admin/confs',
+      params: {
+        groupID: vm.user.currentAssoc.group_id
+      }
+    })
+    .then(handleSuccessfulGetConfs);
+  }
+
+  function handleSuccessfulGetConfs(response) {
+    if (response && response.data) {
+      vm.origConfs = angular.fromJson(response.data);
+      vm.confs = JSON.parse(JSON.stringify(vm.origConfs)).map(unboxConf);
+    }
+  }
+
+  function updateConfs() {
+    // Build modified conf
+    var modifiedConfs = [];
+    for (var i = 0; i < vm.confs.length; i++) {
+      var val = boxConfValue(vm.confs[i]);
+      if (val !== vm.origConfs[i].value) {
+        vm.origConfs[i].value = val;
+        modifiedConfs.push(vm.origConfs[i]);
+      }
+    }
+    $http({
+      method: 'POST',
+      url: '/api/admin/confs',
+      data: {
+        confs: JSON.stringify(modifiedConfs),
+        groupID: vm.user.currentAssoc.group_id
+      }
+    })
+    .then(handleSuccessfulUpdateConfs)
+    .catch(handleFailedUpdateConfs);
+  }
+
+  function handleSuccessfulUpdateConfs() {
+    vm.updateErrorConf = false;
+    vm.updateErrorConfMessage = null;
+    vm.updateStatusConf = true;
+    vm.updateStatusConfMessage = 'Modifications enregistrées !';
+  }
+
+  function handleFailedUpdateConfs(response) {
+    vm.updateErrorConf = true;
+    vm.updateErrorConfMessage = 'Erreur';
+    vm.updateStatusConf = false;
+    vm.updateStatusConfMessage = null;
+    if (response && response.data) {
+      vm.updateErrorConfMessage += ': ' + response.data.message;
+    }
+  }
+
+  /*
+   * Hooks
+   */
   function getHooks() {
     $http({
       method: 'GET',
@@ -111,6 +240,9 @@ function adminCtrl($http, $window, authService) {
     }
   }
 
+  /*
+   * Group
+   */
   function updateGroup() {
     authService.updateGroup(vm.user.currentAssoc.group);
     vm.user.currentAssoc.group.groupID = vm.user.currentAssoc.group.id;

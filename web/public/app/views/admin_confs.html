@@ -1,0 +1,75 @@
+<!-- Settings display -->
+<div class="col-sm-9 col-md-9">
+  
+  <!-- Page header -->
+  <div class="row">
+    <div class="page-header text-left">
+      <div class="row">
+        <h2 class="col-sm-8 col-md-8">Gestion des formats de notification du groupe</h2>
+        <button style="margin-top: 20px;" type="submit" class="col-sm-offset-2 col-md-offset-2 btn btn-primary" ng-click="ac.updateConfs()" ng-disabled="!ac.confs.every(ac.isUnboxConfValueValid)">Sauvegarder</button>
+      </div>
+      </br>
+      <div ng-if="ac.updateErrorConf">
+        </br>
+        <div class="alert" ng-class="{'alert-danger':ac.updateErrorConf}">
+          {{ac.updateErrorConfMessage}}
+        </div>
+      </div>
+      <div ng-if="ac.updateStatusConf">
+        </br>
+        <div class="alert" ng-class="{'alert-success':ac.updateStatusConf}">
+          {{ac.updateStatusConfMessage}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page content -->
+  <div class="bs-callout bs-callout-info">
+    <h4>Informations</h4>
+    Les formats de notifications courts sont utilisés par les hooks et les formats longs lorsque vous effectuez des requêtes.<br/>
+    La valeur d'un attribut unitaire est substituée à la notation '{}'.<br/>
+    Un attribut spécial peut être composé avec des attributs unitaires (notation '{attribut}').<br/>
+    Les notifications peuvent être elle-mêmes composées d'attributs spéciaux (notation '{attribut}').<br/>
+    Les parenthèses vides, espaces et sauts de lignes multiples seront supprimés.<br/>
+  </div>
+  <br/>
+  
+  <div class="row">
+    <ul class = "nav nav-tabs">
+      <li ng-class="{'active': ac.confSection === 'battle_format'}"><a ng-click="ac.confSection = 'battle_format'" href="">Combat</a></li>
+      <li ng-class="{'active': ac.confSection === 'cdm_format'}"><a ng-click="ac.confSection = 'cdm_format'" href="">CDM</a></li>
+      <li ng-class="{'active': ac.confSection === 'piege_format'}"><a ng-click="ac.confSection = 'piege_format'" href="">Pose de piège</a></li>
+      <li ng-class="{'active': ac.confSection === 'troll_format'}"><a ng-click="ac.confSection = 'troll_format'" href="">Troll</a></li>
+      <li ng-class="{'active': ac.confSection === 'mob_format'}"><a ng-click="ac.confSection = 'mob_format'" href="">Mob</a></li>
+    </ul>
+  </div>
+  <br/>
+
+  <label>Format des notifications</label>
+  <div class="row" ng-repeat="conf in ac.confs">
+    <div ng-if="(conf.section === ac.confSection) && (conf.key === 's_short' || conf.key === 's_long')" class="input-group col-sm-10" ng-class="{'has-error':!ac.isUnboxConfValueValid(conf)}">
+      <pre style="white-space: pre;" class="input-group-addon">{{((conf.key === 's_short') ? 'Courte' : 'Longue').padStart(20)}}</pre>
+      <textarea rows="1" class="form-control" ng-model="conf.value" required></textarea>
+    </div>
+  </div>
+  <br/>
+
+  <label>Format des attributs composés / spéciaux</label>
+  <div class="row" ng-repeat="conf in ac.confs">
+    <div ng-if="(conf.section === ac.confSection) && conf.key.startsWith('s_') && conf.key !== 's_short' && conf.key !== 's_long'" class="input-group col-sm-10" ng-class="{'has-error':!ac.isUnboxConfValueValid(conf)}">
+      <pre style="white-space: pre" class="input-group-addon">{{conf.key.substring(2).padStart(20)}}</pre>
+      <input type="text" class="form-control" ng-model="conf.value" required>
+    </div>
+  </div>
+  <br/>
+
+  <label>Format des attributs unitaires</label>
+  <div class="row" ng-repeat="conf in ac.confs">
+    <div ng-if="(conf.section === ac.confSection) && !conf.key.startsWith('s_')" class="input-group col-sm-10" ng-class="{'has-error':!ac.isUnboxConfValueValid(conf)}">
+      <pre style="white-space: pre" class="input-group-addon">{{conf.key.padStart(20)}}</pre>
+      <input type="text" class="form-control" ng-model="conf.value" required>
+    </div>
+  </div>
+
+</div>

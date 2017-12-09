@@ -44,9 +44,7 @@
   <div class="row">
     <div class="col-sm-8">
       <div class="input-group" ng-class="{'has-error':!ac.user.currentAssoc.group.name}">
-        <span class="input-group-addon">
-          Nom du groupe
-        </span>
+        <pre style="white-space: pre" class="input-group-addon"> {{'Nom du groupe'.padStart(15)}} </pre>
         <input type="text" class="form-control" placeholder="Nom du groupe" ng-model="ac.user.currentAssoc.group.name" required>
       </div>
     </div>
@@ -56,9 +54,7 @@
   <div class="row">
     <div class="col-sm-8">
       <div class="input-group">
-        <span class="input-group-addon">
-          URL du blason
-        </span>
+        <pre style="white-space: pre" class="input-group-addon"> {{'URL du blason'.padStart(15)}} </pre>
         <input type="text" class="form-control" placeholder="URL du blason de groupe" ng-model="ac.user.currentAssoc.group.blason_url" required>
       </div>
     </div>
@@ -68,9 +64,7 @@
   <div class="row">
     <div class="col-sm-8">
       <div class="input-group">
-        <span class="input-group-addon">
-          Description
-        </span>
+        <pre style="white-space: pre" class="input-group-addon"> {{'Description'.padStart(15)}} </pre>
         <input type="text" class="form-control" placeholder="Courte description de votre groupe" ng-model="ac.user.currentAssoc.group.desc" required>
       </div>
     </div>

@@ -20,12 +20,14 @@ var APIRoutes = function(passport) {
   router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));
   router.post('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateGroup));
   router.post('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.request));
+  router.post('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateConfs));
 
   // GET routes
   router.get('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.getProfile));
   router.get('/events', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, EventsController.getEvents));
   router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.getNotifs));
   router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getHooks));
+  router.get('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getConfs));
 
   // DELETE routes
   router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));
