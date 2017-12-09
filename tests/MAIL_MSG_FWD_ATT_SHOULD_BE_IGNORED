@@ -1,4 +1,4 @@
-Return-Path: <paul.similowski+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com>
+Return-Path: <censored+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com>
 Delivered-To: desobjetsquibougent@sciz.cerv.ovh
 Received: from 0f5c5cbedd6d.cerv.ovh
 	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id eltOFCL/DlpwNAAAEkUYHA
@@ -6,7 +6,7 @@ Received: from 0f5c5cbedd6d.cerv.ovh
 Received: from localhost (localhost [127.0.0.1])
 	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id E34B0EFC
 	for <desobjetsquibougent@sciz.cerv.ovh>; Fri, 17 Nov 2017 15:24:37 +0000 (UTC)
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.180; helo=mail-wr0-f180.google.com; envelope-from=paul.similowski+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com; receiver=desobjetsquibougent@sciz.cerv.ovh 
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.180; helo=mail-wr0-f180.google.com; envelope-from=censored+caf_=desobjetsquibougent=sciz.cerv.ovh@gmail.com; receiver=desobjetsquibougent@sciz.cerv.ovh 
 Received: from mail-wr0-f180.google.com (mail-wr0-f180.google.com [209.85.128.180])
 	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id A7C371103
 	for <desobjetsquibougent@sciz.cerv.ovh>; Fri, 17 Nov 2017 15:24:37 +0000 (UTC)
@@ -30,8 +30,8 @@ X-Gm-Message-State: AJaThX4K2m7lRE12CAYYa1ws+xS/QYqolBjk43zCssIVfmnPBr5nF2/5
 X-Received: by 10.223.197.141 with SMTP id m13mr4905535wrg.203.1510932277248;
         Fri, 17 Nov 2017 07:24:37 -0800 (PST)
 X-Forwarded-To: desobjetsquibougent@sciz.cerv.ovh
-X-Forwarded-For: paul.similowski@gmail.com desobjetsquibougent@sciz.cerv.ovh
-Delivered-To: paul.similowski@gmail.com
+X-Forwarded-For: censored@gmail.com desobjetsquibougent@sciz.cerv.ovh
+Delivered-To: censored@gmail.com
 Received: by 10.28.107.140 with SMTP id a12csp717535wmi;
         Fri, 17 Nov 2017 07:24:36 -0800 (PST)
 X-Google-Smtp-Source: AGs4zMbmriz+7viYMPPeitkuAQfHnL4aVnr1m5/BNFtmyEsSw8sCspcG/gPtx9weqcNTDPVTEcBh
@@ -59,14 +59,14 @@ ARC-Authentication-Results: i=1; mx.google.com;
        spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
 Received: from games.mountyhall.com ([46.16.240.194])
         by mx.google.com with ESMTP id w39si3599882edc.97.2017.11.17.07.24.35
-        for <paul.similowski@gmail.com>;
+        for <censored@gmail.com>;
         Fri, 17 Nov 2017 07:24:36 -0800 (PST)
 Received-SPF: neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) client-ip=46.16.240.194;
 Authentication-Results: mx.google.com;
        spf=neutral (google.com: 46.16.240.194 is neither permitted nor denied by best guess record for domain of www-data@mountyhall.com) smtp.mailfrom=www-data@mountyhall.com
 Received: by games.mountyhall.com (Postfix, from userid 33)
 	id BEA0E7B609A; Fri, 17 Nov 2017 16:24:35 +0100 (CET)
-To: paul.similowski@gmail.com
+To: censored@gmail.com
 Subject: =?iso-8859-1?Q?[MountyHall]_Message_de_P=F5mP=F5mP=F5m_:_Fwd_:_[MountyHal?=  =?iso-8859-1?Q?l]_Attaquant_-_Attaque_(Projectile_Magique)_sur_un_Abishai?=  =?iso-8859-1?Q?i_Bleu_Invocateur_[Novice]_(5942092)?=
 X-PHP-Originating-Script: 1001:class.phpmailer.php
 Date: Fri, 17 Nov 2017 16:24:35 +0100

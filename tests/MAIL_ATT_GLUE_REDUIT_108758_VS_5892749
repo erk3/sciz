@@ -1,0 +1,173 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: desobjetsquibougent@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id 8i9KLqldKlqgIgAAEkUYHA
+	for <desobjetsquibougent@sciz.cerv.ovh>; Fri, 08 Dec 2017 09:39:15 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id 1EDDE3D28
+	for <desobjetsquibougent@sciz.cerv.ovh>; Fri,  8 Dec 2017 09:39:15 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.216.176; helo=mail-qt0-f176.google.com; envelope-from=censored@gmail.com; receiver=desobjetsquibougent@sciz.cerv.ovh 
+Received: from mail-qt0-f176.google.com (mail-qt0-f176.google.com [209.85.216.176])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id 9F8C13D27
+	for <desobjetsquibougent@sciz.cerv.ovh>; Fri,  8 Dec 2017 09:39:14 +0000 (UTC)
+Received: by mail-qt0-f176.google.com with SMTP id 33so24637817qtv.1
+        for <desobjetsquibougent@sciz.cerv.ovh>; Fri, 08 Dec 2017 01:39:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=zxMrUwVFvWiQKMXwwFfVXm99KenElvp85aELkthkPR4=;
+        b=blQO7XMuPpHYrTB4w2McgMD5Nz7TF161jX7IkxYSCK6iSPgY6pdFr6elbTAIGRPRuo
+         Sf5KDotpfSIGfcX30wvyh9UfTE6w0MrFqr5V+f0BRMYd8C6xnJji1TErKlUQpduI7xBo
+         3yqkwhwifx6P5Go/16iWKm7TaRymznfR3i4TnEoscTsmZTTLPfArz4sEZn+AQORz72ty
+         9z8fymi/s7Uy/jJ2GBOAgGbmX8mi7eKEbLiD/oLWr0ZXXY1SM1VODtApkixrz9y/0jaD
+         PEegUoMjBfYQxpGgbf01Lqbh0RyZR8InPSEtOq9uATHpa+0QGCNRcDlfFwT6tWotNuFd
+         hu4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=zxMrUwVFvWiQKMXwwFfVXm99KenElvp85aELkthkPR4=;
+        b=KKfhLNKPYHj3VTGFHXoe9yAUTFBtdbCLC87NNksteXfsCoB0V2JB+71x1v87ckR3mp
+         g8Ds944BFwqyYzxrtt92g0xrb5i772YP2KtlJ+h7HfdTJilu0yRwwstdHTg9AnUZvYZj
+         W01gEvji7kG0rCpF+fY4Vxv4HrCqzKQVfUEQSmAmZalZLnnHJL+qpuZFMjJlI0255xmZ
+         B8xI2IYKmp1iMVhta+CfY1ct+jwafz59j5LuE/BkViwVzzEyGmiAuk8pA43bC3XP9gW8
+         JeHt1v3n1zWUxJwtqnri5ur4CJx+GmoTgQAqhEApvKWmNwlrUekL1ijFMLPv0rhGvHks
+         blrQ==
+X-Gm-Message-State: AKGB3mLY8UJts32ZAZzkMrIQ2xhqEbysz7gsUgc6Xo2NV/HKix+vvBuq
+	MGNAjNqTCY3IqIKWMkECnQLwXWSLzLGRQsUYkaE=
+X-Google-Smtp-Source: AGs4zMYpmomCb+W5piza+KQGiMINYFfW4nnAcN+hPIioDlCEbnePIKdfVBHOzwOZ2RZTXRrZoaqdh+Gh3Ectz1b2ZQY=
+X-Received: by 10.55.19.206 with SMTP id 75mr32256357qkt.33.1512725953431;
+ Fri, 08 Dec 2017 01:39:13 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.12.170.216 with HTTP; Fri, 8 Dec 2017 01:38:57 -0800 (PST)
+In-Reply-To: <5cefb15b03a0e2db8c6f04804ca61d3b@games.mountyhall.com>
+References: <5cefb15b03a0e2db8c6f04804ca61d3b@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Fri, 8 Dec 2017 10:38:57 +0100
+Message-ID: <CAC7aV=wfd1-t2B+tux6b8k8QedF+ZioDCV1PT7252J8kh=3iuA@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Sortil=C3=A8ge_=3A_Glue?=
+To: desobjetsquibougent@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="001a11c09a0c18ccb7055fd0f5fb"
+
+--001a11c09a0c18ccb7055fd0f5fb
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ----------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: 2017-10-20 20:48 GMT+02:00
+Subject: [MountyHall] Sortil=C3=A8ge : Glue
+To: censored@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0108758 : Un Bac =C3=A0 Ordures Vindicatif [Poss=C3=A9d=C3=
+=A9]
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 20/10/2017 20:48:14.
+***********************************************************
+
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : GLUE
+Le sortil=C3=A8ge GLUE a eu l'effet suivant :
+un G=C3=A9ant de Pierre Coriace [V=C3=A9t=C3=A9ran] (5892749) a =C3=A9t=C3=
+=A9 influenc=C3=A9 par l'effet
+du sortil=C3=A8ge.
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 11 %
+Jet de R=C3=A9sistance...........................: 2
+
+Le sortil=C3=A8ge n'a donc AUCUN EFFET.
+La Cible n'est PAS immobilis=C3=A9e.
+***********************************************************
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 1 point.
+
+
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+
+--=20
+Censored
+
+--001a11c09a0c18ccb7055fd0f5fb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Forwarded messag=
+e ----------<br>From: <b class=3D"gmail_sendername">MountyHall-Bot</b> <spa=
+n dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot@mountyhall.com<=
+/a>&gt;</span><br>Date: 2017-10-20 20:48 GMT+02:00<br>Subject: [MountyHall]=
+ Sortil=C3=A8ge : Glue<br>To: <a href=3D"mailto:censored@gmail.com">censored
+@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0108758 : Un Bac =C3=A0 Ordures Vindicatif [Poss=C3=A9d=C3=
+=A9]<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 20/10/2017 20:48:14.<br>
+******************************<wbr>*****************************<br>
+<br>
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : GLUE<br>
+Le sortil=C3=A8ge GLUE a eu l&#39;effet suivant :<br>
+un G=C3=A9ant de Pierre Coriace [V=C3=A9t=C3=A9ran] (5892749) a =C3=A9t=C3=
+=A9 influenc=C3=A9 par l&#39;effet du sortil=C3=A8ge.<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 11 %<br>
+Jet de R=C3=A9sistance....................<wbr>.......: 2<br>
+<br>
+Le sortil=C3=A8ge n&#39;a donc AUCUN EFFET.<br>
+La Cible n&#39;est PAS immobilis=C3=A9e.<br>
+******************************<wbr>*****************************<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 1 point.<br>
+<br>
+<br>
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/<wbr>Forum</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br><br clear=3D"all"><div><br></div>-- <br><div class=3D"gmail_signa=
+ture" data-smartmail=3D"gmail_signature"><div dir=3D"ltr">Censored<div><br>
+</div></div></div></div>
+
+--001a11c09a0c18ccb7055fd0f5fb--
