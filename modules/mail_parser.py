@@ -23,7 +23,10 @@ class MailParser:
         if msg.get_content_charset():
             subject = subject.decode(msg.get_content_charset())
             subject = subject.encode(sg.DEFAULT_CHARSET)
-        mail_subject = subject.decode(sg.DEFAULT_CHARSET)
+        try:
+            mail_subject = subject.decode(sg.DEFAULT_CHARSET)
+        except Exception as e:
+            mail_subject = subject
         # Body
         body = ''
         if msg.is_multipart():
@@ -40,7 +43,10 @@ class MailParser:
             if msg.get_content_charset():
                 body = body.decode(msg.get_content_charset())
                 body = body.encode(sg.DEFAULT_CHARSET)
-        mail_body = body.decode(sg.DEFAULT_CHARSET)
+        try:
+            mail_body = body.decode(sg.DEFAULT_CHARSET)
+        except Exception as e:
+            mail_body = body
         # Result
         return (mail_subject, mail_body)
 

@@ -54,7 +54,8 @@ class Requester:
                     self.__request_troll(id, args)
             # Request on an inconsitant list of ids
             else:
-                sg.logger.error('Inconsistant list of ids...')
+                print 'Inconsistant list of ids...'
+                sg.logger.warning('Inconsistant list of ids...')
 
     # Mob request
     def __request_mob(self, id, args):

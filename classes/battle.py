@@ -208,5 +208,4 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, name) or name.startswith('_'):
             return super().__getattr__(name)
         else:
-            print name
             return None # Trick for the stringify logic (avoiding the raise of an error)
