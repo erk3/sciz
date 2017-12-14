@@ -39,6 +39,7 @@ function eventsCtrl($http, $window, authService) {
             events[i].sub = (events[i].cdm_id === null) ? events[i].sub : events[i].cdm;
             events[i].sub = (events[i].battle_id === null) ? events[i].sub : events[i].battle;
             events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
+            events[i].sub = (events[i].portal_id === null) ? events[i].sub : events[i].portal;
           }
           var oldLength = vm.events.length;
           vm.events = vm.events.concat(events);
@@ -55,6 +56,12 @@ function eventsCtrl($http, $window, authService) {
         }
       });
   };
+
+  /*
+   * PORTAL logic
+   */
+
+  vm.switchPORTAL = function () {};
 
   /*
    * PIEGE logic

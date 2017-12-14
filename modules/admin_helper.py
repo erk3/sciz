@@ -93,7 +93,7 @@ class AdminHelper:
 
     # Routine for pushing conf to a group
     def __push_group_conf(self, group, force=False):
-        for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT]:
+        for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT, sg.CONF_GROUP_PORTAL_FORMAT]:
             if sg.config.has_section(section):
                 for (each_key, each_value) in sg.config.items(section):
                     conf = CONF()

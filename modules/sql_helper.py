@@ -16,6 +16,7 @@ from classes.hook import HOOK
 from classes.piege import PIEGE
 from classes.conf import CONF
 from classes.group import GROUP
+from classes.portal import PORTAL
 import modules.globals as sg
 
 ## SCIZ SQL Help
@@ -72,6 +73,8 @@ class SQLHelper:
             return self.__add_cdm(obj)
         elif isinstance(obj, PIEGE):
             return self.__add_piege(obj)
+        elif isinstance(obj, PORTAL):
+            return self.__add_portal(obj)
         elif isinstance(obj, TROLL):
             return self.__add_troll(obj, obj2)
         elif isinstance(obj, BATTLE):
@@ -157,6 +160,11 @@ class SQLHelper:
                 event.notif_to_push = True
             event.piege_id = obj.id
             event.type = "PIEGE"
+        elif isinstance(obj, PORTAL):
+            if (obj.troll.sciz_notif):
+                event.notif_to_push = True
+            event.portal_id = obj.id
+            event.type = "PORTAL"
         elif isinstance(obj, BATTLE):
             if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
                 event.notif_to_push = True
@@ -194,6 +202,21 @@ class SQLHelper:
         self.session.add(piege)
         self.session.commit()
         return piege
+    
+    # Add a PORTAL
+    def __add_portal(self, portal):
+        troll = TROLL()
+        troll.id = portal.troll_id
+        troll.group_id = portal.group_id
+        self.__add_troll(troll)
+        try:
+            portal = self.session.query(PORTAL).filter(PORTAL.id == portal.id).one()
+            sg.logger.warning('The portal %s already exists, aborting...' % (portal.id))
+            return None
+        except orm.exc.NoResultFound:
+            self.session.add(portal)
+            self.session.commit()
+        return portal
 
     # Add a CDM
     def __add_cdm(self, cdm):
@@ -250,6 +273,7 @@ class SQLHelper:
     @event.listens_for(CDM, 'before_update')
     @event.listens_for(BATTLE, 'before_update')
     @event.listens_for(PIEGE, 'before_update')
+    @event.listens_for(PORTAL, 'before_update')
     @event.listens_for(GROUP, 'before_update')
     @event.listens_for(HOOK, 'before_update')
     def before_udpate(mapper, connection, target):

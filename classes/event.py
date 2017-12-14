@@ -28,6 +28,8 @@ class EVENT(sg.SqlAlchemyBase):
     cdm_id = Column(Integer, ForeignKey('cdms.id'))
     # ID de l'évènement de piège
     piege_id = Column(Integer, ForeignKey('pieges.id'))
+    # ID de l'évènement de portail
+    portal_id = Column(Integer, ForeignKey('portals.id'))
     # ID du groupe d'appartenance de l'évènement
     group_id = Column(Integer, ForeignKey('groups.id'))
     
@@ -35,6 +37,7 @@ class EVENT(sg.SqlAlchemyBase):
     battle = relationship("BATTLE", primaryjoin="and_(EVENT.battle_id==BATTLE.id, EVENT.group_id==BATTLE.group_id)", back_populates="event")
     cdm = relationship("CDM", primaryjoin="and_(EVENT.cdm_id==CDM.id, EVENT.group_id==CDM.group_id)", back_populates="event")
     piege = relationship("PIEGE", primaryjoin="and_(EVENT.piege_id==PIEGE.id, EVENT.group_id==PIEGE.group_id)", back_populates="event")
+    portal = relationship("PORTAL", primaryjoin="and_(EVENT.portal_id==PORTAL.id, EVENT.group_id==PORTAL.group_id)", back_populates="event")
     # Associations One-To-Many
     group = relationship("GROUP", back_populates="events")
 
@@ -47,4 +50,5 @@ class EVENT(sg.SqlAlchemyBase):
         obj = self.battle if self.battle_id is not None else obj
         obj = self.cdm if self.cdm_id is not None else obj
         obj = self.piege if self.piege_id is not None else obj
+        obj = self.portal if self.portal_id is not None else obj
         return sg.pretty_print(obj, short)

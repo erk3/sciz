@@ -31,6 +31,7 @@ class GROUP(sg.SqlAlchemyBase):
     battles = relationship('BATTLE', back_populates='group')
     cdms = relationship('CDM', back_populates='group')
     pieges = relationship('PIEGE', back_populates='group')
+    portals = relationship('PORTAL', back_populates='group')
 
     # Constructor is handled by SqlAlchemy, do not override
     
