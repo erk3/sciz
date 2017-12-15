@@ -1,0 +1,195 @@
+Return-Path: <censored>
+Delivered-To: censored@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id kii+APKaMlqNIgAAEkUYHA
+	for <censored@sciz.cerv.ovh>; Thu, 14 Dec 2017 15:38:26 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id E098E4070
+	for <censored@sciz.cerv.ovh>; Thu, 14 Dec 2017 15:38:25 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.177; helo=mail-wr0-f177.google.com; envelope-from=censored; receiver=censored@sciz.cerv.ovh 
+Received: from mail-wr0-f177.google.com (mail-wr0-f177.google.com [209.85.128.177])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id 997304022
+	for <censored@sciz.cerv.ovh>; Thu, 14 Dec 2017 15:38:25 +0000 (UTC)
+Received: by mail-wr0-f177.google.com with SMTP id s66so5497836wrc.9
+        for <censored@sciz.cerv.ovh>; Thu, 14 Dec 2017 07:38:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=1BesTCw7fVWXwReJ/cQdNRW3RGfrKgn1aCvoMeefFeA=;
+        b=WRO8kVWIE6LTR9DHYDvcgDr2EXC+R2FXxz6hjQz9Pddfn60eUR3EagNK2AiadsQIE/
+         WbJxlraCs8Wo+fcqQnLj+qktYaOsUyf5fYFlvetafX87OwU/J1TMEq9+j9frzdQFLNkH
+         uQMsMUj19sl8FF2Xkk9+M/JzLrmDYYMBYfc79btFTmLl0SiGGct42tEFKKzl4vvp1ahC
+         L8eK4RspaUJZXdSo9xIjK5Z4Gv22gmiYWNQ09J5xCOcpOoTfgHlubUFeF7Ok70SUZQBE
+         GfRB7WZNruzjjPAOYrBd3s8ASKBEFmqiM+qP8R5yDr8VAcGS1cvbmDYiLeHWXF36otsn
+         GSzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=1BesTCw7fVWXwReJ/cQdNRW3RGfrKgn1aCvoMeefFeA=;
+        b=ptEthnSxPHDYhTkN3MEQi5xCJy6F1+UuEsjgJoYQQuvPfF5h92TtMDIgJ2g/DfawqB
+         1lvxh4SoN4RccnqAWfrd0VfmNuRlY0tUI8sKX6k3AjetfPJbRKhPscAu32ctavUTvLB4
+         UnJEDAn6/nlzLMPNgpBTmFE2XYrIKnBCzfI4qvKDPXBhFacjop3s+CXuZTskTXstEnN3
+         616qxUZDsvT0722DBbDUzpQgD642uyMqOKBhgp5fuwrzwvO571FQBpwmzF5/ZYjRAzWK
+         1NHQDXuMqkRzVM5gHuHjozsohylVhQyZYSuQ0mLM550ID8mp/Nw40XKfXA6Htar461hp
+         GpMg==
+X-Gm-Message-State: AKGB3mKIkjnzM3bNASeunbu6qOlk+nkuKCveqP+hy3Ut53sB7aHt8GUU
+	+k8xwrSGqA04LW/GLc0jDAE/KofLy5bmXFCNCAA=
+X-Google-Smtp-Source: ACJfBouujwuxYBWA1MLV1kiBvS8t66z92PVMyGdJppZDR1QU2KIDa8bJDmzJULGRbyGwKp6A2yVE8ZmOXOjOnIhgdko=
+X-Received: by 10.223.135.59 with SMTP id a56mr6255403wra.173.1513265904783;
+ Thu, 14 Dec 2017 07:38:24 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.223.132.70 with HTTP; Thu, 14 Dec 2017 07:38:24 -0800 (PST)
+In-Reply-To: <5fb005f3aacff5c9374466ea7038dd24@games.mountyhall.com>
+References: <5fb005f3aacff5c9374466ea7038dd24@games.mountyhall.com>
+From: =?UTF-8?B?WnVsIEthw68=?= <censored>
+Date: Thu, 14 Dec 2017 16:38:24 +0100
+Message-ID: <CA+qVeQzhJsR5uDiOd9572nHYo5ktxjmZsSk8Xx9q3R9A1uEwiQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Attaquant_=2D_Attaque_critique_=28Siph?=
+	=?UTF-8?Q?on_des_=C3=A2mes=29_sur_un_Bouj=27Dla_Placide_=5BAdulte=5D_=285935209=29?=
+To: censored@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="001a11493ccab495df05604eac00"
+
+--001a11493ccab495df05604eac00
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : MountyHall-Bot <bot@mountyhall.com>
+Date : 9 d=C3=A9cembre 2017 =C3=A0 23:17
+Objet : [MountyHall] Attaquant - Attaque critique (Siphon des =C3=A2mes) su=
+r un
+Bouj'Dla Placide [Adulte] (5935209)
+=C3=80 : censored
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0109047 : Zul
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 09/12/2017 23:17:56.
+***********************************************************
+
+Vous avez attaqu=C3=A9 un Bouj'Dla Placide [Adulte] (5935209) gr=C3=A2ce =
+=C3=A0 un
+sortil=C3=A8ge.
+
+
+
+Votre Jet d'Attaque est de....................: 3
+Le Jet d'Esquive de votre adversaire est de...: 0
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 82 %
+Jet de R=C3=A9sistance...........................: 100
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 11 points.
+
+
+Vous lui avez inflig=C3=A9 59 points de d=C3=A9g=C3=A2ts.
+Son Armure ne lui est d'aucune utilit=C3=A9 contre ce sortil=C3=A8ge.
+Cette attaque provoque un malus d'attaque d=C3=BC =C3=A0 la n=C3=A9crose de=
+ 17 points pour
+ses 2 prochains tours.
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.
+
+Votre Ep=C3=A9e courte du Temps en Mithril a =C3=A9t=C3=A9 l=C3=A9g=C3=A8re=
+ment abim=C3=A9e par ce coup.
+
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--001a11493ccab495df05604eac00
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Message transf=
+=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b class=3D"gmail_sendername">MountyH=
+all-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot=
+@mountyhall.com</a>&gt;</span><br>Date=C2=A0: 9 d=C3=A9cembre 2017 =C3=A0 2=
+3:17<br>Objet=C2=A0: [MountyHall] Attaquant - Attaque critique (Siphon des =
+=C3=A2mes) sur un Bouj&#39;Dla Placide [Adulte] (5935209)<br>=C3=80=C2=A0: =
+<a href=3D"mailto:censored">censored</a><br><br=
+><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0109047 : Zul<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 09/12/2017 23:17:56.<br>
+******************************<wbr>*****************************<br>
+<br>
+Vous avez attaqu=C3=A9 un Bouj&#39;Dla Placide [Adulte] (5935209) gr=C3=A2c=
+e =C3=A0 un sortil=C3=A8ge.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 3<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 0<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 82 %<br>
+Jet de R=C3=A9sistance....................<wbr>.......: 100<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 11 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 59 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure ne lui est d&#39;aucune utilit=C3=A9 contre ce sortil=C3=A8ge.<b=
+r>
+Cette attaque provoque un malus d&#39;attaque d=C3=BC =C3=A0 la n=C3=A9cros=
+e de 17 points pour ses 2 prochains tours.<br>
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.<br>
+<br>
+Votre Ep=C3=A9e courte du Temps en Mithril a =C3=A9t=C3=A9 l=C3=A9g=C3=A8re=
+ment abim=C3=A9e par ce coup.<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/<wbr>Forum</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br></div>
+
+--001a11493ccab495df05604eac00--

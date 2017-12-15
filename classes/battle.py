@@ -156,7 +156,7 @@ class BATTLE(sg.SqlAlchemyBase):
                 if key.startswith('s_'):
                     setattr(self, key, value)
                     continue
-                elif hasattr(self, key) and (getattr(self, key) is not None) and getattr(self, key):
+                elif hasattr(self, key) and (getattr(self, key) is not None) and (getattr(self, key) == 0 or getattr(self, key)):
                     s = re.sub(r'\n', ' ', value.format(getattr(self, key)))
             except KeyError as e:
                 pass

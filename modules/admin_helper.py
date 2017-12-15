@@ -194,6 +194,7 @@ class AdminHelper:
         mw = MailWalker()
         groups = sg.db.session.query(GROUP).all()
         for group in groups:
+            self.set_group(group.flat_name)
             mw.purge(group)
 
     def __auto_task_hook_push(self):

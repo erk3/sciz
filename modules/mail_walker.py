@@ -70,7 +70,7 @@ class MailWalker:
                         if not type(objs) is list: objs = [objs]
                         for obj in objs:
                             if not isinstance(obj, MAILHELPER):
-                                sg.db.add(obj)
+                                obj = sg.db.add(obj)
                                 sg.db.add_event(obj)
 
                     # Archive the mail

@@ -144,6 +144,8 @@ class SQLHelper:
 
     # Add an EVENT
     def add_event(self, obj):
+        if obj is None:
+            return None
         event = EVENT()
         event.group_id = obj.group_id
         event.time = obj.time
@@ -205,6 +207,8 @@ class SQLHelper:
     
     # Add a PORTAL
     def __add_portal(self, portal):
+        if portal.id is None:
+            return None
         troll = TROLL()
         troll.id = portal.troll_id
         troll.group_id = portal.group_id
