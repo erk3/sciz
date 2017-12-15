@@ -60,7 +60,7 @@ class PORTAL(sg.SqlAlchemyBase):
                 if key.startswith('s_'):
                     setattr(self, key, value)
                     continue
-                elif hasattr(self, key) and getattr(self, key) is not None and (getattr(self, key) == 0 or getattr(self, key)):
+                elif hasattr(self, key) and getattr(self, key) is not None and (not isinstance(getattr(self, key), bool) or getattr(self, key)):
                     s = value.format(getattr(self, key))
             except KeyError as e:
                 pass

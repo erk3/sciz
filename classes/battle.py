@@ -85,7 +85,7 @@ class BATTLE(sg.SqlAlchemyBase):
             self.subtype = self.subtype.capitalize()
         else:
             self.subtype = 'Attaque normale' if self.pv or self.deg else 'Attaque normale esquivée'
-        self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else 0
+        self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else None
         self.pv = self.pv or self.deg # Pas d'armure
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
         if hasattr(self, 'resist') :
@@ -156,7 +156,7 @@ class BATTLE(sg.SqlAlchemyBase):
                 if key.startswith('s_'):
                     setattr(self, key, value)
                     continue
-                elif hasattr(self, key) and (getattr(self, key) is not None) and (getattr(self, key) == 0 or getattr(self, key)):
+                elif hasattr(self, key) and (getattr(self, key) is not None) and (not isinstance(getattr(self, key), bool) or getattr(self, key)):
                     s = re.sub(r'\n', ' ', value.format(getattr(self, key)))
             except KeyError as e:
                 pass
