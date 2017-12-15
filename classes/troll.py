@@ -177,7 +177,7 @@ class TROLL(sg.SqlAlchemyBase):
     def pseudo(self):
         if self.user and self.user.pseudo:
             return self.user.pseudo
-        return None
+        return self.nom
 
     # Associations One-To-Many
     user = relationship('USER', back_populates='trolls')
