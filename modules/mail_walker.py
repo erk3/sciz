@@ -29,7 +29,7 @@ class MailWalker:
     # Purge routine
     def purge(self, group=None):
         group = group if group else sg.group
-        dir_path = self.mailDirPath + os.sep + group.flat_name + os.sep + 'parsed' + os.sep
+        dir_path = self.mailDirPath + os.sep + group.mail.split('@')[0] + os.sep + 'parsed' + os.sep
         mail_max_retention = sg.config.get(sg.CONF_INSTANCE_SECTION, sg.CONF_INSTANCE_MAIL_RETENTION)
         now = datetime.datetime.now()
         ago = now - datetime.timedelta(minutes = int(mail_max_retention))
@@ -39,7 +39,7 @@ class MailWalker:
                 if last_modified_date < ago:
                     os.remove(dir_path + os.sep + f)
         except (OSError, IOError) as e:
-            sg.logger.error('Fail to purge %s mail directory! (Error: %s)' % (group.flat_name, str(e), ))
+            sg.logger.error('Fail to purge %s mail directory! (Error: %s)' % (dir_path, str(e), ))
             pass
 
     # Main MailDir walker
