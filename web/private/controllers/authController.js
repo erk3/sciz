@@ -50,11 +50,13 @@ AuthController.authenticate = function (req, res) {
                 {type: 'user', id: user.id, assocs: user.assocs},
                 config.keys.secret, 
                 {expiresIn: '30m'});
+              var blasonURL = (user.trolls.length > 0) ? user.trolls[0].blason_url : 'images/MyNameIsobody.gif';
               res.json({
                 success: true,
                 id: user.id,
                 pseudo: user.pseudo,
                 token: 'JWT ' + token,
+                blasonURL: blasonURL,
                 assocs: user.assocs
                });
             }

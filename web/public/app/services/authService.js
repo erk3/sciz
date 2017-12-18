@@ -42,6 +42,7 @@ function authService($http, $cookies, $state, $window) {
         user.id = response.id;
         user.pseudo = response.pseudo;
         user.assocs = response.assocs;
+        user.blasonURL = response.blasonURL;
         user.token = response.token;
         authService.dataWrap.user = user;
         if (user.assocs !== null) {
@@ -73,7 +74,7 @@ function authService($http, $cookies, $state, $window) {
         user.assocs[i].group.desc = group.desc;
         user.currentAssoc = user.assocs[i];
         if (user.currentAssoc.group.blason_url === null) {
-          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ_MyNameIsNobody.gif';
+          user.currentAssoc.group.blason_url = 'images/MyNameIsNobody.gif';
         }
       }
     }
@@ -87,7 +88,7 @@ function authService($http, $cookies, $state, $window) {
       if (user.assocs[i].group_id === index) {
         user.currentAssoc = user.assocs[i];
         if (user.currentAssoc.group.blason_url === null) {
-          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ_MyNameIsNobody.gif';
+          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
         }
       }
     }

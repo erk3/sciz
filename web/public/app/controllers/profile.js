@@ -28,7 +28,7 @@ function profileCtrl($http, authService) {
           vm.profile.blasonUrl = vm.profile.trolls[0].blason_url;
           vm.profile.nom = vm.profile.trolls[0].nom;
         } else {
-          vm.profile.blasonURL = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+          vm.profile.blasonURL = 'images/MyNameIsNobody.gif';
         }
       }
     });

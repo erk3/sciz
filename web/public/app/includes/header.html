@@ -19,7 +19,8 @@
         </ul>
         <!-- User menu -->
         <ul class="nav navbar-nav pull-right" style="margin-right: 30px;" ng-hide="!authService.isAuthenticated()">
-          <li uib-dropdown><a uib-dropdown-toggle>{{user.pseudo}}<b class="caret"></b></a>
+          <li uib-dropdown>
+            <a uib-dropdown-toggle><img style="max-height:20px;" ng-src="{{user.blasonURL}}" onError="this.src='images/MyNameIsNobody.gif'"/> {{user.pseudo}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li><a href="/settings"><i class="icon-cog"></i>Préférences</a></li>
               <li ng-if="authService.isAuthorized(4);"><a href="/admin"><i class="icon-cog"></i>Administration</a></li>
@@ -30,10 +31,10 @@
         </ul><!-- User menu-->
         <!-- Group menu -->
         <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
-          <li uib-dropdown><a uib-dropdown-toggle>Groupe : {{user.currentAssoc.group.name}}<b class="caret"></b></a>
+          <li uib-dropdown><a uib-dropdown-toggle><img style="max-height:20px;" ng-src="{{user.currentAssoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> {{user.currentAssoc.group.name}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li ng-repeat='assoc in user.assocs'>
-                <a href="" ng-click="authService.changeGroup(assoc.group_id, true)"><i class="icon-cog"></i>{{assoc.group.name}}</a>
+                <a href="" ng-click="authService.changeGroup(assoc.group_id, true)"><img style="max-height:20px;" ng-src="{{assoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> <i class="icon-cog"></i>{{assoc.group.name}}</a>
               </li>
             </ul>
           </li>

@@ -10,7 +10,7 @@ function eventsCtrl($http, $window, authService) {
   vm.offset = 0;
   vm.busy = false;
   vm.noMoreEvent = false;
-  vm.blasonError = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+  vm.blasonError = 'images/MyNameIsNobody.gif';
 
   vm.user = authService.refreshLocalData();
 
