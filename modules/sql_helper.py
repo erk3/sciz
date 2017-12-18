@@ -92,7 +92,7 @@ class SQLHelper:
         try:
             old_user = self.session.query(USER).filter(USER.id == new_user.id).one() 
             user = self.session.merge(new_user)
-            sg.logger.info('Updating user %s...' % (user.id, ))
+            sg.logger.debug('Updating user %s...' % (user.id, ))
         except orm.exc.NoResultFound:
             user = new_user
             sg.logger.info('Creating user %s...' % (user.id, ))
@@ -105,7 +105,7 @@ class SQLHelper:
         troll = None
         try:
             troll = self.session.query(TROLL).filter(and_(TROLL.id == new_troll.id, TROLL.group_id == new_troll.group_id)).one()
-            sg.logger.info("Updating troll %s..." % (troll.id, ))
+            sg.logger.debug("Updating troll %s..." % (troll.id, ))
             troll.update_from_new(new_troll, battle)
         except orm.exc.NoResultFound:
             troll = new_troll
@@ -119,7 +119,7 @@ class SQLHelper:
         conf = None
         try:
             conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.section == new_conf.section, CONF.group_id == new_conf.group_id)).one() 
-            # sg.logger.info('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
+            sg.logger.debug('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
             conf.value = new_conf.value
             self.session.add(conf)
         except orm.exc.NoResultFound:
@@ -134,7 +134,7 @@ class SQLHelper:
         group = None
         try:
             group = self.session.query(GROUP).filter(GROUP.id == new_group.id).one()
-            sg.logger.info('Updating group %s...' % (group.name, ))
+            sg.logger.debug('Updating group %s...' % (group.name, ))
         except orm.exc.NoResultFound:
             group = new_group
             sg.logger.info('Creatin group %s...' % (group.name, ))
