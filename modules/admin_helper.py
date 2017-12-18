@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import sys, ConfigParser, sqlalchemy, json, codecs, datetime, os
+import sys, ConfigParser, sqlalchemy, json, codecs, datetime, os, unidecode
 from sqlalchemy import and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from modules.mh_caller import MHCaller
@@ -49,7 +49,9 @@ class AdminHelper:
     def set_group(self, group_name):
         # Set the working group
         sg.group = None
-        flat_name = group_name.lower().replace(' ', '')
+        if not isinstance(group_name, unicode):
+            group_name = group_name.decode(sg.DEFAULT_CHARSET)
+        flat_name = filter(str.isalnum, unidecode.unidecode(group_name.lower()))
         sg.logger.info('Group has been set to %s!' % (flat_name, ))
         try:
             sg.group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one() 
@@ -78,7 +80,9 @@ class AdminHelper:
 
     def reset_groups_conf(self, group_name=None):
         if group_name and isinstance(group_name, str) and group_name != '':
-            flat_name = group_name.lower().replace(' ', '')
+            if not isinstance(group_name, unicode):
+                group_name = group_name.decode(sg.DEFAULT_CHARSET)
+            flat_name = filter(str.isalnum, unidecode.unidecode(group_name.lower()))
             sg.logger.info('Reseting conf for group %s...' % flat_name)
             try:
                 group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one()
