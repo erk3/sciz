@@ -6,36 +6,36 @@
     <div ng-if="ec.cur.battle_id" ng-include src="'app/views/event_battle.html'"></div>
     <div ng-if="ec.cur.piege_id" ng-include src="'app/views/event_piege.html'"></div>
     <div ng-if="ec.cur.portal_id" ng-include src="'app/views/event_portal.html'"></div>
+    <div ng-if="!ec.cur" ng-include src="'app/views/event_unknown.html'"></div>
 
     <!-- Events list display -->
-    <form>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
-          <input type="text" class="form-control" placeholder="Numéro de monstre, trõll, etc." ng-model="ec.searchValue">
-        </div>      
-      </div>
-    </form>
+    <div ng-hide="!ec.cur">
+      <form>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
+            <input type="text" class="form-control" placeholder="Numéro de monstre, trõll, etc." ng-model="ec.searchValue">
+          </div>      
+        </div>
+      </form>
 
-    <div class="col-sm-7 col-md-7 table-responsive">
-      <table class="table table-hover table-condensed" style="margin-bottom: 0px;">
-        <thead class="thead-inverse">
-          <tr>
-            <th class="text-center">Évènement</th>
-          </tr>
-        </thead>
-      </table>
-      <div class="table-responsive pre-scrollable" style="max-height:60vh;">
-        <table class="table table-hover table-condensed">
-          <tbody infinite-scroll="ec.loadMoreEvents()" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1" infinite-scroll-container="'.pre-scrollable'">
-            <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
-              <!--
-              <td class="text-center" style="white-space: nowrap"><small>{{ec.displayDate(event.sub.time)}}</small></td>
-              -->
-              <td class="text-left"><small ng-bind-html="event.notif"></small></td>
+      <div class="col-sm-7 col-md-7 table-responsive">
+        <table class="table table-hover table-condensed" style="margin-bottom: 0px;">
+          <thead class="thead-inverse">
+            <tr>
+              <th class="text-center">Évènement</th>
             </tr>
-          </tbody>
+          </thead>
         </table>
+        <div class="table-responsive pre-scrollable" style="max-height:60vh;">
+          <table class="table table-hover table-condensed">
+            <tbody infinite-scroll="ec.loadMoreEvents(true)" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1" infinite-scroll-container="'.pre-scrollable'">
+              <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
+                <td class="text-left"><small>{{ec.displayShortEvent(event)}}</small></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

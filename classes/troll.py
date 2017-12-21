@@ -47,7 +47,7 @@ class TROLL(sg.SqlAlchemyBase):
     # Date d'inscription
     inscription = Column(DateTime)
     # URL du blason (profil public)
-    blason_url = Column(String(150))
+    blason_url = Column(String(500))
     # Position axe X
     pos_x = Column(Integer)
     # Position axe Y
