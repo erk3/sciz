@@ -10,7 +10,6 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   vm.offset = 0;
   vm.lastID = 0;
   vm.busy = false;
-  // vm.isBlur = false;
   vm.noMoreEvent = false;
   vm.blasonError = 'images/MyNameIsNobody.gif';
 

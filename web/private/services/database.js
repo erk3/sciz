@@ -16,6 +16,7 @@ var CDMTemplate = require('../models/cdm.js');
 var PiegeTemplate = require('../models/piege.js');
 var PortalTemplate = require('../models/portal.js');
 var EventTemplate = require('../models/event.js');
+var PadTemplate = require('../models/pad.js');
 
 /*
  * Main database connection
@@ -44,6 +45,7 @@ Templates.push(CDMTemplate);
 Templates.push(PiegeTemplate);
 Templates.push(PortalTemplate);
 Templates.push(EventTemplate);
+Templates.push(PadTemplate);
 
 Templates.forEach(function (Template) {
   DB[Template.name] = DB.define(Template.table, Template.modelDefinition, Template.modelOptions);

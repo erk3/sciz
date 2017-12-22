@@ -16,6 +16,7 @@ from classes.hook import HOOK
 from classes.piege import PIEGE
 from classes.conf import CONF
 from classes.group import GROUP
+from classes.pad import PAD
 from classes.portal import PORTAL
 import modules.globals as sg
 
@@ -140,7 +141,22 @@ class SQLHelper:
             sg.logger.info('Creatin group %s...' % (group.name, ))
         self.session.add(group)
         self.session.commit()
+        pad = PAD()
+        pad.group_id = group.id
+        self.__add_pad(pad)
         return group
+    
+    # Add a PAD
+    def __add_pad(self, new_pad):
+        pad = None
+        try:
+            pad = self.session.query(PAD).filter(PAD.group_id == new_pad.group_id).one()
+        except orm.exc.NoResultFound:
+            pad = new_pad
+            sg.logger.info('Creatin pad for group %s...' % (new_pad.group_id, ))
+        self.session.add(pad)
+        self.session.commit()
+        return pad
 
     # Add an EVENT
     def add_event(self, obj):

@@ -67,5 +67,15 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
       }
     });
 
+  $stateProvider
+    .state('pad', {
+      url: '/pad',
+      templateUrl: 'app/views/pad.html',
+      controller: 'PadCtrl as pc',
+      data: {
+        accessLevel: staticData.accessLevels.user
+      }
+    });
+
   $httpProvider.interceptors.push('requestInterceptor');
 }

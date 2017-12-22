@@ -11,12 +11,14 @@ var UserController = require('../controllers/userController.js');
 var AdminController = require('../controllers/adminController.js');
 var EventsController = require('../controllers/eventsController.js');
 var HookController = require('../controllers/hookController.js');
+var PadController = require('../controllers/padController.js');
 
 var APIRoutes = function(passport) {
   
   // POST routes
   router.post('/authenticate', AuthController.authenticate);
   router.post('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.updateProfile));
+  router.post('/pad', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, PadController.updatePad));
   router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));
   router.post('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateGroup));
   router.post('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.request));
@@ -24,6 +26,7 @@ var APIRoutes = function(passport) {
 
   // GET routes
   router.get('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.getProfile));
+  router.get('/pad', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, PadController.getPad));
   router.get('/events', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, EventsController.getEvents));
   router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.getNotifs));
   router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getHooks));

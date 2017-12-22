@@ -56,8 +56,9 @@ class AdminHelper:
         try:
             sg.group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one() 
             try:
-                # Group exists, load its configuration
+                # Group exists, push any missing configuration
                 self.__push_group_conf(sg.group, False)
+                # Group exists, load its configuration
                 confs = sg.db.session.query(CONF).filter(CONF.group_id == sg.group.id).all()
                 for conf in confs:
                     sg.config.set(conf.section, conf.key, conf.value)

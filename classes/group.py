@@ -20,6 +20,8 @@ class GROUP(sg.SqlAlchemyBase):
     mail = Column(String(150))
     mail_pwd = Column(String(255))
     
+    # Associations One-To-One
+    pad = relationship('PAD', back_populates='group')
     # Associations Many-To-Many
     users = relationship('AssocUsersGroups', back_populates='group')
     # Associations Many-To-One
