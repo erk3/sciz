@@ -15,9 +15,9 @@
       </div>
       <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Accueil</a></li>
-          <li class="active" ng-hide="!authService.isAuthenticated()"><a href="/events">Événements</a></li>
-          <li class="active" ng-hide="!authService.isAuthenticated()"><a href="/pad">Bloc-notes</a></li>
+          <li ui-sref-active="active"><a ui-sref="login" href="/">Accueil</a></li>
+          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="events" href="/events">Événements</a></li>
+          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="pad" href="/pad">Bloc-notes</a></li>
         </ul>
         <!-- User menu -->
         <ul class="nav navbar-nav pull-right" style="margin-right: 30px;" ng-hide="!authService.isAuthenticated()">
@@ -43,7 +43,7 @@
         </ul><!-- Group menu-->
         <!-- Aide menu -->
         <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
-          <li class="active"><a href="/help"><i class="icon-cog"></i>Besoin d'aide ?</a></li>
+          <li ui-sref-active="active" class=""><a ui-sref="help" href="/help"><i class="icon-cog"></i>Besoin d'aide ?</a></li>
         </ul><!-- Aide menu-->
       </div>
     </div>
