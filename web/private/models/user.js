@@ -47,6 +47,9 @@ UserTemplate.modelDefinition = {
   mh_apikey: {
     type: sequelize.STRING,
   },
+  default_group_id: {
+    type: sequelize.INTEGER,
+  },
   session_duration: {
     type: sequelize.INTEGER,
   },

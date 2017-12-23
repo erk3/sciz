@@ -43,6 +43,19 @@
         <input type="number" min="30" step="15" max="1440" class="form-control" ng-model="pc.profile.session_duration" ng-class="{'has-error': pc.profile.session_duration === null}" tooltips tooltip-template="Reconnexion nécessaire" tooltip-class="tooltip" tooltip-side="right" required>
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-sm-5 col-md-4 control-label">Groupe par défaut</label>
+      <div class="col-sm-2 col-md-1">
+        <div class="btn-group" uib-dropdown is-open="status.isopen">
+          <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+            {{authService.getGroup(pc.profile.default_group_id).name || 'Aucun groupe'}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+            <li ng-repeat="assoc in pc.user.assocs" role="menuitem"><a href="#" ng-click="pc.profile.default_group_id = assoc.group.id">{{assoc.group.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <br/>
     <br/>
     

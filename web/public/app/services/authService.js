@@ -19,6 +19,7 @@ function authService($http, $cookies, $state, $window) {
     updateLocalData: updateLocalData,
     updateGroup: updateGroup,
     changeGroup: changeGroup,
+    getGroup: getGroup,
     dataWrap: {}
   };
 
@@ -42,12 +43,14 @@ function authService($http, $cookies, $state, $window) {
         user.id = response.id;
         user.pseudo = response.pseudo;
         user.session_duration = response.session_duration;
+        user.default_group_id = response.default_group_id;
         user.assocs = response.assocs;
         user.blasonURL = response.blasonURL;
         user.token = response.token;
         authService.dataWrap.user = user;
-        if (user.assocs !== null) {
-          authService.changeGroup(user.assocs[0].group_id, false);
+        if (user.assocs !== null && user.assocs.length > 0) {
+          var index = (user.default_group_id) ? user.default_group_id : user.assocs[0].group_id;
+          authService.changeGroup(index, false);
         }
         authService.dataWrap.user = user;
 
@@ -81,6 +84,16 @@ function authService($http, $cookies, $state, $window) {
     }
     authService.dataWrap.user = user;
     return authService.updateLocalData();
+  }
+
+  function getGroup(index) {
+    var user = authService.dataWrap.user;
+    for (var i = 0; i < user.assocs.length; i++) {
+      if (user.assocs[i].group_id === index) {
+        return user.assocs[i].group;
+      }
+    }
+    return {};
   }
 
   function changeGroup(index, reload) {

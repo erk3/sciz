@@ -56,6 +56,7 @@ AuthController.authenticate = function (req, res) {
                 id: user.id,
                 pseudo: user.pseudo,
                 session_duration: user.session_duration,
+                default_group_id: user.default_group_id,
                 token: 'JWT ' + token,
                 blasonURL: blasonURL,
                 assocs: user.assocs

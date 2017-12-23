@@ -61,6 +61,9 @@ DB.AssocUsersGroups.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id'})
 DB.User.prototype.comparePasswords = UserTemplate.comparePasswords;
 DB.User.hasMany(DB.Troll, {foreignKey: 'user_id', sourceKey: 'id'});
 DB.User.hasMany(DB.AssocUsersGroups, {as: 'assocs', foreignKey: 'user_id', sourceKey: 'id'});
+// Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
+// DB.User.hasOne(DB.Group, {foreignKey: 'id', sourceKey: 'default_group_id'});
+DB.User.hasMany(DB.Group, {foreignKey: 'id', sourceKey: 'default_group_id'});
 // Troll
 DB.Troll.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id'});
 DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});

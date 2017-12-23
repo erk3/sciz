@@ -20,6 +20,8 @@ class USER(sg.SqlAlchemyBase):
     pwd = Column(String(100))
     # Mountyhall API Key
     mh_apikey = Column(String(50))
+    # Default group
+    default_group_id = Column(Integer, ForeignKey('groups.id'))
     # Web session duration
     session_duration = Column(Integer(), default=30)
     # Minutes between a refresh of dynamic MH scripts
@@ -35,6 +37,8 @@ class USER(sg.SqlAlchemyBase):
     groups = relationship("AssocUsersGroups", back_populates="user")
     # Associations Many-To-One
     trolls = relationship("TROLL", back_populates="user")
+    # Association One-To-One
+    default_group = relationship("GROUP")
 
     # Constructor is handled by SqlAlchemy, do not override
 
