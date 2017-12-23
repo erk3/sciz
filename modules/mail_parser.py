@@ -19,35 +19,41 @@ class MailParser:
 
     # Utility mail parser
     def parse_mail(self, msg):
-        # Subject
-        subject = email.header.decode_header(msg['subject'])[0][0]
-        if msg.get_content_charset():
-            subject = subject.decode(msg.get_content_charset())
-            subject = subject.encode(sg.DEFAULT_CHARSET)
+        mail_subject = ''
+        mail_body = ''
         try:
-            mail_subject = subject.decode(sg.DEFAULT_CHARSET)
-        except Exception as e:
-            mail_subject = subject
-        # Body
-        body = ''
-        if msg.is_multipart():
-            for part in msg.walk():
-                if part.get_content_type() == 'text/plain':
-                    payload = part.get_payload(decode=True)
-                    if payload is not None and part.get_content_charset():
-                        payload = payload.decode(part.get_content_charset())
-                        payload = payload.encode(sg.DEFAULT_CHARSET)
-                    if payload is not None:
-                        body += payload
-        else:
-            body = msg.get_payload(decode=True)
+            # Subject
+            subject = email.header.decode_header(msg['subject'])[0][0]
             if msg.get_content_charset():
-                body = body.decode(msg.get_content_charset())
-                body = body.encode(sg.DEFAULT_CHARSET)
-        try:
-            mail_body = body.decode(sg.DEFAULT_CHARSET)
+                subject = subject.decode(msg.get_content_charset())
+                subject = subject.encode(sg.DEFAULT_CHARSET)
+            try:
+                mail_subject = subject.decode(sg.DEFAULT_CHARSET)
+            except Exception as e:
+                mail_subject = subject
+            # Body
+            body = ''
+            if msg.is_multipart():
+                for part in msg.walk():
+                    if part.get_content_type() == 'text/plain':
+                        payload = part.get_payload(decode=True)
+                        if payload is not None and part.get_content_charset():
+                            payload = payload.decode(part.get_content_charset())
+                            payload = payload.encode(sg.DEFAULT_CHARSET)
+                        if payload is not None:
+                            body += payload
+            else:
+                body = msg.get_payload(decode=True)
+                if msg.get_content_charset():
+                    body = body.decode(msg.get_content_charset())
+                    body = body.encode(sg.DEFAULT_CHARSET)
+            try:
+                mail_body = body.decode(sg.DEFAULT_CHARSET)
+            except Exception as e:
+                mail_body = body
         except Exception as e:
-            mail_body = body
+            sg.logger.error('Failed to parse a mail: %s' % (str(e)))
+            pass
         # Result
         return (mail_subject, mail_body)
 
@@ -79,8 +85,6 @@ class MailParser:
         # The following items are for occurences of regexps matching several times
         # At the end all the regexps of the first item not in the others are copied
         res = {0: {}}
-        # Actually parse the mail
-        # (subject, body) = self.__parse_mail(mail)
         # Loop over the regexp for ignored subject matching
         ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(ignored_regexps, subject)

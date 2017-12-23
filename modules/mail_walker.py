@@ -87,4 +87,3 @@ class MailWalker:
         except (OSError, IOError, mailbox.Error) as e:
             e.sciz_logger_flag = True
             sg.logger.error('Fail to scan mail directory! (Eerror: %s)' % (str(e), ))
-            raise
