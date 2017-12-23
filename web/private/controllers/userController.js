@@ -13,6 +13,7 @@ UserController.updateProfile = function (req, res) {
   var data = {
     pseudo: req.body.pseudo,
     mh_apikey: req.body.mh_apikey,
+    session_duration: req.body.session_duration,
     dyn_sp_refresh: req.body.dyn_sp_refresh,
     static_sp_refresh: req.body.static_sp_refresh
   };
@@ -71,6 +72,7 @@ UserController.getProfile = function (req, res) {
           id: user.id,
           pseudo: user.pseudo,
           mh_apikey: user.mh_apikey,
+          session_duration: user.session_duration,
           dyn_sp_refresh: user.dyn_sp_refresh,
           static_sp_refresh: user.static_sp_refresh,
           trolls: user.trolls,

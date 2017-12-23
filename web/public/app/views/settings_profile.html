@@ -36,7 +36,13 @@
       <div class="col-sm-4 col-md-3">
         <input type="text" class="form-control" placeholder="Pseudonyme SCIZ" ng-model="pc.profile.pseudo" required>
       </div>
-    </div>  
+    </div>
+    <div class="form-group">
+      <label class="col-sm-5 col-md-4 control-label">Durée maximum de session inactive (minutes)</label>
+      <div class="col-sm-2 col-md-1">
+        <input type="number" min="30" step="15" max="1440" class="form-control" ng-model="pc.profile.session_duration" ng-class="{'has-error': pc.profile.session_duration === null}" tooltips tooltip-template="Reconnexion nécessaire" tooltip-class="tooltip" tooltip-side="right" required>
+      </div>
+    </div>
     <br/>
     <br/>
     

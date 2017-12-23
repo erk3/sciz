@@ -20,6 +20,8 @@ class USER(sg.SqlAlchemyBase):
     pwd = Column(String(100))
     # Mountyhall API Key
     mh_apikey = Column(String(50))
+    # Web session duration
+    session_duration = Column(Integer(), default=30)
     # Minutes between a refresh of dynamic MH scripts
     dyn_sp_refresh = Column(Integer(), default=240)
     # Last refresh of dynamic MH scripts

@@ -47,6 +47,9 @@ UserTemplate.modelDefinition = {
   mh_apikey: {
     type: sequelize.STRING,
   },
+  session_duration: {
+    type: sequelize.INTEGER,
+  },
   dyn_sp_refresh: {
     type: sequelize.INTEGER,
   },

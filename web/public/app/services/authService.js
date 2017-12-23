@@ -41,6 +41,7 @@ function authService($http, $cookies, $state, $window) {
         var user = {};
         user.id = response.id;
         user.pseudo = response.pseudo;
+        user.session_duration = response.session_duration;
         user.assocs = response.assocs;
         user.blasonURL = response.blasonURL;
         user.token = response.token;
@@ -106,7 +107,9 @@ function authService($http, $cookies, $state, $window) {
 
   function updateLocalData() {
     var expires = new Date();
-    expires.setTime(expires.getTime() + (30 * 60 * 1000));
+    var time = authService.dataWrap.user.session_duration;
+    time = (time) ? time : 30;
+    expires.setTime(expires.getTime() + (time * 60 * 1000));
     $cookies.putObject(
       'user',
       authService.dataWrap.user,
