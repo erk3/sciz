@@ -11,13 +11,13 @@
       </br>
       <div ng-if="ac.updateErrorGroup">
         </br>
-        <div class="alert" ng-class="{'alert-danger':ac.updateErrorGroup}">
+        <div uib-alert class="alert" ng-class="{'alert-danger':ac.updateErrorGroup}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
           {{ac.updateErrorGroupMessage}}
         </div>
       </div>
       <div ng-if="ac.updateStatusGroup">
         </br>
-        <div class="alert" ng-class="{'alert-success':ac.updateStatusGroup}">
+        <div uib-alert class="alert" ng-class="{'alert-success':ac.updateStatusGroup}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
           {{ac.updateStatusGroupMessage}}
         </div>
       </div>

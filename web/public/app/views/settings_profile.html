@@ -11,13 +11,13 @@
       </br>
       <div ng-if="pc.updateError">
         </br>
-        <div class="alert" ng-class="{'alert-danger':pc.updateError}">
+        <div uib-alert class="alert" ng-class="{'alert-danger':pc.updateError}" dismiss-on-timeout="2000" close="pc.resetAlerts()">
           {{pc.updateErrorMessage}}
         </div>
       </div>
       <div ng-if="pc.updateStatus">
         </br>
-        <div class="alert" ng-class="{'alert-success':pc.updateStatus}">
+        <div uib-alert class="alert" ng-class="{'alert-success':pc.updateStatus}" dismiss-on-timeout="2000" close="pc.resetAlerts()">
           {{pc.updateStatusMessage}}
         </div>
       </div>

@@ -1,13 +1,14 @@
 angular
   .module('app')
-  .controller('ProfileCtrl', ['$http', 'authService', profileCtrl]);
+  .controller('ProfileCtrl', ['$http', '$window', '$document', 'authService', profileCtrl]);
 
-function profileCtrl($http, authService) {
+function profileCtrl($http, $window, $document, authService) {
   var vm = this;
   const stepDynSpRefresh = 2;
   const stepStaticSpRefresh = 0;
 
   vm.updateProfile = updateProfile;
+  vm.resetAlerts = resetAlerts;
   vm.profile = {};
   vm.view = 'profile';
 
@@ -69,8 +70,7 @@ function profileCtrl($http, authService) {
     vm.oldPwd = null;
     vm.newPwd = null;
     vm.pwd = null;
-    vm.updateError = false;
-    vm.updateErrorMessage = null;
+    resetAlerts();
     vm.updateStatus = true;
     vm.updateStatusMessage = 'Modifications enregistrées';
   }
@@ -79,12 +79,18 @@ function profileCtrl($http, authService) {
     vm.oldPwd = null;
     vm.newPwd = null;
     vm.pwd = null;
+    resetAlerts();
     vm.updateError = true;
     vm.updateErrorMessage = 'Erreur';
-    vm.updateStatus = false;
-    vm.updateStatusMessage = null;
     if (response && response.data) {
       vm.updateErrorMessage += ': ' + response.data.message;
     }
+  }
+
+  function resetAlerts() {
+    vm.updateError = false;
+    vm.updateErrorMessage = null;
+    vm.updateStatus = false;
+    vm.updateStatusMessage = null;
   }
 }

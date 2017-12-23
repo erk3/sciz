@@ -24,18 +24,22 @@ function adminCtrl($http, $window, authService) {
   vm.switchView = switchView;
   vm.isUnboxConfValueValid = isUnboxConfValueValid;
 
-  vm.updateErrorConf = false;
-  vm.updateErrorConfConfMessage = null;
-  vm.updateStatusConf = false;
-  vm.updateStatusConfMessage = null;
-  vm.updateErrorHook = false;
-  vm.updateErrorHookMessage = null;
-  vm.updateStatusHook = false;
-  vm.updateStatusHookMessage = null;
-  vm.updateErrorGroup = false;
-  vm.updateErrorGroupMessage = null;
-  vm.updateStatusGroup = false;
-  vm.updateStatusGroupMessage = null;
+  vm.resetAlerts = function () {
+    vm.updateErrorConf = false;
+    vm.updateErrorConfConfMessage = null;
+    vm.updateStatusConf = false;
+    vm.updateStatusConfMessage = null;
+    vm.updateErrorHook = false;
+    vm.updateErrorHookMessage = null;
+    vm.updateStatusHook = false;
+    vm.updateStatusHookMessage = null;
+    vm.updateErrorGroup = false;
+    vm.updateErrorGroupMessage = null;
+    vm.updateStatusGroup = false;
+    vm.updateStatusGroupMessage = null;
+  };
+
+  vm.resetAlerts();
 
   vm.user = authService.refreshLocalData();
   vm.switchView('group');

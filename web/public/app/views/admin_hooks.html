@@ -32,13 +32,13 @@
   <br/>
 
   <div ng-if="ac.updateErrorHook">
-    <div class="alert alert-danger">
+    <div uib-alert class="alert alert-danger" dismiss-on-timeout="2000" close="ac.resetAlerts()">
       {{ac.updateErrorHookMessage}}
     </div>
     <br/>
   </div>
   <div ng-if="ac.updateStatusHook"> 
-    <div class="alert alert-success">
+    <div uib-alert class="alert alert-success" dismiss-on-timeout="2000" close="ac.resetAlerts()">
       {{ac.updateStatusHookMessage}}
     </div>
     <br/>

@@ -11,13 +11,13 @@
       </br>
       <div ng-if="ac.updateErrorConf">
         </br>
-        <div class="alert" ng-class="{'alert-danger':ac.updateErrorConf}">
+        <div uib-alert class="alert" ng-class="{'alert-danger':ac.updateErrorConf}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
           {{ac.updateErrorConfMessage}}
         </div>
       </div>
       <div ng-if="ac.updateStatusConf">
         </br>
-        <div class="alert" ng-class="{'alert-success':ac.updateStatusConf}">
+        <div uib-alert class="alert" ng-class="{'alert-success':ac.updateStatusConf}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
           {{ac.updateStatusConfMessage}}
         </div>
       </div>
