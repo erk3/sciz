@@ -67,7 +67,7 @@ class SQLHelper:
             raise
 
     # Add any object (dispatcher)
-    def add(self, obj, obj2=None):
+    def add(self, obj):
         if isinstance(obj, MOB):
             return self.__add_mob(obj)
         elif isinstance(obj, CDM):
@@ -77,7 +77,7 @@ class SQLHelper:
         elif isinstance(obj, PORTAL):
             return self.__add_portal(obj)
         elif isinstance(obj, TROLL):
-            return self.__add_troll(obj, obj2)
+            return self.__add_troll(obj)
         elif isinstance(obj, BATTLE):
             return self.__add_battle(obj)
         elif isinstance(obj, USER):
@@ -258,13 +258,13 @@ class SQLHelper:
             att_troll.id = battle.att_troll_id
             att_troll.group_id = battle.group_id
             att_troll.nom = battle.att_troll_nom
-            battle.att_troll = self.__add_troll(att_troll)
+            att_troll = self.__add_troll(att_troll)
         if battle.def_troll_id != None:
             def_troll = TROLL()
             def_troll.id = battle.def_troll_id
             def_troll.group_id = battle.group_id
             def_troll.nom = battle.def_troll_nom
-            battle.def_troll = self.__add_troll(def_troll)
+            def_troll = self.__add_troll(def_troll)
         if battle.att_mob_id != None:
             att_mob = MOB()
             att_mob.id = battle.att_mob_id
@@ -272,7 +272,7 @@ class SQLHelper:
             att_mob.nom = battle.att_mob_nom
             att_mob.age = battle.att_mob_age
             att_mob.tag = battle.att_mob_tag
-            battle.att_mob = self.__add_mob(att_mob)
+            att_mob = self.__add_mob(att_mob)
         if battle.def_mob_id != None:
             def_mob = MOB()
             def_mob.id = battle.def_mob_id
@@ -280,8 +280,12 @@ class SQLHelper:
             def_mob.nom = battle.def_mob_nom
             def_mob.age = battle.def_mob_age
             def_mob.tag = battle.def_mob_tag
-            battle.def_mob = self.__add_mob(def_mob)
-        battle = sg.ge.play(battle)
+            def_mob = self.__add_mob(def_mob)
+        battle.att_troll = att_troll if battle.att_troll_id else None
+        battle.def_troll = def_troll if battle.def_troll_id else None
+        battle.att_mob = att_mob if battle.att_mob_id else None
+        battle.def_mob = def_mob if battle.def_mob_id else None
+	battle = sg.ge.play(battle)
         self.session.add(battle)
         self.session.commit()
         return battle
