@@ -22,15 +22,20 @@ class MailParser:
         mail_subject = ''
         mail_body = ''
         try:
-            # Subject
-            subject = email.header.decode_header(msg['subject'])[0][0]
-            if msg.get_content_charset():
+            tuple_subject_charset = email.header.decode_header(msg['subject'])
+            subject = tuple_subject_charset[0][0]
+            charset = tuple_subject_charset[0][1]
+            # Use the embedded charset in the subject if any
+            if charset:
+                charset = 'mac-roman' if (charset == 'macintosh') else charset # Dirty hack for really old Apple mail clients (< OS X)
+                subject = subject.decode(charset)
+            # Else use any global charset for the mail
+            elif msg.get_content_charset():
                 subject = subject.decode(msg.get_content_charset())
+            # Else assume it is utf-8
+            else:
                 subject = subject.encode(sg.DEFAULT_CHARSET)
-            try:
-                mail_subject = subject.decode(sg.DEFAULT_CHARSET)
-            except Exception as e:
-                mail_subject = subject
+            mail_subject = subject
             # Body
             body = ''
             if msg.is_multipart():
@@ -38,22 +43,19 @@ class MailParser:
                     if part.get_content_type() == 'text/plain':
                         payload = part.get_payload(decode=True)
                         if payload is not None and part.get_content_charset():
-                            payload = payload.decode(part.get_content_charset())
-                            payload = payload.encode(sg.DEFAULT_CHARSET)
-                        if payload is not None:
-                            body += payload
+                            body += payload.decode(part.get_content_charset())
+                        elif payload is not None:
+                            body += payload.decode(sg.DEFAULT_CHARSET)
             else:
                 body = msg.get_payload(decode=True)
                 if msg.get_content_charset():
                     body = body.decode(msg.get_content_charset())
-                    body = body.encode(sg.DEFAULT_CHARSET)
-            try:
-                mail_body = body.decode(sg.DEFAULT_CHARSET)
-            except Exception as e:
-                mail_body = body
+                else:
+                    body = body.decode(sg.DEFAULT_CHARSET)
+            mail_body = body
         except Exception as e:
             sg.logger.error('Failed to parse a mail: %s' % (str(e)))
-            pass
+            raise
         # Result
         return (mail_subject, mail_body)
 
