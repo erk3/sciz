@@ -37,6 +37,8 @@
 		<div class="col-md-6">
 			<blockquote ng-if="ec.cur.sub.att_troll_id">
         <p>{{ec.cur.sub.att_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.att_troll.id}}">{{ec.cur.sub.att_troll.id}}</a>)</p>
+        <p ng-if="ec.cur.sub.px"><cite><small>Point(s) d'expérience : {{ec.cur.sub.px}}</small></cite></p>
+        <p ng-if="ec.cur.sub.fatigue"><cite><small>Fatigue augmentée de : {{ec.cur.sub.fatigue}}</small></cite></p>
 			</blockquote>
 			<blockquote ng-if="ec.cur.sub.att_mob_id">
         <p>{{ec.cur.sub.att_mob.nom}} [{{ec.cur.sub.att_mob.age}}] <span ng-if="ec.cur.sub.att_mob.tag">{{ec.cur.sub.att_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.att_mob.id}}">{{ec.cur.sub.att_mob.id}}</a>)</p>
@@ -45,6 +47,7 @@
 		<div class="col-md-6">
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_troll_id">
 			  <p>{{ec.cur.sub.def_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.def_troll.id}}">{{ec.cur.sub.def_troll.id}}</a>)</p>
+        <p ng-if="ec.cur.sub.fatigue && !ec.cur.sub.att_troll_id"><cite><small>Fatigue augmentée de : {{ec.cur.sub.fatigue}}</small></cite></p>
 			</blockquote>
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_mob_id">
         <p>{{ec.cur.sub.def_mob.nom}} [{{ec.cur.sub.def_mob.age}}] <span ng-if="ec.cur.sub.def_mob.tag">{{ec.cur.sub.def_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.def_mob.id}}">{{ec.cur.sub.def_mob.id}}</a>)</p>

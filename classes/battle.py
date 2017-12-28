@@ -65,6 +65,10 @@ class BATTLE(sg.SqlAlchemyBase):
     crit = Column(Boolean)
     # Cible décédée ?
     dead = Column(Boolean)
+    # PX
+    px = Column(Integer)
+    # Fatigue
+    fatigue = Column(Integer)
 
     # Associations One-To-Many
     att_troll = relationship("TROLL", primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="atts")
@@ -111,7 +115,7 @@ class BATTLE(sg.SqlAlchemyBase):
             else:
                 self.def_troll_nom = self.def_name
                 self.def_troll_id = self.def_id
-        if hasattr(self, 'resist') and self.resist is not None and not 'résisté' in self.type:
+        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type:
             self.type += u' réduit'
         self.build()
    
@@ -138,6 +142,10 @@ class BATTLE(sg.SqlAlchemyBase):
  
     def build_capa(self):       
         self.build_def()
+    
+    def build_capa2(self):       
+        self.subtype = 'Ronflements' if self.subtype == 'ronfle' else self.subtype
+        self.build_capa()
     
     def build_att_sort(self):
         self.build_att()
@@ -199,7 +207,7 @@ class BATTLE(sg.SqlAlchemyBase):
         res = re.sub(r'(\(\s*)+', '(', res)
         res = re.sub(r'(\s*\))+', ')', res)
         res = re.sub(r'(\)\()|(\(\))', ' ', res)
-        res = re.sub(r'\s*:(\s*|\n|\\n)*$', '', res)
+        res = re.sub(r'\s*:(\s*|\n|\\n)*(\(|$)', r' \2', res)
         res = re.sub(r' +', ' ', res)
         res = re.sub(r'\\n', '\n', res)
         return res

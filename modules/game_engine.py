@@ -32,16 +32,22 @@ class GameEngine:
         dm = battle.def_mob
         # Blessure
         if battle.blessure and at and at.pv:
-            at.pv = max(0, at.pv - int(battle.blessure))
+            at.pv = max(0, int(at.pv) - int(battle.blessure))
         # Vie restante
         if battle.vie and dt:
             dt.pv = battle.vie
         # Soin
         if battle.soin and dt and dt.pv and dt.base_bonus_pv_max:
-            dt.pv = min(dt.base_bonus_pv_max, dt.pv + int(battle.soin))
+            dt.pv = min(dt.base_bonus_pv_max, int(dt.pv) + int(battle.soin))
         # PV perdus
         if battle.pv and dt and dt.pv:
-            dt.pv = max(0, dt.pv - int(battle.pv))
+            dt.pv = max(0, int(dt.pv) - int(battle.pv))
+        # Fatigue (Charge)
+        if battle.fatigue and at and at.fatigue:
+            at.fatigue = max(127, int(at.fatigue) + int(battle.fatigue))
+        # Fatigue (Pouvoirs type Ronflement)
+        elif battle.fatigue and dt and dt.fatigue:
+            dt.fatigue = max(127, int(dt.fatigue) + int(battle.fatigue))
         # Hypno
         if battle.subtype and battle.subtype.lower() == "hypnotisme" and at and at.base_esq:
             dim = math.trunc(at.base_esq * 1.5) if not battle.resist else math.trunc(at.base_esq / 3)
