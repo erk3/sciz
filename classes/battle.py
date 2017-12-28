@@ -111,7 +111,7 @@ class BATTLE(sg.SqlAlchemyBase):
             else:
                 self.def_troll_nom = self.def_name
                 self.def_troll_id = self.def_id
-        if hasattr(self, 'resist') and self.resist is not None:
+        if hasattr(self, 'resist') and self.resist is not None and not 'résisté' in self.type:
             self.type += u' réduit'
         self.build()
    
