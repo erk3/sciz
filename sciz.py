@@ -12,6 +12,7 @@ from modules.admin_helper import AdminHelper
 from modules.notifier import Notifier
 from modules.requester import Requester
 from modules.sql_helper import SQLHelper
+from modules.game_engine import GameEngine
 from classes.conf import CONF
 from classes.group import GROUP
 import modules.globals as sg
@@ -51,6 +52,9 @@ class SCIZ:
             sg.logger.info('Loaded stored configurations for instance!')
         except (NoResultFound, ProgrammingError) as e:
             sg.logger.warning('No configurations for instance!')
+
+        # Set up the Game Engine
+        sg.ge = GameEngine()
 
     # Mail walker 
     def walk(self):
