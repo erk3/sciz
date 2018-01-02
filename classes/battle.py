@@ -63,6 +63,8 @@ class BATTLE(sg.SqlAlchemyBase):
     resist = Column(Boolean)
     # Critique ?
     crit = Column(Boolean)
+    # Perfect dodge ?
+    perfect_dodge = Column(Boolean)
     # Cible décédée ?
     dead = Column(Boolean)
     # PX
@@ -96,9 +98,11 @@ class BATTLE(sg.SqlAlchemyBase):
             self.resist = self.resist is not None
         if hasattr(self, 'att') and self.att is not None and hasattr(self, 'esq') and self.esq is not None:
             self.crit = int(self.att) > int(self.esq) * 2
+            self.perfect_dodge = int(self.esq) > int(self.att) * 2
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
-        self.dead |= "mort" in self.type
+        self.dead |= 'mort' in self.type
+        self.subtype += ' parfaitement' if self.perfect_dodge else ''
 
     def build_att(self):
         # Common
