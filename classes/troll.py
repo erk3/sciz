@@ -152,6 +152,8 @@ class TROLL(sg.SqlAlchemyBase):
     bonus_tour_phy = Column(Integer)
     # Bonus de durée du tour magique
     bonus_tour_mag = Column(Integer)
+    # Durée totale du tour
+    base_bonus_tour = Column(Integer)
     # Poids de base en minutes
     base_poids = Column(Integer)
     # Malus de poids physique

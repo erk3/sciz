@@ -40,9 +40,10 @@ class MHCaller:
             sg.logger.warning('Error while fetching data from MH for user %s...' % (user.id, ))
         else:
             for troll in user.trolls:
-                troll.id, troll.pos_x, troll.pos_y, troll.pos_n, troll.pv, troll.base_pv_max, troll.pa, troll.dla, troll.base_att, troll.base_esq, troll.base_deg, troll.base_reg, troll.base_vue, troll.bonus_arm_phy, troll.base_mm, troll.base_rm, troll.nb_att_sub, troll.fatigue, troll.camouflage, troll.invisible, troll.intangible, troll.nb_parade_prog, troll.nb_ctr_att_prog, troll.base_tour, troll.bonus_tour, troll.base_arm_phy, troll.malus_base_arm_phy, troll.immobile, troll.terre, troll.course, troll.levite, troll.base_bonus_pv_max, troll.niv, troll.pi, troll.id_guilde, troll.limite_vue, troll.nb_retraite_prog, troll.dir_retraite = mh_r.text.split(';') 
+                troll.id, troll.pos_x, troll.pos_y, troll.pos_n, troll.pv, troll.base_pv_max, troll.pa, troll.dla, troll.base_att, troll.base_esq, troll.base_deg, troll.base_reg, troll.base_vue, troll.bonus_arm_phy, troll.base_mm, troll.base_rm, troll.nb_att_sub, troll.fatigue, troll.camouflage, troll.invisible, troll.intangible, troll.nb_parade_prog, troll.nb_ctr_att_prog, troll.base_tour, troll.bonus_tour, troll.base_arm_phy, troll.malus_base_arm_phy, troll.immobile, troll.terre, troll.course, troll.levite, troll.base_bonus_pv_max, troll.niv, troll.pi, troll.id_guilde, troll.limite_vue, troll.nb_retraite_prog, troll.dir_retraite, troll.base_bonus_tour = mh_r.text.split(';') 
                 # FIXME : MH SP error ? Got a ''
-                troll.nb_retraite_prog = 0
+                troll.nb_retraite_prog = 0 if troll.nb_retraite_prog == '' else troll.nb_retraite_prog
+                troll.base_bonus_tour = troll.base_bonus_tour.replace('\n','')
                 # Push it to the DB
                 sg.db.add(troll)
 
