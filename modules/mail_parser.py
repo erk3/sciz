@@ -19,8 +19,8 @@ class MailParser:
 
     # Utility mail parser
     def parse_mail(self, msg):
-        mail_subject = ''
-        mail_body = ''
+        mail_subject = None
+        mail_body = None
         try:
             tuple_subject_charset = email.header.decode_header(msg['subject'])
             subject = tuple_subject_charset[0][0]
@@ -55,7 +55,6 @@ class MailParser:
             mail_body = body
         except Exception as e:
             sg.logger.error('Failed to parse a mail: %s' % (str(e)))
-            raise
         # Result
         return (mail_subject, mail_body)
 
@@ -82,6 +81,8 @@ class MailParser:
     
     # Main regexp dispatcher and CLASS.populate dispatcher
     def parse(self, subject, body, group):
+        if subject is None or body is None:
+            return None
         # Dictionary of dictionaries with the results of the regexp matching
         # The first item has all the regexps matching at least one time
         # The following items are for occurences of regexps matching several times
@@ -105,7 +106,7 @@ class MailParser:
         # This is probably dangerous behavior but since no people should be
         # allowed to access the .ini config file without having also access to
         # this piece of code, this seems a nice code/logic factoring feature.
-        split = key.split('_')
+        split = key.split('_', 1)
         _class = split[0].upper()
         _method = 'build' if len(split) == 1 else 'build_' + split[1].lower()
         # The .ini config file must also have a section named as the

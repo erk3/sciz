@@ -1,0 +1,176 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id hDz0OcPgTFoGMAAAEkUYHA
+	for <feedthebat@sciz.cerv.ovh>; Wed, 03 Jan 2018 13:59:33 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id 653684B9D
+	for <feedthebat@sciz.cerv.ovh>; Wed,  3 Jan 2018 13:59:33 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.192.172; helo=mail-pf0-f172.google.com; envelope-from=censored@gmail.com; receiver=feedthebat@sciz.cerv.ovh 
+Received: from mail-pf0-f172.google.com (mail-pf0-f172.google.com [209.85.192.172])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id E18D84B9C
+	for <feedthebat@sciz.cerv.ovh>; Wed,  3 Jan 2018 13:59:32 +0000 (UTC)
+Received: by mail-pf0-f172.google.com with SMTP id a90so777709pfk.1
+        for <feedthebat@sciz.cerv.ovh>; Wed, 03 Jan 2018 05:59:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=LBslPUdTKP/tdz0V/vpFbMzRSPiIqln1HXkVBKiSAlA=;
+        b=k5jddzpGmwIQnLYj9E83SnwGiXwXfbtY+rGefcUoOPlv4UJptrg0C2PNjgr1Dn5PZv
+         093lrGkJNrB6rqG1ZYUKZuYwe6lXiZ+DXuu8mnE8LgsjpTOuZEYZG6MKZ1L34ob4f7NU
+         BQTqvPTpV9ueSrgDpN2p6oZpUtv0dXNGvJnwFrqJIXyKHofTy6YAAVNNQo9/toNAfbbI
+         AbsWWJ6HahJn4Z1EVrff2R/UW4taQBTrdJ52zS6YeWEV4d5lCJYCYYdOftqvtW2SRagu
+         D98Cw9e813NugcKBiMogXl6QYDLOjOQ9V4ntfbwMcNdePE6bYWJLMGBQHWrDvO4iLUrH
+         6o5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=LBslPUdTKP/tdz0V/vpFbMzRSPiIqln1HXkVBKiSAlA=;
+        b=g498/xtKLTMR+G9WtHsws1eFAXnnrhvDuCpuVUlsC0bGRHMUGhxFtdlaerWgGgDEbJ
+         SiDM8oDmC4KanbLerXXNK3VGfJt/GXoH13fuy9tvrw/1+zUIX9x7FmLtF5KalQqBHxM5
+         Rcnmn6X7h2Puni3p/a1tdEa8K3XDq3IspNnVNX4GmSv0coRKXIj5U4nfY+ybs25YShpD
+         /jQXEUG1RGRE6oEMPL8wtVtSfPktC3DCzSL4GS2nbkZFhY4ZiaMKlMHAEgJINDxozprR
+         5nmjKZ3nwP7nOe9OTdC49lL84JTODh8eGuaXaFK1LMubDjdJIm4nMyMgShhpcDgOulJf
+         cbmw==
+X-Gm-Message-State: AKGB3mI0F7+9prXhC+oRTAJjsLPZKDUSvhOZKn2qIoNcg+PMepIx4mt3
+	lLkzKnEHZdI6ApS1uVVlBQqWnUYS8eghxCPQejWFsA==
+X-Google-Smtp-Source: ACJfBou5tC8hFRADvpHPK0dNqH/nAwK8skZMD/e8sSvh2RAax/9BECScgJRIDImT4wjGrzQq1jYwzhCVTTLv0sTGob4=
+X-Received: by 10.99.157.143 with SMTP id i137mr1307877pgd.350.1514987970567;
+ Wed, 03 Jan 2018 05:59:30 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.100.167.8 with HTTP; Wed, 3 Jan 2018 05:59:10 -0800 (PST)
+In-Reply-To: <25dc8932688e5245fb3c4f6343bbfd75@mh2.mh.raistlin.fr>
+References: <25dc8932688e5245fb3c4f6343bbfd75@mh2.mh.raistlin.fr>
+From: censored <censored@gmail.com>
+Date: Wed, 3 Jan 2018 14:59:10 +0100
+Message-ID: <CAPtzyqyY27ahc2_-5dvyMiUNpirWtR=oQP+buXuG2Qu9_9iEbA@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Sortil=C3=A8ge_=3A_Bulle_Magique?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="94eb2c192b9ad324950561df9fca"
+
+--94eb2c192b9ad324950561df9fca
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : MountyHall-Bot <bot@mountyhall.com>
+Date : 3 janvier 2018 =C3=A0 14:57
+Objet : [MountyHall] Sortil=C3=A8ge : Bulle Magique
+=C3=80 : CrabKLN00@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0100069 : Rukl=C3=ACT
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 03/01/2018 14:57:25.
+***********************************************************
+
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : BULLE MAGIQUE
+Vous avez cr=C3=A9e une Bulle Magique:
+                        votre MM sera =C3=A9gale =C3=A0 1533 (+694) pendant=
+ 2 tours
+et                    votre RM sera =C3=A9gale =C3=A0 33 (-308) pendant 4 t=
+ours.
+
+
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+<https://www.avast.com/sig-email?utm_medium=3Demail&utm_source=3Dlink&utm_c=
+ampaign=3Dsig-email&utm_content=3Dwebmail>
+Garanti
+sans virus. www.avast.com
+<https://www.avast.com/sig-email?utm_medium=3Demail&utm_source=3Dlink&utm_c=
+ampaign=3Dsig-email&utm_content=3Dwebmail>
+<#DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2>
+
+--94eb2c192b9ad324950561df9fca
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Message transf=
+=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b class=3D"gmail_sendername">MountyH=
+all-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot=
+@mountyhall.com</a>&gt;</span><br>Date=C2=A0: 3 janvier 2018 =C3=A0 14:57<b=
+r>Objet=C2=A0: [MountyHall] Sortil=C3=A8ge : Bulle Magique<br>=C3=80=C2=A0:=
+ <a href=3D"mailto:CrabKLN00@gmail.com">CrabKLN00@gmail.com</a><br><br><br>=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0100069 : Rukl=C3=ACT<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 03/01/2018 14:57:25.<br>
+******************************<wbr>*****************************<br>
+<br>
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : BULLE MAGIQUE<br>
+Vous avez cr=C3=A9e une Bulle Magique:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 votre MM sera =C3=A9gale =C3=A0 1533 (+694) pendant 2 tours et=
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 votre=
+ RM sera =C3=A9gale =C3=A0 33 (-308) pendant 4 tours.<br>
+<br>
+<br>
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/<wbr>Forum</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br></div><div id=3D"DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2"><br> <tabl=
+e style=3D"border-top:1px solid #d3d4de">
+	<tr>
+      <td style=3D"width:55px;padding-top:18px"><a href=3D"https://www.avas=
+t.com/sig-email?utm_medium=3Demail&amp;utm_source=3Dlink&amp;utm_campaign=
+=3Dsig-email&amp;utm_content=3Dwebmail" target=3D"_blank"><img src=3D"https=
+://ipmcdn.avast.com/images/icons/icon-envelope-tick-round-orange-animated-n=
+o-repeat-v1.gif" alt=3D"" width=3D"46" height=3D"29" style=3D"width: 46px; =
+height: 29px;"></a></td>
+		<td style=3D"width:470px;padding-top:17px;color:#41424e;font-size:13px;fo=
+nt-family:Arial,Helvetica,sans-serif;line-height:18px">Garanti sans virus. =
+<a href=3D"https://www.avast.com/sig-email?utm_medium=3Demail&amp;utm_sourc=
+e=3Dlink&amp;utm_campaign=3Dsig-email&amp;utm_content=3Dwebmail" target=3D"=
+_blank" style=3D"color:#4453ea">www.avast.com</a> 		</td>
+	</tr>
+</table>
+<a href=3D"#DAB4FAD8-2DD7-40BB-A1B8-4E2AA1F9FDF2" width=3D"1" height=3D"1">=
+</a></div>
+
+--94eb2c192b9ad324950561df9fca--

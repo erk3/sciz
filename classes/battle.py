@@ -152,6 +152,8 @@ class BATTLE(sg.SqlAlchemyBase):
         self.build_capa()
     
     def build_att_sort(self):
+        if self.subtype and 'bulle' in self.subtype.lower():
+            self.capa_effet = re.sub(ur'sera\s+égale\s+à\s+', '', self.capa_effet);
         self.build_att()
         
     def build_def_sort(self):
