@@ -23,6 +23,7 @@ function adminCtrl($http, $window, authService) {
   vm.updateGroup = updateGroup;
   vm.switchView = switchView;
   vm.isUnboxConfValueValid = isUnboxConfValueValid;
+  vm.templateConf = templateConf;
 
   vm.resetAlerts = function () {
     vm.updateErrorConf = false;
@@ -60,6 +61,22 @@ function adminCtrl($http, $window, authService) {
   /*
    * Confs
    */
+  function templateConf(template) {
+    if (template === null || template === undefined) {
+      return;
+    }
+    $http({
+      method: 'GET',
+      url: '/api/templates',
+      params: {
+        templateName: template
+      },
+      dataType: 'json',
+      contentType: 'application/json'
+    })
+      .then(handleSuccessfulGetConfs);
+  }
+
   function isUnboxConfValueValid(conf) {
     if (conf.key.startsWith('s_')) {
       return !(conf.value === '' || conf.value === undefined || conf.value === null) &&

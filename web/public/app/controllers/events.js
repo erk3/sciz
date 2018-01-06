@@ -63,7 +63,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       s += (att) ? ' de ' + att : '';
       s += (def) ? ' sur ' + def : '';
     } else if (e.cdm_id) {
-      s = time + ' Connaissance des Monstres (' + e.sub.comp_niv + ') sur ' + e.sub.mob.nom + ' [' + e.sub.mob.age + '] (' + e.sub.mob.id + ')';
+      s = time + ' Connaissance des Monstres (' + e.sub.comp_niv + ') de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') sur ' + e.sub.mob.nom + ' [' + e.sub.mob.age + '] (' + e.sub.mob.id + ')';
     } else if (e.piege_id) {
       s = time + ' Pose d\'un piège à ' + e.sub.type + ' en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn;
     } else if (e.portal_id) {

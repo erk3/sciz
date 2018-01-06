@@ -6,7 +6,16 @@
     <div class="page-header text-left">
       <div class="row">
         <h2 class="col-sm-8 col-md-8">Gestion des formats de notification du groupe</h2>
-        <button style="margin-top: 20px;" type="submit" class="col-sm-offset-2 col-md-offset-2 btn btn-primary" ng-click="ac.updateConfs()" ng-disabled="!ac.confs.every(ac.isUnboxConfValueValid)">Sauvegarder</button>
+        <div class="btn-group col-sm-offset-1 col-md-offset-1" uib-dropdown dropdown-append-to-body style="margin-top: 20px;"> 
+          <button id="btn-append-to-body" type="button" class="btn btn-danger" uib-dropdown-toggle tooltips tooltip-template="N'oubliez pas de sauvegarder !" tooltip-class="tooltip" tooltip-side="top">
+            Templates <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-body">
+            <li role="menuitem"><a href="#" ng-click="ac.templateConf('default')">Format par défaut</a></li>
+            <li role="menuitem"><a href="#" ng-click="ac.templateConf('miaou-oukonenest')">Compatible Miaou / Oukonenest</a></li>
+          </ul>
+        </div>
+        <button type="submit" class="col-sm-offset-1 col-md-offset-1 btn btn-primary" ng-click="ac.updateConfs()" ng-disabled="!ac.confs.every(ac.isUnboxConfValueValid)" style="margin-top: 20px;">Sauvegarder</button>
       </div>
       </br>
       <div ng-if="ac.updateErrorConf">
