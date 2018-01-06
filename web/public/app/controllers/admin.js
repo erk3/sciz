@@ -10,6 +10,7 @@ function adminCtrl($http, $window, authService) {
    */
   vm.newHook = null;
   vm.newHookURL = null;
+  vm.firstLoad = true;
   vm.hooks = [];
   vm.confs = {};
 
@@ -132,8 +133,29 @@ function adminCtrl($http, $window, authService) {
 
   function handleSuccessfulGetConfs(response) {
     if (response && response.data) {
-      vm.origConfs = angular.fromJson(response.data);
-      vm.confs = JSON.parse(JSON.stringify(vm.origConfs)).map(unboxConf);
+      var confs = angular.fromJson(response.data);
+      var updateConfs = [];
+      if (vm.firstLoad) {
+        vm.origConfs = confs;
+        vm.firstLoad = false;
+        updateConfs = confs;
+      } else {
+        // FIXME : awful perfs...
+        for (var j = 0; j < vm.origConfs.length; j++) {
+          var conf = {
+            section: vm.origConfs[j].section,
+            key: vm.origConfs[j].key,
+            value: vm.origConfs[j].value
+          };
+          updateConfs.push(conf);
+          for (var i = 0; i < confs.length; i++) {
+            if (confs[i].section === vm.origConfs[j].section && confs[i].key === vm.origConfs[j].key) {
+              updateConfs[j].value = confs[i].value;
+            }
+          }
+        }
+      }
+      vm.confs = JSON.parse(JSON.stringify(updateConfs)).map(unboxConf);
     }
   }
 

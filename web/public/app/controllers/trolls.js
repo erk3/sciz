@@ -61,7 +61,7 @@ function trollsCtrl($scope, $http, authService) {
       return ((n === null || n === undefined) ? nullValue : (positivePrefix + n + suffix));
     };
 
-    troll.tPos = troll.pos_x ? 'X = ' + troll.pos_x + ' | Y = ' + troll.pos_y + ' | N = ' + troll.pos_n : '?';
+    troll.tPos = (troll.pos_x !== null) ? 'X = ' + troll.pos_x + ' | Y = ' + troll.pos_y + ' | N = ' + troll.pos_n : '?';
     troll.tConcentration = plus(troll.base_concentration, '', '', '?', ' %');
     troll.tVie = plus(troll.pv, '', '', '?', '');
     troll.tLifePercent = plus(troll.pv / troll.base_bonus_pv_max * 100, '', '', 0, '');
