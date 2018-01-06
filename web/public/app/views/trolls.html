@@ -7,6 +7,12 @@
         <img ng-src="{{item.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 60px;" alt=""/>
         <span class="text-center"><h5><a ng-click="item.callback()" href="#">{{item.nom}} ({{item.id}})</a></h5></span>
       </carousel-item>
+        <carousel-prev>
+          <div class="col-md-11">
+            <button class="btn btn-secondary">&#60;</button>
+          </div>
+        </carousel-prev>
+        <carousel-next><button class="btn btn-secondary pull-right">&#62;</button></carousel-next>
     </ui-carousel>
 
     <div class="row">
