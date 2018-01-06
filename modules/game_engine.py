@@ -60,6 +60,9 @@ class GameEngine:
             # battle.capa_effet = 'ESQ -1D6'
             # battle.capa_tour = 1
             pass
+        # Charger
+        if battle.subtype and "charger" in battle.subtype.lower():
+            battle.subtype = battle.subtype.replace("Charger", "Charge")
         # Hypno
         if battle.subtype and battle.subtype.lower() == "hypnotisme" and at and at.base_esq:
             dim = math.trunc(at.base_esq * 1.5) if not battle.resist else math.trunc(at.base_esq / 3)
