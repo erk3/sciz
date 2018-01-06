@@ -67,7 +67,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
     } else if (e.piege_id) {
       s = time + ' Pose d\'un piège à ' + e.sub.type + ' en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn;
     } else if (e.portal_id) {
-      s = time + ' Portail de ' + e.sub.troll.nom + ' (' + e.sub.att_troll.id + ') en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn + 'vers X = ' + e.sub.dst_posx + ' Y = ' + e.sub.dst_posy + ' N = ' + e.sub.dst_posn;
+      s = time + ' Portail de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn + ' vers X = ' + e.sub.dst_posx + ' Y = ' + e.sub.dst_posy + ' N = ' + e.sub.dst_posn;
     }
     return s;
   };

@@ -82,7 +82,19 @@ UserController.getProfile = function (req, res) {
         });
       }
     })
-    .catch(function(error) {
+    .catch(function( error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error});
+    });
+}
+
+UserController.deleteUser = function (req, res) {
+  var potentialUser = {where: {id: req.query.id}};
+  
+  DB.User.destroy(potentialUser)
+    .then(function (user) {
+      res.json({success: true});
+    })
+    .catch(function (error) {
       res.status(500).json({message: 'Une erreur est survenue ! ' + error});
     });
 }

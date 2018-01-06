@@ -12,7 +12,7 @@ EventsController.getEvents = function (req, res) {
 
   var where = {[DB.Op.and]: [
     {group_id: groupID},
-    {id:{[DB.Op.gt]: lastID}}
+    {id: {[DB.Op.gt]: lastID}}
   ]};
   
   DB.Event.findAll({limit: 25, where: where, offset: offset, order: [['time', 'DESC']]})

@@ -68,6 +68,16 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
     });
 
   $stateProvider
+    .state('trolls', {
+      url: '/trolls',
+      templateUrl: 'app/views/trolls.html',
+      controller: 'TrollsCtrl as tc',
+      data: {
+        accessLevel: staticData.accessLevels.user
+      }
+    });
+
+  $stateProvider
     .state('pad', {
       url: '/pad',
       templateUrl: 'app/views/pad.html',

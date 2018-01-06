@@ -95,6 +95,10 @@ body {
 }
     
 /* Table */
+.borderless td, .borderless th, .borderless tr {
+  border: none !important;
+}
+
 .thead-inverse th {
     color: #fff;
     background-color: #373a3c;
@@ -149,3 +153,4 @@ body {
 textarea.ta-bind {
   width: 100%;
 }
+
