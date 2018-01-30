@@ -17,7 +17,7 @@ class EVENT(sg.SqlAlchemyBase):
     # Date de la notification
     time = Column(DateTime())
     # Notification
-    notif = Column(String(255))
+    notif = Column(String(500))
     # Notification a pousser ?
     notif_to_push = Column(Boolean)
     # Type d'évènement

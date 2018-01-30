@@ -2,7 +2,7 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import re, ConfigParser, email
+import re, ConfigParser, email, HTMLParser
 from classes.cdm import CDM
 from classes.piege import PIEGE
 from classes.battle import BATTLE
@@ -55,6 +55,9 @@ class MailParser:
             mail_body = body
         except Exception as e:
             sg.logger.error('Failed to parse a mail: %s' % (str(e)))
+        # Just in case some htmlentities were put in the mail...
+        h = HTMLParser.HTMLParser()
+        mail_body = h.unescape(mail_body)
         # Result
         return (mail_subject, mail_body)
 

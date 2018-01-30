@@ -223,6 +223,6 @@ class BATTLE(sg.SqlAlchemyBase):
 
     def __getattr__(self, name):
         if hasattr(self, name) or name.startswith('_'):
-            return super().__getattr__(name)
+            return super(BATTLE, self).__getattribute__(name)
         else:
             return None # Trick for the stringify logic (avoiding the raise of an error)
