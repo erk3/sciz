@@ -2,7 +2,9 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import sys, ConfigParser, sqlalchemy, json, codecs, datetime, os, unidecode
+import sys, ConfigParser, sqlalchemy, json, codecs, datetime, os, unidecode, time, re
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 from sqlalchemy import and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from modules.mh_caller import MHCaller
@@ -29,6 +31,7 @@ class AdminHelper:
             self.json_users_id = sg.config.get(sg.CONF_JSON_SECTION, sg.CONF_JSON_USERS_ID)
             self.domain_name = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DOMAIN_NAME)
             self.pf_conf_file = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_POSTFIX_CONF_FILE)
+            self.mailDirPath = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_PATH)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
@@ -141,11 +144,59 @@ class AdminHelper:
                     sg.db.add(troll)
 
     def auto_tasks(self):
-        self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
-        self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
-        self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
-        self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
-        self.__auto_task_per_user_check()
+        global locked
+        locked = False
+        mailDirPath = self.mailDirPath
+        auto_task_mail_walk = self.__auto_task_mail_walk
+        auto_task_hook_push = self.__auto_task_hook_push
+        # Definition of the watchdog handler
+        class MailFileHandler(FileSystemEventHandler):
+            def on_created(self, event):
+                if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
+                    return
+                self.process(event.src_path)
+            def on_moved(self, event):
+                if event.is_directory or not (os.sep + 'new' + os.sep) in event.dest_path:
+                    return
+                self.process(event.dest_path)
+            def on_modified(self, event):
+                if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
+                    return
+                self.process(event.src_path)
+            def process(self, path):
+                global locked
+                try:
+                    while locked:
+                        time.sleep(1)
+                    locked = True
+                    m = re.search(mailDirPath + '(' + os.sep + ')?(?P<flatname>[^\.' + os.sep + ']+).*', path)
+                    flatname = m.group('flatname')
+                    sg.logger.info('New mail %s for group %s' % (path, flatname,))
+                    auto_task_mail_walk(flatname)
+                    auto_task_hook_push(flatname)
+                except Exception as e:
+                    sg.logger.error(str(e))
+                locked = False 
+        # Actual logic for the auto tasks
+        eh = MailFileHandler()
+        obs = Observer()
+        obs.schedule(eh, self.mailDirPath, recursive=True)
+        obs.start()
+        try:
+            while True:
+                time.sleep(120)
+                while locked:
+                    time.sleep(1)
+                locked = True
+                self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
+                self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
+                self.__auto_task_per_user_check()
+                self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
+                self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
+                locked = False
+        except KeyboardInterrupt:
+            obs.stop()
+        obs.join()
 
     def __auto_task_per_user_check(self):
         users = sg.db.session.query(USER).all()
@@ -186,25 +237,38 @@ class AdminHelper:
         mh.call('trolls2', [])
         mh.call('monstres', [])
     
-    def __auto_task_mail_walk(self):
-        sg.logger.info('Walking mails for all...',)
+    def __auto_task_mail_walk(self, group_name=None):
         mw = MailWalker()
-        groups = sg.db.session.query(GROUP).all()
+        if group_name != None:
+            sg.logger.debug('Walking mails for group %s' % (group_name,))
+            groups = [sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()]
+        else:
+            sg.logger.info('Walking mails for all...',)
+            groups = sg.db.session.query(GROUP).all()
         for group in groups:
             self.set_group(group.flat_name)
             mw.walk(group)
 
-    def __auto_task_mail_purge(self):
-        sg.logger.info('Purging mails for all...',)
+    def __auto_task_mail_purge(self, group_name=None):
         mw = MailWalker()
-        groups = sg.db.session.query(GROUP).all()
+        if group_name != None:
+            sg.logger.debug('Purging mails for group %s' % (group_name,))
+            groups = [sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()]
+        else:
+            sg.logger.info('Purging mails for all...',)
+            groups = sg.db.session.query(GROUP).all()
         for group in groups:
             self.set_group(group.flat_name)
             mw.purge(group)
 
-    def __auto_task_hook_push(self):
-        sg.logger.info('Triggering the reverse hooks for all...',)
-        rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None).all()
+    def __auto_task_hook_push(self, group_name=None):
+        if group_name != None:
+            sg.logger.debug('Triggering the reverse hooks for %s' % (group_name,))
+            group = sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()
+            rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None, HOOK.group_id==group.id).all()
+        else:
+            sg.logger.info('Triggering the reverse hooks for all...',)
+            rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None).all()
         for rhook in rhooks:
             rhook.trigger()
 
