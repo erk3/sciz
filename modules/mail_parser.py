@@ -57,7 +57,7 @@ class MailParser:
             sg.logger.error('Failed to parse a mail: %s' % (str(e)))
         # Just in case some htmlentities were put in the mail...
         h = HTMLParser.HTMLParser()
-        mail_body = h.unescape(mail_body)
+        mail_body = h.unescape(mail_body) if mail_body is not None else mail_body
         # Result
         return (mail_subject, mail_body)
 

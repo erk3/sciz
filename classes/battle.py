@@ -90,7 +90,7 @@ class BATTLE(sg.SqlAlchemyBase):
         if self.subtype:
             self.subtype = self.subtype.capitalize()
         else:
-            self.subtype = 'Attaque normale' if self.pv or self.deg else 'Attaque normale esquivée'
+            self.subtype = u'Attaque normale' if self.pv or self.deg else u'Attaque normale esquivée'
         self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else None
         self.pv = self.pv or self.deg # Pas d'armure
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
@@ -99,10 +99,11 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, 'att') and self.att is not None and hasattr(self, 'esq') and self.esq is not None:
             self.crit = int(self.att) > int(self.esq) * 2
             self.perfect_dodge = int(self.esq) > int(self.att) * 2
+            self.subtype += u' esquivée' if not self.pv and not self.deg else ''
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
-        self.dead |= 'mort' in self.type
-        self.subtype += ' parfaitement' if self.perfect_dodge else ''
+        self.dead |= u'mort' in self.type
+        self.subtype += u' parfaitement' if self.perfect_dodge else ''
 
     def build_att(self):
         # Common

@@ -57,10 +57,8 @@ class MailWalker:
             # Then re-sort by MH date (if there is one), then by remaining PV (if indicated ; multiple mob attacks at the same second case)
             re_time = re.compile(sg.config.get(sg.CONF_SECTION_COMMON, sg.CONF_NOTIF_TIME))
             re_vie = re.compile(sg.config.get(sg.CONF_SECTION_BATTLE, sg.CONF_NOTIF_VIE))
-            parsed_mails_with_attrs = map(lambda (n, (s, b)) : (n, s, b, re_time.search(b), re_vie.search(b)), parsed_mails)
-            parsed_mails_with_attrs = map(lambda (n, s, b, t, v) : (n, s, b,
-                datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.utcnow(),
-                v.groupdict()['vie'] if v else None), parsed_mails_with_attrs)
+            parsed_mails_with_attrs = map(lambda (n, (s, b)) : (n, s, b, re_time.search(b) if b else None, re_vie.search(b) if b else None), parsed_mails)
+            parsed_mails_with_attrs = map(lambda (n, s, b, t, v) : (n, s, b, datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.utcnow(), v.groupdict()['vie'] if v else None), parsed_mails_with_attrs)
             sorted_mails = sorted(parsed_mails_with_attrs, key=itemgetter(3, 4))
             # Finally walk over the mails
             for (file_name, subject, body, time, vie) in sorted_mails:
@@ -78,10 +76,11 @@ class MailWalker:
                     sg.createDirName(new_file)
                     os.rename(file_name, new_file)
 
-                # If anything goes wrong parsing a mail, it will land here (hopefully) then continue
+                # If anything goes wrong parsing a mail, it will land here (hopefully), rollback the non commited sql session then continue
                 except Exception:
-                    sg.logger.warning('Fail to handle mail %s' % (file_name), exc_info=True)
+                    sg.logger.error('Fail to handle mail %s' % (file_name), exc_info=True)
                     print >> sys.stderr, 'Errors have been logged while handling mail %s' % (file_name)
+                    sg.db.session.rollback()
                     pass
 
         except (OSError, IOError, mailbox.Error) as e:
