@@ -94,9 +94,9 @@ class Requester:
             # Recap
             for event in events:
                 if isinstance(event, CDM):
-                    pv_min = int(math.ceil((100 - event.blessure) / 100 * pv_min))
-                    pv_max = int(math.floor((100 - event.blessure) / 100 * pv_max))
-                    tor_reg_min = tot_reg_max = 0
+                    if pv_min: pv_min = int(math.ceil(float(100 - event.blessure) / 100 * mob.pv_min))
+                    if pv_max: pv_max = int(math.floor(float(100 - event.blessure) / 100 * mob.pv_max))
+                    tot_reg_min = tot_reg_max = 0
                 if isinstance(event, BATTLE):
                     if event.def_mob_id is not None and event.pv > 0:
                         first_time = event.time if first_time is None else first_time

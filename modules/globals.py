@@ -52,13 +52,13 @@ def do_unless_none(fnc, lst):
     return (fnc)(lst) if len(lst) != 0 else None
 
 def str_min_max(min, max):
-    if (min != None and max == None):
+    if (min and not max):
         return '>' + str(min)
-    elif (min == None and max != None):
+    elif (not min and max):
         return '<' + str(max)
     elif (min != max):
         return str(min) + '-' + str(max)
-    elif (min != None): # min = max
+    elif (min): # min = max
         return str(min)
     else:
         return None
