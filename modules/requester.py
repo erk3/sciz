@@ -2,8 +2,8 @@
 #-*- coding: utf-8 -*-
 
 # Imports
-import ConfigParser, sqlalchemy
-from operator import attrgetter
+import ConfigParser, sqlalchemy, math
+from operator import attrgetter, add
 from sqlalchemy import desc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
@@ -67,11 +67,56 @@ class Requester:
                 self.__request_mob_cdm(id, limit)
             elif args[0].lower() == 'event':
                 self.__request_mob_event(id, limit)
+            elif args[0].lower() == 'recap':
+                self.__request_mob_recap(id)
             else:
                 caracs = args[0].split(',')
                 self.__request_mob_caracs(id, caracs)
         else:
             self.__request_mob_caracs(id, None)
+
+    def __request_mob_recap(self, id):
+        try:
+            # Data pull from DB
+            mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
+            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).all()
+            battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).all()
+            events = sorted(cdms + battles, key=attrgetter('time'))
+            # Vars
+            first_time = None
+            is_dead = False
+            tot = 0
+            pv_min = mob.pv_min
+            pv_max = mob.pv_max
+            reg_min = mob.reg_min * 1 if mob.reg_min else (mob.reg_max * 1 if mob.reg_max else None)
+            reg_max = mob.reg_max * 3 if mob.reg_max else (mob.reg_min * 3 if mob.reg_min else None)
+            tot_reg_min = tot_reg_max = 0
+            # Recap
+            for event in events:
+                if isinstance(event, CDM):
+                    pv_min = int(math.ceil((100 - event.blessure) / 100 * pv_min))
+                    pv_max = int(math.floor((100 - event.blessure) / 100 * pv_max))
+                    tor_reg_min = tot_reg_max = 0
+                if isinstance(event, BATTLE):
+                    if event.def_mob_id is not None and event.pv > 0:
+                        first_time = event.time if first_time is None else first_time
+                        tot += event.pv
+                        if pv_min is not None: pv_min -= event.pv
+                        if pv_max is not None: pv_max -= event.pv
+                        is_dead = event.dead
+                    if event.att_mob_id is not None:
+                        if reg_min is not None: tot_reg_min += reg_min
+                        if reg_max is not None: tot_reg_max += reg_max
+            print "%s [%s] (%d)" % (mob.nom, mob.age, mob.id,)
+            print "Depuis le %s" % (first_time,)
+            print "Total : -%d PV %s" % (tot, "(MORT)" if is_dead else "",)
+            if not is_dead:
+                if pv_min is not None or pv_max is not None:
+                    print "PdV restants : %s" % (sg.str_min_max(pv_min, pv_max),)
+                if tot_reg_min or tot_reg_max:
+                    print "PdV régénérés depuis dernière CDM : %s" % (sg.str_min_max(tot_reg_min, tot_reg_max),)
+        except NoResultFound:
+            print 'Aucune donnée pour le monstre n°%s' % (id, )
 
     def __request_mob_cdm(self, id, limit):
         try:        
@@ -86,7 +131,7 @@ class Requester:
             else:
                 print 'Aucune CDM pour le montre n°%s' % (id, )
         except NoResultFound:
-            pass
+            print 'Aucune CDM pour le monstre n°%s' % (id, )
     
     def __request_mob_event(self, id, limit):
         try:
@@ -101,7 +146,7 @@ class Requester:
             else:
                 print 'Aucun évènement pour le monstre n°%s' % (id, )
         except NoResultFound:
-            pass
+            print 'Aucun évènement pour le monstre n°%s' % (id, )
     
     def __request_mob_caracs(self, id, caracs):
         try:
@@ -113,7 +158,6 @@ class Requester:
                 print 'Aucune donnée pour le monstre n°%s' % (id, )
         except NoResultFound:
             print 'Aucune donnée pour le monstre n°%s' % (id, )
-            pass
     
     # Trol request        
     def __request_troll(self, id, args):
@@ -123,12 +167,17 @@ class Requester:
                 limit = int(args[1]) if int(args[1]) > 0 else limit
             if args[0].lower() == 'event':
                 self.__request_troll_event(id, limit)
+            elif args[0].lower() == 'recap':
+                self.__request_troll_recap(id)
             else:
                 caracs = args[0].split(',')
                 self.__request_troll_caracs(id, caracs)
         else:
             self.__request_troll_caracs(id, None)
     
+    def __request_troll_recap(self, id):
+        pass
+
     def __request_troll_event(self, id, limit):
         try:
             events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
@@ -142,7 +191,7 @@ class Requester:
             else:
                 print 'Aucun évènement pour troll n°%s' % (id, )
         except NoResultFound:
-            pass
+            print 'Aucun évènement pour troll n°%s' % (id, )
 
     def __request_troll_caracs(self, id, caracs):
         try:
@@ -154,7 +203,6 @@ class Requester:
                 print 'Aucune donnée pour le troll n°%s' % (id, )
         except NoResultFound:
             print 'Aucune donnée pour le troll n°%s' % (id, )
-            pass
 
     # Destructor
     def __del__(self):

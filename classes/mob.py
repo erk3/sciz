@@ -184,7 +184,7 @@ class MOB(sg.SqlAlchemyBase):
                     else:
                         s = value.format(getattr(self, key))
                 elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
-                    s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
+                    s = sg.str_min_max(getattr(self, key + '_min'), getattr(self, key + '_max'))
                     s = value.format(s) if s is not None else ''
             except KeyError as e:
                 pass
