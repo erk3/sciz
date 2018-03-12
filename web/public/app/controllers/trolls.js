@@ -8,7 +8,11 @@ function trollsCtrl($scope, $http, authService) {
   vm.user = authService.refreshLocalData();
   vm.troll = {};
 
-  $http({method: 'GET', url: '/api/trolls'})
+  $http({
+    method: 'GET',
+    url: '/api/trolls',
+    params: {groupID: vm.user.currentAssoc.group_id}
+  })
     .then(function (response) {
       if (response && response.data) {
         vm.slides = response.data;
