@@ -99,7 +99,7 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, 'att') and self.att is not None and hasattr(self, 'esq') and self.esq is not None:
             self.crit = int(self.att) > int(self.esq) * 2
             self.perfect_dodge = int(self.esq) > int(self.att) * 2
-            self.subtype += u' esquivée' if not self.pv and not self.deg else ''
+            self.subtype += u' esquivée' if not self.pv and not self.deg and not u'esquivé' in self.subtype else ''
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
         self.dead |= u'mort' in self.type
