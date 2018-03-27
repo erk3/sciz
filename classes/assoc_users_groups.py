@@ -12,9 +12,9 @@ class AssocUsersGroups(sg.SqlAlchemyBase):
     # SQL Table Mapping
     __tablename__ = 'assoc_users_groups'
 
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
-    group_id = Column(Integer, ForeignKey('groups.id'), primary_key=True)
-    # Acess level numeric representation (1,2,4 / guest, user, admin)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete="CASCADE"), primary_key=True)
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"), primary_key=True)
+    # Acess level numeric representation (1,2,4 / guest,user,admin)
     role = Column(Integer)
 
     user = relationship("USER", back_populates="groups")

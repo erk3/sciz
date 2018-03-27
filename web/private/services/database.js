@@ -55,8 +55,8 @@ Templates.forEach(function (Template) {
  * Models additions and associations
  */
 // Assocs Users Groups
-DB.AssocUsersGroups.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
-DB.AssocUsersGroups.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id'});
+DB.AssocUsersGroups.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
+DB.AssocUsersGroups.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', onDelete: 'cascade'});
 // User
 DB.User.prototype.comparePasswords = UserTemplate.comparePasswords;
 DB.User.hasMany(DB.Troll, {foreignKey: 'user_id', sourceKey: 'id'});
@@ -65,8 +65,8 @@ DB.User.hasMany(DB.AssocUsersGroups, {as: 'assocs', foreignKey: 'user_id', sourc
 // DB.User.hasOne(DB.Group, {foreignKey: 'id', sourceKey: 'default_group_id'});
 DB.User.hasMany(DB.Group, {foreignKey: 'id', sourceKey: 'default_group_id'});
 // Troll
-DB.Troll.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id'});
-DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
+DB.Troll.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', onDelete: 'set null'});
+DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
 DB.Troll.hasMany(DB.Piege, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.CDM, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Battle, {as: 'atts', foreignKey: 'att_troll_id', sourceKey: 'id'});

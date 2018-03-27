@@ -8,6 +8,7 @@ function profileCtrl($http, $window, $document, authService) {
   const stepStaticSpRefresh = 0;
 
   vm.updateProfile = updateProfile;
+  vm.deleteAccount = deleteAccount;
   vm.resetAlerts = resetAlerts;
   vm.profile = {};
   vm.view = 'profile';
@@ -18,6 +19,10 @@ function profileCtrl($http, $window, $document, authService) {
   vm.updateErrorMessage = null;
   vm.updateStatus = false;
   vm.updateStatusMessage = null;
+  vm.deleteError = false;
+  vm.deleteErrorMessage = null;
+
+  vm.deleteConfirmation = false;
 
   $http({method: 'GET', url: '/api/profile'})
     .then(function (response) {
@@ -92,5 +97,28 @@ function profileCtrl($http, $window, $document, authService) {
     vm.updateErrorMessage = null;
     vm.updateStatus = false;
     vm.updateStatusMessage = null;
+    vm.deleteError = false;
+    vm.deleteErrorMessage = null;
   }
-}
+  
+  function deleteAccount() {
+    $http({
+      method: 'DELETE',
+      url: '/api/profile'
+    })
+    .then(handleSuccessfulDelete)
+    .catch(handleFailedDelete);
+  }
+
+  function handleSuccessfulDelete() {
+    authService.logout();
+  }
+
+  function handleFailedDelete(response) {
+    resetAlerts();
+    vm.deleteError = true;
+    vm.deleteErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.deleteErrorMessage += ': ' + response.data.message;
+    }
+  }}

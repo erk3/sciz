@@ -17,9 +17,9 @@ class TROLL(sg.SqlAlchemyBase):
     # Numéro de Troll
     id = Column(Integer)
     # ID du groupe d'appartenance
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # ID de l'utilisateur de rattachement
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id', ondelete="SET NULL"))
     # Condition if notifications have to be pushed for this troll
     sciz_notif = Column(Boolean, default=True)
     # Nom

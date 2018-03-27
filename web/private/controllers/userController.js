@@ -88,7 +88,7 @@ UserController.getProfile = function (req, res) {
 }
 
 UserController.deleteUser = function (req, res) {
-  var potentialUser = {where: {id: req.query.id}};
+  var potentialUser = {where: {id: req.user.id}};
   
   DB.User.destroy(potentialUser)
     .then(function (user) {
