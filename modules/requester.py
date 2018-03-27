@@ -112,7 +112,7 @@ class Requester:
             print "Total : -%d PV %s" % (tot, "(MORT)" if is_dead else "",)
             if not is_dead:
                 if pv_min is not None or pv_max is not None:
-                    print "PdV restants : %s" % (sg.str_min_max(pv_min, pv_max),)
+                    print "PdV restants : %s" % (sg.str_min_max(max(pv_min, 1), pv_max),)
                 if tot_reg_min or tot_reg_max:
                     print "PdV régénérés depuis dernière CDM : %s" % (sg.str_min_max(tot_reg_min, tot_reg_max),)
         except NoResultFound:
