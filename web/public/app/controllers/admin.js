@@ -332,7 +332,7 @@ function adminCtrl($http, $window, authService) {
   }
 
   function handleSuccessfulDeleteGroup() {
-    // authService.logout();
+    authService.logout();
   }
 
   function handleFailedDeleteGroup(response) {
