@@ -13,7 +13,7 @@ class PAD(sg.SqlAlchemyBase):
     __tablename__ = 'pads'
     __table_args__ = (UniqueConstraint('group_id'), )
     id = Column(Integer, primary_key=True)
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     value = Column(Text)
     
     # Associations One-To-One

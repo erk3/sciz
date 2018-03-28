@@ -18,7 +18,7 @@ class MOB(sg.SqlAlchemyBase):
     # SCIZ notifs ?
     sciz_notif = Column(Boolean)
     # ID du groupe
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # ID du metamob
     metamob_id = Column(Integer, ForeignKey('metamobs.id'))
     # Nom (incluant modificateurs)

@@ -100,7 +100,7 @@ function profileCtrl($http, $window, $document, authService) {
     vm.deleteError = false;
     vm.deleteErrorMessage = null;
   }
-  
+
   function deleteAccount() {
     $http({
       method: 'DELETE',
@@ -121,4 +121,5 @@ function profileCtrl($http, $window, $document, authService) {
     if (response && response.data) {
       vm.deleteErrorMessage += ': ' + response.data.message;
     }
-  }}
+  }
+}

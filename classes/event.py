@@ -23,15 +23,15 @@ class EVENT(sg.SqlAlchemyBase):
     # Type d'évènement
     type = Column(String(50))
     # ID de l'évènement de combat
-    battle_id = Column(Integer, ForeignKey('battles.id'))
+    battle_id = Column(Integer, ForeignKey('battles.id', ondelete="CASCADE"))
     # ID de l'évènement de CDM
-    cdm_id = Column(Integer, ForeignKey('cdms.id'))
+    cdm_id = Column(Integer, ForeignKey('cdms.id', ondelete="CASCADE"))
     # ID de l'évènement de piège
-    piege_id = Column(Integer, ForeignKey('pieges.id'))
+    piege_id = Column(Integer, ForeignKey('pieges.id', ondelete="CASCADE"))
     # ID de l'évènement de portail
-    portal_id = Column(Integer, ForeignKey('portals.id'))
+    portal_id = Column(Integer, ForeignKey('portals.id', ondelete="CASCADE"))
     # ID du groupe d'appartenance de l'évènement
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     
     # Associations One-To-One
     battle = relationship("BATTLE", primaryjoin="and_(EVENT.battle_id==BATTLE.id, EVENT.group_id==BATTLE.group_id)", back_populates="event")

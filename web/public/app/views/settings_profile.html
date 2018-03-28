@@ -80,22 +80,22 @@
       </div>
     </div>
     <br/>
-    <br/>
 
     <div class="row" ng-hide="pc.deleteConfirmation">
-      <div class="text-center">
+      <div class="col-sm-9 col-md-7 text-right">
         <button type="submit" class="btn btn-danger" ng-click="pc.deleteConfirmation=true">Supprimer mon compte</button>
       </div>
     </div>
     <div class="row" ng-hide="!pc.deleteConfirmation">
-      <div class="text-center">
+      <br/>
+      <div class="col-sm-9 col-md-7 text-center">
         <button type="submit" class="btn btn-secondary" ng-click="pc.deleteConfirmation=false">Annuler</button>
         <button type="submit" class="btn btn-danger" ng-click="pc.deleteAccount();">Quitter SCIZ pour de bon ?</button>
       </div>
     </div>
     <div class="row" ng-hide="!pc.deleteConfirmation">
       <br/>
-      <div class="col-md-12 col-sm-12 text-center">
+      <div class="col-md-9 col-md-7 text-center">
         <label>/!\ Cette action est irréversible /!\</label><br/>
         <label>Vos évènements déjà partagés seront conservés.</label><br/>
         <label>Pensez à désactiver vos redirections mails !</label><br/>

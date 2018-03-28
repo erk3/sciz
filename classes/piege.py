@@ -22,7 +22,7 @@ class PIEGE(sg.SqlAlchemyBase):
     # ID du troll
     troll_id = Column(Integer, ForeignKey('trolls.id'))
     # ID du groupe d'appartenance
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Pos X du piège
     posx = Column(Integer)
     # Pos Y du piège    

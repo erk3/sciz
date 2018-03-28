@@ -38,6 +38,7 @@ var APIRoutes = function(passport) {
 
   // DELETE routes
   router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));
+  router.delete('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.deleteGroup));
   router.delete('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.deleteUser));
 
   return router;

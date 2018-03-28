@@ -14,7 +14,7 @@ class CONF(sg.SqlAlchemyBase):
     __tablename__ = 'confs'
     __table_args__ = (UniqueConstraint('section', 'group_id', 'key'), )
     id = Column(Integer, primary_key=True)
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     section = Column(String(50))
     key = Column(String(50))
     value = Column(String(500))

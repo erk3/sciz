@@ -71,4 +71,33 @@
   </div>
   <br/>
 
+  <div class="row" ng-hide="ac.deleteConfirmation">
+    <div class="col-sm-8 text-right">
+      <button type="submit" class="btn btn-danger" ng-click="ac.deleteConfirmation=true">Supprimer le groupe</button>
+    </div>
+  </div>
+  <div class="row" ng-hide="!ac.deleteConfirmation">
+    <br/>
+    <div class="col-sm-8 text-center">
+      <button type="submit" class="btn btn-secondary" ng-click="ac.deleteConfirmation=false">Annuler</button>
+      <button type="submit" class="btn btn-danger" ng-click="ac.deleteGroup();">Supprimer le groupe pour de bon ?</button>
+    </div>
+  </div>
+  <div class="row" ng-hide="!ac.deleteConfirmation">
+    <br/>
+    <div class="col-sm-8 text-center">
+      <label>/!\ Cette action est irréversible /!\</label><br/>
+      <label>Toutes les données du groupe seront supprimées</label><br/>
+      <label>Pensez à désactiver vos redirections mails !</label><br/>
+    </div>
+  </div>
+  <div ng-if="ac.deleteErrorGroup">
+    </br>
+    <div uib-alert class="alert" ng-class="{'alert-danger':ac.deleteErrorGroup}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
+      {{ac.deleteErrorGroupMessage}}
+    </div>
+  </div>
+  <br/>
+  <br/>
+
 </div>

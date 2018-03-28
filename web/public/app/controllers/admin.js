@@ -22,6 +22,7 @@ function adminCtrl($http, $window, authService) {
   vm.getConfs = getConfs;
   vm.updateConfs = updateConfs;
   vm.updateGroup = updateGroup;
+  vm.deleteGroup = deleteGroup;
   vm.switchView = switchView;
   vm.isUnboxConfValueValid = isUnboxConfValueValid;
   vm.templateConf = templateConf;
@@ -37,9 +38,13 @@ function adminCtrl($http, $window, authService) {
     vm.updateStatusHookMessage = null;
     vm.updateErrorGroup = false;
     vm.updateErrorGroupMessage = null;
+    vm.deleteErrorGroup = false;
+    vm.deleteErrorGroupMessage = null;
     vm.updateStatusGroup = false;
     vm.updateStatusGroupMessage = null;
   };
+
+  vm.deleteConfirmation = false;
 
   vm.resetAlerts();
 
@@ -313,6 +318,29 @@ function adminCtrl($http, $window, authService) {
     vm.updateStatusGroupMessage = null;
     if (response && response.data) {
       vm.updateErrorGroupMessage += ': ' + response.data.message;
+    }
+  }
+
+  function deleteGroup() {
+    $http({
+      method: 'DELETE',
+      url: '/api/admin/group',
+      params: {groupID: vm.user.currentAssoc.group_id}
+    })
+    .then(handleSuccessfulDeleteGroup)
+    .catch(handleFailedDeleteGroup);
+  }
+
+  function handleSuccessfulDeleteGroup() {
+    // authService.logout();
+  }
+
+  function handleFailedDeleteGroup(response) {
+    vm.resetAlerts();
+    vm.deleteErrorGroup = true;
+    vm.deleteErrorGroupMessage = 'Erreur';
+    if (response && response.data) {
+      vm.deleteErrorGroupMessage += ': ' + response.data.message;
     }
   }
 }

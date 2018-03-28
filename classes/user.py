@@ -21,7 +21,7 @@ class USER(sg.SqlAlchemyBase):
     # Mountyhall API Key
     mh_apikey = Column(String(50))
     # Default group
-    default_group_id = Column(Integer, ForeignKey('groups.id'))
+    default_group_id = Column(Integer, ForeignKey('groups.id', ondelete="SET NULL"))
     # Web session duration
     session_duration = Column(Integer(), default=30)
     # Minutes between a refresh of dynamic MH scripts

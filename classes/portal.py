@@ -20,7 +20,7 @@ class PORTAL(sg.SqlAlchemyBase):
     # ID du troll
     troll_id = Column(Integer, ForeignKey('trolls.id'))
     # ID du groupe d'appartenance
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Pos X du portail
     posx = Column(Integer)
     # Pos Y du portail   

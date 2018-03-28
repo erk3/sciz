@@ -28,7 +28,7 @@ class BATTLE(sg.SqlAlchemyBase):
     # ID du piège
     piege_id = Column(Integer, ForeignKey('pieges.id'))
     # ID du groupe
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Type d'évènement
     type = Column(String(50))
     # Sous type d'évènement

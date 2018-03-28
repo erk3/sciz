@@ -22,7 +22,7 @@ class CDM(sg.SqlAlchemyBase):
     # ID du monstre
     mob_id = Column(Integer, ForeignKey('mobs.id'))
     # ID du groupe
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Niveau de compétence de la CDM
     comp_niv = Column(Integer)
     # Pourcentage de blessure du monstre

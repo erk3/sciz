@@ -38,7 +38,7 @@ AdminController.updateConfs = function (req, res) {
       };
       // FIXME : wait for the result of all the updates before returning a result ?
       DB.Conf.update(data, potentialConf)
-        .then(function (result) {})
+        .then(function(result) {})
         .catch(function(error) {});
     }
   }
@@ -115,7 +115,6 @@ AdminController.revokeHook = function (req, res) {
  * Group
  */
 AdminController.updateGroup = function (req, res) {
-
   var potentialGroup = {where: {id: req.body.groupID}};
 
   var data = {
@@ -145,5 +144,16 @@ AdminController.updateGroup = function (req, res) {
     });
 }
                             
+AdminController.deleteGroup = function (req, res) {
+  var potentialGroup = {where: {id: req.query.groupID}};
+  
+  DB.Group.destroy(potentialGroup)
+    .then(function (group) {
+      res.json({success: true});
+    })
+    .catch(function (error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error});
+    });
+}
 
 module.exports = AdminController;

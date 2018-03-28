@@ -22,7 +22,7 @@ class HOOK(sg.SqlAlchemyBase):
     # ID unique
     id = Column(Integer, primary_key=True)
     # ID du groupe d'appartenance
-    group_id = Column(Integer, ForeignKey('groups.id'))
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Nom du hook
     name = Column(String(50))
     # JWT token sans expiration (ou simple secret dans le cas d'un reverse hook)
