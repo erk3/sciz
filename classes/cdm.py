@@ -18,9 +18,9 @@ class CDM(sg.SqlAlchemyBase):
     # Horodatage de la CDM
     time = Column(DateTime)
     # ID du troll 
-    troll_id = Column(Integer, ForeignKey('trolls.id'))
+    troll_id = Column(Integer, ForeignKey('trolls.id', ondelete="CASCADE"))
     # ID du monstre
-    mob_id = Column(Integer, ForeignKey('mobs.id'))
+    mob_id = Column(Integer, ForeignKey('mobs.id', ondelete="CASCADE"))
     # ID du groupe
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Niveau de compétence de la CDM

@@ -20,7 +20,7 @@ class MOB(sg.SqlAlchemyBase):
     # ID du groupe
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # ID du metamob
-    metamob_id = Column(Integer, ForeignKey('metamobs.id'))
+    metamob_id = Column(Integer, ForeignKey('metamobs.id', ondelete="SET NULL"))
     # Nom (incluant modificateurs)
     nom = Column(String(50))
     # Type (Race) du monstre

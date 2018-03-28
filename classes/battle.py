@@ -18,15 +18,15 @@ class BATTLE(sg.SqlAlchemyBase):
     # Horodatage de l'event
     time = Column(DateTime)
     # ID du troll attaquant
-    att_troll_id = Column(Integer, ForeignKey('trolls.id'))
+    att_troll_id = Column(Integer, ForeignKey('trolls.id', ondelete="CASCADE"))
     # ID du troll défenseur
-    def_troll_id = Column(Integer, ForeignKey('trolls.id'))
+    def_troll_id = Column(Integer, ForeignKey('trolls.id', ondelete="CASCADE"))
     # ID du monstre attaquant
-    att_mob_id = Column(Integer, ForeignKey('mobs.id'))
+    att_mob_id = Column(Integer, ForeignKey('mobs.id', ondelete="CASCADE"))
     # ID du monstre défenseur
-    def_mob_id = Column(Integer, ForeignKey('mobs.id'))
+    def_mob_id = Column(Integer, ForeignKey('mobs.id', ondelete="CASCADE"))
     # ID du piège
-    piege_id = Column(Integer, ForeignKey('pieges.id'))
+    piege_id = Column(Integer, ForeignKey('pieges.id', ondelete="CASCADE"))
     # ID du groupe
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Type d'évènement
