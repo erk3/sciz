@@ -107,7 +107,7 @@ class Requester:
                     if event.att_mob_id is not None:
                         if reg_min is not None: tot_reg_min += reg_min
                         if reg_max is not None: tot_reg_max += reg_max
-            print "%s [%s] (%d)" % (mob.nom, mob.age, mob.id,)
+            print ("%s [%s] (%d)" % (mob.nom, mob.age, mob.id)).encode(sg.DEFAULT_CHARSET)
             print "Depuis le %s" % (first_time,)
             print "Total : -%d PV %s" % (tot, "(MORT)" if is_dead else "",)
             if not is_dead:
