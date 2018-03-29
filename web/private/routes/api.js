@@ -25,6 +25,8 @@ var APIRoutes = function(passport) {
   router.post('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateGroup));
   router.post('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.request));
   router.post('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateConfs));
+  router.post('/admin/selfassoc', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.acceptInvite));
+  router.post('/admin/assoc', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateAssocRole));
 
   // GET routes
   router.get('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.getProfile));
@@ -35,11 +37,14 @@ var APIRoutes = function(passport) {
   router.get('/bot/hooks', passport.authenticate('jwt', {session: false}), allowOnlyHook(HookController.getNotifs));
   router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getHooks));
   router.get('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getConfs));
+  router.get('/admin/assocs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getAssocs));
 
   // DELETE routes
   router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));
   router.delete('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.deleteGroup));
   router.delete('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.deleteUser));
+  router.delete('/admin/selfassoc', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.leaveGroup));
+  router.delete('/admin/assoc', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.excludeGroup));
 
   return router;
 };

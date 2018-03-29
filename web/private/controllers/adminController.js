@@ -156,4 +156,112 @@ AdminController.deleteGroup = function (req, res) {
     });
 }
 
+/*
+ * Assocs
+ */
+function updateAssoc (req, res, potentialAssoc, data) {
+ 
+  var update = function (assoc, data, res) {
+    DB.AssocUsersGroups.update(data, assoc)
+    .then(function (result) {
+      res.json({success: true});
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    });
+  };
+
+  DB.AssocUsersGroups.findOne(potentialAssoc)
+    .then(function (assoc) {
+      if (!assoc) {
+        res.status(400).json({message: 'Association inexistante !'});
+      }
+      else {
+        update(potentialAssoc, data, res);
+      }
+    });
+}
+
+AdminController.getAssocs = function (req, res) {
+  var groupID = (req.query.groupID) ? parseInt(req.query.groupID) : 0;
+  DB.AssocUsersGroups.findAll({where: {group_id: groupID}})
+    .then(function (assocs) {
+      res.json(assocs);
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    });
+}
+
+AdminController.updateAssocRole = function (req, res) {
+  var potentialAssoc = {where: {group_id: req.body.groupID, user_id: req.body.userID}};
+
+  var data = {
+    role: req.body.role
+  }
+  
+  if (req.body.role === 2) {
+    var potentialAssocAdmin = {where: {group_id: req.body.groupID, role: 4, user_id: {[DB.Op.ne]: req.body.userID}}};
+    DB.AssocUsersGroups.findOne(potentialAssocAdmin)
+    .then(function (assoc) {
+      if (!assoc) {
+        res.status(401).json({message: 'Le dernier administrateur ne peut pas être rétrogradé !'});
+      } else {
+        updateAssoc(req, res, potentialAssoc, data);
+      }
+    });
+  } else {
+    updateAssoc(req, res, potentialAssoc, data);
+  }
+}
+
+AdminController.acceptInvite = function (req, res) {
+  var potentialAssoc = {where: {group_id: req.body.groupID, user_id: req.user.id}};
+
+  var data = {
+    role: 2,
+    pending: false
+  }
+  
+  updateAssoc(req, res, potentialAssoc, data);
+}
+
+AdminController.leaveGroup = function (req, res) {
+  var potentialAssoc = {where: {group_id: req.query.groupID, user_id: req.user.id}};
+  var potentialAssocAdmin = {where: {group_id: req.query.groupID, role: 4, user_id: {[DB.Op.ne]: req.user.id}}};
+  DB.AssocUsersGroups.findOne(potentialAssocAdmin)
+  .then(function (assoc) {
+    if (!assoc) {
+      res.status(401).json({message: 'Le dernier administrateur ne peut pas quitter le groupe !'});
+    } else {
+      DB.AssocUsersGroups.destroy(potentialAssoc)
+      .then(function (assoc) {
+        res.json({success: true});
+      })
+      .catch(function (error) {
+        res.status(500).json({message: 'Une erreur est survenue ! ' + error});
+      });
+    }
+  });
+}
+
+AdminController.excludeGroup = function (req, res) {
+  var potentialAssoc = {where: {group_id: req.query.groupID, user_id: req.query.userID}};
+  
+  if (req.body.userID === req.user.id) {
+    res.status(401).json({message: 'Un administraeur ne peut pas s\'exclure lui même !'});
+  } else {
+    var potentialTroll = {where: {group_id: req.query.groupID, user_id: req.query.userID}};
+    var data = {user_id: null}
+    DB.Troll.update(data, potentialTroll);
+    DB.AssocUsersGroups.destroy(potentialAssoc)
+      .then(function (assoc) {
+        res.json({success: true});
+      })
+      .catch(function (error) {
+        res.status(500).json({message: 'Une erreur est survenue ! ' + error});
+      });
+  }
+}
+
 module.exports = AdminController;

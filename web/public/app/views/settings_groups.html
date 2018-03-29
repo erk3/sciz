@@ -10,6 +10,20 @@
   <div class="alert alert-danger" role="alert">
     <strong>Attention !</strong> Evitez de diffuser vos noms de groupes ou adresses mails, des trõlls malveillants pourraient s'en servir pour forger de fausses chauve-souris...
   </div>
+ 
+  <div ng-if="pc.assocsError">
+    </br>
+    <div uib-alert class="alert" ng-class="{'alert-danger':pc.assocsError}" dismiss-on-timeout="2000" close="pc.resetAlerts()">
+      {{pc.assocsErrorMessage}}
+    </div>
+  </div>
+  <div ng-if="pc.assocsStatus">
+    </br>
+    <div uib-alert class="alert" ng-class="{'alert-success':pc.assocsStatus}" dismiss-on-timeout="2000" close="pc.resetAlerts()">
+      {{pc.assocsStatusMessage}}
+    </div>
+  </div>
+
   <br/>
   <div class="row" ng-repeat="assoc in pc.profile.assocs">
     <div class="col-md-2">
@@ -17,12 +31,16 @@
     </div>
     <div class="col-md-10">
       <blockquote>
-        <p>{{assoc.group.name}}</p>
-          <cite><small>Mail : {{assoc.group.mail}}</small></cite>
-          <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
+        <p>{{assoc.group.name}}
+          <button ng-if="pc.deleteConfirmation" class="btn btn-danger btn-xs" type="button" ng-click="pc.leaveGroup(assoc.group_id)">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </p>
+        <cite><small>Mail : {{assoc.group.mail}}</small></cite>
+        <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
+        <span ng-if="!pc.deleteConfirmation"><h6><a href="#" ng-click="pc.deleteConfirmation=true">Quitter le groupe</a></h6></span>
       </blockquote>
     </div>
-    <br/>
     <br/>
     <br/>
   </div>

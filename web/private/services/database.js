@@ -135,7 +135,7 @@ DB.Event.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
  * Scopes
  */
 // Assocs
-DB.AssocUsersGroups.addScope('defaultScope', {include: [{model: DB.Group}]}, {override: true});
+DB.AssocUsersGroups.addScope('defaultScope', {include: [{model: DB.Group}, {model: DB.User.unscoped(), attributes: ['id', 'pseudo']}]}, {override: true});
 // Mob
 DB.Mob.addScope('defaultScope', {include: [{model: DB.Metamob}]}, {override: true});
 // Battle

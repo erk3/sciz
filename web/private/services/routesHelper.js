@@ -25,7 +25,7 @@ exports.allowAuthorized = function (accessLevel, callback) {
     }
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id == groupID) {
-        if (user.assocs[i].role & accessLevel) {
+        if ((user.assocs[i].role & accessLevel) && (user.assocs[i].pending === false)) {
           callback(req, res);
           return;
         }

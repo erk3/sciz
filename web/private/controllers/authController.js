@@ -59,7 +59,7 @@ AuthController.authenticate = function (req, res) {
                 default_group_id: user.default_group_id,
                 token: 'JWT ' + token,
                 blasonURL: blasonURL,
-                assocs: user.assocs
+                assocs: user.assocs.filter(assoc => assoc.pending === false)
                });
             }
             else {

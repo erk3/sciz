@@ -12,7 +12,8 @@ AssocUsersGroupsTemplate.table = 'assoc_users_groups';
 AssocUsersGroupsTemplate.modelDefinition = {  
   user_id: {type: sequelize.INTEGER, primaryKey: true},
   group_id: {type: sequelize.INTEGER, primaryKey: true},
-  role: {type: sequelize.INTEGER}
+  role: {type: sequelize.INTEGER},
+  pending: {type: sequelize.BOOLEAN}
 };
 
 AssocUsersGroupsTemplate.modelOptions = {

@@ -11,12 +11,16 @@ function adminCtrl($http, $window, authService) {
   vm.newHook = null;
   vm.newHookURL = null;
   vm.firstLoad = true;
+  vm.assocs = [];
   vm.hooks = [];
   vm.confs = {};
 
   vm.hostname = $window.location.protocol + '//' + $window.location.hostname + '/api/bot/hooks';
 
   vm.addHook = addHook;
+  vm.getAssocs = getAssocs;
+  vm.exclude = exclude;
+  vm.roleUpdate = roleUpdate;
   vm.getHooks = getHooks;
   vm.revokeHook = revokeHook;
   vm.getConfs = getConfs;
@@ -28,8 +32,12 @@ function adminCtrl($http, $window, authService) {
   vm.templateConf = templateConf;
 
   vm.resetAlerts = function () {
+    vm.assocsError = false;
+    vm.assocsErrorMessage = null;
+    vm.assocsStatus = false;
+    vm.assocsStatusMessage = null;
     vm.updateErrorConf = false;
-    vm.updateErrorConfConfMessage = null;
+    vm.updateErrorConfMessage = null;
     vm.updateStatusConf = false;
     vm.updateStatusConfMessage = null;
     vm.updateErrorHook = false;
@@ -60,6 +68,8 @@ function adminCtrl($http, $window, authService) {
       vm.getHooks();
     } else if (view === 'confs') {
       vm.getConfs();
+    } else if (view === 'assocs') {
+      vm.getAssocs();
     }
     vm.view = view;
   }
@@ -187,17 +197,15 @@ function adminCtrl($http, $window, authService) {
   }
 
   function handleSuccessfulUpdateConfs() {
-    vm.updateErrorConf = false;
-    vm.updateErrorConfMessage = null;
+    vm.resetAlerts();
     vm.updateStatusConf = true;
     vm.updateStatusConfMessage = 'Modifications enregistrées !';
   }
 
   function handleFailedUpdateConfs(response) {
+    vm.resetAlerts();
     vm.updateErrorConf = true;
     vm.updateErrorConfMessage = 'Erreur';
-    vm.updateStatusConf = false;
-    vm.updateStatusConfMessage = null;
     if (response && response.data) {
       vm.updateErrorConfMessage += ': ' + response.data.message;
     }
@@ -235,10 +243,9 @@ function adminCtrl($http, $window, authService) {
   }
 
   function handleFailedDeleteHook(response) {
+    vm.resetAlerts();
     vm.updateErrorHook = true;
     vm.updateErrorHookMessage = 'Erreur';
-    vm.updateStatusHook = false;
-    vm.updateStatusHookMessage = null;
     if (response && response.data) {
       vm.updateErrorHookMessage += ': ' + response.data.message;
     }
@@ -246,8 +253,7 @@ function adminCtrl($http, $window, authService) {
 
   function handleSuccessfulDeleteHook() {
     vm.getHooks();
-    vm.updateErrorHook = false;
-    vm.updateErrorHookMessage = null;
+    vm.resetAlerts();
     vm.updateStatusHook = true;
     vm.updateStatusHookMessage = 'Hook révoqué !';
   }
@@ -270,8 +276,7 @@ function adminCtrl($http, $window, authService) {
     vm.getHooks();
     vm.newHook = null;
     vm.newHookURL = null;
-    vm.updateErrorHook = false;
-    vm.updateErrorHookMessage = null;
+    vm.resetAlerts();
     vm.updateStatusHook = true;
     vm.updateStatusHookMessage = 'Hook ajouté !';
   }
@@ -279,10 +284,9 @@ function adminCtrl($http, $window, authService) {
   function handleFailedAddHook(response) {
     vm.newHook = null;
     vm.newHookURL = null;
+    vm.resetAlerts();
     vm.updateErrorHook = true;
     vm.updateErrorHookMessage = 'Erreur';
-    vm.updateStatusHook = false;
-    vm.updateStatusHookMessage = null;
     if (response && response.data) {
       vm.updateErrorHookMessage += ': ' + response.data.message;
     }
@@ -305,17 +309,15 @@ function adminCtrl($http, $window, authService) {
 
   function handleSuccessfulAddGroup() {
     vm.user = authService.updateLocalData();
-    vm.updateErrorGroup = false;
-    vm.updateErrorGroupMessage = null;
+    vm.resetAlerts();
     vm.updateStatusGroup = true;
     vm.updateStatusGroupMessage = 'Modifications enregistrées !';
   }
 
   function handleFailedAddGroup(response) {
+    vm.resetAlerts();
     vm.updateErrorGroup = true;
     vm.updateErrorGroupMessage = 'Erreur';
-    vm.updateStatusGroup = false;
-    vm.updateStatusGroupMessage = null;
     if (response && response.data) {
       vm.updateErrorGroupMessage += ': ' + response.data.message;
     }
@@ -341,6 +343,77 @@ function adminCtrl($http, $window, authService) {
     vm.deleteErrorGroupMessage = 'Erreur';
     if (response && response.data) {
       vm.deleteErrorGroupMessage += ': ' + response.data.message;
+    }
+  }
+
+  /*
+   * Users
+   */
+  function getAssocs() {
+    $http({
+      method: 'GET',
+      url: '/api/admin/assocs',
+      params: {groupID: vm.user.currentAssoc.group_id}
+    })
+    .then(handleSuccessfulGetAssocs);
+  }
+
+  function handleSuccessfulGetAssocs(response) {
+    if (response && response.data) {
+      var assocs = angular.fromJson(response.data);
+      vm.assocs = assocs;
+    }
+  }
+
+  function exclude(userID) {
+    $http({
+      method: 'DELETE',
+      url: '/api/admin/assoc',
+      params: {groupID: vm.user.currentAssoc.group_id, userID: userID}
+    })
+    .then(handleSuccessfulExclude)
+    .catch(handleFailedExclude);
+  }
+
+  function handleSuccessfulExclude() {
+    vm.getAssocs();
+    vm.resetAlerts();
+    vm.assocsStatus = true;
+    vm.assocsStatusMessage = 'Utilisateur exclu du groupe !';
+  }
+
+  function handleFailedExclude(response) {
+    vm.resetAlerts();
+    vm.assocsError = true;
+    vm.assocsErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.assocErrorMessage += ': ' + response.data.message;
+    }
+  }
+
+  function roleUpdate(userID, role) {
+    $http({
+      method: 'POST',
+      url: '/api/admin/assoc',
+      data: {groupID: vm.user.currentAssoc.group_id, userID: userID, role: role}
+    })
+    .then(handleSuccessfulRoleUpdate)
+    .catch(handleFailedRoleUpdate);
+  }
+
+  function handleSuccessfulRoleUpdate() {
+    vm.getAssocs();
+    vm.resetAlerts();
+    vm.assocsStatus = true;
+    vm.assocsStatusMessage = 'Rôle de l\'utilisateur modifié !';
+  }
+
+  function handleFailedRoleUpdate(response) {
+    vm.resetAlerts();
+    vm.assocsError = true;
+    vm.assocsErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.assocErrorMessage += ': ' + response.data.message;
     }
   }
 }

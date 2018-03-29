@@ -8,6 +8,8 @@ function profileCtrl($http, $window, $document, authService) {
   const stepStaticSpRefresh = 0;
 
   vm.updateProfile = updateProfile;
+  vm.getProfile = getProfile;
+  vm.leaveGroup = leaveGroup;
   vm.deleteAccount = deleteAccount;
   vm.resetAlerts = resetAlerts;
   vm.profile = {};
@@ -15,29 +17,40 @@ function profileCtrl($http, $window, $document, authService) {
 
   vm.user = authService.refreshLocalData();
 
-  vm.updateError = false;
-  vm.updateErrorMessage = null;
-  vm.updateStatus = false;
-  vm.updateStatusMessage = null;
-  vm.deleteError = false;
-  vm.deleteErrorMessage = null;
+  function resetAlerts() {
+    vm.assocsError = false;
+    vm.assocsErrorMessage = null;
+    vm.assocsStatus = false;
+    vm.assocsStatusMessage = null;
+    vm.updateError = false;
+    vm.updateErrorMessage = null;
+    vm.updateStatus = false;
+    vm.updateStatusMessage = null;
+    vm.deleteError = false;
+    vm.deleteErrorMessage = null;
+  }
 
   vm.deleteConfirmation = false;
 
-  $http({method: 'GET', url: '/api/profile'})
-    .then(function (response) {
-      if (response && response.data) {
-        vm.profile = response.data;
-        vm.dynSpRefresh = (vm.profile.dyn_sp_refresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.profile.dyn_sp_refresh;
-        vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
-        if (vm.profile.trolls && vm.profile.trolls[0]) {
-          vm.profile.blasonUrl = vm.profile.trolls[0].blason_url;
-          vm.profile.nom = vm.profile.trolls[0].nom;
-        } else {
-          vm.profile.blasonURL = 'images/MyNameIsNobody.gif';
+  vm.resetAlerts();
+  vm.getProfile();
+
+  function getProfile() {
+    $http({method: 'GET', url: '/api/profile'})
+      .then(function (response) {
+        if (response && response.data) {
+          vm.profile = response.data;
+          vm.dynSpRefresh = (vm.profile.dyn_sp_refresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.profile.dyn_sp_refresh;
+          vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
+          if (vm.profile.trolls && vm.profile.trolls[0]) {
+            vm.profile.blasonUrl = vm.profile.trolls[0].blason_url;
+            vm.profile.nom = vm.profile.trolls[0].nom;
+          } else {
+            vm.profile.blasonURL = 'images/MyNameIsNobody.gif';
+          }
         }
-      }
-    });
+      });
+  }
 
   function updateProfile() {
     if (vm.oldPwd || vm.newPwd || vm.pwd) {
@@ -92,15 +105,6 @@ function profileCtrl($http, $window, $document, authService) {
     }
   }
 
-  function resetAlerts() {
-    vm.updateError = false;
-    vm.updateErrorMessage = null;
-    vm.updateStatus = false;
-    vm.updateStatusMessage = null;
-    vm.deleteError = false;
-    vm.deleteErrorMessage = null;
-  }
-
   function deleteAccount() {
     $http({
       method: 'DELETE',
@@ -120,6 +124,32 @@ function profileCtrl($http, $window, $document, authService) {
     vm.deleteErrorMessage = 'Erreur';
     if (response && response.data) {
       vm.deleteErrorMessage += ': ' + response.data.message;
+    }
+  }
+
+  function leaveGroup(groupID) {
+    $http({
+      method: 'DELETE',
+      url: '/api/admin/selfassoc',
+      params: {groupID: groupID}
+    })
+    .then(handleSuccessfulLeave)
+    .catch(handleFailedLeave);
+  }
+
+  function handleSuccessfulLeave() {
+    vm.getProfile();
+    vm.resetAlerts();
+    vm.assocsStatus = true;
+    vm.assocsStatusMessage = 'Groupe quitté !';
+  }
+
+  function handleFailedLeave(response) {
+    vm.resetAlerts();
+    vm.assocsError = true;
+    vm.assocsErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.assocsErrorMessage += ': ' + response.data.message;
     }
   }
 }
