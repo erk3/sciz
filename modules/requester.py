@@ -4,7 +4,7 @@
 # Imports
 import ConfigParser, sqlalchemy, math
 from operator import attrgetter, add
-from sqlalchemy import desc, or_, and_
+from sqlalchemy import desc, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
 from classes.user import USER
@@ -79,11 +79,18 @@ class Requester:
         try:
             # Data pull from DB
             mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
-            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).all()
-            battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).all()
-            events = sorted(cdms + battles, key=attrgetter('time'))
+            # cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).all()
+            try:
+                cdm = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).first()
+            except NoResultFound:
+                cdm = None
+            if cdm:
+                battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id), BATTLE.time > cdm.time)).order_by(asc(BATTLE.time)).all()
+            else:
+                battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(asc(BATTLE.time)).all()
+            #events = sorted(cdm + battles, key=attrgetter('time'))
             # Vars
-            first_time = None
+            ptime = None
             is_dead = False
             tot = 0
             pv_min = mob.pv_min
@@ -91,30 +98,34 @@ class Requester:
             reg_min = mob.reg_min * 1 if mob.reg_min else (mob.reg_max * 1 if mob.reg_max else None)
             reg_max = mob.reg_max * 3 if mob.reg_max else (mob.reg_min * 3 if mob.reg_min else None)
             tot_reg_min = tot_reg_max = 0
-            # Recap
-            for event in events:
-                if isinstance(event, CDM):
-                    if pv_min: pv_min = int(math.ceil(float(100 - event.blessure) / 100 * mob.pv_min))
-                    if pv_max: pv_max = int(math.floor(float(100 - event.blessure) / 100 * mob.pv_max))
-                    tot_reg_min = tot_reg_max = 0
-                if isinstance(event, BATTLE):
-                    if event.def_mob_id is not None and event.pv > 0:
-                        first_time = event.time if first_time is None else first_time
-                        tot += event.pv
-                        if pv_min is not None: pv_min -= event.pv
-                        if pv_max is not None: pv_max -= event.pv
-                        is_dead = event.dead
-                    if event.att_mob_id is not None:
-                        if reg_min is not None: tot_reg_min += reg_min
-                        if reg_max is not None: tot_reg_max += reg_max
+            # Recap compute
+            if cdm:
+                if pv_min: pv_min = int(math.ceil(float(100 - cdm.blessure) / 100 * mob.pv_min))
+                if pv_max: pv_max = int(math.floor(float(100 - cdm.blessure) / 100 * mob.pv_max))
+
+            for battle in battles:
+                if battle.def_mob_id is not None and battle.pv > 0:
+                    is_dead = battle.dead
+                    ptime = battle.time if ptime is None or battle.dead else ptime
+                    tot += battle.pv
+                    if pv_min is not None: pv_min -= battle.pv
+                    if pv_max is not None: pv_max -= battle.pv
+                if battle.att_mob_id is not None:
+                    if reg_min is not None: tot_reg_min += reg_min
+                    if reg_max is not None: tot_reg_max += reg_max
+            # Pretty print
             print ("%s [%s] (%d)" % (mob.nom, mob.age, mob.id)).encode(sg.DEFAULT_CHARSET)
-            print "Depuis le %s" % (first_time,)
-            print "Total : -%d PV %s" % (tot, "(MORT)" if is_dead else "",)
+            if cdm and not is_dead:
+                print "Dernière CDM : %d%%  (%s)" % (cdm.blessure, cdm.time,)
+            if tot != 0 and not is_dead:
+                print "Total depuis %s : -%d PV %s" % ("" if cdm else ptime, tot, "(MORT)" if is_dead else "",)
             if not is_dead:
                 if pv_min is not None or pv_max is not None:
                     print "PdV restants : %s" % (sg.str_min_max(max(pv_min, 1), pv_max),)
                 if tot_reg_min or tot_reg_max:
-                    print "PdV régénérés depuis dernière CDM : %s" % (sg.str_min_max(tot_reg_min, tot_reg_max),)
+                    print "PdV régénérés : %s" % (sg.str_min_max(tot_reg_min, tot_reg_max),)
+            else:
+                print "Tué le %s" % (ptime,)
         except NoResultFound:
             print 'Aucune donnée pour le monstre n°%s' % (id, )
 
