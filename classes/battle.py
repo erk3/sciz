@@ -112,10 +112,10 @@ class BATTLE(sg.SqlAlchemyBase):
         # ATT
         if hasattr(self, 'def_id') and self.def_id is not None:
             if len(self.def_id) >= 7: # Mob
-                res = re.search('(?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?', self.def_name)
-                self.def_mob_nom = res.groupdict()['mob_name']
-                self.def_mob_age = res.groupdict()['mob_age']
-                self.def_mob_tag = res.groupdict()['mob_tag']
+                res = re.search('((?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.def_name)
+                self.def_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
+                self.def_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
+                self.def_mob_tag = res.groupdict()['mob_tag'].replace('\r', '').replace('\n', '')
                 self.def_mob_id = self.def_id
             else:
                 self.def_troll_nom = self.def_name
@@ -132,9 +132,9 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, 'att_id') and self.att_id is not None:
             if len(self.att_id) >= 7: # Mob
                 res = re.search('((?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.att_name)
-                self.att_mob_nom = res.groupdict()['mob_name']
-                self.att_mob_age = res.groupdict()['mob_age']
-                self.att_mob_tag = res.groupdict()['mob_tag']
+                self.att_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
+                self.att_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
+                self.att_mob_tag = res.groupdict()['mob_tag'].replace('\r', '').replace('\n', '')
                 self.att_mob_id = self.att_id
             else:
                 self.att_troll_nom = self.att_name
