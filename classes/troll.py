@@ -146,14 +146,10 @@ class TROLL(sg.SqlAlchemyBase):
     nb_ctr_att_prog = Column(Integer)
     # Durée de base du tour en minutes
     base_tour = Column(Integer)
-    # Bonus de durée du tour (???)
-    bonus_tour = Column(Integer)
     # Bonus de durée du tour physique
     bonus_tour_phy = Column(Integer)
     # Bonus de durée du tour magique
     bonus_tour_mag = Column(Integer)
-    # Durée totale du tour
-    base_bonus_tour = Column(Integer)
     # Poids de base en minutes
     base_poids = Column(Integer)
     # Malus de poids physique
@@ -168,8 +164,6 @@ class TROLL(sg.SqlAlchemyBase):
     bonus_concentration_mag = Column(Integer)
     # Nombre de PI totaux
     pi = Column(Integer)
-    # Limite effective de la vue
-    limite_vue = Column(Integer)
     # Nombre de retraite programmées
     nb_retraite_prog = Column(Integer)
     # Direction des retraites par ordre chronologique

@@ -107,10 +107,8 @@ TrollTemplate.modelDefinition = {
   nb_parade_prog: {type: sequelize.INTEGER},
   nb_ctr_att_prog: {type: sequelize.INTEGER},
   base_tour: {type: sequelize.INTEGER},
-  bonus_tour: {type: sequelize.INTEGER},
   bonus_tour_phy: {type: sequelize.INTEGER},
   bonus_tour_mag: {type: sequelize.INTEGER},
-  base_bonus_tour: {type: sequelize.INTEGER},
   base_poids: {type: sequelize.INTEGER},
   malus_poids_phy: {type: sequelize.INTEGER},
   malus_poids_mag: {type: sequelize.INTEGER},
@@ -118,7 +116,6 @@ TrollTemplate.modelDefinition = {
   bonus_concentration_phy: {type: sequelize.INTEGER},
   bonus_concentration_mag: {type: sequelize.INTEGER},
   pi: {type: sequelize.INTEGER},
-  limite_vue: {type: sequelize.INTEGER},
   nb_retraite_prog: {type: sequelize.INTEGER},
   dir_retraite: {type: sequelize.STRING}
 };

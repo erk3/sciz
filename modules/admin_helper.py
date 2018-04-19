@@ -216,10 +216,8 @@ class AdminHelper:
         mh = MHCaller()
         if len(users_dyn_sp) > 0:
             for user in users_dyn_sp:
-                sg.logger.info('Calling Profil2 MH SP for %s...', (user.id, ))
-                mh.profil2_sp_call(user)
-                sg.logger.info('Calling Caract MH SP for %s...', (user.id, ))
-                mh.caract_sp_call(user)
+                sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
+                mh.profil4_sp_call(user)
         if len(users_static_sp) > 0:
             pass
     

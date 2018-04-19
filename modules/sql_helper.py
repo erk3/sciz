@@ -305,7 +305,7 @@ class SQLHelper:
         state = inspect(target)
         for attr in state.attrs:
             hist = state.get_history(attr.key, True)
-            if hist.has_changes() and not hist.added[0] and len(hist.deleted) > 0:
+            if hist.has_changes() and hist.added[0] is None and len(hist.deleted) > 0:
                 setattr(target, attr.key, hist.deleted[0])
     
     # Destructor
