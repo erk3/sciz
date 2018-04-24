@@ -15,7 +15,7 @@
 	<!-- Attacker VS Defender-->
 	<div class="row">
     <div class="col-md-4">
-      <img ng-src="{{ec.cur.attBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src=ec.blasonError;">
+      <img ng-src="{{ec.cur.attBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
     </div>
     <div class="col-md-4 text-center">
       <div ng-if="ec.cur.sub.def_troll_id || ec.cur.sub.def_mob_id">
@@ -25,7 +25,7 @@
     </div>
     <div class="col-md-4">
       <div ng-class="{'container-overlay':ec.cur.sub.dead}">
-      <img ng-if="ec.cur.sub.def_troll_id || ec.cur.sub.def_mob_id" ng-src="{{ec.cur.defBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src=ec.blasonError;">
+      <img ng-if="ec.cur.sub.def_troll_id || ec.cur.sub.def_mob_id" ng-src="{{ec.cur.defBlason}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
         <div ng-if="ec.cur.sub.dead" class="overlay">
           <img src="images/dead_stamp.png" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="">
         </div>

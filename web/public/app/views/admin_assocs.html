@@ -62,8 +62,8 @@
       <br/>
     </div>
   </div> 
-
-  <label>Invitation(s) en attente</label>
+  
+  <label>Invitations en attente</label>
   <br/>
   <br/>
   <div class="row" ng-repeat="assoc in ac.assocs">
@@ -81,4 +81,37 @@
     </div>
   </div> 
 
+  <label>Inviter un utilisateur</label>
+  <br/>
+  <div class="row">
+    <md-content class="md-padding col-md-6 col-sm-6">
+      <md-autocomplete
+        md-selected-item="ac.selectedUser"
+        md-search-text="ac.searchText"
+        md-no-cache="true"
+        md-items="item in ac.queryUserSearch(ac.searchText)"
+        md-item-text="item.pseudo"
+        md-min-length="0"
+        placeholder="Trõll à inviter dans le groupe ?">
+        <md-item-template>
+          <span md-highlight-text="ac.searchText" md-highlight-flags="^i">{{item.pseudo}} - {{item.id}}</span>
+        </md-item-template>
+        <md-not-found> Aucun trõll trouvé.</md-not-found>
+      </md-autocomplete>
+    </md-content>
+    <button style="margin-top: 20px;" type="submit" class="btn btn-primary" ng-click="ac.inviteUser(ac.selectedUser)" ng-disabled="!ac.selectedUser">Inviter</button>
+    <div ng-if="ac.inviteError">
+      </br>
+      <div uib-alert class="alert" ng-class="{'alert-danger':ac.inviteError}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
+        {{ac.inviteErrorMessage}}
+      </div>
+    </div>
+    <div ng-if="ac.inviteStatus">
+      </br>
+      <div uib-alert class="alert" ng-class="{'alert-success':ac.inviteStatus}" dismiss-on-timeout="2000" close="ac.resetAlerts()">
+        {{ac.inviteStatusMessage}}
+      </div>
+    </div>
+  </div>
+  
 </div>

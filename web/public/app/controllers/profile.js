@@ -10,6 +10,7 @@ function profileCtrl($http, $window, $document, authService) {
   vm.updateProfile = updateProfile;
   vm.getProfile = getProfile;
   vm.leaveGroup = leaveGroup;
+  vm.acceptInvite = acceptInvite;
   vm.deleteAccount = deleteAccount;
   vm.resetAlerts = resetAlerts;
   vm.profile = {};
@@ -145,6 +146,32 @@ function profileCtrl($http, $window, $document, authService) {
   }
 
   function handleFailedLeave(response) {
+    vm.resetAlerts();
+    vm.assocsError = true;
+    vm.assocsErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.assocsErrorMessage += ': ' + response.data.message;
+    }
+  }
+
+  function acceptInvite(groupID) {
+    $http({
+      method: 'POST',
+      url: '/api/selfassoc',
+      data: {groupID: groupID}
+    })
+    .then(handleSuccessfulAccept)
+    .catch(handleFailedAccept);
+  }
+
+  function handleSuccessfulAccept() {
+    vm.getProfile();
+    vm.resetAlerts();
+    vm.assocsStatus = true;
+    vm.assocsStatusMessage = 'Groupe rejoint !';
+  }
+
+  function handleFailedAccept(response) {
     vm.resetAlerts();
     vm.assocsError = true;
     vm.assocsErrorMessage = 'Erreur';

@@ -14,6 +14,7 @@ function adminCtrl($http, $window, authService) {
   vm.assocs = [];
   vm.hooks = [];
   vm.confs = {};
+  vm.usersList = [];
 
   vm.hostname = $window.location.protocol + '//' + $window.location.hostname + '/api/bot/hooks';
 
@@ -30,8 +31,14 @@ function adminCtrl($http, $window, authService) {
   vm.switchView = switchView;
   vm.isUnboxConfValueValid = isUnboxConfValueValid;
   vm.templateConf = templateConf;
+  vm.queryUserSearch = queryUserSearch;
+  vm.inviteUser = inviteUser;
 
   vm.resetAlerts = function () {
+    vm.inviteError = false;
+    vm.inviteErrorMessage = null;
+    vm.inviteStatus = false;
+    vm.inviteStatusMessage = null;
     vm.assocsError = false;
     vm.assocsErrorMessage = null;
     vm.assocsStatus = false;
@@ -55,6 +62,7 @@ function adminCtrl($http, $window, authService) {
   vm.deleteConfirmation = false;
 
   vm.resetAlerts();
+  getUsersList();
 
   vm.user = authService.refreshLocalData();
   vm.switchView('group');
@@ -414,6 +422,61 @@ function adminCtrl($http, $window, authService) {
     vm.assocsErrorMessage = 'Erreur';
     if (response && response.data) {
       vm.assocErrorMessage += ': ' + response.data.message;
+    }
+  }
+
+  /*
+   * Users invite
+   */
+  function createFilterFor(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function (user) {
+      return (user.id.toString().indexOf(lowercaseQuery) === 0 || angular.lowercase(user.pseudo).indexOf(lowercaseQuery) === 0);
+    };
+  }
+
+  function queryUserSearch(query) {
+    var results = query ? vm.usersList.filter(createFilterFor(query)) : vm.usersList;
+    return results;
+  }
+
+  function getUsersList() {
+    $http({
+      method: 'GET',
+      url: '/api/usersList'
+    })
+    .then(handleSuccessfulGetUsersList);
+  }
+
+  function handleSuccessfulGetUsersList(response) {
+    if (response && response.data) {
+      vm.usersList = angular.fromJson(response.data);
+    }
+  }
+
+  function inviteUser(user) {
+    $http({
+      method: 'POST',
+      url: '/api/admin/invite',
+      data: {groupID: vm.user.currentAssoc.group_id, userID: user.id}
+    })
+    .then(handleSuccessfulInviteUser)
+    .catch(handleFailedInviteUser);
+  }
+
+  function handleSuccessfulInviteUser() {
+    vm.getAssocs();
+    vm.resetAlerts();
+    vm.inviteStatus = true;
+    vm.inviteStatusMessage = 'Utilisateur invité !';
+  }
+
+  function handleFailedInviteUser(response) {
+    vm.resetAlerts();
+    vm.inviteError = true;
+    vm.inviteErrorMessage = 'Erreur';
+    if (response && response.data) {
+      vm.inviteErrorMessage += ': ' + response.data.message;
     }
   }
 }

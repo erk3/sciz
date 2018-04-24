@@ -99,4 +99,15 @@ UserController.deleteUser = function (req, res) {
     });
 }
 
+UserController.getUsersList = function (req, res) {
+  
+  DB.User.scope().findAll({attributes: ['id', 'pseudo']})
+    .then(function (users) {
+      res.json(users);
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue :' + error.message});
+    });
+}
+
 module.exports = UserController;

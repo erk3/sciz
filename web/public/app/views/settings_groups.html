@@ -25,24 +25,48 @@
   </div>
 
   <br/>
+  <label>Mes groupes actifs</label>
   <div class="row" ng-repeat="assoc in pc.profile.assocs">
-    <div class="col-md-2">
-      <img ng-src="{{assoc.group.blason_url}}" class="img-responsive" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+    <div ng-if="!assoc.pending">
+      <div class="col-md-2">
+        <img ng-src="{{assoc.group.blason_url}}" class="img-responsive" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+      </div>
+      <div class="col-md-10">
+        <blockquote>
+          <p>{{assoc.group.name}}
+            <button ng-if="pc.deleteConfirmation" class="btn btn-danger btn-xs" type="button" ng-click="pc.leaveGroup(assoc.group_id)">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </p>
+          <cite><small>Mail : {{assoc.group.mail}}</small></cite>
+          <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
+          <span ng-if="!pc.deleteConfirmation"><h6><a href="#" ng-click="pc.deleteConfirmation=true">Quitter le groupe</a></h6></span>
+        </blockquote>
+      </div>
+      <br/>
+      <br/>
     </div>
-    <div class="col-md-10">
-      <blockquote>
-        <p>{{assoc.group.name}}
-          <button ng-if="pc.deleteConfirmation" class="btn btn-danger btn-xs" type="button" ng-click="pc.leaveGroup(assoc.group_id)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
-        </p>
-        <cite><small>Mail : {{assoc.group.mail}}</small></cite>
-        <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
-        <span ng-if="!pc.deleteConfirmation"><h6><a href="#" ng-click="pc.deleteConfirmation=true">Quitter le groupe</a></h6></span>
-      </blockquote>
-    </div>
-    <br/>
-    <br/>
   </div>
+
+  <br/>
+  <label>Mes invitations</label>
+  <div class="row" ng-repeat="assoc in pc.profile.assocs">
+    <div ng-if="assoc.pending">
+      <div class="col-md-2">
+        <img ng-src="{{assoc.group.blason_url}}" class="img-responsive" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+      </div>
+      <div class="col-md-10">
+        <blockquote>
+          <p>{{assoc.group.name}}</p>
+          <span ng-if="assoc.group.desc"><cite><small>Description : {{assoc.group.desc}}</small></cite></span>
+          <span><h6><a href="#" ng-click="pc.acceptInvite(assoc.group_id)">Rejoindre le groupe</a></h6></span>
+          <span><h6><a href="#" ng-click="pc.leaveGroup(assoc.group_id)">Refuser l'invitation</a></h6></span>
+        </blockquote>
+      </div>
+      <br/>
+      <br/>
+    </div>
+  </div>
+
 </div>
 

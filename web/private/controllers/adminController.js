@@ -159,8 +159,29 @@ AdminController.deleteGroup = function (req, res) {
 /*
  * Assocs
  */
+function createAssoc (req, res, potentialAssoc, data) {
+  var create = function (assoc, data, res) {
+    DB.AssocUsersGroups.create(data, assoc)
+    .then(function (result) {
+      res.json({success: true});
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+    });
+  };
+
+  DB.AssocUsersGroups.findOne(potentialAssoc)
+    .then(function (assoc) {
+      if (assoc) {
+        res.status(400).json({message: 'Utilisateur déjà invité dans le groupe !'});
+      }
+      else {
+        create(potentialAssoc, data, res);
+      }
+    });
+}
+
 function updateAssoc (req, res, potentialAssoc, data) {
- 
   var update = function (assoc, data, res) {
     DB.AssocUsersGroups.update(data, assoc)
     .then(function (result) {
@@ -213,6 +234,19 @@ AdminController.updateAssocRole = function (req, res) {
   } else {
     updateAssoc(req, res, potentialAssoc, data);
   }
+}
+
+AdminController.inviteUser = function (req, res) {
+  var potentialAssoc = {where: {group_id: req.body.groupID, user_id: req.body.userID}};
+
+  var data = {
+    group_id: req.body.groupID,
+    user_id: req.body.userID,
+    role: 2,
+    pending: true
+  }
+  
+  createAssoc(req, res, potentialAssoc, data);
 }
 
 AdminController.acceptInvite = function (req, res) {
