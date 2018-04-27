@@ -63,7 +63,7 @@
     </div>
   </div> 
   
-  <label>Invitations en attente</label>
+  <label ng-if="ac.nbAssocPending > 0">Invitations en attente</label>
   <br/>
   <br/>
   <div class="row" ng-repeat="assoc in ac.assocs">

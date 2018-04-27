@@ -41,6 +41,8 @@ function profileCtrl($http, $window, $document, authService) {
       .then(function (response) {
         if (response && response.data) {
           vm.profile = response.data;
+          vm.profile.nbAssocActive = vm.profile.assocs.filter(function (x) { return !x.pending; }).length;
+          vm.profile.nbAssocPending = vm.profile.assocs.filter(function (x) { return x.pending; }).length;
           vm.dynSpRefresh = (vm.profile.dyn_sp_refresh === 0) ? 0 : 24 * 60 * stepDynSpRefresh / vm.profile.dyn_sp_refresh;
           vm.staticSpRefresh = (vm.profile.static_sp_refresh === 0) ? 0 : 24 * 60 * stepStaticSpRefresh / vm.profile.static_sp_refresh;
           if (vm.profile.trolls && vm.profile.trolls[0]) {

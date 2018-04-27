@@ -1,0 +1,35 @@
+<div class="jumbotron jumbotron-fluid" style="padding: 30px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <img src="images/sciz-logo.png" class="img-responsive" alt=""/>
+      </div>
+    </div>
+    <p class="lead"><small><u>S</u>ystème de <u>C</u>hauve-souris <u>I</u>nterdimensionnel pour <u>Z</u>humain</small></p>
+  </div>
+  <p style="font-size: 14px;" class="text-center">
+    SCIZ est un outil entièrement tourné vers <a href="http://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse. Sa fonction première est de conserver, consolider et partager automatiquement les notifications mail envoyées par le jeu à chaque trõll de votre groupe.
+  </p>
+  <p style="font-size: 12px; margin-bottom: 0" class="text-center">
+    Besoin d'une démo ?<br/>Transférez une notification à <i>test@sciz.cerv.ovh</i> puis cliquez <a href="" ng-click="hc.testLogin()">ici</a>
+  </p>
+</div>
+
+<div ng-hide="authService.isAuthenticated()" class="container">
+  <div class="col-md-6 col-md-offset-3">
+    <form role="form" ng-class="{'has-error':hc.loginError}">              
+      <div class="input-group">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+        <input type="text" class="form-control" ng-model="hc.id" placeholder="Numéro de Trõll" autofocus>                                        
+      </div>
+      <br/>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input type="password" class="form-control" ng-model="hc.pwd" placeholder="Mot de passe">
+      </div>
+      <br/>  
+      <button class="btn btn-primary btn-block" type="submit" ng-click="hc.login()">Connexion</button>
+      <button class="btn btn-block" type="submit" ng-click="hc.view = 'signup'">Inscription</button>
+    </form>
+  </div>
+</div>

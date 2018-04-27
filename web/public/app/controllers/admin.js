@@ -370,6 +370,8 @@ function adminCtrl($http, $window, authService) {
     if (response && response.data) {
       var assocs = angular.fromJson(response.data);
       vm.assocs = assocs;
+      vm.nbAssocActive = vm.assocs.filter(function (x) { return !x.pending; }).length;
+      vm.nbAssocPending = vm.assocs.filter(function (x) { return x.pending; }).length;
     }
   }
 

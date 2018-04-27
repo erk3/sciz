@@ -12,11 +12,11 @@ function authRun($rootScope, $state, $transitions, authService) {
   $rootScope.authService = authService;
   $transitions.onStart({to: '*'}, function (trans) {
     var toState = trans.to();
-    if (toState && toState.name !== 'login' && toState.data && toState.data.accesLevel) {
+    if (toState && toState.name !== 'home' && toState.data && toState.data.accesLevel) {
       if (authService.isAuthorized(toState.data.accessLevel)) {
         return;
       }
-      return trans.router.stateService.target('login');
+      return trans.router.stateService.target('home');
     }
   });
 }

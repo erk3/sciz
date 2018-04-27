@@ -25,7 +25,8 @@
   </div>
 
   <br/>
-  <label>Mes groupes actifs</label>
+  <label ng-if="pc.profile.nbAssocActive > 0">Mes groupes acitfs</label>
+  <label ng-if="pc.profile.nbAssocActive == 0">Aucun groupe actif</label>
   <div class="row" ng-repeat="assoc in pc.profile.assocs">
     <div ng-if="!assoc.pending">
       <div class="col-md-2">
@@ -49,7 +50,8 @@
   </div>
 
   <br/>
-  <label>Mes invitations</label>
+  <label ng-if="pc.profile.nbAssocPending > 0">Mes invitations</label>
+  <label ng-if="pc.profile.nbAssocPending == 0">Aucune invitation</label>
   <div class="row" ng-repeat="assoc in pc.profile.assocs">
     <div ng-if="assoc.pending">
       <div class="col-md-2">

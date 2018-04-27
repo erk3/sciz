@@ -19,6 +19,7 @@ var APIRoutes = function(passport) {
   
   // POST routes
   router.post('/authenticate', AuthController.authenticate);
+  router.post('/signup', AuthController.signup);
   router.post('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.updateProfile));
   router.post('/pad', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, PadController.updatePad));
   router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));

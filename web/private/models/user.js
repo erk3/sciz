@@ -52,12 +52,15 @@ UserTemplate.modelDefinition = {
   },
   session_duration: {
     type: sequelize.INTEGER,
+    defaultValue: 30,
   },
   dyn_sp_refresh: {
     type: sequelize.INTEGER,
+    defaultValue: 240,
   },
   static_sp_refresh: {
     type: sequelize.INTEGER,
+    defaultValue: 240,
   },
 };
 

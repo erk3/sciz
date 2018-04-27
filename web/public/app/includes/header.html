@@ -16,10 +16,10 @@
       </div>
       <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
         <ul class="nav navbar-nav">
-          <li ui-sref-active="active"><a ui-sref="login" href="/">Accueil</a></li>
+          <li ui-sref-active="active"><a ui-sref="home" href="/">Accueil</a></li>
           <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="events" href="/events">Événements</a></li>
-          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="trolls" href="/trolls">Trõlls</a></li>
-          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="pad" href="/pad">Bloc-notes</a></li>
+          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated() || !user.currentAssoc"><a ui-sref="trolls" href="/trolls">Trõlls</a></li>
+          <li ui-sref-active="active" ng-hide="!authService.isAuthenticated() || !user.currentAssoc"><a ui-sref="pad" href="/pad">Bloc-notes</a></li>
         </ul>
         <!-- User menu -->
         <ul class="nav navbar-nav pull-right" style="margin-right: 30px;" ng-hide="!authService.isAuthenticated()">
@@ -34,7 +34,7 @@
           </li>
         </ul><!-- User menu-->
         <!-- Group menu -->
-        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
+        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated() || !user.currentAssoc">
           <li uib-dropdown><a uib-dropdown-toggle><img style="max-height:20px;" ng-src="{{user.currentAssoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> {{user.currentAssoc.group.name}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li ng-repeat='assoc in user.assocs'>

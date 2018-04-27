@@ -5,6 +5,13 @@ var config = module.exports;
 
 config.sciz = {
   bin: '/sciz' 
+}
+
+config.mh = {
+  sp: 'http://sp.mountyhall.com/',
+  p_id: 'Numero',
+  p_apikey: 'Motdepasse',
+  profil2Public_path: 'SP_ProfilPublic2.php'
 };
 
 config.server = {

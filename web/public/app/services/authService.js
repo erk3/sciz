@@ -12,7 +12,6 @@ function authService($http, $cookies, $state, $window) {
   var authService = {
     login: login,
     logout: logout,
-    // signup: signup,
     isAuthenticated: isAuthenticated,
     isAuthorized: isAuthorized,
     refreshLocalData: refreshLocalData,
@@ -53,7 +52,6 @@ function authService($http, $cookies, $state, $window) {
           authService.changeGroup(index, false);
         }
         authService.dataWrap.user = user;
-
         authService.updateLocalData();
       }
     });
@@ -61,7 +59,7 @@ function authService($http, $cookies, $state, $window) {
 
   function logout() {
     $cookies.remove('user');
-    $state.go('login');
+    $state.go('home');
   }
 
   function isAuthenticated() {
@@ -145,18 +143,4 @@ function authService($http, $cookies, $state, $window) {
     }
     return false;
   }
-
-  /*
-  function signup(id, pwd) {
-    var reqObj = {
-      method: 'POST',
-      url: '/api/signup',
-      data: {
-        id: id,
-        pwd: pwd
-      }
-    };
-    return $http(reqObj);
-  }
-  */
 }

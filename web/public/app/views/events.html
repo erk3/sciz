@@ -6,10 +6,10 @@
     <div ng-if="ec.cur.battle_id" ng-include src="'app/views/event_battle.html'"></div>
     <div ng-if="ec.cur.piege_id" ng-include src="'app/views/event_piege.html'"></div>
     <div ng-if="ec.cur.portal_id" ng-include src="'app/views/event_portal.html'"></div>
-    <div ng-if="!ec.cur" ng-include src="'app/views/event_unknown.html'"></div>
+    <div ng-if="!ec.cur || !ec.user.currentAssoc" ng-include src="'app/views/event_unknown.html'"></div>
 
     <!-- Events list display -->
-    <div ng-hide="!ec.cur">
+    <div ng-hide="!ec.cur || !ec.user.currentAssoc">
       <form>
         <div class="form-group">
           <div class="input-group">

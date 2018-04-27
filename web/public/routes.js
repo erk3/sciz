@@ -22,10 +22,10 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-    .state('login', {
+    .state('home', {
       url: '/',
-      templateUrl: 'app/views/login.html',
-      controller: 'LoginCtrl as lc'
+      templateUrl: 'app/views/home.html',
+      controller: 'HomeCtrl as hc'
     });
 
   $stateProvider
