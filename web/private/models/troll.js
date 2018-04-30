@@ -7,7 +7,7 @@ var TrollTemplate = {}
  *  Methods
  */
 TrollTemplate.changeBlasonURL = function (troll) {
-  if(troll.constructor === Array) {
+  if(troll && troll.constructor === Array) {
     var arrayLength = troll.length;
     for (var i = 0; i < arrayLength; i++) {
       if (troll[i] && troll[i].blason_url && troll[i].blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
