@@ -34,12 +34,14 @@
           </li>
         </ul><!-- User menu-->
         <!-- Group menu -->
-        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated() || !user.currentAssoc">
-          <li uib-dropdown><a uib-dropdown-toggle><img style="max-height:20px;" ng-src="{{user.currentAssoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> {{user.currentAssoc.group.name}}<b class="caret"></b></a>
+        <ul class="nav navbar-nav pull-right" ng-hide="!authService.isAuthenticated()">
+          <li uib-dropdown><a uib-dropdown-toggle><img style="max-height:20px;" ng-src="{{user.currentAssoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> {{user.currentAssoc.group.name || 'Aucun groupe'}}<b class="caret"></b></a>
             <ul uib-dropdown-menu>
               <li ng-repeat='assoc in user.assocs'>
                 <a href="" ng-click="authService.changeGroup(assoc.group_id, true)"><img style="max-height:20px;" ng-src="{{assoc.group.blason_url}}" onError="this.src='images/MyNameIsNobody.gif'"/> <i class="icon-cog"></i>{{assoc.group.name}}</a>
               </li>
+              <li class="divider"></li>
+              <li><a href="" ng-click="openCreateGroupModal()"><i class="icon-off"></i>Créer un groupe</a></li>
             </ul>
           </li>
         </ul><!-- Group menu-->

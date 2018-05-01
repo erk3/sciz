@@ -5,8 +5,6 @@ var sequelize = require('sequelize');
 var request = require('request');
 var config = require('../../config.js');
 
-const {spawn} = require('child_process');
-
 var DB = require('../services/database.js');
 var AuthController = {};
 
@@ -44,21 +42,6 @@ AuthController.signup = function(req, res) {
                 .then(function (user) {
                   // Done
                   res.status(200).json({message: 'Utilisateur créé'});
-                  // Call initial au FTP et au SP (FIX-COMMENT :utile que lorsqu'on rejoint un groupe...)
-                  /*
-                  var args = ['sciz.py', '-s', 'trolls2'];
-                  const child = spawn('python', args, {
-                    shell: false,
-                    cwd: config.sciz.bin
-                  });
-                  child.on('close', (code) => {
-                    var args2 = ['sciz.py', '-s', 'profil4', id];
-                    const child2 = spawn('python', args2, {
-                      shell: false,
-                      cwd: config.sciz.bin
-                    });
-                  });
-                  */
                 })
                 .catch(function(error) {
                   res.status(500).json({message: 'Une erreur est survenue :' + error.message});
@@ -89,12 +72,16 @@ AuthController.authenticate = function (req, res) {
         else {
           user.comparePasswords(pwd, function (error, isMatch) {
             if (isMatch && !error) {
+              var lightAssocs = [];
+              for (var i = 0; i < user.assocs.length; i++) {
+                lightAssocs.push((({ user_id, group_id, role, pending }) => ({ user_id, group_id, role, pending }))(user.assocs[i]));
+              }
               var token = jwt.sign(
-                {type: 'user', id: user.id, assocs: user.assocs},
+                {type: 'user', id: user.id, assocs: lightAssocs},
                 config.keys.secret, 
                 {expiresIn: '30m'});
               var blasonURL = (user.trolls.length > 0) ? user.trolls[0].blason_url : 'images/MyNameIsobody.gif';
-              res.json({
+              res.status(200).json({
                 success: true,
                 id: user.id,
                 pseudo: user.pseudo,

@@ -21,6 +21,7 @@ var APIRoutes = function(passport) {
   router.post('/authenticate', AuthController.authenticate);
   router.post('/signup', AuthController.signup);
   router.post('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.updateProfile));
+  router.post('/creategroup', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.createGroup));
   router.post('/pad', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, PadController.updatePad));
   router.post('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.addHook));
   router.post('/admin/group', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateGroup));
@@ -41,6 +42,7 @@ var APIRoutes = function(passport) {
   router.get('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getHooks));
   router.get('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getConfs));
   router.get('/admin/assocs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getAssocs));
+  router.get('/assocs', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.getAllRealAssocs));
 
   // DELETE routes
   router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));

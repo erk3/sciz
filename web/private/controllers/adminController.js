@@ -4,6 +4,8 @@ var jwt = require('jsonwebtoken');
 var config = require('../../config.js');
 var DB = require('../services/database.js');
 
+const {spawn} = require('child_process');
+
 var AdminController = {}
 
 /*
@@ -114,6 +116,56 @@ AdminController.revokeHook = function (req, res) {
 /*
  * Group
  */
+AdminController.createGroup = function (req, res) {
+  // Compute the flatname
+  var flatname = req.body.groupName;
+  if (!flatname) {
+    res.status(400).json({message: 'Nom de groupe invalide ou déjà existant !'});
+    return;
+  }
+  flatname = flatname.toLowerCase();
+  flatname = flatname.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+  flatname = flatname.replace(/[^0-9a-z]/gi, '')
+  if (!flatname) {
+    res.status(400).json({message: 'Nom de groupe invalide ou déjà existant !'});
+    return;
+  }
+  
+  // Create the group
+  var potentialGroup = {where: {flat_name: flatname}};
+  DB.Group.findOne(potentialGroup)
+    .then(function (group) {
+      if (!group) {
+        // Leave it to backend since it also handles the maildir creation
+        var args = ['sciz.py', '-g', req.body.groupName];
+        const child = spawn('python', args, {
+          shell: false,
+          cwd: config.sciz.bin
+        });
+        child.on('close', (code) => {
+          DB.Group.findOne(potentialGroup)
+            .then(function (group) {
+            if (group) {
+              var potentialAssoc = {where: {group_id: group.id, user_id: req.user.id}};
+              var data = {
+                user_id: req.user.id,
+                group_id: group.id,
+                role: 4,
+                pending: false
+              }
+              createAssoc(req, res, potentialAssoc, data);
+            } else {
+              res.status(500).json({message: 'Erreur lors de la création du groupe...'});
+            }
+          });
+        });
+      }
+      else {
+        res.status(400).json({message: 'Nom de groupe invalide ou déjà existant !'});
+      }
+    });
+}
+
 AdminController.updateGroup = function (req, res) {
   var potentialGroup = {where: {id: req.body.groupID}};
 
@@ -188,9 +240,7 @@ function updateAssoc (req, res, potentialAssoc, data) {
       var potentialTroll = {where: {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id}};
       DB.Troll.findOne(potentialTroll)
       .then(function (troll) {
-        console.log('zarma1');
         if (!troll) {
-          console.log('zarma');
           troll = {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id, user_id: potentialAssoc.where.user_id};
           DB.Troll.create(troll);
         }
@@ -210,6 +260,16 @@ function updateAssoc (req, res, potentialAssoc, data) {
       else {
         update(potentialAssoc, data, res);
       }
+    });
+}
+
+AdminController.getAllRealAssocs = function (req, res) {
+  DB.AssocUsersGroups.findAll({where: {user_id: req.user.id, pending: false}})
+    .then(function (assocs) {
+      res.json(assocs);
+    })
+    .catch(function(error) {
+      res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
     });
 }
 

@@ -5,10 +5,11 @@ angular
     '$cookies',
     '$state',
     '$window',
+    '$sessionStorage',
     authService
   ]);
 
-function authService($http, $cookies, $state, $window) {
+function authService($http, $cookies, $state, $window, $sessionStorage) {
   var authService = {
     login: login,
     logout: logout,
@@ -16,6 +17,7 @@ function authService($http, $cookies, $state, $window) {
     isAuthorized: isAuthorized,
     refreshLocalData: refreshLocalData,
     updateLocalData: updateLocalData,
+    refreshGroups: refreshGroups,
     updateGroup: updateGroup,
     changeGroup: changeGroup,
     getGroup: getGroup,
@@ -40,12 +42,23 @@ function authService($http, $cookies, $state, $window) {
 
         var user = {};
         user.id = response.id;
+        user.token = response.token;
+        var expires = new Date();
+        var time = response.session_duration;
+        time = (time) ? time : 30;
+        expires.setTime(expires.getTime() + (time * 60 * 1000));
+        $cookies.putObject(
+          'user',
+          user,
+          {expires: expires}
+        );
+
+        // Session Storage
         user.pseudo = response.pseudo;
         user.session_duration = response.session_duration;
         user.default_group_id = response.default_group_id;
         user.assocs = response.assocs;
         user.blasonURL = response.blasonURL;
-        user.token = response.token;
         authService.dataWrap.user = user;
         if (user.assocs !== null && user.assocs.length > 0) {
           var index = (user.default_group_id) ? user.default_group_id : user.assocs[0].group_id;
@@ -63,8 +76,22 @@ function authService($http, $cookies, $state, $window) {
   }
 
   function isAuthenticated() {
-    authService.refreshLocalData();
-    return authService.dataWrap.user && authService.dataWrap.user !== 'undefined';
+    var scizCookie = $cookies.getObject('user');
+    return scizCookie && scizCookie !== null && scizCookie !== 'undefined';
+  }
+
+  function refreshGroups() {
+    var reqObj = {
+      method: 'GET',
+      url: '/api/assocs'
+    };
+
+    $http(reqObj).then(function (response) {
+      if (response && response.data) {
+        authService.dataWrap.user.assocs = response.data;
+        authService.updateLocalData();
+      }
+    });
   }
 
   function updateGroup(group) {
@@ -112,20 +139,12 @@ function authService($http, $cookies, $state, $window) {
   }
 
   function refreshLocalData() {
-    authService.dataWrap.user = $cookies.getObject('user');
+    authService.dataWrap.user = $sessionStorage.user;
     return authService.dataWrap.user;
   }
 
   function updateLocalData() {
-    var expires = new Date();
-    var time = authService.dataWrap.user.session_duration;
-    time = (time) ? time : 30;
-    expires.setTime(expires.getTime() + (time * 60 * 1000));
-    $cookies.putObject(
-      'user',
-      authService.dataWrap.user,
-      {expires: expires}
-    );
+    $sessionStorage.user = authService.dataWrap.user;
     return authService.refreshLocalData();
   }
 
