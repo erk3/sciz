@@ -215,7 +215,15 @@ function createAssoc (req, res, potentialAssoc, data) {
   var create = function (assoc, data, res) {
     DB.AssocUsersGroups.create(data, assoc)
     .then(function (result) {
-      res.json({success: true});
+      var potentialTroll = {where: {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id}};
+      DB.Troll.findOne(potentialTroll)
+      .then(function (troll) {
+        if (!troll) {
+          troll = {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id, user_id: potentialAssoc.where.user_id};
+          DB.Troll.create(troll);
+        }
+        res.json({success: true});
+      });
     })
     .catch(function(error) {
       res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
