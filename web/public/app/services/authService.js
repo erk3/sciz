@@ -59,13 +59,14 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
         user.default_group_id = response.default_group_id;
         user.assocs = response.assocs;
         user.blasonURL = response.blasonURL;
+
         authService.dataWrap.user = user;
+        authService.updateLocalData();
+
         if (user.assocs !== null && user.assocs.length > 0) {
           var index = (user.default_group_id) ? user.default_group_id : user.assocs[0].group_id;
           authService.changeGroup(index, false);
         }
-        authService.dataWrap.user = user;
-        authService.updateLocalData();
       }
     });
   }
@@ -95,7 +96,7 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
   }
 
   function updateGroup(group) {
-    var user = authService.dataWrap.user;
+    var user = refreshLocalData();
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id === group.id) {
         user.assocs[i].group.name = group.name;
@@ -112,7 +113,7 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
   }
 
   function getGroup(index) {
-    var user = authService.dataWrap.user;
+    var user = refreshLocalData();
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id === index) {
         return user.assocs[i].group;
@@ -122,7 +123,7 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
   }
 
   function changeGroup(index, reload) {
-    var user = authService.dataWrap.user;
+    var user = refreshLocalData();
     for (var i = 0; i < user.assocs.length; i++) {
       if (user.assocs[i].group_id === index) {
         user.currentAssoc = user.assocs[i];
@@ -145,15 +146,14 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
 
   function updateLocalData() {
     $sessionStorage.user = authService.dataWrap.user;
-    return authService.refreshLocalData();
   }
 
   function isAuthorized(levelAccess) {
     if (!isAuthenticated()) {
       return false;
     }
-    var user = authService.dataWrap.user;
-    if (user.assocs !== null) {
+    var user = refreshLocalData();
+    if (user && user.assocs !== null) {
       for (var i = 0; i < user.assocs.length; i++) {
         if ((user.assocs[i].group_id === user.currentAssoc.group_id) && (levelAccess & user.assocs[i].role)) {
           return true;

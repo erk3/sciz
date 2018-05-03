@@ -11,7 +11,7 @@ function requestInterceptor($cookies) {
       var user = $cookies.get('user');
       var token = null;
 
-      if (user) {
+      if (user !== null && user !== undefined) {
         user = JSON.parse(user);
         token = user.token ? user.token : null;
       }

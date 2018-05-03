@@ -38,6 +38,9 @@ function textAngularConfig($provide) {
     taTools.html.tooltiptext = 'HTML / Texte enrichi';
     taTools.insertImage.tooltiptext = 'Insérer une image';
     taTools.insertLink.tooltiptext = 'Insérer / éditer un lien';
+
+    taTools.insertImage.iconclass = 'fa fa-image';
+    taTools.redo.iconclass = 'fa fa-redo';
     return taTools;
   }]);
 }
