@@ -17,6 +17,10 @@ from classes.conf import CONF
 from classes.group import GROUP
 import modules.globals as sg
 
+# Ignore SIGPIPE, not sure this is a good idea but it fixes the random broken pipe problem
+from signal import signal, SIGPIPE, SIG_DFL
+signal(SIGPIPE, SIG_DFL) 
+
 ## SCIZ
 
 class SCIZ:
