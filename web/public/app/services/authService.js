@@ -5,11 +5,11 @@ angular
     '$cookies',
     '$state',
     '$window',
-    '$sessionStorage',
+    '$localStorage',
     authService
   ]);
 
-function authService($http, $cookies, $state, $window, $sessionStorage) {
+function authService($http, $cookies, $state, $window, $localStorage) {
   var authService = {
     login: login,
     logout: logout,
@@ -53,7 +53,7 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
           {expires: expires}
         );
 
-        // Session Storage
+        // Local Storage
         user.pseudo = response.pseudo;
         user.session_duration = response.session_duration;
         user.default_group_id = response.default_group_id;
@@ -140,12 +140,12 @@ function authService($http, $cookies, $state, $window, $sessionStorage) {
   }
 
   function refreshLocalData() {
-    authService.dataWrap.user = $sessionStorage.user;
+    authService.dataWrap.user = $localStorage.user;
     return authService.dataWrap.user;
   }
 
   function updateLocalData() {
-    $sessionStorage.user = authService.dataWrap.user;
+    $localStorage.user = authService.dataWrap.user;
   }
 
   function isAuthorized(levelAccess) {
