@@ -153,12 +153,16 @@ function authService($http, $cookies, $state, $window, $localStorage) {
       return false;
     }
     var user = refreshLocalData();
-    if (user && user.assocs !== null) {
+    if (user && user.assocs !== null && user.assocs.length > 0) {
       for (var i = 0; i < user.assocs.length; i++) {
         if ((user.assocs[i].group_id === user.currentAssoc.group_id) && (levelAccess & user.assocs[i].role)) {
           return true;
         }
       }
+    }
+    if (user && (user.assocs === null || user.assocs.length < 1) && levelAccess > 4) {
+      // If nog group, authorize logged user to access anything but admin (see routes.js for the accessLevels)
+      return true;
     }
     return false;
   }
