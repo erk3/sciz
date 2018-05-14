@@ -167,7 +167,7 @@ class TROLL(sg.SqlAlchemyBase):
     # Nombre de retraite programmées
     nb_retraite_prog = Column(Integer)
     # Direction des retraites par ordre chronologique
-    dir_retraite = Column(String(10))
+    dir_retraite = Column(String(50))
 
     @hybrid_property
     def pseudo(self):
