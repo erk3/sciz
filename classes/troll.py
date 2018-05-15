@@ -179,6 +179,7 @@ class TROLL(sg.SqlAlchemyBase):
     user = relationship('USER', back_populates='trolls')
     group = relationship('GROUP', back_populates='trolls')
     # Associations Many-To-One
+    idcs = relationship('IDC', primaryjoin="and_(TROLL.id==IDC.troll_id, TROLL.group_id==IDC.group_id)", back_populates='troll')
     pieges = relationship('PIEGE', primaryjoin="and_(TROLL.id==PIEGE.troll_id, TROLL.group_id==PIEGE.group_id)", back_populates='troll')
     portals = relationship('PORTAL', primaryjoin="and_(TROLL.id==PORTAL.troll_id, TROLL.group_id==PORTAL.group_id)", back_populates='troll')
     cdms = relationship('CDM', primaryjoin="and_(TROLL.id==CDM.troll_id, TROLL.group_id==CDM.group_id)", back_populates='troll')

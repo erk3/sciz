@@ -15,6 +15,7 @@ var BattleTemplate = require('../models/battle.js');
 var CDMTemplate = require('../models/cdm.js');
 var PiegeTemplate = require('../models/piege.js');
 var PortalTemplate = require('../models/portal.js');
+var IDCTemplate = require('../models/idc.js');
 var EventTemplate = require('../models/event.js');
 var PadTemplate = require('../models/pad.js');
 
@@ -44,6 +45,7 @@ Templates.push(BattleTemplate);
 Templates.push(CDMTemplate);
 Templates.push(PiegeTemplate);
 Templates.push(PortalTemplate);
+Templates.push(IDCTemplate);
 Templates.push(EventTemplate);
 Templates.push(PadTemplate);
 
@@ -90,6 +92,7 @@ DB.Group.hasMany(DB.Battle, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.CDM, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Piege, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Portal, {foreignKey: 'group_id', sourceKey: 'id'});
+DB.Group.hasMany(DB.IDC, {foreignKey: 'group_id', sourceKey: 'id'});
 // Conf
 DB.Conf.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Hook
@@ -124,11 +127,18 @@ DB.Portal.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
 // DB.Portal.hasOne(DB.Event, {foreignKey: 'portal_id', sourceKey: 'id'});
 DB.Portal.hasMany(DB.Event, {foreignKey: 'portal_id', sourceKey: 'id'});
+// IDC
+DB.IDC.belongsTo(DB.Troll, {foreignKey: 'troll_id', targetKey: 'id'});
+DB.IDC.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
+// Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
+// DB.IDC.hasOne(DB.Event, {foreignKey: 'idc_id', sourceKey: 'id'});
+DB.IDC.hasMany(DB.Event, {foreignKey: 'idc_id', sourceKey: 'id'});
 // Event
 DB.Event.belongsTo(DB.Battle, {foreignKey: 'battle_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.CDM, {foreignKey: 'cdm_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Piege, {foreignKey: 'piege_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Portal, {foreignKey: 'portal_id', targetKey: 'id'});
+DB.Event.belongsTo(DB.IDC, {foreignKey: 'idc_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 
 /*
@@ -170,9 +180,16 @@ DB.Portal.addScope('defaultScope', {
   ]},
   {override: true}
 );
+// IDC
+DB.IDC.addScope('defaultScope', {
+  include: [
+    {model: DB.Troll, where: sequelize.where(sequelize.col('idc.group_id'), sequelize.col('idc->troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
 // User
 DB.User.addScope('defaultScope', {include: [{model: DB.Troll}, {model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
 // Events
-DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}, {model: DB.Portal}]}, {override: true});
+DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}, {model: DB.Portal}, {model: DB.IDC}]}, {override: true});
 
 module.exports = DB;

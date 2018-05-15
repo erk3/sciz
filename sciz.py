@@ -53,9 +53,9 @@ class SCIZ:
             confs = sg.db.session.query(CONF).filter(CONF.group_id == None, CONF.section == sg.CONF_INSTANCE_SECTION).all()
             for conf in confs:
                 sg.config.set(sg.CONF_INSTANCE_SECTION, conf.key, conf.value)
-            sg.logger.info('Loaded stored configurations for instance!')
-        except (NoResultFound, ProgrammingError) as e:
-            sg.logger.warning('No configurations for instance!')
+            sg.logger.info('Loaded stored configurations for the instance!')
+        except Exception as e:
+            sg.logger.warning('No configurations found for the instance!')
 
         # Set up the Game Engine
         sg.ge = GameEngine()

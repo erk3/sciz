@@ -41,6 +41,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       vm.switchPIEGE();
     } else if (event.portal_id !== null) {
       vm.switchPORTAL();
+    } else if (event.idc_id !== null) {
+      vm.switchIDC();
     }
     $window.scrollTo(0, 0);
   };
@@ -68,6 +70,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       s = time + ' Pose d\'un piège à ' + e.sub.type + ' en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn;
     } else if (e.portal_id) {
       s = time + ' Portail de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn + ' vers X = ' + e.sub.dst_posx + ' Y = ' + e.sub.dst_posy + ' N = ' + e.sub.dst_posn;
+    } else if (e.idc_id) {
+      s = time + ' Identification de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') d\'un ' + e.sub.type + ' ' + e.sub.qualite;
     }
     return s;
   };
@@ -94,6 +98,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
             events[i].sub = (events[i].battle_id === null) ? events[i].sub : events[i].battle;
             events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
             events[i].sub = (events[i].portal_id === null) ? events[i].sub : events[i].portal;
+            events[i].sub = (events[i].idc_id === null) ? events[i].sub : events[i].idc;
           }
           var oldLength = vm.events.length;
           vm.events = (old) ? vm.events.concat(events) : events.concat(vm.events);
@@ -118,6 +123,12 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
         }
       });
   };
+
+  /*
+   * IDC logic
+   */
+
+  vm.switchIDC = function () {};
 
   /*
    * PORTAL logic

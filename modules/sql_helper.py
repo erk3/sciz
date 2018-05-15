@@ -18,6 +18,7 @@ from classes.conf import CONF
 from classes.group import GROUP
 from classes.pad import PAD
 from classes.portal import PORTAL
+from classes.idc import IDC
 import modules.globals as sg
 
 ## SCIZ SQL Help
@@ -86,6 +87,10 @@ class SQLHelper:
             return self.__add_group(obj)
         elif isinstance(obj, CONF):
             return self.__add_conf(obj)
+        elif isinstance(obj, IDC):
+            return self.__add_idc(obj)
+        else:
+            sg.logger.error('No routine to add object %s to DB' % (obj, ))
 
     # Insert or update a USER
     def __add_user(self, new_user):
@@ -173,6 +178,11 @@ class SQLHelper:
                 event.notif_to_push = True
             event.cdm_id = obj.id
             event.type = "CDM"
+        elif isinstance(obj, IDC):
+            if (obj.troll.sciz_notif):
+                event.notif_to_push = True
+            event.idc_id = obj.id
+            event.type = "IDC"
         elif isinstance(obj, PIEGE):
             if (obj.troll.sciz_notif):
                 event.notif_to_push = True
@@ -221,6 +231,16 @@ class SQLHelper:
         self.session.commit()
         return piege
     
+    # Add an IDC
+    def __add_idc(self, idc):
+        troll = TROLL()
+        troll.id = idc.troll_id
+        troll.group_id = idc.group_id
+        self.__add_troll(troll)
+        self.session.add(idc)
+        self.session.commit()
+        return idc
+
     # Add a PORTAL
     def __add_portal(self, portal):
         if portal.id is None:
