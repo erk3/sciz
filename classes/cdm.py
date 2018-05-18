@@ -55,6 +55,10 @@ class CDM(sg.SqlAlchemyBase):
     arm_phy_min = Column(Integer)
     # Armure physique maximum
     arm_phy_max = Column(Integer)
+    # Armure magique minimum
+    arm_mag_min = Column(Integer)
+    # Armure magique maximum
+    arm_mag_max = Column(Integer)
     # Vue minimum en nombre de cases
     vue_min = Column(Integer)
     # Vue maximum en nombre de cases
@@ -79,8 +83,14 @@ class CDM(sg.SqlAlchemyBase):
     vit_dep = Column(String(10))
     # Voir la caché ?
     vlc = Column(Boolean)
+    # Voleur ?
+    voleur = Column(Boolean)
+    # Attaque magique ?
+    att_mag = Column(Boolean)
     # Attaque à distance ?
     att_dist = Column(Boolean)
+    # Sang froid
+    sang_froid = Column(String(50))
     # Moment de la DLA
     dla = Column(String(50))
     # Tour minimum en heure
@@ -138,6 +148,12 @@ class CDM(sg.SqlAlchemyBase):
         if hasattr(self, 'tour_eq'):
             self.tour_min = self.tour_min or self.tour_sup or self.tour_eq
             self.tour_max = self.tour_max or self.tour_inf or self.tour_eq
+        # CDM Niv 5
+        if hasattr(self, 'arg_mag_eq'):
+            self.arm_mag_min = self.arm_mag_min or self.arm_mag_sup or self.arm_mag_eq
+            self.arm_mag_max = self.arm_mag_max or self.arm_mag_inf or self.arm_mag_eq
+        self.voleur = sg.parseFrenchBoolean(self.voleur)
+        self.att_mag = sg.parseFrenchBoolean(self.voleur)
                     
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided

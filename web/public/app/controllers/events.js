@@ -179,6 +179,12 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
     if (vm.cur.cdm.att_dist !== null) {
       vm.cur.cdm.att_dist = vm.boolean2French(vm.cur.cdm.att_dist);
     }
+    if (vm.cur.cdm.voleur !== null) {
+      vm.cur.cdm.voleur = vm.boolean2French(vm.cur.cdm.voleur);
+    }
+    if (vm.cur.cdm.att_mag !== null) {
+      vm.cur.cdm.att_mag = vm.boolean2French(vm.cur.cdm.att_mag);
+    }
   };
 
   /*

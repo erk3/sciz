@@ -59,6 +59,10 @@ class MOB(sg.SqlAlchemyBase):
     arm_phy_min = Column(Integer)
     # Armure physique maximum
     arm_phy_max = Column(Integer)
+    # Armure magique minimum
+    arm_mag_min = Column(Integer)
+    # Armure magique maximum
+    arm_mag_max = Column(Integer)
     # Vue minimum en nombre de cases
     vue_min = Column(Integer)
     # Vue maximum en nombre de cases
@@ -83,10 +87,16 @@ class MOB(sg.SqlAlchemyBase):
     vit_dep = Column(String(10))
     # Voir la caché ?
     vlc = Column(Boolean)
+    # Voleur ?
+    voleur = Column(Boolean)
     # Attaque à distance ?
     att_dist = Column(Boolean)
+    # Attaque magique ?
+    att_mag = Column(Boolean)
     # Moment de la DLA
     dla = Column(String(50))
+    # Sang froid
+    sang_froid = Column(String(50))
     # Tour minimum en heure
     tour_min = Column(Integer)
     # Tour maximum en heure
@@ -131,11 +141,11 @@ class MOB(sg.SqlAlchemyBase):
         self.nom = obj.mob_name
         self.tag = obj.mob_tag
         self.age = obj.mob_age
-        sg.copy_properties(obj, self, ['type', 'blessure', 'niv_min', 'niv_max', 'pv_min', 'pv_max', 'att_min', 'att_max', 'esq_min', 'esq_max', 'deg_min', 'deg_max', 'reg_min', 'reg_max', 'arm_phy_min', 'arm_phy_max', 'vue_min', 'vue_max', 'capa_desc', 'capa_effet', 'capa_tour', 'mm_min', 'mm_max', 'rm_min', 'rm_max', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist', 'dla', 'tour_min', 'tour_max', 'chargement', 'bonus_malus', 'portee_capa'], True)
+        sg.copy_properties(obj, self, ['type', 'blessure', 'niv_min', 'niv_max', 'pv_min', 'pv_max', 'att_min', 'att_max', 'esq_min', 'esq_max', 'deg_min', 'deg_max', 'reg_min', 'reg_max', 'arm_phy_min', 'arm_phy_max', 'arm_mag_min', 'arm_mag_max', 'vue_min', 'vue_max', 'capa_desc', 'capa_effet', 'capa_tour', 'mm_min', 'mm_max', 'rm_min', 'rm_max', 'nb_att_tour', 'vit_dep', 'vlc', 'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'tour_min', 'tour_max', 'chargement', 'bonus_malus', 'portee_capa'], True)
 
     # Update mob definition with the more accurate value
     def update_from_new(self, mob):
-        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'att_dist', 'dla', 'chargement', 'bonus_malus', 'portee_capa'], False)
+        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus', 'portee_capa'], False)
         
         self.niv_min = sg.do_unless_none((max), (self.niv_min, mob.niv_min))
         self.pv_min = sg.do_unless_none((max), (self.pv_min, mob.pv_min))
@@ -144,6 +154,7 @@ class MOB(sg.SqlAlchemyBase):
         self.deg_min = sg.do_unless_none((max), (self.deg_min, mob.deg_min))
         self.reg_min = sg.do_unless_none((max), (self.reg_min, mob.reg_min))
         self.arm_phy_min = sg.do_unless_none((max), (self.arm_phy_min, mob.arm_phy_min))
+        self.arm_mag_min = sg.do_unless_none((max), (self.arm_mag_min, mob.arm_mag_min))
         self.vue_min = sg.do_unless_none((max), (self.vue_min, mob.vue_min))
         self.mm_min = sg.do_unless_none((max), (self.mm_min, mob.mm_min))
         self.rm_min = sg.do_unless_none((max), (self.rm_min, mob.rm_min))
@@ -156,6 +167,7 @@ class MOB(sg.SqlAlchemyBase):
         self.deg_max = sg.do_unless_none((min), (self.deg_max, mob.deg_max))
         self.reg_max = sg.do_unless_none((min), (self.reg_max, mob.reg_max))
         self.arm_phy_max = sg.do_unless_none((min), (self.arm_phy_max, mob.arm_phy_max))
+        self.arm_mag_max = sg.do_unless_none((min), (self.arm_mag_max, mob.arm_mag_max))
         self.vue_max = sg.do_unless_none((min), (self.vue_max, mob.vue_max))
         self.mm_max = sg.do_unless_none((min), (self.mm_max, mob.mm_max))
         self.rm_max = sg.do_unless_none((min), (self.rm_max, mob.rm_max))

@@ -22,7 +22,10 @@
           <span ng-hide="ec.cur.cdm.vit_dep === null"><cite><small>Vitesse de déplacement : {{ec.cur.cdm.vit_dep}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.vlc === null"><cite><small>Voir le caché : {{ec.cur.cdm.vlc}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.dla === null"><cite><small>DLA : {{ec.cur.cdm.dla}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.voleur === null"><cite><small>Voleur : {{ec.cur.cdm.voleur}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.sang_froid === null"><cite><small>Sang Froid : {{ec.cur.cdm.sang_froid}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.att_dist === null"><cite><small>Attaque à distance : {{ec.cur.cdm.att_dist}}</small></cite></span>
+          <span ng-hide="ec.cur.cdm.att_mag === null"><cite><small>Attaque magique : {{ec.cur.cdm.att_mag}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.chargement === null"><cite><small>Chargement : {{ec.cur.cdm.chargement}}</small></cite></span>
           <span ng-hide="ec.cur.cdm.capa == ''"><cite><small>Capacité spéciale : {{ec.cur.cdm.capa}}</small></cite></span>
       </blockquote>
@@ -88,6 +91,11 @@
         <td><b>Armure physique</b></td>
         <td>{{ec.displayMinMax(ec.cur.cdm.arm_phy_min, ec.cur.cdm.arm_phy_max, true)}}</td>
         <td>{{ec.displayAverage(ec.cur.cdm.arm_phy_min, ec.cur.cdm.arm_phy_max, 1)}}</td>
+      </tr>
+      <tr ng-hide="ec.cur.cdm.arm_mag_min === null && ec.cur.cdm.arm_mag_max === null">
+        <td><b>Armure magique</b></td>
+        <td>{{ec.displayMinMax(ec.cur.cdm.arm_mag_min, ec.cur.cdm.arm_mag_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.cdm.arm_mag_min, ec.cur.cdm.arm_mag_max, 1)}}</td>
       </tr>
       <tr>
         <td><b>Vue</b></td>
