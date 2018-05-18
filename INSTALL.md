@@ -97,14 +97,6 @@ apt-get install python-pip
 pip install -r sciz/requirements.txt
 ```
 
-## Installation de la crontab
-```
-apt-get install cron
-cp docker/sciz-crontab sciz-crontab
-# Edit the sciz-crontab and change the HOME environment variable according to your setup
-crontab sciz-crontab
-```
-
 ## Configuration minimale de SCIZ
 
 Editer le fichier ```confs/sciz.ini``` et modifier la valeur des variables suivantes :
@@ -155,20 +147,11 @@ Vérifier le fichier ```sciz.log``` après chacune des commandes suivantes, aucu
 
 Les commandes sont à éxécuter à la racine des sources SCIZ.
 
-Un exemple de fichier JSON pour l'ajout des utilsateurs est disponible dans le dossier ```examples```
-
 ```
 # Création des tables dans la base SCIZ
 python sciz.py -i
 
-# Ajout des utilisateurs
-python sciz.py -u users.json
-
-# Ajout des utilisateurs à un groupe à créer
-python sciz.py -u users.json -g group
-
-# Population initiale des tables
-# /!\ Un appel aux SP MH (catégorie dynamique) par utilisateur et par commande /!\
+# Démarrage de SCIZ en mode démon
 python sciz.py -a
 ```
 
