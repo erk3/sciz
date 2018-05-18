@@ -2,12 +2,12 @@
    {
       "section":"battle_format",
       "key":"s_short",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit} {o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead}"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead}"
    },
    {
       "section":"battle_format",
       "key":"s_long",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit} {o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px})"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px})"
    },
    {
       "section":"battle_format",
@@ -407,7 +407,7 @@
    {
       "section":"mob_format",
       "key":"s_mob_stats",
-      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
+      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_arm_mag}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_voleur}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_att_mag}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_sang_froid}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
    },
    {
       "section":"mob_format",
@@ -491,8 +491,18 @@
    },
    {
       "section":"mob_format",
+      "key":"voleur",
+      "value":"Voleur : {}"
+   },
+   {
+      "section":"mob_format",
       "key":"att_dist",
       "value":"Attaque à distance : {}"
+   },
+   {
+      "section":"mob_format",
+      "key":"att_mag",
+      "value":"Attaque magique : {}"
    },
    {
       "section":"mob_format",
@@ -508,6 +518,11 @@
       "section":"mob_format",
       "key":"dla",
       "value":"DLA : {}"
+   },
+   {
+      "section":"mob_format",
+      "key":"sang_froid",
+      "value":"Sang Froid : {}"
    },
    {
       "section":"mob_format",
@@ -537,7 +552,7 @@
    {
       "section":"cdm_format",
       "key":"s_cdm_stats",
-      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
+      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_arm_mag}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_voleur}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_att_mag}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_sang_froid}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
    },
    {
       "section":"cdm_format",
@@ -596,6 +611,11 @@
    },
    {
       "section":"cdm_format",
+      "key":"arm_mag",
+      "value":"ARMM {}"
+   },
+   {
+      "section":"cdm_format",
       "key":"vue",
       "value":"VUE {}"
    },
@@ -631,8 +651,18 @@
    },
    {
       "section":"cdm_format",
+      "key":"voleur",
+      "value":"Voleur : {}"
+   },
+   {
+      "section":"cdm_format",
       "key":"att_dist",
       "value":"Attaque à distance : {}"
+   },
+   {
+      "section":"cdm_format",
+      "key":"att_mag",
+      "value":"Attaque magique : {}"
    },
    {
       "section":"cdm_format",
@@ -648,6 +678,11 @@
       "section":"cdm_format",
       "key":"dla",
       "value":"DLA : {}"
+   },
+   {
+      "section":"cdm_format",
+      "key":"sang_froid",
+      "value":"Sang Froid : {}"
    },
    {
       "section":"cdm_format",
@@ -778,5 +813,55 @@
       "section":"portal_format",
       "key":"disp_posn",
       "value":"Z = {:+d}"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_short",
+      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_long",
+      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_time",
+      "value":"%d/%m/%Y %Hh%M:%S"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_pos",
+      "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
+   },
+   {
+      "section":"portal_format",
+      "key":"s_dst_pos",
+      "value":"{o.s_dst_posx} | {o.s_dst_posy} | {o.s_dst_posn}"
+   },
+   {
+      "section":"idc_format",
+      "key":"type",
+      "value":"{}"
+   },
+   {
+      "section":"idc_format",
+      "key":"qualite",
+      "value":"{}"
+   },
+   {
+      "section":"idc_format",
+      "key":"posx",
+      "value":"X = {}"
+   },
+   {
+      "section":"idc_format",
+      "key":"posy",
+      "value":"Y = {}"
+   },
+   {
+      "section":"idc_format",
+      "key":"posn",
+      "value":"Z = {}"
    }
 ]
