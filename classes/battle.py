@@ -90,7 +90,7 @@ class BATTLE(sg.SqlAlchemyBase):
         if self.subtype:
             self.subtype = self.subtype.capitalize()
         else:
-            self.subtype = u'Attaque normale' if self.pv or self.deg else u'Attaque normale esquivée'
+            self.subtype = u'Attaque' if self.pv or self.deg else u'Attaque esquivée'
         self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else None
         self.pv = self.pv or self.deg # Pas d'armure
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
