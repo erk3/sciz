@@ -821,6 +821,26 @@
    },
    {
       "section":"idc_format",
+      "key":"s_short",
+      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_long",
+      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_time",
+      "value":"%d/%m/%Y %Hh%M:%S"
+   },
+   {
+      "section":"idc_format",
+      "key":"s_pos",
+      "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
+   },
+{
+      "section":"idc_format",
       "key":"type",
       "value":"{}"
    },

@@ -835,11 +835,6 @@
       "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
    },
    {
-      "section":"portal_format",
-      "key":"s_dst_pos",
-      "value":"{o.s_dst_posx} | {o.s_dst_posy} | {o.s_dst_posn}"
-   },
-   {
       "section":"idc_format",
       "key":"type",
       "value":"{}"
