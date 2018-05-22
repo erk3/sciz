@@ -1,0 +1,91 @@
+<div class="col-sm-5 col-md-5">
+
+  <!-- Page Header -->
+  <div class="row">
+    <div class="page-header text-center">
+        <h1>Analyse Anatomique</h1>
+    </div>
+  </div>
+  <br/>
+
+  <!-- Header (Full name, class, level and special abilities) -->
+  <div class="row">
+    <div class="col-md-3">
+      <img ng-src="{{ec.cur.aa.troll_cible.blason_url}}" class="img-responsive img-rounded" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+    </div>
+    <div class="col-md-9">
+      <blockquote>
+        <p>{{ec.cur.aa.troll_cible.nom}} (<a href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.aa.troll_cible_id}}">{{ec.cur.aa.troll_cible_id}}</a>)</p>
+      </blockquote>
+    </div>
+  </div>
+  <br/>
+
+  <!-- Life bar -->
+  <div class="text-center"><span><i>{{ec.cur.aa.blessure}}% de blessure</i></span></div>
+  <div class="progress">
+    <div class="progress-bar" ng-class="{'progress-bar-warning': ec.cur.aa.lifePercent < 66 && ec.cur.aa.lifePercent > 33, 'progress-bar-success': ec.cur.aa.lifePercent >= 66, 'progress-bar-danger': ec.cur.aa.lifePercent <= 33}" role="progressbar" style="width: {{(ec.cur.aa.pvMinBlessure * 100 / ec.cur.aa.pvMaxBlessure) - ec.cur.aa.blessure}}%">
+      <span class="pull-left" style="margin-left: 2px">0</span>
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.aa.pvMinBlessure}}</span>
+    </div>
+    <div class="progress-bar progress-bar-custom" ng-class="{'progress-bar-warning': ec.cur.aa.lifePercent < 66 && ec.cur.aa.lifePercent > 33, 'progress-bar-success': ec.cur.aa.lifePercent >= 66, 'progress-bar-danger': ec.cur.aa.lifePercent <= 33}" role="progressbar" style="width: {{100 - (ec.cur.aa.pvMinBlessure * 100 / ec.cur.aa.pvMaxBlessure)}}%">
+      <span class="pull-right" style="margin-right: 2px">{{ec.cur.aa.pvMaxBlessure}}</span>
+    </div>
+  </div>
+    
+  <br/>
+
+  <!-- Caracs -->
+  <table class="table table-condensed text-center">
+    <thead class="thead-inverse text-center">
+      <tr>
+        <th class="text-center">Caractéristique</th>
+        <th class="text-center">Min - Max</th>
+        <th class="text-center">Moyenne</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Niveau</b></td>
+        <td>{{ec.cur.aa.niv}}</td>
+        <td>{{ec.cur.aa.niv}}</td>
+      </tr>
+      <tr>
+        <td><b>Points de vie</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.pv_min, ec.cur.aa.pv_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.pv_min, ec.cur.aa.pv_max, 1)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés d'attaque (D6)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.att_min, ec.cur.aa.att_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.att_min, ec.cur.aa.att_max, 3)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés d'esquive (D6)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.esq_min, ec.cur.aa.esq_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.esq_min, ec.cur.aa.esq_max, 3)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés de dégât (D3)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.deg_min, ec.cur.aa.deg_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.deg_min, ec.cur.aa.deg_max, 2)}}</td>
+      </tr>
+      <tr>
+        <td><b>Dés de régénération (D3)</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.reg_min, ec.cur.aa.reg_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.reg_min, ec.cur.aa.reg_max, 2)}}</td>
+      </tr>
+      <tr>
+        <td><b>Armure physique</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.arm_phy_min, ec.cur.aa.arm_phy_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.arm_phy_min, ec.cur.aa.arm_phy_max, 1)}}</td>
+      </tr>
+      <tr>
+        <td><b>Vue</b></td>
+        <td>{{ec.displayMinMax(ec.cur.aa.vue_min, ec.cur.aa.vue_max, true)}}</td>
+        <td>{{ec.displayAverage(ec.cur.aa.vue_min, ec.cur.aa.vue_max, 1)}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

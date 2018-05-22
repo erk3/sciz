@@ -10,6 +10,7 @@ from classes.troll import TROLL
 from classes.metamob import METAMOB
 from classes.mob import MOB
 from classes.cdm import CDM
+from classes.aa import AA
 from classes.battle import BATTLE
 from classes.event import EVENT
 from classes.hook import HOOK
@@ -73,6 +74,8 @@ class SQLHelper:
             return self.__add_mob(obj)
         elif isinstance(obj, CDM):
             return self.__add_cdm(obj)
+        elif isinstance(obj, AA):
+            return self.__add_aa(obj)
         elif isinstance(obj, PIEGE):
             return self.__add_piege(obj)
         elif isinstance(obj, PORTAL):
@@ -178,6 +181,11 @@ class SQLHelper:
                 event.notif_to_push = True
             event.cdm_id = obj.id
             event.type = "CDM"
+        elif isinstance(obj, AA):
+            if (obj.troll.sciz_notif or obj.troll_cible.sciz_notif):
+                event.notif_to_push = True
+            event.aa_id = obj.id
+            event.type = "AA"
         elif isinstance(obj, IDC):
             if (obj.troll.sciz_notif):
                 event.notif_to_push = True
@@ -270,7 +278,22 @@ class SQLHelper:
         self.session.add(cdm)
         self.session.commit()
         return cdm
+   
+   # Add a AA
+    def __add_aa(self, aa):
+        troll_cible = TROLL()
+        troll_cible.populate_from_aa(aa)
+        self.__add_troll(troll_cible)
+        troll = TROLL()
+        troll.id = aa.troll_id
+        troll.nom = aa.troll_nom
+        troll.group_id = aa.group_id
+        self.__add_troll(troll)
+        self.session.add(aa)
+        self.session.commit()
+        return aa
     
+ 
     # Add a BATTLE
     def __add_battle(self, battle):
         if battle.att_troll_id != None:

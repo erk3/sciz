@@ -1,0 +1,194 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from cerv.ovh
+	by cerv.ovh (Dovecot) with LMTP id QqNvDm4TBFtPMQAAqi0s4g
+	for <feedthebat@sciz.cerv.ovh>; Tue, 22 May 2018 12:56:14 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by cerv.ovh (Postfix) with ESMTP id 2C23349E9
+	for <feedthebat@sciz.cerv.ovh>; Tue, 22 May 2018 12:56:14 +0000 (UTC)
+Authentication-Results: cerv.ovh (amavisd-new); dkim=pass (2048-bit key)
+	header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=74.125.82.173; helo=mail-ot0-f173.google.com; envelope-from=censored@gmail.com; receiver=feedthebat@sciz.cerv.ovh 
+Received: from mail-ot0-f173.google.com (mail-ot0-f173.google.com [74.125.82.173])
+	by cerv.ovh (Postfix) with ESMTPS id 8BD6C49DE
+	for <feedthebat@sciz.cerv.ovh>; Tue, 22 May 2018 12:56:13 +0000 (UTC)
+Received: by mail-ot0-f173.google.com with SMTP id g7-v6so20787506otj.11
+        for <feedthebat@sciz.cerv.ovh>; Tue, 22 May 2018 05:56:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=+8phBmM+WOrGayiVZ9CnXJE3Kt6mOhqc1bUHSUr6KeE=;
+        b=BEblY4nZsGuSznhXiYXJCxJQZJw+iGc5zmGI5v/R8TTusyyIm7eZdrgaIFNH78UABg
+         eTH31h8pVlV0DdVxOI8cI0+xXnyF64jIo4AqLfN7qiJNAy4KEs7ymARujOBw6rS8v0By
+         /fe+Wyq5Fhk7o7ZdyqooOX89GUCMJtGpnstZ1bnLTdZJjw4xk8t92GEe716gZS3qrrFO
+         CzG/PSAk1Z02mMWOKP57zynt++XHAV/xqez2b4bo/SWs16NfrRTF/tlnydWxSscJxnKx
+         FH4gy1cO1mF0IbGr0i5ySTlURdAhYidwwL8g9lBMdIYPyg7/a5UQl2QuWdxZbq2+N2G/
+         ad4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=+8phBmM+WOrGayiVZ9CnXJE3Kt6mOhqc1bUHSUr6KeE=;
+        b=NtD4y1FH3759ptidr2f76ZZt5o1NsO9sBrZx1wOxc+X+iCwLwk/deZwOY1go/gEVxc
+         QDzxbcLlDZN/K3EAoBbvaeemD0xgUWkaqjc6BZL0gTzczgVMINyR8o48p7t71WQ3TQlB
+         wjrO3bilNPHnJ/GWIGDsCZZl7vy41NTVCrMXHCHdU0ikTK6vUDxqZcgp1+LZLYUSsCkd
+         JsUYHizhXNOKSzS0JFNlK6Ijvitiek+8myFhy1u25apFSwneNJmBqklli7MjjvYU13hy
+         4cKMVReDdhcxOGxfbflcHwe0JPOv6AcqPxoMu7JaT5LVH8GmyufRCpuudKCIQZukWn1e
+         DnWg==
+X-Gm-Message-State: ALKqPwcNBQ7fcYIsmoLMcmIJQCiMRGQRlwqIeBl2fyXRuPu9xCsp1ffM
+	0brffXlT45w/A3v/RNhdekiNafoQmzzOxJ9PeYtfZg==
+X-Google-Smtp-Source: AB8JxZqpGMpYe+n9alwtQKaZBZToZB2l7GH9NDSVOyzqdF8Cly3VuIinn2b4qH6Hut1io7PP/JqNX6lZWAHeHj4Yk+g=
+X-Received: by 2002:a9d:330e:: with SMTP id f14-v6mr15102001otc.218.1526993771912;
+ Tue, 22 May 2018 05:56:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <729a501aeb7efa21b25034ea264067aa@games.mountyhall.com> <CAC7aV=ytNj9BuT6foaDKwRU2-_ymNZQX-FJwG1T37nniAT5u3g@mail.gmail.com>
+In-Reply-To: <CAC7aV=ytNj9BuT6foaDKwRU2-_ymNZQX-FJwG1T37nniAT5u3g@mail.gmail.com>
+From: Censored <censored@gmail.com>
+Date: Tue, 22 May 2018 14:55:58 +0200
+Message-ID: <CALtH2JiHf0Ba5wLcg9sGhN1WUNBS8XzJa5hy3HsHkEWd+MJ9Lg@mail.gmail.com>
+Subject: =?UTF-8?B?RndkOiBbTW91bnR5SGFsbF0gU29ydGlsw6hnZSA6IEFuYWx5c2UgQW5hdG9taXF1ZSBzdQ==?=
+	=?UTF-8?B?ciBQw7VtUMO1bVDDtW0gKDEwNDEyNik=?=
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="000000000000596178056ccaf1e3"
+
+--000000000000596178056ccaf1e3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: Pierre-Valentin Soleau <censored@gmail.com>
+Date: mar. 22 mai 2018 =C3=A0 14:55
+Subject: Fwd: [MountyHall] Sortil=C3=A8ge : Analyse Anatomique sur P=C3=B5m=
+P=C3=B5mP=C3=B5m
+(104126)
+To: Paul <censored@gmail.com>
+
+
+
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: Wed, Dec 13, 2017 at 8:23 PM
+Subject: [MountyHall] Sortil=C3=A8ge : Analyse Anatomique sur P=C3=B5mP=C3=
+=B5mP=C3=B5m (104126)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0108758 : Un Bac =C3=A0 Ordures Vindicatif [Poss=C3=A9d=C3=
+=A9]
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 13/12/2017 20:23:32.
+***********************************************************
+
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : ANALYSE ANATOMIQUE sur P=C3=B5mP=
+=C3=B5mP=C3=B5m (104126)
+
+Niveau :                        43
+Points de Vie :         Impressionnant (entre 140 et 160)
+Blessure :                      0 % (approximativement)
+D=C3=A9s d'Attaque :         Faible (entre 2 et 4)
+D=C3=A9s d'Esquive :         Impressionnant (entre 14 et 16)
+D=C3=A9s de D=C3=A9g=C3=A2t :          Moyen (entre 3 et 5)
+D=C3=A9s de R=C3=A9g=C3=A8n. :         Remarquable (entre 4 et 5)
+D=C3=A9s d'Armure :          Faible (inf=C3=A9rieur =C3=A0 3)
+Vue :                           Inimaginable (sup=C3=A9rieur =C3=A0 24)
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+--=20
+Censored
+
+--000000000000596178056ccaf1e3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: Pierre-Valentin Soleau &lt;<a hre=
+f=3D"mailto:censored@gmail.com">censored@gmail.com</a>&gt;<br>Date: mar. 22=
+ mai 2018 =C3=A0=C2=A014:55<br>Subject: Fwd: [MountyHall] Sortil=C3=A8ge : =
+Analyse Anatomique sur P=C3=B5mP=C3=B5mP=C3=B5m (104126)<br>To: Paul &lt;<a=
+ href=3D"mailto:censored@gmail.com">censored@gmail.com</a>&gt=
+;<br></div><br><br><div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div=
+ dir=3D"ltr">---------- Forwarded message ---------<br>From: MountyHall-Bot=
+ &lt;<a href=3D"mailto:bot@mountyhall.com" target=3D"_blank">bot@mountyhall=
+.com</a>&gt;<br>Date: Wed, Dec 13, 2017 at 8:23 PM<br>Subject: [MountyHall]=
+ Sortil=C3=A8ge : Analyse Anatomique sur P=C3=B5mP=C3=B5mP=C3=B5m (104126)<=
+br>To:  &lt;<a href=3D"mailto:censored@gmail.com" target=3D"_blank">censored
+@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0108758 : Un Bac =C3=A0 Ordures Vindicatif [Poss=C3=A9d=C3=
+=A9]<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 13/12/2017 20:23:32.<br>
+***********************************************************<br>
+<br>
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : ANALYSE ANATOMIQUE sur P=C3=B5mP=
+=C3=B5mP=C3=B5m (104126)<br>
+<br>
+Niveau :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 43<br>
+Points de Vie :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Impressionnant (entre 140 =
+et 160)<br>
+Blessure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 0 % (approximativement)<br>
+D=C3=A9s d&#39;Attaque :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Faible (entre 2 e=
+t 4)<br>
+D=C3=A9s d&#39;Esquive :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Impressionnant (e=
+ntre 14 et 16)<br>
+D=C3=A9s de D=C3=A9g=C3=A2t :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Moyen (entr=
+e 3 et 5)<br>
+D=C3=A9s de R=C3=A9g=C3=A8n. :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Remarquable=
+ (entre 4 et 5)<br>
+D=C3=A9s d&#39;Armure :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 Faible (inf=C3=A9=
+rieur =C3=A0 3) <br>
+Vue :=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0Inimaginable (sup=C3=A9rieur =C3=A0 24) <br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div><div dir=3D"ltr"><br clear=3D"all"><div><br></div>-- <br><div d=
+ir=3D"ltr" class=3D"m_7386837699738433774gmail_signature" data-smartmail=3D=
+"gmail_signature"><div dir=3D"ltr">Pierre-Valentin &#39;PV&#39; Soleau<div>=
+<br></div></div></div></div></div></div>
+
+--000000000000596178056ccaf1e3--

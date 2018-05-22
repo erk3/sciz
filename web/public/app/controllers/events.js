@@ -43,6 +43,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       vm.switchPORTAL();
     } else if (event.idc_id !== null) {
       vm.switchIDC();
+    } else if (event.aa_id !== null) {
+      vm.switchAA();
     }
     $window.scrollTo(0, 0);
   };
@@ -66,6 +68,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       s += (def) ? ' sur ' + def : '';
     } else if (e.cdm_id) {
       s = time + ' Connaissance des Monstres (' + e.sub.comp_niv + ') de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') sur ' + e.sub.mob.nom + ' [' + e.sub.mob.age + '] (' + e.sub.mob.id + ')';
+    } else if (e.aa_id) {
+      s = time + ' Analyse Anatomique de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') sur ' + e.sub.troll_cible.nom + ' (' + e.sub.troll_cible.id + ')';
     } else if (e.piege_id) {
       s = time + ' Pose d\'un piège à ' + e.sub.type + ' en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn;
     } else if (e.portal_id) {
@@ -99,6 +103,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
             events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
             events[i].sub = (events[i].portal_id === null) ? events[i].sub : events[i].portal;
             events[i].sub = (events[i].idc_id === null) ? events[i].sub : events[i].idc;
+            events[i].sub = (events[i].aa_id === null) ? events[i].sub : events[i].aa;
           }
           var oldLength = vm.events.length;
           vm.events = (old) ? vm.events.concat(events) : events.concat(vm.events);
@@ -122,6 +127,23 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
           vm.busy = false;
         }
       });
+  };
+
+  /*
+   * AA logic
+   */
+
+  vm.switchAA = function () {
+    // Progress bar
+    vm.cur.aa.lifePercent = 100 - vm.cur.aa.blessure;
+    var rPvMin = (vm.cur.aa.pv_min ? vm.cur.aa.pv_min : vm.cur.aa.pv_max);
+    vm.cur.aa.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.aa.lifePercent / 100));
+    var rPvMax = (vm.cur.aa.pv_max ? vm.cur.aa.pv_max : vm.cur.aa.pv_mmin);
+    if (vm.cur.aa.pv_max) {
+      vm.cur.aa.pvMaxBlessure = Math.floor(rPvMax * vm.cur.aa.lifePercent / 100);
+    } else {
+      vm.cur.aa.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.aa.lifePercent / 100) * 1.2));
+    }
   };
 
   /*

@@ -119,9 +119,13 @@ class MHCaller:
         mh_r = requests.get("http://%s/%s" % (self.ftpURL, self.ftpTrolls2, ))
         lines = mh_r.text.split('\n')
         for troll in trolls:
-            line = [s for s in lines if str(troll.id) + ';' in s]
-            if line:
+            line = [s for s in lines if (str(troll.id) + ';') in s]
+            if line is not None:
                 id, troll.nom, troll.race, troll.niv, troll.nb_kill, troll.nb_mort, troll.nb_mouche, troll.id_guilde, troll.rang_guilde, troll.etat, troll.intangible, troll.pnj, troll.ami_mh, troll.inscription, troll.blason_url, empty = line[0].split(';')
+                troll.etat = troll.etat != u'1'
+                troll.intangible = troll.intangible != u'0'
+                troll.ami_mh = troll.ami_mh != u'0'
+                troll.pnj = troll.pnj != u'0'
                 sg.db.add(troll)
     
     # Caller to the Monstres FTP

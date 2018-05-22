@@ -4,6 +4,7 @@
 # Imports
 import re, ConfigParser, email, HTMLParser
 from classes.cdm import CDM
+from classes.aa import AA
 from classes.piege import PIEGE
 from classes.battle import BATTLE
 from classes.portal import PORTAL

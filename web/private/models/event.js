@@ -27,7 +27,9 @@ EventTemplate.modelDefinition = {
   type: {type: sequelize.STRING},
   battle_id: {type: sequelize.INTEGER},
   cdm_id: {type: sequelize.INTEGER},
-  piege_id: {type: sequelize.INTEGER}
+  piege_id: {type: sequelize.INTEGER},
+  idc_id: {type: sequelize.INTEGER},
+  aa_id: {type: sequelize.INTEGER}
 };
 
 EventTemplate.modelOptions = {
@@ -40,6 +42,13 @@ EventTemplate.modelOptions = {
       for (var e = 0; e < events.length; e++) {
         if (events[e].cdm && events[e].cdm.troll) {
           events[e].cdm.troll = TrollTemplate.changeBlasonURL(events[e].cdm.troll);
+        }
+        if (events[e].aa && events[e].aa.troll && events[e].aa.troll_cible) {
+          events[e].aa.troll = TrollTemplate.changeBlasonURL(events[e].aa.troll);
+          events[e].aa.troll_cible = TrollTemplate.changeBlasonURL(events[e].aa.troll_cible);
+        }
+        if (events[e].idc && events[e].idc.troll) {
+          events[e].idc.troll = TrollTemplate.changeBlasonURL(events[e].idc.troll);
         }
         if (events[e].piege && events[e].piege.troll) {
           events[e].piege.troll = TrollTemplate.changeBlasonURL(events[e].piege.troll);

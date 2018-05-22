@@ -117,7 +117,21 @@ TrollTemplate.modelDefinition = {
   bonus_concentration_mag: {type: sequelize.INTEGER},
   pi: {type: sequelize.INTEGER},
   nb_retraite_prog: {type: sequelize.INTEGER},
-  dir_retraite: {type: sequelize.STRING}
+  dir_retraite: {type: sequelize.STRING},
+  aa_pv_min: {type: sequelize.STRING},
+  aa_pv_max: {type: sequelize.STRING},
+  aa_base_att_min: {type: sequelize.STRING},
+  aa_base_att_max: {type: sequelize.STRING},
+  aa_base_esq_min: {type: sequelize.STRING},
+  aa_base_esq_max: {type: sequelize.STRING},
+  aa_base_deg_min: {type: sequelize.STRING},
+  aa_base_deg_max: {type: sequelize.STRING},
+  aa_base_reg_min: {type: sequelize.STRING},
+  aa_base_reg_max: {type: sequelize.STRING},
+  aa_base_arm_phy_min: {type: sequelize.STRING},
+  aa_base_arm_phy_max: {type: sequelize.STRING},
+  aa_base_vue_min: {type: sequelize.STRING},
+  aa_base_vue_max: {type: sequelize.STRING}
 };
 
 TrollTemplate.modelOptions = {
@@ -129,5 +143,6 @@ TrollTemplate.modelOptions = {
     afterFind: TrollTemplate.changeBlasonURL
   }
 };
+
 module.exports = TrollTemplate;
 

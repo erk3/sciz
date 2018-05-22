@@ -26,6 +26,8 @@ class EVENT(sg.SqlAlchemyBase):
     battle_id = Column(Integer, ForeignKey('battles.id', ondelete="CASCADE"))
     # ID de l'évènement de CDM
     cdm_id = Column(Integer, ForeignKey('cdms.id', ondelete="CASCADE"))
+    # ID de l'évènement de AA
+    aa_id = Column(Integer, ForeignKey('aas.id', ondelete="CASCADE"))
     # ID de l'évènement de piège
     piege_id = Column(Integer, ForeignKey('pieges.id', ondelete="CASCADE"))
     # ID de l'évènement de portail
@@ -38,6 +40,7 @@ class EVENT(sg.SqlAlchemyBase):
     # Associations One-To-One
     battle = relationship("BATTLE", primaryjoin="and_(EVENT.battle_id==BATTLE.id, EVENT.group_id==BATTLE.group_id)", back_populates="event")
     cdm = relationship("CDM", primaryjoin="and_(EVENT.cdm_id==CDM.id, EVENT.group_id==CDM.group_id)", back_populates="event")
+    aa = relationship("AA", primaryjoin="and_(EVENT.aa_id==AA.id, EVENT.group_id==AA.group_id)", back_populates="event")
     piege = relationship("PIEGE", primaryjoin="and_(EVENT.piege_id==PIEGE.id, EVENT.group_id==PIEGE.group_id)", back_populates="event")
     portal = relationship("PORTAL", primaryjoin="and_(EVENT.portal_id==PORTAL.id, EVENT.group_id==PORTAL.group_id)", back_populates="event")
     idc = relationship("IDC", primaryjoin="and_(EVENT.idc_id==IDC.id, EVENT.group_id==IDC.group_id)", back_populates="event")
@@ -52,6 +55,7 @@ class EVENT(sg.SqlAlchemyBase):
         obj = None
         obj = self.battle if self.battle_id is not None else obj
         obj = self.cdm if self.cdm_id is not None else obj
+        obj = self.aa if self.aa_id is not None else obj
         obj = self.piege if self.piege_id is not None else obj
         obj = self.portal if self.portal_id is not None else obj
         obj = self.idc if self.idc_id is not None else obj

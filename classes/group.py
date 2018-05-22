@@ -31,6 +31,7 @@ class GROUP(sg.SqlAlchemyBase):
     hooks = relationship('HOOK', back_populates='group')
     events = relationship('EVENT', back_populates='group')
     battles = relationship('BATTLE', back_populates='group')
+    aas = relationship('AA', back_populates='group')
     cdms = relationship('CDM', back_populates='group')
     pieges = relationship('PIEGE', back_populates='group')
     portals = relationship('PORTAL', back_populates='group')

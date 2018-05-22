@@ -12,6 +12,7 @@ var GroupTemplate = require('../models/group.js');
 var ConfTemplate = require('../models/conf.js');
 var HookTemplate = require('../models/hook.js');
 var BattleTemplate = require('../models/battle.js');
+var AATemplate = require('../models/aa.js');
 var CDMTemplate = require('../models/cdm.js');
 var PiegeTemplate = require('../models/piege.js');
 var PortalTemplate = require('../models/portal.js');
@@ -42,6 +43,7 @@ Templates.push(GroupTemplate);
 Templates.push(ConfTemplate);
 Templates.push(HookTemplate);
 Templates.push(BattleTemplate);
+Templates.push(AATemplate);
 Templates.push(CDMTemplate);
 Templates.push(PiegeTemplate);
 Templates.push(PortalTemplate);
@@ -71,6 +73,7 @@ DB.Troll.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', onDelete: '
 DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
 DB.Troll.hasMany(DB.Piege, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.CDM, {foreignKey: 'troll_id', sourceKey: 'id'});
+DB.Troll.hasMany(DB.AA, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Battle, {as: 'atts', foreignKey: 'att_troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Battle, {as: 'defs', foreignKey: 'def_troll_id', sourceKey: 'id'});
 // Mob
@@ -89,6 +92,7 @@ DB.Group.hasMany(DB.Mob, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Hook, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Event, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Battle, {foreignKey: 'group_id', sourceKey: 'id'});
+DB.Group.hasMany(DB.AA, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.CDM, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Piege, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Portal, {foreignKey: 'group_id', sourceKey: 'id'});
@@ -107,6 +111,13 @@ DB.Battle.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
 // DB.Battle.hasOne(DB.Event, {foreignKey: 'battle_id'});
 DB.Battle.hasMany(DB.Event, {foreignKey: 'battle_id', sourceKey: 'id'});
+// AA
+DB.AA.belongsTo(DB.Troll, {as: 'troll', foreignKey: 'troll_id', targetKey: 'id'});
+DB.AA.belongsTo(DB.Troll, {as: 'troll_cible', foreignKey: 'troll_cible_id', targetKey: 'id'});
+DB.AA.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
+// Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
+// DB.AA.hasOne(DB.Event, {foreignKey: 'aa_id', sourceKey: 'id'});
+DB.AA.hasMany(DB.Event, {foreignKey: 'aa_id', sourceKey: 'id'});
 // CDM
 DB.CDM.belongsTo(DB.Troll, {foreignKey: 'troll_id', targetKey: 'id'});
 DB.CDM.belongsTo(DB.Mob, {foreignKey: 'mob_id', targetKey: 'id'});
@@ -136,6 +147,7 @@ DB.IDC.hasMany(DB.Event, {foreignKey: 'idc_id', sourceKey: 'id'});
 // Event
 DB.Event.belongsTo(DB.Battle, {foreignKey: 'battle_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.CDM, {foreignKey: 'cdm_id', targetKey: 'id'});
+DB.Event.belongsTo(DB.AA, {foreignKey: 'aa_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Piege, {foreignKey: 'piege_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Portal, {foreignKey: 'portal_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.IDC, {foreignKey: 'idc_id', targetKey: 'id'});
@@ -155,6 +167,14 @@ DB.Battle.addScope('defaultScope', {
     {model: DB.Mob, as: 'def_mob', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_mob.group_id')), required: false},
     {model: DB.Troll, as: 'att_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->att_troll.group_id')), required: false},
     {model: DB.Troll, as: 'def_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
+// AA
+DB.AA.addScope('defaultScope', {
+  include: [
+    {model: DB.Troll, as: 'troll', where: sequelize.where(sequelize.col('aa.group_id'), sequelize.col('aa->troll.group_id')), required: false},
+    {model: DB.Troll, as: 'troll_cible', where: sequelize.where(sequelize.col('aa.group_id'), sequelize.col('aa->troll_cible.group_id')), required: false}
   ]},
   {override: true}
 );
@@ -190,6 +210,6 @@ DB.IDC.addScope('defaultScope', {
 // User
 DB.User.addScope('defaultScope', {include: [{model: DB.Troll}, {model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
 // Events
-DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}, {model: DB.Portal}, {model: DB.IDC}]}, {override: true});
+DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}, {model: DB.Portal}, {model: DB.IDC}, {model: DB.AA}]}, {override: true});
 
 module.exports = DB;

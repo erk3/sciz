@@ -169,6 +169,22 @@ class TROLL(sg.SqlAlchemyBase):
     # Direction des retraites par ordre chronologique
     dir_retraite = Column(String(50))
 
+    # AA stats
+    aa_pv_min = Column(Integer)
+    aa_pv_max = Column(Integer)
+    aa_base_att_min = Column(Integer)
+    aa_base_att_max = Column(Integer)
+    aa_base_esq_min = Column(Integer)
+    aa_base_esq_max = Column(Integer)
+    aa_base_deg_min = Column(Integer)
+    aa_base_deg_max = Column(Integer)
+    aa_base_reg_min = Column(Integer)
+    aa_base_reg_max = Column(Integer)
+    aa_base_arm_phy_min = Column(Integer)
+    aa_base_arm_phy_max = Column(Integer)
+    aa_base_vue_min = Column(Integer)
+    aa_base_vue_max = Column(Integer)
+    
     @hybrid_property
     def pseudo(self):
         if self.user and self.user.pseudo:
@@ -183,14 +199,38 @@ class TROLL(sg.SqlAlchemyBase):
     pieges = relationship('PIEGE', primaryjoin="and_(TROLL.id==PIEGE.troll_id, TROLL.group_id==PIEGE.group_id)", back_populates='troll')
     portals = relationship('PORTAL', primaryjoin="and_(TROLL.id==PORTAL.troll_id, TROLL.group_id==PORTAL.group_id)", back_populates='troll')
     cdms = relationship('CDM', primaryjoin="and_(TROLL.id==CDM.troll_id, TROLL.group_id==CDM.group_id)", back_populates='troll')
+    aas = relationship('AA', primaryjoin="and_(TROLL.id==AA.troll_id, TROLL.group_id==AA.group_id)", back_populates='troll')
     atts = relationship('BATTLE', primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates='att_troll')
     defs = relationship('BATTLE', primaryjoin="and_(BATTLE.def_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates='def_troll')
     
     # Constructor is handled by SqlAlchemy, do not override
 
+    # Populate object from a AA
+    def populate_from_aa(self, aa):
+        self.id = aa.troll_cible_id
+        self.group_id = aa.group_id
+        self.nom = aa.troll_cible_name
+        self.niv = aa.niv
+
+        self.aa_pv_min = sg.do_unless_none((max), (self.aa_pv_min, aa.pv_min))
+        self.aa_base_att_min = sg.do_unless_none((max), (self.aa_base_att_min, aa.att_min))
+        self.aa_base_esq_min = sg.do_unless_none((max), (self.aa_base_esq_min, aa.esq_min))
+        self.aa_base_deg_min = sg.do_unless_none((max), (self.aa_base_deg_min, aa.deg_min))
+        self.aa_base_reg_min = sg.do_unless_none((max), (self.aa_base_reg_min, aa.reg_min))
+        self.aa_base_arm_phy_min = sg.do_unless_none((max), (self.aa_base_arm_phy_min, aa.arm_phy_min))
+        self.aa_base_vue_min = sg.do_unless_none((max), (self.aa_base_vue_min, aa.vue_min))
+        
+        self.aa_pv_max = sg.do_unless_none((min), (self.aa_pv_max, aa.pv_max))
+        self.aa_base_att_max = sg.do_unless_none((min), (self.aa_base_att_max, aa.att_max))
+        self.aa_base_esq_max = sg.do_unless_none((min), (self.aa_base_esq_max, aa.esq_max))
+        self.aa_base_deg_max = sg.do_unless_none((min), (self.aa_base_deg_max, aa.deg_max))
+        self.aa_base_reg_max = sg.do_unless_none((min), (self.aa_base_reg_max, aa.reg_max))
+        self.aa_base_arm_phy_max = sg.do_unless_none((min), (self.aa_base_arm_phy_max, aa.arm_phy_max))
+        self.aa_base_vue_max = sg.do_unless_none((min), (self.aa_base_vue_max, aa.vue_max))
+        
     def update_from_new(self, troll):
         lst = ['pv']
-        if self.nom == None: # Update the name of the troll only if not known so far (on the fly troll adding case)
+        if self.nom is None: # Update the name of the troll only if not known so far (on the fly troll adding case)
             lst.append('nom')
         sg.copy_properties(troll, self, lst, False)
 
@@ -238,7 +278,13 @@ class TROLL(sg.SqlAlchemyBase):
                         s = value.format(getattr(self, key))
                 elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
                     s = sg.str_min_max(getattr(self, key+ '_min'), getattr(self, key + '_max'))
-                    s = value.format(s) if s is not None else ''
+                    if s is not None:
+                        s = value.format(s)
+                    elif hasattr(self, 'aa_' + key + '_min') or hasattr(self, 'aa_' + key + '_max'):
+                        s = sg.str_min_max(getattr(self, 'aa_' + key + '_min'), getattr(self, 'aa_' + key + '_max'))
+                        s = value.format(s) if s is not None else ''
+                    else:
+                        s = ''
             except KeyError as e:
                 pass
             setattr(self, 's_' + key, s)

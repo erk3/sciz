@@ -10,6 +10,7 @@ from classes.troll import TROLL
 from classes.user import USER
 from classes.mob import MOB
 from classes.cdm import CDM
+from classes.aa import AA
 from classes.battle import BATTLE
 from modules.sql_helper import SQLHelper
 import modules.globals as sg
@@ -178,6 +179,8 @@ class Requester:
                 limit = int(args[1]) if int(args[1]) > 0 else limit
             if args[0].lower() == 'event':
                 self.__request_troll_event(id, limit)
+            elif args[0].lower() == 'aa':
+                self.__request_troll_aa(id, limit)
             elif args[0].lower() == 'recap':
                 self.__request_troll_recap(id)
             else:
@@ -188,6 +191,21 @@ class Requester:
     
     def __request_troll_recap(self, id):
         pass
+
+    def __request_troll_aa(self, id, limit):
+        try:        
+            aas = sg.db.session.query(AA).filter(AA.troll_cible_id==id, AA.group_id==sg.group.id).order_by(desc(AA.time)).limit(limit).all()
+            i = len(aas) - 1
+            if i >= 0:
+                while i >= 0:
+                    val = sg.pretty_print(aas[i], False, None)
+                    if val != '':
+                        print val
+                    i -= 1
+            else:
+                print 'Aucune AA pour le troll n°%s' % (id, )
+        except NoResultFound:
+            print 'Aucune AA pour le troll n°%s' % (id, )
 
     def __request_troll_event(self, id, limit):
         try:
