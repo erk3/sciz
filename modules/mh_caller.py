@@ -119,7 +119,7 @@ class MHCaller:
         mh_r = requests.get("http://%s/%s" % (self.ftpURL, self.ftpTrolls2, ))
         lines = mh_r.text.split('\n')
         for troll in trolls:
-            line = [s for s in lines if str(troll.id) in s]
+            line = [s for s in lines if str(troll.id) + ';' in s]
             if line:
                 id, troll.nom, troll.race, troll.niv, troll.nb_kill, troll.nb_mort, troll.nb_mouche, troll.id_guilde, troll.rang_guilde, troll.etat, troll.intangible, troll.pnj, troll.ami_mh, troll.inscription, troll.blason_url, empty = line[0].split(';')
                 sg.db.add(troll)
