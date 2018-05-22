@@ -858,5 +858,80 @@
       "section":"idc_format",
       "key":"posn",
       "value":"Z = {}"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_short",
+      "value":"{o.s_time} AA de {o.s_troll_nom} sur {o.s_troll_cible_nom} : {o.s_blessure}"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_long",
+      "value":"{o.s_time} AA de {o.s_troll_nom} sur {o.s_troll_cible_nom} : {o.s_blessure} {o.s_aa_stats}"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_aa_stats",
+      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_vue}"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_time",
+      "value":"%d/%m/%Y %Hh%M:%S"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_delimiter",
+      "value":";"
+   },
+   {
+      "section":"aa_format",
+      "key":"s_sep",
+      "value":"\\n"
+   },
+   {
+      "section":"aa_format",
+      "key":"blessure",
+      "value":"{}%"
+   },
+   {
+      "section":"aa_format",
+      "key":"niv",
+      "value":"Niv {}"
+   },
+   {
+      "section":"aa_format",
+      "key":"pv",
+      "value":"PV {}"
+   },
+   {
+      "section":"aa_format",
+      "key":"att",
+      "value":"ATT {}D6"
+   },
+   {
+      "section":"aa_format",
+      "key":"esq",
+      "value":"ESQ {}D6"
+   },
+   {
+      "section":"aa_format",
+      "key":"deg",
+      "value":"DEG {}D3"
+   },
+   {
+      "section":"aa_format",
+      "key":"reg",
+      "value":"REG {}D3"
+   },
+   {
+      "section":"aa_format",
+      "key":"arm_phy",
+      "value":"ARMP {}"
+   },
+   {
+      "section":"aa_format",
+      "key":"vue",
+      "value":"VUE {}"
    }
 ]
