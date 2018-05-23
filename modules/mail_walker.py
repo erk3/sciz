@@ -39,7 +39,7 @@ class MailWalker:
                 if last_modified_date < ago:
                     os.remove(dir_path + os.sep + f)
         except (OSError, IOError) as e:
-            sg.logger.error('Fail to purge %s mail directory! (Error: %s)' % (dir_path, str(e), ))
+            sg.logger.warning('Fail to purge %s mail directory! (Error: %s)' % (dir_path, str(e), ))
             pass
 
     # Main MailDir walker
