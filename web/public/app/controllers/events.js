@@ -53,9 +53,12 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
    * Event displayer
    */
 
-  vm.displayShortEvent = function (e) {
+  vm.displayShortEvent = function (e, decorator) {
     var time = vm.displayDate(e.sub.time);
     var s = '';
+    var att_decorator_f = (decorator) ? '<span style="color: #856404"><b>' : '';
+    var def_decorator_f = (decorator) ? '<span style="color: #0C5460"><b>' : '';
+    var decorator_b = (decorator) ? '</b></span>' : '';
     if (e.battle_id) {
       var att = (e.sub.att_troll_id) ? e.sub.att_troll.nom + ' (' + e.sub.att_troll.id + ')' : '';
       att = (e.sub.att_mob_id) ? e.sub.att_mob.nom + ' [' + e.sub.att_mob.age + '] (' + e.sub.att_mob.id + ')' : att;
@@ -64,12 +67,12 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       var action = (e.sub.type) ? e.sub.type : '';
       action += (e.sub.subtype) ? (action ? ' (' + e.sub.subtype + ')' : e.sub.subtype) : '';
       s = time + ' ' + action;
-      s += (att) ? ' de ' + att : '';
-      s += (def) ? ' sur ' + def : '';
+      s += (att) ? ' de ' + att_decorator_f + att + decorator_b : '';
+      s += (def) ? ' sur ' + def_decorator_f + def + decorator_b : '';
     } else if (e.cdm_id) {
-      s = time + ' Connaissance des Monstres (' + e.sub.comp_niv + ') de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') sur ' + e.sub.mob.nom + ' [' + e.sub.mob.age + '] (' + e.sub.mob.id + ')';
+      s = time + ' Connaissance des Monstres (' + e.sub.comp_niv + ') de ' + att_decorator_f + e.sub.troll.nom + ' (' + e.sub.troll.id + ')' + decorator_b + ' sur ' + def_decorator_f + e.sub.mob.nom + ' [' + e.sub.mob.age + '] (' + e.sub.mob.id + ')' + decorator_b;
     } else if (e.aa_id) {
-      s = time + ' Analyse Anatomique de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') sur ' + e.sub.troll_cible.nom + ' (' + e.sub.troll_cible.id + ')';
+      s = time + ' Analyse Anatomique de ' + att_decorator_f + e.sub.troll.nom + ' (' + e.sub.troll.id + ')' + decorator_b + ' sur ' + def_decorator_f + e.sub.troll_cible.nom + ' (' + e.sub.troll_cible.id + ')' + decorator_b;
     } else if (e.piege_id) {
       s = time + ' Pose d\'un piège à ' + e.sub.type + ' en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn;
     } else if (e.portal_id) {
@@ -245,23 +248,36 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
     };
   };
 
-  vm.isRelatedToCur = function (event) {
+  vm.isRelatedToCurDef = function (e) {
     // Cur Event
-    var curAttID = null;
-    curAttID = (vm.cur.battle) ? ((vm.cur.battle.att_troll_id) ? vm.cur.battle.att_troll_id : vm.cur.battle.att_mob_id) : curAttID;
-    var curDefID = (vm.cur.cdm) ? (vm.cur.cdm.mob_id) : null;
-    curDefID = (vm.cur.battle) ? ((vm.cur.battle.def_troll_id) ? vm.cur.battle.def_troll_id : vm.cur.battle.def_mob_id) : curDefID;
+    var curDefID = (vm.cur.cdm.id) ? (vm.cur.cdm.mob_id) : null;
+    curDefID = (vm.cur.aa.id) ? (vm.cur.aa.troll_cible_id) : curDefID;
+    curDefID = (vm.cur.battle.id) ? ((vm.cur.battle.def_troll_id) ? vm.cur.battle.def_troll_id : vm.cur.battle.def_mob_id) : curDefID;
     // Event
-    var eAttID = (event.cdm) ? (event.cdm.troll_id) : null;
-    eAttID = (event.battle) ? ((event.battle.att_troll_id) ? event.battle.att_troll_id : event.battle.att_mob_id) : eAttID;
-    var eDefID = (event.cdm) ? (event.cdm.mob_id) : null;
-    eDefID = (event.battle) ? ((event.battle.def_troll_id) ? event.battle.def_troll_id : event.battle.def_mob_id) : eDefID;
-    if ((curAttID !== null) && (curDefID !== null)) {
-      return ((curAttID === eAttID) && (curDefID === eDefID)) || ((curDefID === eAttID) && (curAttID === eDefID));
-    } else if (curAttID !== null) {
-      return (curAttID === eAttID) || (curAttID === eDefID);
-    }
-    return (curDefID === eAttID) || (curDefID === eDefID);
+    var eAttID = (e.cdm.id) ? (e.cdm.troll_id) : null;
+    eAttID = (e.aa.id) ? (e.aa.troll_id) : eAttID;
+    eAttID = (e.battle.id) ? ((e.battle.att_troll_id) ? e.battle.att_troll_id : e.battle.att_mob_id) : eAttID;
+    var eDefID = (e.cdm.id) ? (e.cdm.mob_id) : null;
+    eDefID = (e.aa.id) ? (e.aa.troll_cible_id) : eDefID;
+    eDefID = (e.battle.id) ? ((e.battle.def_troll_id) ? e.battle.def_troll_id : e.battle.def_mob_id) : eDefID;
+    // Is the current event target related to the event target tested ?
+    return ((curDefID !== null) && ((curDefID === eDefID) || (curDefID === eAttID)));
+  };
+
+  vm.isRelatedToCurAtt = function (e) {
+    // Cur Event
+    var curAttID = (vm.cur.cdm.id) ? (vm.cur.cdm.troll_id) : null;
+    curAttID = (vm.cur.aa.id) ? (vm.cur.aa.troll_id) : curAttID;
+    curAttID = (vm.cur.battle.id) ? ((vm.cur.battle.att_troll_id) ? vm.cur.battle.att_troll_id : vm.cur.battle.att_mob_id) : curAttID;
+    // Event
+    var eAttID = (e.cdm.id) ? (e.cdm.troll_id) : null;
+    eAttID = (e.aa.id) ? (e.aa.troll_id) : eAttID;
+    eAttID = (e.battle.id) ? ((e.battle.att_troll_id) ? e.battle.att_troll_id : e.battle.att_mob_id) : eAttID;
+    var eDefID = (e.cdm.id) ? (e.cdm.mob_id) : null;
+    eDefID = (e.aa.id) ? (e.aa.troll_cible_id) : eDefID;
+    eDefID = (e.battle.id) ? ((e.battle.def_troll_id) ? e.battle.def_troll_id : e.battle.def_mob_id) : eDefID;
+    // Is the current event sender related to the event sender tested ?
+    return ((curAttID !== null) && ((curAttID === eDefID) || (curAttID === eAttID)));
   };
 
   /*

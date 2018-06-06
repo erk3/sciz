@@ -32,8 +32,8 @@
         <div class="table-responsive pre-scrollable" style="max-height:60vh;">
           <table class="table table-hover table-condensed">
             <tbody infinite-scroll="ec.loadMoreEvents(true)" infinite-scroll-disabled="ec.busy" infinite-scroll-distance="1" infinite-scroll-container="'.pre-scrollable'">
-              <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCur(event)}">
-                <td class="text-left"><small>{{ec.displayShortEvent(event)}}</small></td>
+              <tr ng-repeat="event in ec.events | filter: ec.search(event)" ng-click="ec.switchTrigger(event)" ng-class="{'info':ec.isRelatedToCurDef(event), 'warning':ec.isRelatedToCurAtt(event)}">
+                <td class="text-left"><small ng-bind-html="ec.displayShortEvent(event, event==ec.cur)"></small></td>
               </tr>
             </tbody>
           </table>
