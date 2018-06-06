@@ -35,7 +35,7 @@ class SCIZ:
         
         # Set up the logger and store it globally
         logger_file = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE)
-        logger_file_max_size = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE_MAX_SIZE)
+        logger_file_max_size = sg.config.getint(sg.CONF_LOG_SECTION, sg.CONF_LOG_FILE_MAX_SIZE)
         logger_formatter = sg.config.get(sg.CONF_LOG_SECTION, sg.CONF_LOG_FORMATTER)
         sg.createDirName(logger_file);
         log_file = RotatingFileHandler(logger_file, 'a', logger_file_max_size, 1)
