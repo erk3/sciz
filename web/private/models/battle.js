@@ -41,6 +41,8 @@ BattleTemplate.modelDefinition = {
   capa_effet: {type: sequelize.STRING},
   capa_tour: {type: sequelize.INTEGER},
   resist: {type: sequelize.BOOLEAN},
+  crit: {type: sequelize.BOOLEAN},
+  perfect_dodge: {type: sequelize.BOOLEAN},
   dead: {type: sequelize.BOOLEAN},
   px: {type: sequelize.INTEGER},
   fatigue: {type: sequelize.INTEGER}

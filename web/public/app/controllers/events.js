@@ -173,7 +173,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   vm.switchBATTLE = function () {
     vm.cur.attBlason = (vm.cur.sub.att_troll_id) ? vm.cur.sub.att_troll.blason_url : ((vm.cur.sub.att_mob_id) ? vm.cur.sub.att_mob.metamob.blason_url : vm.blasonError);
     vm.cur.defBlason = (vm.cur.sub.def_troll_id) ? vm.cur.sub.def_troll.blason_url : ((vm.cur.sub.def_mob_id) ? vm.cur.sub.def_mob.metamob.blason_url : vm.blasonError);
-    vm.cur.isTouched = (vm.cur.battle.att > vm.cur.battle.esq);
+    vm.cur.isTouched = (vm.cur.sub.att > vm.cur.sub.esq);
   };
 
   /*
