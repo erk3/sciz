@@ -1,0 +1,129 @@
+Return-Path: <censored+caf_=censored=sciz.cerv.ovh@gmail.com>
+Delivered-To: censored@sciz.cerv.ovh
+Received: from cerv.ovh
+	by cerv.ovh with LMTP id UDTqGIgmDlsjVAAAqi0s4g
+	for <censored@sciz.cerv.ovh>; Wed, 30 May 2018 04:20:24 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by cerv.ovh (Postfix) with ESMTP id 4BD5FAB5
+	for <censored@sciz.cerv.ovh>; Wed, 30 May 2018 04:20:24 +0000 (UTC)
+X-Virus-Scanned: Yes
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.223.170; helo=mail-io0-f170.google.com; envelope-from=censored+caf_=censored=sciz.cerv.ovh@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: cerv.ovh; dmarc=none (p=none dis=none) header.from=mountyhall.com
+Received: from mail-io0-f170.google.com (mail-io0-f170.google.com [209.85.223.170])
+	by cerv.ovh (Postfix) with ESMTPS id 4B314A79
+	for <censored@sciz.cerv.ovh>; Wed, 30 May 2018 04:20:05 +0000 (UTC)
+Received: by mail-io0-f170.google.com with SMTP id g1-v6so20096893iob.2
+        for <censored@sciz.cerv.ovh>; Tue, 29 May 2018 21:20:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-original-authentication-results:x-gm-message-state:delivered-to
+         :to:subject:date:from:message-id:mime-version
+         :content-transfer-encoding;
+        bh=pZpC3kagQr5OX0ppF0PFSHynhA5XLTV3ee7of/qJk/k=;
+        b=D3u8mqOUnbS6MTjH3pVNcRgBGj+7ZMHcXTejt3PMrdMmGLRArRQG70cEYRys3CXeDh
+         8Niosw7p+MMTC0Obs5MEsbyX/m+dHOYeVbYb0iDFVnxalpqxa+X43wK0FkSHsMgG66m7
+         uGJMy9rDv0PmF0/3VSlsmzEqCo+sPhCmyd9rC/q7qNRMv03JQ6KCOR0xOP9Ru22CPoQs
+         dP7/qXDHcEiVxcwmsUdonNk16AZyzboi2pfHdzIY7qmaS6e1Mi0VbS175w6llDjkqjnv
+         nTqbbchDgcAgpk14bvC+/Qlmdflt3q+S+c1BZsxHIqYj9crsXIOZ4lgqLv02mWpEP6ie
+         3P5g==
+X-Original-Authentication-Results: mx.google.com;       spf=pass (google.com: domain of www-data@mountyhall.com designates 46.16.240.194 as permitted sender) smtp.mailfrom=www-data@mountyhall.com
+X-Gm-Message-State: ALKqPwdbo23KzKFfOHWmwgXvS6Jv+k0xMTR8T4gfcRgJ0On0chLIDdEG
+	xOE+GboTLayXXNyNuzPZCJiJlgG7ExUbOYRnPjIWhWLhiAGlW2w=
+X-Received: by 2002:a6b:3902:: with SMTP id g2-v6mr790789ioa.265.1527654003743;
+        Tue, 29 May 2018 21:20:03 -0700 (PDT)
+X-Forwarded-To: censored@sciz.cerv.ovh
+X-Forwarded-For: censored@gmail.com censored@sciz.cerv.ovh
+Delivered-To: censored@gmail.com
+Received: by 2002:a02:1850:0:0:0:0:0 with SMTP id k77-v6csp2442700jad;
+        Tue, 29 May 2018 21:20:02 -0700 (PDT)
+X-Google-Smtp-Source: ADUXVKIcNodi8jOiL5i5CZ+Vg4YLYDLe4x5YhvYtt77T7nPu/eHS5QtlfQp2mF5M90Nyzansblrt
+X-Received: by 2002:a50:b3ed:: with SMTP id t42-v6mr1589877edd.14.1527654002758;
+        Tue, 29 May 2018 21:20:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1527654002; cv=none;
+        d=google.com; s=arc-20160816;
+        b=rWeh5tneUYJz0DSNVjpkr+etbf2bZRmLRxG2q0sYebdKT5iuYJsWB/kGdx4Xv9HQp5
+         hyHRm/nynpw456d/F96xQ7LA0Sho13oplpOL0Qq1CfZQujd6Ws+mDCb2qh9Ki/hK0kwB
+         1yYEFgz9LqQ4O0UsHn4ac4o8reUZJphHlgGFgHHsyyb5W9bUtI4mzjBaHCnxACKgx9EI
+         cx6deKG9g0GfbralQop7ftFQffvFoQTaCzMim1pq0sH/O94tEDVDLMKiA4WdKgIlwjUN
+         tI7xgg3LDcb1NoB4qJ75SxL6nfjpX7yKMgcmbS+ojIq0OSkHlA4Ebthui5UPKFUe8582
+         gtTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:message-id:from:date:subject
+         :to:arc-authentication-results;
+        bh=pZpC3kagQr5OX0ppF0PFSHynhA5XLTV3ee7of/qJk/k=;
+        b=BOMs9gUCcEs6QpMnkVpU5KrSeFp1Fm5ZtsQwdobLVzFOjebcA3kVdGHJTePLN1EF76
+         kYUdLNToyInWnuCAcxrB1/ARwn9GhCzEkoId/YaZwGN7tjwUkSWfDnz9LJEymuyu8ZRk
+         8kuzVLNRyE0ZNIo6N5rNLhAHnXeGsNOh3c//8u+vofSrxo2dcv3qPYAy7WzxcClxbCXt
+         hpWimSAwpMabk2IMOFkVE95AQrF/M4dKGjJBR18MtG+c5aUOJQlupkv2TuPDs4o6eMUx
+         yUxkhD1BRktByMGpm4yjm3ofQq0qnifMmcFYVSVoYIcZpZ9sQ2Rk3kUMFxsZKu/32FtG
+         c4vg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of www-data@mountyhall.com designates 46.16.240.194 as permitted sender) smtp.mailfrom=www-data@mountyhall.com
+Received: from games.mountyhall.com ([46.16.240.194])
+        by mx.google.com with ESMTP id f2-v6si632112edk.459.2018.05.29.21.20.02
+        for <censored@gmail.com>;
+        Tue, 29 May 2018 21:20:02 -0700 (PDT)
+Received-SPF: pass (google.com: domain of www-data@mountyhall.com designates 46.16.240.194 as permitted sender) client-ip=46.16.240.194;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of www-data@mountyhall.com designates 46.16.240.194 as permitted sender) smtp.mailfrom=www-data@mountyhall.com
+Received: by games.mountyhall.com (Postfix, from userid 33)
+	id 68C147B6071; Wed, 30 May 2018 06:20:02 +0200 (CEST)
+To: censored@gmail.com
+Subject: =?iso-8859-1?Q?[MountyHall]_Comp=E9tence_:_Connaissance_des_Monstres_4_su?=  =?iso-8859-1?Q?r_un_M=E9gac=E9phale_Berserker_[V=E9t=E9ran]_(6011225)?=
+X-PHP-Originating-Script: 0:class.phpmailer.php
+Date: Wed, 30 May 2018 06:20:02 +0200
+From: MountyHall-Bot <bot@mountyhall.com>
+Message-ID: <f660274d8245701331c448508f185dd9@mh2.mh.raistlin.fr>
+X-Priority: 3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="iso-8859-1"
+
+================================
+MOUNTYHALL - La Terre des Trõlls
+================================
+
+Trõll n°104360 : cahouatak
+
+Vous avez été impliqué dans un événement : COMPETENCE.
+Il était alors aux alentours de : 30/05/2018 06:20:02.
+***********************************************************
+
+Vous avez utilisé CONNAISSANCE DES MONSTRES sur un Mégacéphale Berserker [Vétéran] (6011225)
+
+Le Monstre ciblé fait partie des : Humanoide
+
+Niveau :		Jamais vu (entre 41 et 43)
+Points de Vie :	Exceptionnel (entre 330 et 350)
+Blessure :		50 % (approximativement)
+Dés d'Attaque :	Très Faible (inférieur à 2) 
+Dés d'Esquive :	Très Fort (entre 18 et 20)
+Dés de Dégàt :	Exceptionnel (entre 34 et 36)
+Dés de Régén. :	Incroyable (égal à 19) 
+Armure :		Incroyable (entre 35 et 37)
+Vue :			Très Faible (entre 2 et 4)
+Capacité spéciale : Trombe Mentale - Affecte : Armure | Durée 2 tour(s)
+Maitrise Magique :			Surtrollesque (entre 4500 et 4700)
+Résistance Magique :		Très Fort (entre 1800 et 2000)
+Nombre d'attaques :			2
+Vitesse de Déplacement :	Normale
+Voir le Caché :				Non
+Attaque à distance :		Non
+DLA :			Fin
+Durée tour :	Excellent (entre 11 et 13)
+Chargement :	Vide
+Bonus Malus :	Bénédiction du Sorcier - 6011695, Bénédiction du Sorcier - 6011695
+Portée du Pouvoir :	Automatique
+
+
+***********************************************************
+Vous avez configuré votre compte pour recevoir un Email
+ lorsque votre Trõll est impliqué dans un événement.
+Si vous ne désirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Trõll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+

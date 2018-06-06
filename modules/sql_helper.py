@@ -273,6 +273,7 @@ class SQLHelper:
         self.__add_mob(mob)
         troll = TROLL()
         troll.id = cdm.troll_id
+        troll.nom = cdm.troll_nom
         troll.group_id = cdm.group_id
         self.__add_troll(troll)
         self.session.add(cdm)
