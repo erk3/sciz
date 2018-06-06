@@ -16,7 +16,7 @@
       </div>
       <div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
         <ul class="nav navbar-nav">
-          <li ui-sref-active="active"><a ui-sref="home" href="/">Accueil</a></li>
+          <li ui-sref-active="active" ng-hide="authService.isAuthenticated()"><a ui-sref="home" href="/">Accueil</a></li>
           <li ui-sref-active="active" ng-hide="!authService.isAuthenticated()"><a ui-sref="events" href="/events">Événements</a></li>
           <li ui-sref-active="active" ng-hide="!authService.isAuthenticated() || !user.currentAssoc"><a ui-sref="trolls" href="/trolls">Trõlls</a></li>
           <li ui-sref-active="active" ng-hide="!authService.isAuthenticated() || !user.currentAssoc"><a ui-sref="pad" href="/pad">Bloc-notes</a></li>

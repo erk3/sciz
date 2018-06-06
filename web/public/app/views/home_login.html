@@ -10,7 +10,7 @@
   <p style="font-size: 14px;" class="text-center">
     SCIZ est un outil entièrement tourné vers <a href="http://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse. Sa fonction première est de conserver, consolider et partager automatiquement les notifications mail envoyées par le jeu à chaque trõll de votre groupe.
   </p>
-  <p style="font-size: 12px; margin-bottom: 0" class="text-center">
+  <p ng-hide="authService.isAuthenticated()" style="font-size: 12px; margin-bottom: 0" class="text-center">
     Besoin d'une démo ?<br/>Transférez une notification à <i>test@sciz.cerv.ovh</i> puis cliquez <a href="" ng-click="hc.testLogin()">ici</a>
   </p>
 </div>
