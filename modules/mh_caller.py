@@ -7,6 +7,7 @@ from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from classes.troll import TROLL
 from classes.user import USER
 from classes.metamob import METAMOB
+from classes.metatresor import METATRESOR
 import modules.globals as sg
 
 ## Mountyhall Caller class for SCIZ
@@ -26,6 +27,7 @@ class MHCaller:
             self.ftpURL = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_URL)
             self.ftpTrolls2 = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_TROLLS2)
             self.ftpMonstres = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_MONSTRES)
+            self.ftpTresors = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_TRESORS)
         except ConfigParser.Error as e:
             sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
@@ -147,6 +149,24 @@ class MHCaller:
                 sg.db.session.add(metamob)
         sg.db.session.commit()
 
+    # Caller to the Tresors FTP
+    def tresors_ftp_call(self):
+        # Fetch MH Tresors (Metatresors) from FTP
+        mh_r = requests.get("http://%s/%s" % (self.ftpURL, self.ftpTresors, ))
+        lines = mh_r.text.split('\n')
+        for line in lines:
+            if line.find(";") > 0:
+                id, nom, type, empty = line.split(';')
+                try:
+                    metatresor = sg.db.session.query(METATRESOR).filter(METATRESOR.id == id).one()
+                except NoResultFound, MultipleResultsFound:
+                    metatresor = METATRESOR()
+                metatresor.id = id
+                metatresor.nom = nom
+                metatresor.type = type
+                sg.db.session.add(metatresor)
+        sg.db.session.commit()
+
     # Main MH call dispatcher
     def call(self, script, trolls):
         # If a list of trolls (or users) is specified, get those, else get them all
@@ -172,6 +192,9 @@ class MHCaller:
         elif script == 'monstres':
             sg.logger.info("Calling ftp %s..." % (script, ))
             self.monstres_ftp_call()
+        elif script == 'tresors':
+            sg.logger.info("Calling ftp %s..." % (script, ))
+            self.tresors_ftp_call()
         elif script == 'profil4':
             for oUser in oUsers:
                 sg.logger.info("Calling script %s for user %s..." % (script, oUser.id, ))

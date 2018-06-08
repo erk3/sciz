@@ -20,6 +20,8 @@ from classes.group import GROUP
 from classes.pad import PAD
 from classes.portal import PORTAL
 from classes.idc import IDC
+from classes.idt import IDT
+from classes.metatresor import METATRESOR
 import modules.globals as sg
 
 ## SCIZ SQL Help
@@ -92,6 +94,8 @@ class SQLHelper:
             return self.__add_conf(obj)
         elif isinstance(obj, IDC):
             return self.__add_idc(obj)
+        elif isinstance(obj, IDT):
+            return self.__add_idt(obj)
         else:
             sg.logger.error('No routine to add object %s to DB' % (obj, ))
 
@@ -191,6 +195,11 @@ class SQLHelper:
                 event.notif_to_push = True
             event.idc_id = obj.id
             event.type = "IDC"
+        elif isinstance(obj, IDT):
+            if (obj.troll.sciz_notif):
+                event.notif_to_push = True
+            event.idt_id = obj.id
+            event.type = "IDT"
         elif isinstance(obj, PIEGE):
             if (obj.troll.sciz_notif):
                 event.notif_to_push = True
@@ -233,6 +242,7 @@ class SQLHelper:
     def __add_piege(self, piege):
         troll = TROLL()
         troll.id = piege.troll_id
+        troll.nom = piege.troll_nom
         troll.group_id = piege.group_id
         self.__add_troll(troll)
         self.session.add(piege)
@@ -243,11 +253,24 @@ class SQLHelper:
     def __add_idc(self, idc):
         troll = TROLL()
         troll.id = idc.troll_id
+        troll.nom = idc.troll_nom
         troll.group_id = idc.group_id
         self.__add_troll(troll)
         self.session.add(idc)
         self.session.commit()
         return idc
+
+    # Add an IDT
+    def __add_idt(self, idt):
+        idt.link_metatresor(self.session.query(METATRESOR).all())
+        troll = TROLL()
+        troll.id = idt.troll_id
+        troll.nom = idt.troll_nom
+        troll.group_id = idt.group_id
+        self.__add_troll(troll)
+        self.session.add(idt)
+        self.session.commit()
+        return idt
 
     # Add a PORTAL
     def __add_portal(self, portal):
@@ -255,6 +278,7 @@ class SQLHelper:
             return None
         troll = TROLL()
         troll.id = portal.troll_id
+        troll.nom = portal.troll_nom
         troll.group_id = portal.group_id
         self.__add_troll(troll)
         try:
@@ -338,8 +362,12 @@ class SQLHelper:
     @event.listens_for(TROLL, 'before_update')
     @event.listens_for(USER, 'before_update')
     @event.listens_for(METAMOB, 'before_update')
+    @event.listens_for(METATRESOR, 'before_update')
     @event.listens_for(MOB, 'before_update')
     @event.listens_for(CDM, 'before_update')
+    @event.listens_for(AA, 'before_update')
+    @event.listens_for(IDC, 'before_update')
+    @event.listens_for(IDT, 'before_update')
     @event.listens_for(BATTLE, 'before_update')
     @event.listens_for(PIEGE, 'before_update')
     @event.listens_for(PORTAL, 'before_update')

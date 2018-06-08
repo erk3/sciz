@@ -69,10 +69,6 @@ class BATTLE(sg.SqlAlchemyBase):
     dead = Column(Boolean)
     # PX
     px = Column(Integer)
-    # MM
-    mm = Column(Integer)
-    # RM
-    rm = Column(Integer)
     # Fatigue
     fatigue = Column(Integer)
 

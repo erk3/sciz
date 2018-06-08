@@ -17,6 +17,8 @@ var CDMTemplate = require('../models/cdm.js');
 var PiegeTemplate = require('../models/piege.js');
 var PortalTemplate = require('../models/portal.js');
 var IDCTemplate = require('../models/idc.js');
+var MetatresorTemplate = require('../models/metatresor.js');
+var IDTTemplate = require('../models/idt.js');
 var EventTemplate = require('../models/event.js');
 var PadTemplate = require('../models/pad.js');
 
@@ -48,6 +50,8 @@ Templates.push(CDMTemplate);
 Templates.push(PiegeTemplate);
 Templates.push(PortalTemplate);
 Templates.push(IDCTemplate);
+Templates.push(MetatresorTemplate);
+Templates.push(IDTTemplate);
 Templates.push(EventTemplate);
 Templates.push(PadTemplate);
 
@@ -74,6 +78,8 @@ DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete:
 DB.Troll.hasMany(DB.Piege, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.CDM, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.AA, {foreignKey: 'troll_id', sourceKey: 'id'});
+DB.Troll.hasMany(DB.IDC, {foreignKey: 'troll_id', sourceKey: 'id'});
+DB.Troll.hasMany(DB.IDT, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Battle, {as: 'atts', foreignKey: 'att_troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Battle, {as: 'defs', foreignKey: 'def_troll_id', sourceKey: 'id'});
 // Mob
@@ -84,6 +90,8 @@ DB.Mob.belongsTo(DB.Metamob, {foreignKey: 'metamob_id', targetKey: 'id'});
 DB.Mob.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Metamob
 DB.Metamob.hasMany(DB.Mob, {foreignKey: 'metamob_id', sourceKey: 'id'});
+// Metatresor
+DB.Metatresor.hasMany(DB.IDT, {foreignKey: 'metatresor_id', sourceKey: 'id'});
 // Group
 DB.Group.hasMany(DB.AssocUsersGroups, {as: 'assocs', foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Conf, {foreignKey: 'group_id', sourceKey: 'id'});
@@ -97,6 +105,7 @@ DB.Group.hasMany(DB.CDM, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Piege, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Portal, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.IDC, {foreignKey: 'group_id', sourceKey: 'id'});
+DB.Group.hasMany(DB.IDT, {foreignKey: 'group_id', sourceKey: 'id'});
 // Conf
 DB.Conf.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Hook
@@ -144,6 +153,13 @@ DB.IDC.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
 // DB.IDC.hasOne(DB.Event, {foreignKey: 'idc_id', sourceKey: 'id'});
 DB.IDC.hasMany(DB.Event, {foreignKey: 'idc_id', sourceKey: 'id'});
+// IDT
+DB.IDT.belongsTo(DB.Troll, {foreignKey: 'troll_id', targetKey: 'id'});
+DB.IDT.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
+DB.IDT.belongsTo(DB.Metatresor, {foreignKey: 'metatresor_id', targetKey: 'id'});
+// Should be hasOne but Sequelize does not support sourceKey for hasOne at the moment
+// DB.IDT.hasOne(DB.Event, {foreignKey: 'idt_id', sourceKey: 'id'});
+DB.IDT.hasMany(DB.Event, {foreignKey: 'idt_id', sourceKey: 'id'});
 // Event
 DB.Event.belongsTo(DB.Battle, {foreignKey: 'battle_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.CDM, {foreignKey: 'cdm_id', targetKey: 'id'});
@@ -151,6 +167,7 @@ DB.Event.belongsTo(DB.AA, {foreignKey: 'aa_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Piege, {foreignKey: 'piege_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Portal, {foreignKey: 'portal_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.IDC, {foreignKey: 'idc_id', targetKey: 'id'});
+DB.Event.belongsTo(DB.IDT, {foreignKey: 'idt_id', targetKey: 'id'});
 DB.Event.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 
 /*
@@ -163,53 +180,60 @@ DB.Mob.addScope('defaultScope', {include: [{model: DB.Metamob}]}, {override: tru
 // Battle
 DB.Battle.addScope('defaultScope', {
   include: [
-    {model: DB.Mob, as: 'att_mob', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->att_mob.group_id')), required: false},
-    {model: DB.Mob, as: 'def_mob', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_mob.group_id')), required: false},
-    {model: DB.Troll, as: 'att_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->att_troll.group_id')), required: false},
-    {model: DB.Troll, as: 'def_troll', where: sequelize.where(sequelize.col('battle.group_id'), sequelize.col('battle->def_troll.group_id')), required: false}
+    {model: DB.Mob, as: 'att_mob', where: sequelize.where(sequelize.col('battles.group_id'), sequelize.col('att_mob.group_id')), required: false},
+    {model: DB.Mob, as: 'def_mob', where: sequelize.where(sequelize.col('battles.group_id'), sequelize.col('def_mob.group_id')), required: false},
+    {model: DB.Troll, as: 'att_troll', where: sequelize.where(sequelize.col('battles.group_id'), sequelize.col('att_troll.group_id')), required: false},
+    {model: DB.Troll, as: 'def_troll', where: sequelize.where(sequelize.col('battles.group_id'), sequelize.col('def_troll.group_id')), required: false}
   ]},
   {override: true}
 );
 // AA
 DB.AA.addScope('defaultScope', {
   include: [
-    {model: DB.Troll, as: 'troll', where: sequelize.where(sequelize.col('aa.group_id'), sequelize.col('aa->troll.group_id')), required: false},
-    {model: DB.Troll, as: 'troll_cible', where: sequelize.where(sequelize.col('aa.group_id'), sequelize.col('aa->troll_cible.group_id')), required: false}
+    {model: DB.Troll, as: 'troll', where: sequelize.where(sequelize.col('aas.group_id'), sequelize.col('troll.group_id')), required: false},
+    {model: DB.Troll, as: 'troll_cible', where: sequelize.where(sequelize.col('aas.group_id'), sequelize.col('troll_cible.group_id')), required: false}
   ]},
   {override: true}
 );
 // CDM
 DB.CDM.addScope('defaultScope', {
   include: [
-    {model: DB.Mob, where: sequelize.where(sequelize.col('cdm.group_id'), sequelize.col('cdm->mob.group_id')), required: false},
-    {model: DB.Troll, where: sequelize.where(sequelize.col('cdm.group_id'), sequelize.col('cdm->troll.group_id')), required: false}
+    {model: DB.Mob, where: sequelize.where(sequelize.col('cdms.group_id'), sequelize.col('mob.group_id')), required: false},
+    {model: DB.Troll, where: sequelize.where(sequelize.col('cdms.group_id'), sequelize.col('troll.group_id')), required: false}
   ]},
   {override: true}
 );
 // PIEGE
 DB.Piege.addScope('defaultScope', {
   include: [
-    {model: DB.Troll, where: sequelize.where(sequelize.col('piege.group_id'), sequelize.col('piege->troll.group_id')), required: false}
+    {model: DB.Troll, where: sequelize.where(sequelize.col('pieges.group_id'), sequelize.col('troll.group_id')), required: false}
   ]},
   {override: true}
 );
 // PORTAL
 DB.Portal.addScope('defaultScope', {
   include: [
-    {model: DB.Troll, where: sequelize.where(sequelize.col('portal.group_id'), sequelize.col('portal->troll.group_id')), required: false}
+    {model: DB.Troll, where: sequelize.where(sequelize.col('portals.group_id'), sequelize.col('troll.group_id')), required: false}
   ]},
   {override: true}
 );
 // IDC
 DB.IDC.addScope('defaultScope', {
   include: [
-    {model: DB.Troll, where: sequelize.where(sequelize.col('idc.group_id'), sequelize.col('idc->troll.group_id')), required: false}
+    {model: DB.Troll, where: sequelize.where(sequelize.col('idcs.group_id'), sequelize.col('troll.group_id')), required: false}
+  ]},
+  {override: true}
+);
+// IDT
+DB.IDT.addScope('defaultScope', {
+  include: [
+    {model: DB.Troll, where: sequelize.where(sequelize.col('idts.group_id'), sequelize.col('troll.group_id')), required: false}
   ]},
   {override: true}
 );
 // User
 DB.User.addScope('defaultScope', {include: [{model: DB.Troll}, {model: DB.AssocUsersGroups, as: 'assocs'}]}, {override: true});
 // Events
-DB.Event.addScope('defaultScope', {include: [{model: DB.CDM}, {model: DB.Battle}, {model: DB.Piege}, {model: DB.Portal}, {model: DB.IDC}, {model: DB.AA}]}, {override: true});
+DB.Event.addScope('defaultScope', {include: [{model: DB.CDM, required: false}, {model: DB.Battle, required: false}, {model: DB.Piege, required: false}, {model: DB.Portal, required: false}, {model: DB.IDC, required: false}, {model: DB.IDT, required: false}, {model: DB.AA, required: false}]}, {override: true});
 
 module.exports = DB;

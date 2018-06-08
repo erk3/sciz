@@ -9,6 +9,7 @@ from classes.piege import PIEGE
 from classes.battle import BATTLE
 from classes.portal import PORTAL
 from classes.idc import IDC
+from classes.idt import IDT
 from modules.mail_helper import MAILHELPER
 import modules.globals as sg
 

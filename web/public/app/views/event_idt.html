@@ -1,0 +1,51 @@
+<div class="col-sm-5 col-md-5">
+
+  <!-- Page Header -->
+  <div class="row">
+    <div class="page-header text-center">
+      <h1>Identification d'un trésor</h1>
+    </div>
+  </div>
+  <br/>
+
+  <!-- Header -->
+  <div class="row">
+    <div class="col-md-4">
+      <img ng-src="{{ec.cur.sub.troll_id && ec.cur.sub.troll.blason_url}}" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+    </div>
+    <div class="col-md-4 text-center">
+      <h3>a identifié un</h3>
+    </div>
+    <div class="col-md-4">
+      <img src="images/desobjetsquibougent.png" class="img-responsive img-rounded center-block" style="max-height: 125px;" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-md-6">
+      <blockquote>
+        <p>{{ec.cur.sub.troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.troll.id}}">{{ec.cur.sub.troll.id}}</a>)</p>
+      </blockquote>
+    </div>
+    <div class="col-md-6">
+      <blockquote class="blockquote-reverse">
+        <p>{{ec.cur.sub.full_nom}} ({{ec.cur.sub.tresor_id}})</p>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="row" ng-if="ec.cur.sub.posx || ec.cur.sub.effet">
+    <table class="table table-condensed text-center" style="margin-top: 20px;">
+      <tbody>
+        <tr ng-if="ec.cur.sub.effet">
+          <td class="inverse">Effet</td>
+          <td>{{ec.cur.sub.effet}}</td>
+        </tr>
+        <tr ng-if="ec.cur.sub.posx">
+          <td class="inverse">Position</td>
+          <td>X = {{ec.cur.sub.posx}} | Y = {{ec.cur.sub.posy}} | N = {{ec.cur.sub.posn}}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>

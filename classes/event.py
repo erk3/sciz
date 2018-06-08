@@ -34,6 +34,8 @@ class EVENT(sg.SqlAlchemyBase):
     portal_id = Column(Integer, ForeignKey('portals.id', ondelete="CASCADE"))
     # ID de l'évènement d'identification des champignons
     idc_id = Column(Integer, ForeignKey('idcs.id', ondelete="CASCADE"))
+    # ID de l'évènement d'identification des trésors
+    idt_id = Column(Integer, ForeignKey('idts.id', ondelete="CASCADE"))
     # ID du groupe d'appartenance de l'évènement
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     
@@ -44,6 +46,7 @@ class EVENT(sg.SqlAlchemyBase):
     piege = relationship("PIEGE", primaryjoin="and_(EVENT.piege_id==PIEGE.id, EVENT.group_id==PIEGE.group_id)", back_populates="event")
     portal = relationship("PORTAL", primaryjoin="and_(EVENT.portal_id==PORTAL.id, EVENT.group_id==PORTAL.group_id)", back_populates="event")
     idc = relationship("IDC", primaryjoin="and_(EVENT.idc_id==IDC.id, EVENT.group_id==IDC.group_id)", back_populates="event")
+    idt = relationship("IDT", primaryjoin="and_(EVENT.idt_id==IDT.id, EVENT.group_id==IDT.group_id)", back_populates="event")
     # Associations One-To-Many
     group = relationship("GROUP", back_populates="events")
 
@@ -59,4 +62,5 @@ class EVENT(sg.SqlAlchemyBase):
         obj = self.piege if self.piege_id is not None else obj
         obj = self.portal if self.portal_id is not None else obj
         obj = self.idc if self.idc_id is not None else obj
+        obj = self.idt if self.idt_id is not None else obj
         return sg.pretty_print(obj, short)

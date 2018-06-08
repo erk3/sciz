@@ -1,4 +1,4 @@
-Return-Path: <naudin.augustin@gmail.com>
+Return-Path: <censored@gmail.com>
 Delivered-To: bruchasses@sciz.cerv.ovh
 Received: from 0f5c5cbedd6d.cerv.ovh
 	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id denhE/+JDVrZLQAAEkUYHA
@@ -8,7 +8,7 @@ Received: from localhost (localhost [127.0.0.1])
 	for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 12:52:15 +0000 (UTC)
 Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
 	dkim=pass (2048-bit key) header.d=gmail.com
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.216.171; helo=mail-qt0-f171.google.com; envelope-from=naudin.augustin@gmail.com; receiver=bruchasses@sciz.cerv.ovh 
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.216.171; helo=mail-qt0-f171.google.com; envelope-from=censored@gmail.com; receiver=bruchasses@sciz.cerv.ovh 
 Received: from mail-qt0-f171.google.com (mail-qt0-f171.google.com [209.85.216.171])
 	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id C860EA1D
 	for <bruchasses@sciz.cerv.ovh>; Thu, 16 Nov 2017 12:52:14 +0000 (UTC)
@@ -44,7 +44,7 @@ MIME-Version: 1.0
 Received: by 10.55.50.80 with HTTP; Thu, 16 Nov 2017 04:51:52 -0800 (PST)
 In-Reply-To: <e41ee8bb2f5970d4cbe64754eaf0f4b8@games.mountyhall.com>
 References: <e41ee8bb2f5970d4cbe64754eaf0f4b8@games.mountyhall.com>
-From: Augustin Naudin <naudin.augustin@gmail.com>
+From: Augustin Naudin <censored@gmail.com>
 Date: Thu, 16 Nov 2017 13:51:52 +0100
 Message-ID: <CAMO4vGfys9z+aEXfbc3XCG+vMkaZCOYERQ6fH9aYhmB4bAF7aQ@mail.gmail.com>
 Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Sortil=C3=A8ge_=3A_Identification_des_tr?=
@@ -60,7 +60,7 @@ Content-Transfer-Encoding: quoted-printable
 De : MountyHall-Bot <bot@mountyhall.com>
 Date : 31 juillet 2017 =C3=A0 10:40
 Objet : [MountyHall] Sortil=C3=A8ge : Identification des tr=C3=A9sors
-=C3=80 : naudin.augustin@gmail.com
+=C3=80 : censored@gmail.com
 
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -109,8 +109,8 @@ Content-Transfer-Encoding: quoted-printable
 all-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot=
 @mountyhall.com</a>&gt;</span><br>Date=C2=A0: 31 juillet 2017 =C3=A0 10:40<=
 br>Objet=C2=A0: [MountyHall] Sortil=C3=A8ge : Identification des tr=C3=A9so=
-rs<br>=C3=80=C2=A0: <a href=3D"mailto:naudin.augustin@gmail.com">naudin.aug=
-ustin@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+rs<br>=C3=80=C2=A0: <a href=3D"mailto:censored@gmail.com">censored=
+@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
 MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=

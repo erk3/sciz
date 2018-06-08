@@ -822,12 +822,12 @@
    {
       "section":"idc_format",
       "key":"s_short",
-      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
    },
    {
       "section":"idc_format",
       "key":"s_long",
-      "value":"{o.s_time} Identification de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
    },
    {
       "section":"idc_format",
@@ -938,5 +938,55 @@
       "section":"aa_format",
       "key":"vue",
       "value":"VUE {}"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_short",
+      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_effet} {o.s_pos}"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_long",
+      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_effet} {o.s_pos}"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_time",
+      "value":"%d/%m/%Y %Hh%M:%S"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_pos",
+      "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
+   },
+   {
+      "section":"idctformat",
+      "key":"type",
+      "value":"{}"
+   },
+   {
+      "section":"idt_format",
+      "key":"templates",
+      "value":"{}"
+   },
+   {
+      "section":"idt_format",
+      "key":"effet",
+      "value":"({})"
+   },
+   {
+      "section":"idt_format",
+      "key":"mithril",
+      "value":"en Mithril"
+   },
+   {
+      "section":"idt_format",
+      "key":"posx",
+      "value":"X = {}"
+   },
+   {
+      "section":"idt_format",
+      "key":"posy",
+      "value":"Y = {}"
    }
 ]

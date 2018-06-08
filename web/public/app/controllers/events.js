@@ -31,19 +31,21 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
     }, 30000);
   }
 
-  vm.switchTrigger = function (event) {
-    vm.cur = event;
-    if (event.cdm_id !== null) {
+  vm.switchTrigger = function (e) {
+    vm.cur = e;
+    if (e.cdm_id !== null) {
       vm.switchCDM();
-    } else if (event.battle_id !== null) {
+    } else if (e.battle_id !== null) {
       vm.switchBATTLE();
-    } else if (event.piege_id !== null) {
+    } else if (e.piege_id !== null) {
       vm.switchPIEGE();
-    } else if (event.portal_id !== null) {
+    } else if (e.portal_id !== null) {
       vm.switchPORTAL();
-    } else if (event.idc_id !== null) {
+    } else if (e.idc_id !== null) {
       vm.switchIDC();
-    } else if (event.aa_id !== null) {
+    } else if (e.idt_id !== null) {
+      vm.switchIDT();
+    } else if (e.aa_id !== null) {
       vm.switchAA();
     }
     $window.scrollTo(0, 0);
@@ -79,6 +81,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       s = time + ' Portail de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') en X = ' + e.sub.posx + ' Y = ' + e.sub.posy + ' N = ' + e.sub.posn + ' vers X = ' + e.sub.dst_posx + ' Y = ' + e.sub.dst_posy + ' N = ' + e.sub.dst_posn;
     } else if (e.idc_id) {
       s = time + ' Identification de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') d\'un ' + e.sub.type + ' ' + e.sub.qualite;
+    } else if (e.idt_id) {
+      s = time + ' Identification de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') : ' + vm.displayTreasureFullName(e.sub);
     }
     return s;
   };
@@ -100,14 +104,17 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       .then(function (response) {
         if (response && response.data) {
           var events = angular.fromJson(response.data);
+          /*
           for (var i = 0, len = events.length; i < len; i++) {
             events[i].sub = (events[i].cdm_id === null) ? events[i].sub : events[i].cdm;
             events[i].sub = (events[i].battle_id === null) ? events[i].sub : events[i].battle;
             events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
             events[i].sub = (events[i].portal_id === null) ? events[i].sub : events[i].portal;
             events[i].sub = (events[i].idc_id === null) ? events[i].sub : events[i].idc;
+            events[i].sub = (events[i].idt_id === null) ? events[i].sub : events[i].idt;
             events[i].sub = (events[i].aa_id === null) ? events[i].sub : events[i].aa;
           }
+          */
           var oldLength = vm.events.length;
           vm.events = (old) ? vm.events.concat(events) : events.concat(vm.events);
           if (oldLength <= 0) {
@@ -138,14 +145,14 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
 
   vm.switchAA = function () {
     // Progress bar
-    vm.cur.aa.lifePercent = 100 - vm.cur.aa.blessure;
-    var rPvMin = (vm.cur.aa.pv_min ? vm.cur.aa.pv_min : vm.cur.aa.pv_max);
-    vm.cur.aa.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.aa.lifePercent / 100));
-    var rPvMax = (vm.cur.aa.pv_max ? vm.cur.aa.pv_max : vm.cur.aa.pv_mmin);
-    if (vm.cur.aa.pv_max) {
-      vm.cur.aa.pvMaxBlessure = Math.floor(rPvMax * vm.cur.aa.lifePercent / 100);
+    vm.cur.sub.lifePercent = 100 - vm.cur.sub.blessure;
+    var rPvMin = (vm.cur.sub.pv_min ? vm.cur.sub.pv_min : vm.cur.sub.pv_max);
+    vm.cur.sub.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.sub.lifePercent / 100));
+    var rPvMax = (vm.cur.sub.pv_max ? vm.cur.sub.pv_max : vm.cur.sub.pv_mmin);
+    if (vm.cur.sub.pv_max) {
+      vm.cur.sub.pvMaxBlessure = Math.floor(rPvMax * vm.cur.sub.lifePercent / 100);
     } else {
-      vm.cur.aa.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.aa.lifePercent / 100) * 1.2));
+      vm.cur.sub.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.sub.lifePercent / 100) * 1.2));
     }
   };
 
@@ -154,6 +161,14 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
    */
 
   vm.switchIDC = function () {};
+
+  /*
+   * IDT logic
+   */
+
+  vm.switchIDT = function () {
+    vm.cur.sub.full_nom = vm.displayTreasureFullName(vm.cur.sub);
+  };
 
   /*
    * PORTAL logic
@@ -181,34 +196,34 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
    */
   vm.switchCDM = function () {
     // Progress bar
-    vm.cur.cdm.lifePercent = 100 - vm.cur.cdm.blessure;
-    var rPvMin = (vm.cur.cdm.pv_min ? vm.cur.cdm.pv_min : vm.cur.cdm.pv_max);
-    vm.cur.cdm.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.cdm.lifePercent / 100));
-    var rPvMax = (vm.cur.cdm.pv_max ? vm.cur.cdm.pv_max : vm.cur.cdm.pv_mmin);
-    if (vm.cur.cdm.pv_max) {
-      vm.cur.cdm.pvMaxBlessure = Math.floor(rPvMax * vm.cur.cdm.lifePercent / 100);
+    vm.cur.sub.lifePercent = 100 - vm.cur.sub.blessure;
+    var rPvMin = (vm.cur.sub.pv_min ? vm.cur.sub.pv_min : vm.cur.sub.pv_max);
+    vm.cur.sub.pvMinBlessure = Math.max(1, Math.floor(rPvMin * vm.cur.sub.lifePercent / 100));
+    var rPvMax = (vm.cur.sub.pv_max ? vm.cur.sub.pv_max : vm.cur.sub.pv_mmin);
+    if (vm.cur.sub.pv_max) {
+      vm.cur.sub.pvMaxBlessure = Math.floor(rPvMax * vm.cur.sub.lifePercent / 100);
     } else {
-      vm.cur.cdm.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.cdm.lifePercent / 100) * 1.2));
+      vm.cur.sub.pvMaxBlessure = Math.max(100, Math.floor(Math.floor(rPvMax * vm.cur.sub.lifePercent / 100) * 1.2));
     }
     // Capa desc
-    vm.cur.cdm.capa = '';
-    vm.cur.cdm.capa += (vm.cur.cdm.capa_desc) ? vm.cur.cdm.capa_desc : '';
-    vm.cur.cdm.capa += (vm.cur.cdm.capa_effet) ? ' - Affecte : ' + vm.cur.cdm.capa_effet : '';
-    vm.cur.cdm.capa += (vm.cur.cdm.capa_tour) ? ' - ' + vm.cur.cdm.capa_tour + 'T' : '';
-    vm.cur.cdm.capa += (vm.cur.cdm.portee_capa) ? ' (' + vm.cur.cdm.portee_capa + ')' : '';
-    vm.cur.cdm.capa = vm.cur.cdm.capa.trim();
+    vm.cur.sub.capa = '';
+    vm.cur.sub.capa += (vm.cur.sub.capa_desc) ? vm.cur.sub.capa_desc : '';
+    vm.cur.sub.capa += (vm.cur.sub.capa_effet) ? ' - Affecte : ' + vm.cur.sub.capa_effet : '';
+    vm.cur.sub.capa += (vm.cur.sub.capa_tour) ? ' - ' + vm.cur.sub.capa_tour + 'T' : '';
+    vm.cur.sub.capa += (vm.cur.sub.portee_capa) ? ' (' + vm.cur.sub.portee_capa + ')' : '';
+    vm.cur.sub.capa = vm.cur.sub.capa.trim();
     // VLC & ATT DIST
-    if (vm.cur.cdm.vlc !== null) {
-      vm.cur.cdm.vlc = vm.boolean2French(vm.cur.cdm.vlc);
+    if (vm.cur.sub.vlc !== null) {
+      vm.cur.sub.vlc = vm.boolean2French(vm.cur.sub.vlc);
     }
-    if (vm.cur.cdm.att_dist !== null) {
-      vm.cur.cdm.att_dist = vm.boolean2French(vm.cur.cdm.att_dist);
+    if (vm.cur.sub.att_dist !== null) {
+      vm.cur.sub.att_dist = vm.boolean2French(vm.cur.sub.att_dist);
     }
-    if (vm.cur.cdm.voleur !== null) {
-      vm.cur.cdm.voleur = vm.boolean2French(vm.cur.cdm.voleur);
+    if (vm.cur.sub.voleur !== null) {
+      vm.cur.sub.voleur = vm.boolean2French(vm.cur.sub.voleur);
     }
-    if (vm.cur.cdm.att_mag !== null) {
-      vm.cur.cdm.att_mag = vm.boolean2French(vm.cur.cdm.att_mag);
+    if (vm.cur.sub.att_mag !== null) {
+      vm.cur.sub.att_mag = vm.boolean2French(vm.cur.sub.att_mag);
     }
   };
 
@@ -250,32 +265,32 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
 
   vm.isRelatedToCurDef = function (e) {
     // Cur Event
-    var curDefID = (vm.cur.cdm.id) ? (vm.cur.cdm.mob_id) : null;
-    curDefID = (vm.cur.aa.id) ? (vm.cur.aa.troll_cible_id) : curDefID;
-    curDefID = (vm.cur.battle.id) ? ((vm.cur.battle.def_troll_id) ? vm.cur.battle.def_troll_id : vm.cur.battle.def_mob_id) : curDefID;
+    var curDefID = (vm.cur.cdm_id) ? (vm.cur.sub.mob_id) : null;
+    curDefID = (vm.cur.aa_id) ? (vm.cur.qub.troll_cible_id) : curDefID;
+    curDefID = (vm.cur.battle_id) ? ((vm.cur.sub.def_troll_id) ? vm.cur.sub.def_troll_id : vm.cur.sub.def_mob_id) : curDefID;
     // Event
-    var eAttID = (e.cdm.id) ? (e.cdm.troll_id) : null;
-    eAttID = (e.aa.id) ? (e.aa.troll_id) : eAttID;
-    eAttID = (e.battle.id) ? ((e.battle.att_troll_id) ? e.battle.att_troll_id : e.battle.att_mob_id) : eAttID;
-    var eDefID = (e.cdm.id) ? (e.cdm.mob_id) : null;
-    eDefID = (e.aa.id) ? (e.aa.troll_cible_id) : eDefID;
-    eDefID = (e.battle.id) ? ((e.battle.def_troll_id) ? e.battle.def_troll_id : e.battle.def_mob_id) : eDefID;
+    var eAttID = (e.cdm_id) ? (e.sub.troll_id) : null;
+    eAttID = (e.aa_id) ? (e.sub.troll_id) : eAttID;
+    eAttID = (e.battle_id) ? ((e.sub.att_troll_id) ? e.sub.att_troll_id : e.sub.att_mob_id) : eAttID;
+    var eDefID = (e.cdm_id) ? (e.sub.mob_id) : null;
+    eDefID = (e.aa_id) ? (e.sub.troll_cible_id) : eDefID;
+    eDefID = (e.battle_id) ? ((e.sub.def_troll_id) ? e.sub.def_troll_id : e.sub.def_mob_id) : eDefID;
     // Is the current event target related to the event target tested ?
     return ((curDefID !== null) && ((curDefID === eDefID) || (curDefID === eAttID)));
   };
 
   vm.isRelatedToCurAtt = function (e) {
     // Cur Event
-    var curAttID = (vm.cur.cdm.id) ? (vm.cur.cdm.troll_id) : null;
-    curAttID = (vm.cur.aa.id) ? (vm.cur.aa.troll_id) : curAttID;
-    curAttID = (vm.cur.battle.id) ? ((vm.cur.battle.att_troll_id) ? vm.cur.battle.att_troll_id : vm.cur.battle.att_mob_id) : curAttID;
+    var curAttID = (vm.cur.cdm_id) ? (vm.cur.sub.troll_id) : null;
+    curAttID = (vm.cur.aa_id) ? (vm.cur.sub.troll_id) : curAttID;
+    curAttID = (vm.cur.battle_id) ? ((vm.cur.sub.att_troll_id) ? vm.cur.sub.att_troll_id : vm.cur.sub.att_mob_id) : curAttID;
     // Event
-    var eAttID = (e.cdm.id) ? (e.cdm.troll_id) : null;
-    eAttID = (e.aa.id) ? (e.aa.troll_id) : eAttID;
-    eAttID = (e.battle.id) ? ((e.battle.att_troll_id) ? e.battle.att_troll_id : e.battle.att_mob_id) : eAttID;
-    var eDefID = (e.cdm.id) ? (e.cdm.mob_id) : null;
-    eDefID = (e.aa.id) ? (e.aa.troll_cible_id) : eDefID;
-    eDefID = (e.battle.id) ? ((e.battle.def_troll_id) ? e.battle.def_troll_id : e.battle.def_mob_id) : eDefID;
+    var eAttID = (e.cdm_id) ? (e.sub.troll_id) : null;
+    eAttID = (e.aa_id) ? (e.sub.troll_id) : eAttID;
+    eAttID = (e.battle_id) ? ((e.sub.att_troll_id) ? e.sub.att_troll_id : e.sub.att_mob_id) : eAttID;
+    var eDefID = (e.cdm_id) ? (e.sub.mob_id) : null;
+    eDefID = (e.aa_id) ? (e.sub.troll_cible_id) : eDefID;
+    eDefID = (e.battle_id) ? ((e.sub.def_troll_id) ? e.sub.def_troll_id : e.sub.def_mob_id) : eDefID;
     // Is the current event sender related to the event sender tested ?
     return ((curAttID !== null) && ((curAttID === eDefID) || (curAttID === eAttID)));
   };
@@ -283,6 +298,16 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   /*
    * Utils
    */
+  
+  vm.displayTreasureFullName = function (idt) {
+    var full = idt.type;
+    if (idt.templates) {
+      full += ' ' + idt.templates;
+    } else if (idt.mithril === true) {
+      full += ' en Mithril';
+    }
+    return full;
+  };
 
   vm.boolean2French = function (bool) {
     return (bool) ? 'Oui' : 'Non';

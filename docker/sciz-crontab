@@ -1,6 +1,0 @@
-# SCIZ DEFAULT CRONTAB
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-MAILTO=root
-HOME=/sciz
-*/1 * * * * python sciz.py -a
-
