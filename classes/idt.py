@@ -72,8 +72,8 @@ class IDT(sg.SqlAlchemyBase):
     # Additional build logic (see MailParser)
     def build(self):
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
-        self.type = re.sub(r'\n', ' ', self.type)
-        self.effet = re.sub(r'\n', ' ', self.effet)
+        self.type = re.sub(r'\n', ' ', self.type).strip()
+        self.effet = re.sub(r'\n', ' ', self.effet).strip()
         if self.effet == '' or self.effet == u'Spécial':
             del self.effet
         if hasattr(self, 'mithril'):
