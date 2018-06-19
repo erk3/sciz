@@ -217,7 +217,10 @@ class AdminHelper:
         if len(users_dyn_sp) > 0:
             for user in users_dyn_sp:
                 sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
-                mh.profil4_sp_call(user)
+                try:
+                    mh.profil4_sp_call(user)
+                except Exception as e:
+                    sg.logger.error("Fail to call Profil4 MH SP! (Error: %s)" % (str(e), ))
         if len(users_static_sp) > 0:
             pass
     
@@ -232,9 +235,12 @@ class AdminHelper:
     def __auto_task_mh_ftp_call(self):
         sg.logger.info('Updating MH FTPs for all...')
         mh = MHCaller()
-        mh.call('trolls2', [])
-        mh.call('monstres', [])
-        mh.call('tresors', [])
+        try:
+            mh.call('trolls2', [])
+            mh.call('monstres', [])
+            mh.call('tresors', [])
+        except Exception as e:
+            sg.logger.error("Fail to call MH FTPs! (Error: %s)" % (str(e), ))
     
     def __auto_task_mail_walk(self, group_name=None):
         mw = MailWalker()
