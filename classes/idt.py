@@ -26,7 +26,7 @@ class IDT(sg.SqlAlchemyBase):
     # ID du groupe d'appartenance
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # Nom de l'objet
-    type = Column(String(50))
+    type = Column(String(250))
     # Templates de l'objet
     templates = Column(String(250))
     # Mithril ?
