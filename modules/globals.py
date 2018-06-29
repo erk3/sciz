@@ -95,6 +95,7 @@ CONF_SMTP_SECTION       	= "smtp"
 CONF_SMTP_FROM          	= "from"
 CONF_SMTP_HOST          	= "host"
 CONF_SMTP_PORT          	= "port"
+CONF_SMTP_TLS             	= "tls"
 CONF_SMTP_PWD            	= "pwd"
 
 # MAIL SECTION

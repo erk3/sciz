@@ -15,8 +15,12 @@ class MAILHELPER:
         self.check_conf()
         self.smtp = None
         try:
-            self.smtp = smtplib.SMTP(self.smtp_host, int(self.smtp_port), None, 5)
+            self.smtp = smtplib.SMTP(self.smtp_host, self.smtp_port, None, 5)
             self.smtp.set_debuglevel(1)
+            self.smtp.ehlo()
+            if self.smtp_tls:
+                self.smtp.starttls()
+                self.smtp.ehlo()
             self.smtp.login(self.smtp_from, self.smtp_pwd)
         except Exception as e:
             sg.logger.error('Failed to bind to smtp server')
@@ -25,14 +29,15 @@ class MAILHELPER:
     def check_conf(self):
         try:
             self.smtp_host = sg.config.get(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_HOST)
-            self.smtp_port = sg.config.get(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_PORT)
+            self.smtp_port = sg.config.getint(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_PORT)
+            self.smtp_tls = sg.config.getboolean(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_TLS)
             self.smtp_from = sg.config.get(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_FROM)
             self.smtp_pwd = sg.config.get(sg.CONF_SMTP_SECTION, sg.CONF_SMTP_PWD)
         except ConfigParser.Error as e:
             e.sciz_logger_flag = True
             sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
             raise
-    
+   
     def build_gmail(self):
         # Build the answer
         subject = "[SCIZ] Code de confirmation de transfert GMAIL vers %s" % (self.group_mail, )
