@@ -23,7 +23,7 @@ class MAILHELPER:
                 self.smtp.ehlo()
             self.smtp.login(self.smtp_from, self.smtp_pwd)
         except Exception as e:
-            sg.logger.error('Failed to bind to smtp server')
+            sg.logger.error('Failed to bind to smtp server: %s' % (str(e), ))
 
     # Configuration loader and checker
     def check_conf(self):
