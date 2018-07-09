@@ -115,6 +115,6 @@ class IDT(sg.SqlAlchemyBase):
 
     def __getattr__(self, name):
         if hasattr(self, name) or name.startswith('_'):
-            return super(IDC, self).__getattribute__(name)
+            return super(IDT, self).__getattribute__(name)
         else:
             return None # Trick for the stringify logic (avoiding the raise of an error)
