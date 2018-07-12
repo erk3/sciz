@@ -12,6 +12,7 @@ from classes.mob import MOB
 from classes.cdm import CDM
 from classes.aa import AA
 from classes.battle import BATTLE
+from modules.mh_caller import MHCaller
 from modules.sql_helper import SQLHelper
 import modules.globals as sg
 
@@ -21,6 +22,7 @@ class Requester:
     # Constructor
     def __init__(self):
         self.check_conf()
+        self.mhCaller = MHCaller()
     
     # Configuration loader and checker
     def check_conf(self):
@@ -56,7 +58,6 @@ class Requester:
             # Request on an inconsitant list of ids
             else:
                 print 'Inconsistant list of ids...'
-                sg.logger.warning('Inconsistant list of ids...')
 
     # Mob request
     def __request_mob(self, id, args):
@@ -183,6 +184,8 @@ class Requester:
                 self.__request_troll_aa(id, limit)
             elif args[0].lower() == 'recap':
                 self.__request_troll_recap(id)
+            elif args[0].lower() == 'update':
+                self.__request_troll_update(id)
             else:
                 caracs = args[0].split(',')
                 self.__request_troll_caracs(id, caracs)
@@ -191,6 +194,10 @@ class Requester:
     
     def __request_troll_recap(self, id):
         pass
+    
+    def __request_troll_update(self, id):
+        # The third parameter 'verbose' handles the output
+        self.mhCaller.call('profil4', [id], True)
 
     def __request_troll_aa(self, id, limit):
         try:        

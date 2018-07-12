@@ -86,7 +86,7 @@ class SCIZ:
         if ids.lower() == 'help':
             print 'syntax: id_mob[,id_mob]* [opts_mob] | (id_troll[,id_troll]*|trolls|users) [opts_troll] | help'
             print 'opts_mob : '' #default=all caracs# | (cdm|event|recap) [limit=1] | carac[,carac]* #ordered desc by first carac#'
-            print 'opts_troll : '' #default=all caracs# | (aa|event) [limit=1] | carac[,carac]* #ordered desc by first carac#'
+            print 'opts_troll : '' #default=all caracs# | (aa|event) [limit=1] | carac[,carac] | update* #ordered desc by first carac#'
         else:
             self.requester.request(ids, args)
             

@@ -33,12 +33,14 @@ class MHCaller:
             raise
 
     # Caller to the Profil4 SP
-    def profil4_sp_call(self, user):
+    def profil4_sp_call(self, user, verbose):
         # Fetch the data from MH 
         mh_r = requests.get("http://%s/%s?%s=%s&%s=%s" % (self.spURL, self.spProfil4, self.spParamID, user.id, self.spParamAPIKEY, user.mh_apikey, )) 
         # Parse it
         if "Erreur" in mh_r.text:
             sg.logger.warning('Error while fetching data from MH for user %s...' % (user.id, ))
+            if verbose:
+                print 'Erreur lors de la mise à jour du troll n°%s' % (user.id, )
         else:
             data = mh_r.json()
             for troll in user.trolls:
@@ -114,6 +116,8 @@ class MHCaller:
                 # FIXME : ajouter compétences et sorts
                 # Push it to the DB
                 sg.db.add(troll)
+            if verbose:
+                print 'Troll n°%s mis à jour' % (user.id, )
 
     # Caller to the Trolls2 FTP
     def trolls2_ftp_call(self, trolls):
@@ -168,7 +172,7 @@ class MHCaller:
         sg.db.session.commit()
 
     # Main MH call dispatcher
-    def call(self, script, trolls):
+    def call(self, script, trolls, verbose=False):
         # If a list of trolls (or users) is specified, get those, else get them all
         oTrolls = []
         oUsers = []
@@ -198,5 +202,5 @@ class MHCaller:
         elif script == 'profil4':
             for oUser in oUsers:
                 sg.logger.info("Calling script %s for user %s..." % (script, oUser.id, ))
-                self.profil4_sp_call(oUser)
+                self.profil4_sp_call(oUser, verbose)
 
