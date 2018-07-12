@@ -822,12 +822,12 @@
    {
       "section":"idc_format",
       "key":"s_short",
-      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_champi_id} {o.s_pos}"
    },
    {
       "section":"idc_format",
       "key":"s_long",
-      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_pos}"
+      "value":"{o.s_time} IdC de {o.s_nom_full} d'un {o.s_type} {o.s_qualite} {o.s_champi_id} {o.s_pos}"
    },
    {
       "section":"idc_format",
@@ -839,7 +839,12 @@
       "key":"s_pos",
       "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
    },
-{
+   {
+      "section":"idc_format",
+      "key":"champi_id",
+      "value":"({})"
+   },
+   {
       "section":"idc_format",
       "key":"type",
       "value":"{}"
@@ -942,12 +947,12 @@
    {
       "section":"idt_format",
       "key":"s_short",
-      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_effet} {o.s_pos}"
+      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
    },
    {
       "section":"idt_format",
       "key":"s_long",
-      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_effet} {o.s_pos}"
+      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
    },
    {
       "section":"idt_format",
@@ -960,7 +965,12 @@
       "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
    },
    {
-      "section":"idctformat",
+      "section":"idt_format",
+      "key":"tresor_id",
+      "value":"({})"
+   },
+   {
+      "section":"idt_format",
       "key":"type",
       "value":"{}"
    },
