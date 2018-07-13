@@ -73,9 +73,12 @@ class IDT(sg.SqlAlchemyBase):
     def build(self):
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
         self.type = re.sub(r'\n', ' ', self.type).strip()
-        self.effet = re.sub(r'\n', ' ', self.effet).strip()
-        if self.effet == '' or self.effet == u'Spécial':
-            del self.effet
+        if self.type == u'Malédiction':
+            self.type = 'Mission maudite'
+        if self.effet:
+            self.effet = re.sub(r'\n', ' ', self.effet).strip()
+            if self.effet == '' or self.effet == u'Spécial':
+                del self.effet
         if hasattr(self, 'mithril'):
             self.mithril = self.mithril is not None 
         # Special handling for maps
