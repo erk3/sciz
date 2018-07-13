@@ -33,7 +33,7 @@ class MHCaller:
             raise
 
     # Caller to the Profil4 SP
-    def profil4_sp_call(self, user, verbose):
+    def profil4_sp_call(self, user, verbose=False):
         # Fetch the data from MH 
         mh_r = requests.get("http://%s/%s?%s=%s&%s=%s" % (self.spURL, self.spProfil4, self.spParamID, user.id, self.spParamAPIKEY, user.mh_apikey, )) 
         # Parse it

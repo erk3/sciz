@@ -218,7 +218,7 @@ class AdminHelper:
             for user in users_dyn_sp:
                 sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
                 try:
-                    mh.profil4_sp_call(user)
+                    mh.profil4_sp_call(user, False)
                 except Exception as e:
                     sg.logger.error("Fail to call Profil4 MH SP! (Error: %s)" % (str(e), ))
         if len(users_static_sp) > 0:
