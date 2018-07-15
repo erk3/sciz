@@ -298,7 +298,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   /*
    * Utils
    */
-  
+
   vm.displayTreasureFullName = function (idt) {
     var full = idt.type;
     if (idt.templates) {

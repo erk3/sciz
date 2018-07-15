@@ -12,6 +12,7 @@ var AdminController = require('../controllers/adminController.js');
 var EventsController = require('../controllers/eventsController.js');
 var TrollsController = require('../controllers/trollsController.js');
 var TemplatesController = require('../controllers/templatesController.js');
+var PublicController = require('../controllers/publicController.js');
 var HookController = require('../controllers/hookController.js');
 var PadController = require('../controllers/padController.js');
 
@@ -32,6 +33,7 @@ var APIRoutes = function(passport) {
   router.post('/admin/assoc', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateAssocRole));
 
   // GET routes
+  router.get('/public/stats', PublicController.getStats);
   router.get('/profile', passport.authenticate('jwt', {session: false}), allowAuthenticated(UserController.getProfile));
   router.get('/pad', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, PadController.getPad));
   router.get('/events', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.user, EventsController.getEvents));
