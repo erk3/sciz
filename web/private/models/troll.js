@@ -1,7 +1,10 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
-var TrollTemplate = {}
+var TrollTemplate = {};
+
+var mh_blason_url = 'https://games.mountyhall.com/MH_Blasons/Blason_PJ/';
+var old_blason_url = 'http://www.mountyhall.com/images';
 
 /*
  *  Methods
@@ -10,18 +13,18 @@ TrollTemplate.changeBlasonURL = function (troll) {
   if(troll && troll.constructor === Array) {
     var arrayLength = troll.length;
     for (var i = 0; i < arrayLength; i++) {
-      if (troll[i] && troll[i].blason_url && troll[i].blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
-        troll[i].blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll[i].id;
-      } else if (troll[i] && !troll[i].blason_url) {
-        troll[i].blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+      if (troll[i] && troll[i].blason_url && troll[i].blason_url.startsWith(old_blason_url)) {
+        troll[i].blason_url = mh_blason_url + troll[i].id;
+      } else if (troll[i] && (!troll[i].blason_url || troll[i].blason_url === "")) {
+        troll[i].blason_url = mh_blason_url + 'MyNameIsNobody.gif';
       }
     }
   }
   else {
-    if (troll && troll.blason_url && troll.blason_url.startsWith('http://www.mountyhall.com/images/Blasons/Blason_PJ')) {
-      troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/' + troll.id;
-    } else if (troll && !troll.blason_url) {
-      troll.blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+    if (troll && troll.blason_url && troll.blason_url.startsWith(old_blason_url)) {
+      troll.blason_url = mh_blason_url + troll.id;
+    } else if (troll && (!troll.blason_url || troll.blason_url === "")) {
+      troll.blason_url = mh_blason_url + 'MyNameIsNobody.gif';
     }
   }
   return troll;

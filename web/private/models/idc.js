@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var IDCTemplate = {};
 
 /*
@@ -35,6 +36,13 @@ IDCTemplate.modelOptions = {
   name: {
     singular: 'idc',
     plural: 'idcs'
+  },
+  hooks: {
+    afterFind: function (idc) {
+      if (idc && idc.troll) {
+        TrollTemplate.changeBlasonURL(idc.troll);
+      }
+    }
   }
 };
 

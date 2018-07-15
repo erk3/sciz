@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var IDTTemplate = {};
 
 /*
@@ -38,6 +39,13 @@ IDTTemplate.modelOptions = {
   name: {
     singular: 'idt',
     plural: 'idts'
+  },
+  hooks: {
+    afterFind: function (idt) {
+      if (idt && idt.troll) {
+        TrollTemplate.changeBlasonURL(idt.troll);
+      }
+    }
   }
 };
 

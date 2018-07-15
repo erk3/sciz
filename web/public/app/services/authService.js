@@ -128,7 +128,7 @@ function authService($http, $cookies, $state, $window, $localStorage) {
       if (user.assocs[i].group_id === index) {
         user.currentAssoc = user.assocs[i];
         if (user.currentAssoc.group.blason_url === null) {
-          user.currentAssoc.group.blason_url = 'http://blason.mountyhall.com/Blason_PJ/MyNameIsNobody.gif';
+          user.currentAssoc.group.blason_url = 'images/MyNameIsNobody.gif';
         }
       }
     }

@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var PortalTemplate = {};
 
 /*
@@ -38,6 +39,13 @@ PortalTemplate.modelOptions = {
   name: {
     singular: 'portal',
     plural: 'portals'
+  },
+  hooks: {
+    afterFind: function (portal) {
+      if (portal && portal.troll) {
+        TrollTemplate.changeBlasonURL(portal.troll);
+      }
+    }
   }
 };
 

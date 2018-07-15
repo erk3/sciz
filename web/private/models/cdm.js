@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var CDMTemplate = {};
 
 /*
@@ -69,6 +70,13 @@ CDMTemplate.modelOptions = {
   name: {
     singular: 'cdm',
     plural: 'cdms'
+  },
+  hooks: {
+    afterFind: function (cdm) {
+      if (cdm && cdm.troll) {
+        TrollTemplate.changeBlasonURL(cdm.troll);
+      }
+    }
   }
 };
 

@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var AATemplate = {};
 
 /*
@@ -45,6 +46,16 @@ AATemplate.modelOptions = {
   name: {
     singular: 'aa',
     plural: 'aas'
+  },
+  hooks: {
+    afterFind: function (aa) {
+      if (aa && aa.troll) {
+        TrollTemplate.changeBlasonURL(aa.troll);
+      }
+      if (aa && aa.troll_cible) {
+        TrollTemplate.changeBlasonURL(aa.troll_cible);
+      }
+    }
   }
 };
 

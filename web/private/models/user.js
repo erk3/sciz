@@ -3,7 +3,7 @@
 var bcrypt = require('bcrypt');
 var sequelize = require('sequelize');
 var TrollTemplate = require('./troll.js');
-var UserTemplate = {}
+var UserTemplate = {};
 
 /*
  * Methods

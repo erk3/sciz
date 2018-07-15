@@ -1,6 +1,7 @@
 'use strict'; 
 
 var sequelize = require('sequelize');
+var TrollTemplate = require('./troll.js');
 var PiegeTemplate = {};
 
 /*
@@ -34,6 +35,13 @@ PiegeTemplate.modelOptions = {
   name: {
     singular: 'piege',
     plural: 'pieges'
+  },
+  hooks: {
+    afterFind: function (piege) {
+      if (piege && piege.troll) {
+        TrollTemplate.changeBlasonURL(piege.troll);
+      }
+    }
   }
 };
 
