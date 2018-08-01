@@ -15,17 +15,18 @@ Un plugin Discord permettant de récupérer à interval régulier les notificati
 # Configurer le bot
 
 Editer le fichier ```conf.ini``` et modifier la valeur des variables suivantes :
-    - Section \[bot\]
-      - token (avec ```Token```)
-      - channel_id (avec ```Channel ID```)
-    - Section \[sciz\] (voir le [wiki](https://github.com/erk3/sciz/wiki/2.4-Gérer-ses-hooks))
-      - hook_url
-      - jwt
+    * Section \[bot\]
+      ** token (avec ```Token```)
+      ** channel_id (avec ```Channel ID```)
+    * Section \[sciz\] (voir le [wiki](https://github.com/erk3/sciz/wiki/2.4-Gérer-ses-hooks))
+      ** hook_url
+      ** jwt
 
 # Lancer le bot
 
 `
 pip3 install -r requirements.txt
+
 python3 discord_sciz_bot.py
 `
 
