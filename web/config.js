@@ -31,7 +31,8 @@ config.db.details = {
   operatorsAliases: Op,
   define: {
     timestamps: false
-  }
+  },
+  logging: false
 };
 
 config.keys = {
