@@ -1,6 +1,6 @@
 ![SCIZ LOGO](web/public/images/sciz-logo-quarter.png)
 
-[![Chat on Miaou](https://dystroy.org/miaou/static/shields/room-fr.svg?v=1)](https://dystroy.org/miaou/2603?SCIZ)
+[![Chat on Miaou](https://miaou.dystroy.org/static/shields/room-fr.svg?v=1)](https://miaou.dystroy.org/2603?SCIZ)
 
 # Système de Chauve-souris Interdimensionnel pour Zhumains
 
