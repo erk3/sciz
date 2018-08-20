@@ -75,7 +75,7 @@ class IDT(sg.SqlAlchemyBase):
         self.type = re.sub(r'\n', ' ', self.type).strip()
         if self.type == u'Malédiction':
             self.type = 'Mission maudite'
-        if self.effet:
+        if self.effet is not None:
             self.effet = re.sub(r'\n', ' ', self.effet).strip()
             if self.effet == '' or self.effet == u'Spécial':
                 del self.effet

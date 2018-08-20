@@ -170,6 +170,9 @@ class BATTLE(sg.SqlAlchemyBase):
     def build_att_piege(self):
         self.build_att()
     
+    def build_def_parcho(self):
+        self.build_def()
+
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
         for (key, value) in reprs:
