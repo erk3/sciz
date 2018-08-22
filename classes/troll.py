@@ -322,7 +322,7 @@ class TROLL(sg.SqlAlchemyBase):
         res = re.sub(r'None', '', res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
-        if attrs is not None and len(attrs) == 1:
+        if attrs is not None and len(attrs) == 1 and len(re.findall(self.s_sep, res)) <= 1:
             res = re.sub(r'%s' % self.s_sep, ' ', res)
         res = re.sub(r' +', ' ', res)
         return res

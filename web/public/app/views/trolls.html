@@ -132,13 +132,27 @@
               </div>
             </div>
             
-            <!-- Compétences & Sorts -->
+            <!-- Compétences -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Compétences et sorts</uib-accordion-heading>
+              <uib-accordion-heading>Compétences</uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
-                    <tr ng-repeat="capa in tc.troll.capas">
+                    <tr ng-if="capa.metacapa.id < 0" ng-repeat="capa in tc.troll.capas">
+                      <td><b>{{capa.metacapa.nom}}</b></td><td>{{capa.subtype}}</td><td>Niv. {{capa.niv}}</td><td>{{capa.percent}}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Sorts -->
+            <div uib-accordion-group class="panel-default" is-open="true">
+              <uib-accordion-heading>Sorts</uib-accordion-heading>
+              <div class="table-responsive">
+                <table class="borderless table table-condensed">
+                  <tbody>
+                    <tr ng-if="capa.metacapa.id > 0" ng-repeat="capa in tc.troll.capas">
                       <td><b>{{capa.metacapa.nom}}</b></td><td>{{capa.subtype}}</td><td>Niv. {{capa.niv}}</td><td>{{capa.percent}}%</td>
                     </tr>
                   </tbody>
