@@ -4,10 +4,12 @@
 # Imports
 import ConfigParser, requests, datetime
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from classes.assoc_trolls_capas import AssocTrollsCapas
 from classes.troll import TROLL
 from classes.user import USER
 from classes.metamob import METAMOB
 from classes.metatresor import METATRESOR
+from classes.metacapa import METACAPA
 import modules.globals as sg
 
 ## Mountyhall Caller class for SCIZ
@@ -28,6 +30,8 @@ class MHCaller:
             self.ftpTrolls2 = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_TROLLS2)
             self.ftpMonstres = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_MONSTRES)
             self.ftpTresors = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_TRESORS)
+            self.ftpSorts = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_SORTS)
+            self.ftpComps = sg.config.get(sg.CONF_MH_SECTION, sg.CONF_FTP_COMPS)
         except ConfigParser.Error as e:
             sg.logger.error("Fail to load config! (ConfigParser error: %s)" % (str(e), ))
             raise
@@ -113,9 +117,32 @@ class MHCaller:
                 troll.base_concentration = data['caracs']['concentration']['CAR'] 
                 troll.bonus_concentration_phy = data['caracs']['concentration']['BMP'] 
                 troll.bonus_concentration_mag = data['caracs']['concentration']['BMM'] 
-                # FIXME : ajouter compétences et sorts
                 # Push it to the DB
                 sg.db.add(troll)
+                # Compétences et sort
+                for capa in data['competences'] + data['sorts']:
+                    try:
+                        metacapa = sg.db.session.query(METACAPA).filter(METACAPA.nom == capa['nom']).one()
+                        n = 1
+                        for percent in capa['niveaux']:
+                            sub = None if not capa.has_key('types') or len (capa['types']) < 1 else capa['types'][n-1]
+                            try:
+                                if sub is None:
+                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n, AssocTrollsCapas.subtype == sub).one()
+                                else:
+                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n).one()
+                            except NoResultFound, MultipleResultsFound:
+                                assoc = AssocTrollsCapas()
+                            assoc.troll_id = user.id
+                            assoc.metacapa_id = metacapa.id
+                            assoc.niv = n
+                            assoc.percent = percent
+                            assoc.subtype = sub
+                            assoc.bonus = capa['bonus']
+                            n += 1
+                            sg.db.add(assoc)
+                    except NoResultFound, MultipleResultsFound:
+                        sg.logger.warning("Unknown capa '%s' retrieved from MH while upadating troll %s" % (capa['nom'], user.id, ))
             if verbose:
                 print 'Troll n°%s mis à jour' % (user.id, )
 
@@ -171,6 +198,42 @@ class MHCaller:
                 sg.db.session.add(metatresor)
         sg.db.session.commit()
 
+    # Caller to the Sorts/Comps FTP
+    def capas_ftp_call(self):
+        # Fetch MH Sorts (Metacapas) from FTP
+        mh_r = requests.get("http://%s/%s" % (self.ftpURL, self.ftpSorts, ))
+        lines = mh_r.text.split('\n')
+        for line in lines:
+            if line.find(";") > 0:
+                id, nom, subtype, pa, duree, rm, surface, zone, empty = line.split(';')
+                try:
+                    metacapa = sg.db.session.query(METACAPA).filter(METACAPA.id == id, METACAPA.type == u"Sortilège").one()
+                except NoResultFound, MultipleResultsFound:
+                    metacapa = METACAPA()
+                metacapa.id = id
+                metacapa.nom = nom
+                metacapa.type = u"Sortilège"
+                metacapa.subtype = subtype
+                metacapa.pa = pa
+                sg.db.session.add(metacapa)
+        # Fetch MH Sorts (Metacapas) from FTP
+        mh_r = requests.get("http://%s/%s" % (self.ftpURL, self.ftpComps, ))
+        lines = mh_r.text.split('\n')
+        for line in lines:
+            if line.find(";") > 0:
+                id, nom, subtype, pa, pourcentage_base, niv_min, empty = line.split(';')
+                try:
+                    metacapa = sg.db.session.query(METACAPA).filter(METACAPA.id == "-" + id, METACAPA.type == u"Compétence").one()
+                except NoResultFound, MultipleResultsFound:
+                    metacapa = METACAPA()
+                metacapa.id = "-" + id
+                metacapa.nom = nom
+                metacapa.type = u"Compétence"
+                metacapa.subtype = subtype
+                metacapa.pa = pa
+                sg.db.session.add(metacapa)
+        sg.db.session.commit()
+
     # Main MH call dispatcher
     def call(self, script, trolls, verbose=False):
         # If a list of trolls (or users) is specified, get those, else get them all
@@ -199,6 +262,9 @@ class MHCaller:
         elif script == 'tresors':
             sg.logger.info("Calling ftp %s..." % (script, ))
             self.tresors_ftp_call()
+        elif script == 'capas':
+            sg.logger.info("Calling ftp %s (Sorts/Comps)..." % (script, ))
+            self.capas_ftp_call()
         elif script == 'profil4':
             for oUser in oUsers:
                 sg.logger.info("Calling script %s for user %s..." % (script, oUser.id, ))

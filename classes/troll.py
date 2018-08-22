@@ -191,6 +191,8 @@ class TROLL(sg.SqlAlchemyBase):
             return self.user.pseudo
         return self.nom
 
+    # Associations Many-To-Many
+    capas = relationship("AssocTrollsCapas", back_populates="troll")
     # Associations One-To-Many
     user = relationship('USER', back_populates='trolls')
     group = relationship('GROUP', back_populates='trolls')
@@ -304,6 +306,8 @@ class TROLL(sg.SqlAlchemyBase):
         self.s_vue = self.s_vue.format(o=self) if self.s_base_vue != '' else ''
         self.s_mm = self.s_mm.format(o=self) if self.s_base_mm != '' else ''
         self.s_rm = self.s_rm.format(o=self) if self.s_base_rm != '' else ''
+        self.s_comps = self.s_sep.join([sg.pretty_print(comp, False).decode(sg.DEFAULT_CHARSET) for comp in self.capas if comp.type == u"Compétence"])
+        self.s_sorts = self.s_sep.join([sg.pretty_print(sort, False).decode(sg.DEFAULT_CHARSET) for sort in self.capas if sort.type == u"Sortilège"])
         # Filter out attrs not wanted (but separator)
         if attrs is not None:
             for match in re.findall('\{o\.s_(.+?)\}', self.s_troll_stats):

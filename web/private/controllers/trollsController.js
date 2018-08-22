@@ -14,9 +14,23 @@ TrollsController.getTrolls = function (req, res) {
     {user_id: {[DB.Op.ne]: null}}
   ]};
   
-  DB.Troll.findAll({where: where})
+  var getTrollsWithCapas = function (trolls) {
+    var promises = []
+    for (var i = 0; i < trolls.length; i++) {
+      promises[i] = DB.AssocTrollsCapas.findAll({where: {troll_id: trolls[i].user_id}});
+    }
+    Promise.all(promises)
+      .then(function (capas) {
+        for (var i = 0; i < capas.length; i++) {
+          trolls[i].dataValues.capas = capas[i];
+        }
+        res.json(trolls);
+      });
+  };
+  
+  DB.Troll.unscoped().findAll({where: where})
     .then(function (trolls) {
-      res.json(trolls);
+      getTrollsWithCapas(trolls);
     })
     .catch(function(error) {
       res.status(500).json({message: 'Une erreur est survenue :' + error.message});

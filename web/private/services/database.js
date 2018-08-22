@@ -4,6 +4,7 @@ var config = require('../../config.js');
 var sequelize = require('sequelize');
 
 var AssocUsersGroupsTemplate = require('../models/assoc_users_groups.js');
+var AssocTrollsCapasTemplate = require('../models/assoc_trolls_capas.js');
 var UserTemplate = require('../models/user.js');
 var TrollTemplate = require('../models/troll.js');
 var MobTemplate = require('../models/mob.js');
@@ -18,6 +19,7 @@ var PiegeTemplate = require('../models/piege.js');
 var PortalTemplate = require('../models/portal.js');
 var IDCTemplate = require('../models/idc.js');
 var MetatresorTemplate = require('../models/metatresor.js');
+var MetacapaTemplate = require('../models/metacapa.js');
 var IDTTemplate = require('../models/idt.js');
 var EventTemplate = require('../models/event.js');
 var PadTemplate = require('../models/pad.js');
@@ -37,6 +39,7 @@ var DB = new sequelize(
  */
 var Templates = [];
 Templates.push(AssocUsersGroupsTemplate);
+Templates.push(AssocTrollsCapasTemplate);
 Templates.push(UserTemplate);
 Templates.push(TrollTemplate);
 Templates.push(MobTemplate);
@@ -51,6 +54,7 @@ Templates.push(PiegeTemplate);
 Templates.push(PortalTemplate);
 Templates.push(IDCTemplate);
 Templates.push(MetatresorTemplate);
+Templates.push(MetacapaTemplate);
 Templates.push(IDTTemplate);
 Templates.push(EventTemplate);
 Templates.push(PadTemplate);
@@ -65,6 +69,9 @@ Templates.forEach(function (Template) {
 // Assocs Users Groups
 DB.AssocUsersGroups.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
 DB.AssocUsersGroups.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', onDelete: 'cascade'});
+// Assocs Trolls Capa
+DB.AssocTrollsCapas.belongsTo(DB.Metacapa, {foreignKey: 'metacapa_id', targetKey: 'id', onDelete: 'cascade'});
+DB.AssocTrollsCapas.belongsTo(DB.Troll, {foreignKey: 'troll_id', targetKey: 'id', onDelete: 'cascade'});
 // User
 DB.User.prototype.comparePasswords = UserTemplate.comparePasswords;
 DB.User.hasMany(DB.Troll, {foreignKey: 'user_id', sourceKey: 'id'});
@@ -75,6 +82,7 @@ DB.User.hasMany(DB.Group, {foreignKey: 'id', sourceKey: 'default_group_id'});
 // Troll
 DB.Troll.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', onDelete: 'set null'});
 DB.Troll.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
+DB.Troll.hasMany(DB.AssocTrollsCapas, {as: 'capas', foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.Piege, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.CDM, {foreignKey: 'troll_id', sourceKey: 'id'});
 DB.Troll.hasMany(DB.AA, {foreignKey: 'troll_id', sourceKey: 'id'});
@@ -90,6 +98,8 @@ DB.Mob.belongsTo(DB.Metamob, {foreignKey: 'metamob_id', targetKey: 'id'});
 DB.Mob.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
 // Metamob
 DB.Metamob.hasMany(DB.Mob, {foreignKey: 'metamob_id', sourceKey: 'id'});
+// Metacapa
+DB.Metacapa.hasMany(DB.AssocTrollsCapas, {foreignKey: 'metacapa_id', sourceKey: 'id'});
 // Metatresor
 DB.Metatresor.hasMany(DB.IDT, {foreignKey: 'metatresor_id', sourceKey: 'id'});
 // Group
@@ -175,6 +185,7 @@ DB.Event.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id'});
  */
 // Assocs
 DB.AssocUsersGroups.addScope('defaultScope', {include: [{model: DB.Group}, {model: DB.User.unscoped(), attributes: ['id', 'pseudo']}]}, {override: true});
+DB.AssocTrollsCapas.addScope('defaultScope', {include: [{model: DB.Metacapa}]}, {override: true});
 // Mob
 DB.Mob.addScope('defaultScope', {include: [{model: DB.Metamob}]}, {override: true});
 // Battle

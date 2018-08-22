@@ -157,7 +157,7 @@
    {
       "section":"troll_format",
       "key":"s_troll_stats",
-      "value":"{o.s_sep}{o.s_race}{o.s_sep}{o.s_niv}{o.s_sep}{o.s_fatigue}{o.s_sep}{o.s_dla_full}{o.s_sep}{o.s_pos}{o.s_sep}{o.s_pv_ratio}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}"
+      "value":"{o.s_sep}{o.s_race}{o.s_sep}{o.s_niv}{o.s_sep}{o.s_fatigue}{o.s_sep}{o.s_dla_full}{o.s_sep}{o.s_pos}{o.s_sep}{o.s_pv_ratio}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_sorts}{o.s_sep}{o.s_comps}{o.s_sep}"
    },
    {
       "section":"troll_format",
@@ -998,5 +998,40 @@
       "section":"idt_format",
       "key":"posn",
       "value":"Z = {}"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"s_long",
+      "value":"{o.s_nom} {o.s_subtype} {o.s_niv} {o.s_percent}"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"nom",
+      "value":"{}"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"type",
+      "value":"{}"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"subtype",
+      "value":"{}"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"niv",
+      "value":"(Niv {})"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"percent",
+      "value":"{}%"
+   },
+   {
+      "section":"assoctrollscapas_format",
+      "key":"bonus",
+      "value":"{:+d}"
    }
 ]

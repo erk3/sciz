@@ -5,6 +5,8 @@
 import ConfigParser
 from sqlalchemy import create_engine, exc, orm, inspect, event, and_
 from sqlalchemy_utils import database_exists, create_database
+from classes.assoc_users_groups import AssocUsersGroups
+from classes.assoc_trolls_capas import AssocTrollsCapas
 from classes.user import USER
 from classes.troll import TROLL
 from classes.metamob import METAMOB
@@ -22,6 +24,7 @@ from classes.portal import PORTAL
 from classes.idc import IDC
 from classes.idt import IDT
 from classes.metatresor import METATRESOR
+from classes.metacapa import METACAPA
 import modules.globals as sg
 
 ## SCIZ SQL Help
@@ -96,6 +99,8 @@ class SQLHelper:
             return self.__add_idc(obj)
         elif isinstance(obj, IDT):
             return self.__add_idt(obj)
+        elif isinstance(obj, AssocTrollsCapas):
+            return self.__add_assoc_trolls_capas(obj)
         else:
             sg.logger.error('No routine to add object %s to DB' % (obj, ))
 
@@ -303,7 +308,13 @@ class SQLHelper:
         self.session.add(cdm)
         self.session.commit()
         return cdm
-   
+    
+    # Add an ASSOC between a Troll and a Capa (Sort / Compétence)
+    def __add_assoc_trolls_capas(self, assoc):
+        self.session.add(assoc)
+        self.session.commit()
+        return assoc
+ 
    # Add a AA
     def __add_aa(self, aa):
         troll_cible = TROLL()
@@ -318,7 +329,6 @@ class SQLHelper:
         self.session.commit()
         return aa
     
- 
     # Add a BATTLE
     def __add_battle(self, battle):
         if battle.att_troll_id != None:
@@ -363,6 +373,7 @@ class SQLHelper:
     @event.listens_for(USER, 'before_update')
     @event.listens_for(METAMOB, 'before_update')
     @event.listens_for(METATRESOR, 'before_update')
+    @event.listens_for(METACAPA, 'before_update')
     @event.listens_for(MOB, 'before_update')
     @event.listens_for(CDM, 'before_update')
     @event.listens_for(AA, 'before_update')

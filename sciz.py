@@ -151,7 +151,7 @@ if __name__ == '__main__':
             help='instruct SCIZ to push the pending notifications for a hook')
     
     parser.add_argument('-s', '--script',
-            metavar='PUBLIC_SCRIPT [troll]', choices=['profil4', 'caract', 'trolls2', 'monstres', 'tresors'],
+            metavar='PUBLIC_SCRIPT [troll]', choices=['profil4', 'caract', 'trolls2', 'monstres', 'tresors', 'capas'],
             help='instruct SCIZ to call a MountyHall Public Script / FTP')
 
     parser.add_argument('-i', '--init',

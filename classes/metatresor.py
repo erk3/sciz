@@ -15,7 +15,7 @@ class METATRESOR(sg.SqlAlchemyBase):
     id = Column(Integer, primary_key=True)
     # Nom (sans modificateur)
     nom = Column(String(50))
-    # Nom (sans modificateur)
+    # Type
     type = Column(String(50))
     
     # Associations Many-To-One

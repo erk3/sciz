@@ -119,6 +119,8 @@ CONF_FTP_URL            	= "ftp_url"
 CONF_FTP_TROLLS2        	= "trolls2_path"
 CONF_FTP_MONSTRES       	= "monstres_path"
 CONF_FTP_TRESORS           	= "tresors_path"
+CONF_FTP_SORTS           	= "sorts_path"
+CONF_FTP_COMPS           	= "comps_path"
 
 # DB SECTION
 CONF_DB_SECTION         	= "db"
@@ -153,3 +155,4 @@ CONF_GROUP_PORTAL_FORMAT      	= "portal_format"
 CONF_GROUP_IDC_FORMAT      	= "idc_format"
 CONF_GROUP_IDT_FORMAT      	= "idt_format"
 CONF_GROUP_PIEGE_FORMAT      	= "piege_format"
+CONF_GROUP_CAPAS_FORMAT      	= "assoctrollscapas_format"
