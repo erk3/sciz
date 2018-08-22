@@ -71,4 +71,8 @@ class GameEngine:
         # Siphon des ames
         if battle.subtype and u"siphon" in battle.subtype.lower() and battle.siphon:
             battle.capa_effet = 'ATT -{}'.format(battle.siphon)
+        # Rafale psychique
+        if battle.subtype and u"rafale" in battle.subtype.lower() and battle.rafale:
+            battle.capa_effet = 'REG -{}'.format(battle.rafale)
+            battle.capa_tour = 1 if battle.resist else 2
         return battle
