@@ -48,6 +48,7 @@ TrollTemplate.modelDefinition = {
     allowNull: false
   },
   user_id: {type: sequelize.INTEGER},
+  last_mhsp4_call: {type: sequelize.DATE},
   nom: {type: sequelize.STRING},
   race: {type: sequelize.STRING},
   niv: {type: sequelize.INTEGER},

@@ -23,7 +23,7 @@
     
     <br/>
     <br/>
-    
+   
     <div ng-if="!tc.troll.nom"><!--Very first login-->
       <div class="row text-center">
         <img src="images/confused-sciz.png" class="img-responsive img-rounded center-block" style="max-height: 250px;" alt=""/>
@@ -35,13 +35,16 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-3">
-          <img ng-src="{{tc.troll.blason_url}}" class="img-responsive img-rounded" style="max-height: 300px" alt="" onError="this.src='images/MyNameIsNobody.gif';">
+          <img ng-src="{{tc.troll.blason_url}}" class="img-responsive img-rounded" style="max-height: 200px" alt="" onError="this.src='images/MyNameIsNobody.gif';">
           <br/>
           <blockquote>
             <p>{{tc.troll.nom}} (<a href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{tc.troll.id}}">{{tc.troll.id}}</a>)</p>
+              <button class="btn btn-light btn-xs" type="button" ng-click="tc.updateTroll(tc.troll)" ng-disabled="tc.troll.sinceLastMHsp4Call < 1 || tc.troll.clicked">
+              <span class="glyphicon glyphicon-refresh"></span> Mise à jour
+            </button><br/><br/>
             <cite><small>Race : {{tc.troll.race}}</small></cite>
             <cite><small>Niveau : {{tc.troll.niv}} ({{tc.troll.pi}} PI)</small></cite>
-            <cite><small>Date de création : {{tc.displayDate(tc.troll.inscription)}}</small></cite>
+            <cite><small>Date de création : {{tc.displayDate(tc.troll.inscription, 0, false, true)}}</small></cite>
             <cite><small>Nombre de meurtres : {{tc.troll.nb_kill}}</small></cite>
             <cite><small>Nombre de décès : {{tc.troll.nb_mort}}</small></cite>
             <cite><small>Nombre de mouches : {{tc.troll.nb_mouche}}</small></cite>
@@ -49,11 +52,19 @@
         </div>
 
         <div class="col-md-7">
+          
+          <div ng-if="tc.updateStatus">
+            <div uib-alert class="alert" ng-class="{'alert-info':tc.updateStatus}" dismiss-on-timeout="2000" close="tc.resetAlerts()">
+              {{tc.updateStatusMessage}}
+            </div>
+          </div>
+          </br>
+          
           <uib-accordion close-others="oneAtATime">
             
-            <!-- Etat -->
+           <!-- Etat -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>État</uib-accordion-heading>
+              <uib-accordion-heading>État <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
@@ -80,7 +91,7 @@
 
             <!-- Tour de Jeu -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Tour de jeu</uib-accordion-heading>
+              <uib-accordion-heading>Tour de jeu <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
@@ -99,7 +110,7 @@
 
             <!-- Caractéristiques -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Caractéristiques</uib-accordion-heading>
+              <uib-accordion-heading>Caractéristiques <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
@@ -120,7 +131,7 @@
 
             <!-- Caractéristiques déduites -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Caractéristiques déduites</uib-accordion-heading>
+              <uib-accordion-heading>Caractéristiques déduites <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
@@ -134,7 +145,7 @@
             
             <!-- Compétences -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Compétences</uib-accordion-heading>
+              <uib-accordion-heading>Compétences <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>
@@ -148,7 +159,7 @@
 
             <!-- Sorts -->
             <div uib-accordion-group class="panel-default" is-open="true">
-              <uib-accordion-heading>Sorts</uib-accordion-heading>
+              <uib-accordion-heading>Sorts <cite class="pull-right"><small>Dernière mise à jour : {{tc.troll.tLastSP4Call}}</small></cite></uib-accordion-heading>
               <div class="table-responsive">
                 <table class="borderless table table-condensed">
                   <tbody>

@@ -31,6 +31,7 @@ var APIRoutes = function(passport) {
   router.post('/selfassoc', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.acceptInvite));
   router.post('/admin/invite', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.inviteUser));
   router.post('/admin/assoc', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.updateAssocRole));
+  router.post('/trolls/update', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, TrollsController.updateTroll));
 
   // GET routes
   router.get('/public/stats', PublicController.getStats);

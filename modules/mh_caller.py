@@ -118,6 +118,7 @@ class MHCaller:
                 troll.bonus_concentration_phy = data['caracs']['concentration']['BMP'] 
                 troll.bonus_concentration_mag = data['caracs']['concentration']['BMM'] 
                 # Push it to the DB
+                troll.last_mhsp4_call = datetime.datetime.now() 
                 sg.db.add(troll)
                 # Compétences et sort
                 for capa in data['competences'] + data['sorts']:

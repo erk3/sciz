@@ -22,6 +22,8 @@ class TROLL(sg.SqlAlchemyBase):
     user_id = Column(Integer, ForeignKey('users.id', ondelete="SET NULL"))
     # Condition if notifications have to be pushed for this troll
     sciz_notif = Column(Boolean, default=True)
+    # Horodatage du dernier appel aux SP
+    last_mhsp4_call = Column(DateTime)
     # Nom
     nom = Column(String(50))
     # Race

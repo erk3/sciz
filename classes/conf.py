@@ -18,7 +18,7 @@ class CONF(sg.SqlAlchemyBase):
     section = Column(String(50))
     key = Column(String(50))
     value = Column(String(500))
-    last_fetch = Column(DateTime, onupdate=datetime.datetime.utcnow())
+    last_fetch = Column(DateTime, onupdate=datetime.datetime.now())
     
     # Associations One-To-Many
     group = relationship("GROUP", back_populates="confs")

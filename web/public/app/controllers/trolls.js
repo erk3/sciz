@@ -6,30 +6,64 @@ function trollsCtrl($scope, $http, authService) {
   var vm = this;
 
   vm.user = authService.refreshLocalData();
+  vm.getTrolls = getTrolls;
   vm.troll = {};
+  vm.resetAlerts = resetAlerts;
 
-  $http({
-    method: 'GET',
-    url: '/api/trolls',
-    params: {groupID: vm.user.currentAssoc.group_id}
-  })
-    .then(function (response) {
-      if (response && response.data) {
-        vm.slides = response.data;
-        if (vm.slides.length > 0) {
-          vm.troll = vm.slides[0];
+  function resetAlerts() {
+    vm.updateStatus = false;
+    vm.updateStatusMessage = null;
+  }
+
+  vm.getTrolls(null);
+
+  function getTrolls(troll) {
+    $http({
+      method: 'GET',
+      url: '/api/trolls',
+      params: {groupID: vm.user.currentAssoc.group_id}
+    })
+      .then(function (response) {
+        if (response && response.data) {
+          vm.slides = response.data;
+          for (var i = 0; i < vm.slides.length; i++) {
+            if (troll === null || vm.slides[i].id === troll.id) {
+              vm.troll = vm.slides[i];
+              vm.troll.clicked = false;
+              vm.troll.sinceLastMHsp4Call = Math.floor((vm.adjustDate(new Date(), 0, false, false) - vm.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
+              break;
+            }
+          }
+          vm.slides = vm.slides.map(function (item) {
+            // Set the callback function used by the carousel slider
+            item.callback = function () {
+              vm.troll = item;
+              vm.troll.clicked = false;
+              vm.troll.sinceLastMHsp4Call = Math.floor((vm.adjustDate(new Date(), 0, false, false) - vm.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
+            };
+            // Comptute the string reprs of the troll
+            item = vm.trollToStr(item);
+            return item;
+          });
         }
-        vm.slides = vm.slides.map(function (item) {
-          // Set the callback function used by the carousel slider
-          item.callback = function () {
-            vm.troll = item;
-          };
-          // Comptute the string reprs of the troll
-          item = vm.trollToStr(item);
-          return item;
-        });
-      }
-    });
+      });
+  }
+
+  vm.updateTroll = function (troll) {
+    troll.clicked = true;
+    $http({
+      method: 'POST',
+      url: '/api/trolls/update',
+      data: {groupID: vm.user.currentAssoc.group_id, trollID: troll.id}
+    })
+      .then(function (response) {
+        if (response && response.data) {
+          vm.getTrolls(troll);
+          vm.updateStatus = true;
+          vm.updateStatusMessage = response.data.message;
+        }
+      });
+  };
 
   vm.displayHours = function (minutes) {
     if (minutes === null || minutes === undefined) {
@@ -43,17 +77,36 @@ function trollsCtrl($scope, $http, authService) {
     return sign + Math.trunc(minutes / 60) + ' h ' + (minutes % 60) + ' m ';
   };
 
-  vm.displayDate = function (date, minutesToAdd) {
-    if (date === null || date === undefined) {
-      return null;
+  vm.adjustDate = function (date, minutesToAdd, reverted, adjustTimeZone) {
+    var d = new Date();
+    if (date !== null && date !== undefined) {
+      d = new Date(date);
     }
-    if (minutesToAdd === null || minutesToAdd === undefined) {
-      minutesToAdd = 0;
+
+    var t = 0;
+    if (adjustTimeZone !== null && adjustTimeZone !== undefined && adjustTimeZone !== false) {
+      t = new Date(date).getTimezoneOffset() * 60 * 1000;
     }
+
+    var m = 0;
+    if (minutesToAdd !== null && minutesToAdd !== undefined) {
+      m = minutesToAdd * 60 * 1000;
+    }
+
+    var r = 1;
+    if (reverted !== null && reverted !== undefined && reverted !== false) {
+      r = -1;
+    }
+
+    d.setTime(d.getTime() + m + (t * r));
+
+    return d;
+  };
+
+  vm.displayDate = function (date, minutesToAdd, reverted, adjustTimeZone) {
     var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false};
     var dtf = new Intl.DateTimeFormat('fr-FR', options);
-    var d = new Date(date);
-    d.setTime(d.getTime() + (new Date(date).getTimezoneOffset() * 60 * 1000) + (minutesToAdd * 60 * 1000));
+    var d = vm.adjustDate(date, minutesToAdd, reverted, adjustTimeZone);
     return dtf.format(d);
   };
 
@@ -84,7 +137,8 @@ function trollsCtrl($scope, $http, authService) {
     }
 
     troll.tPA = plus(troll.pa, '', '', '?', ' PA / 6');
-    troll.tDLA = plus(vm.displayDate(troll.dla, 0), '', '', '?', '');
+    troll.tDLA = plus(vm.displayDate(troll.dla, 0, false, true), '', '', '?', '');
+    troll.tLastSP4Call = plus(vm.displayDate(troll.last_mhsp4_call, 0, false, true), '', '', '?', '');
     troll.bTour = plus(vm.displayHours(troll.base_tour), '', '', '?', '');
     var malusTourBlessure = Math.trunc((250 * (troll.base_bonus_pv_max - troll.pv)) / troll.base_bonus_pv_max);
     troll.tMalusTourBlessure = plus(vm.displayHours(malusTourBlessure), '', '', '?', '');
@@ -94,7 +148,7 @@ function trollsCtrl($scope, $http, authService) {
     troll.tBMMTour = plus(vm.displayHours(bmmTour), '', '', '?', '');
     var nextTour = Math.max(troll.base_tour, troll.base_tour + malusTourBlessure + poidsTour + bmmTour);
     troll.bNextTour = plus(vm.displayHours(nextTour), '', '', '?', '');
-    troll.tNextDLA = plus(vm.displayDate(troll.dla, nextTour), '', '', '?', '');
+    troll.tNextDLA = plus(vm.displayDate(troll.dla, nextTour, false, true), '', '', '?', '');
 
     troll.bAtt = plus(troll.base_att, '', '', '?', 'D6');
     troll.bAttPhy = plus(troll.bonus_att_phy, '+', '', '?', '');
