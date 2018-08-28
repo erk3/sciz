@@ -97,7 +97,17 @@
    {
       "section":"battle_format",
       "key":"px",
-      "value":"px {}"
+      "value":"px {:+d}"
+   },
+   {
+      "section":"battle_format",
+      "key":"rm",
+      "value":"rm {:+d}"
+   },
+   {
+      "section":"battle_format",
+      "key":"mm",
+      "value":"mm {:+d}"
    },
    {
       "section":"battle_format",

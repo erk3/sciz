@@ -101,6 +101,16 @@
    },
    {
       "section":"battle_format",
+      "key":"rm",
+      "value":"rm {:+d}"
+   },
+   {
+      "section":"battle_format",
+      "key":"mm",
+      "value":"mm {:+d}"
+   },
+   {
+      "section":"battle_format",
       "key":"fatigue",
       "value":"fatigue +{}"
    },

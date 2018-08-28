@@ -31,31 +31,37 @@ class GameEngine:
         am = battle.att_mob
         dm = battle.def_mob
         # Blessure
-        if battle.blessure and at and at.pv:
+        if battle.blessure and at is not None and at.pv:
             at.pv = max(0, int(at.pv) - int(battle.blessure))
         # Vie restante
-        if battle.vie and dt:
+        if battle.vie and dt is not None:
             dt.pv = battle.vie
         # Soin
-        if battle.soin and dt and dt.pv and dt.base_bonus_pv_max:
+        if battle.soin and dt is not None and dt.pv and dt.base_bonus_pv_max:
             dt.pv = min(dt.base_bonus_pv_max, int(dt.pv) + int(battle.soin))
         # PV perdus
-        if battle.pv > 0 and dt and dt.pv:
+        if battle.pv > 0 and dt is not None and dt.pv:
             dt.pv = max(0, int(dt.pv) - int(battle.pv))
         # Fatigue (Charge)
-        if battle.fatigue and at and at.fatigue is not None:
+        if battle.fatigue and at is not None and at.fatigue is not None:
             at.fatigue = max(127, int(at.fatigue) + int(battle.fatigue))
         # Fatigue (Pouvoirs type Ronflement)
-        elif battle.fatigue and dt and dt.fatigue is not None:
+        elif battle.fatigue and dt is not None and dt.fatigue is not None:
             dt.fatigue = max(127, int(dt.fatigue) + int(battle.fatigue))
         # Nombre d'attaque subies
-        if battle.pv > 0 and dt and dt.nb_att_sub is not None:
+        if battle.pv > 0 and dt is not None and dt.nb_att_sub is not None:
             dt.nb_att_sub += 1
+        # Gain de MM
+        if battle.mm > 0 and at is not None and at.base_mm is not None:
+            at.base_mm += int(battle.mm)
+        # Gain de RM
+        if battle.rm > 0 and dt is not None and dt.base_rm is not None:
+            dt.base_rm += int(battle.rm)
         # Stop course
-        if battle.pv > 0 and dt and dt.course is not None:
+        if battle.pv > 0 and dt is not None and dt.course is not None:
             dt.course = False
         # Malus d'esquive sur attaque portée
-        if battle.esq is not None and not battle.perfect_dodge and (dt or dm):
+        if battle.esq is not None and not battle.perfect_dodge and (dt is not None or dm is not None):
             # FIXME : problème d'affichage si une autre capa en plus de l'attaque
             # battle.capa_effet = 'ESQ -1D6'
             # battle.capa_tour = 1
@@ -64,7 +70,7 @@ class GameEngine:
         if battle.subtype and u"charger" in battle.subtype.lower():
             battle.subtype = battle.subtype.replace("Charger", "Charge")
         # Hypno
-        if battle.subtype and battle.subtype.lower() == u"hypnotisme" and at and at.base_esq:
+        if battle.subtype and battle.subtype.lower() == u"hypnotisme" and at is not None and at.base_esq:
             dim = math.trunc(at.base_esq * 1.5) if not battle.resist else math.trunc(at.base_esq / 3)
             battle.capa_effet = 'ESQ -{}D6'.format(dim)
             battle.capa_tour = 1

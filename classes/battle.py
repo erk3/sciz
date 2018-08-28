@@ -67,7 +67,11 @@ class BATTLE(sg.SqlAlchemyBase):
     perfect_dodge = Column(Boolean)
     # Cible décédée ?
     dead = Column(Boolean)
-    # PX
+    # Gain de RM
+    rm = Column(Integer)
+    # Gain de MM
+    mm = Column(Integer)
+    # Gain de PX
     px = Column(Integer)
     # Fatigue
     fatigue = Column(Integer)

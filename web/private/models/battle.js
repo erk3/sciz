@@ -46,6 +46,8 @@ BattleTemplate.modelDefinition = {
   perfect_dodge: {type: sequelize.BOOLEAN},
   dead: {type: sequelize.BOOLEAN},
   px: {type: sequelize.INTEGER},
+  rm: {type: sequelize.INTEGER},
+  mm: {type: sequelize.INTEGER},
   fatigue: {type: sequelize.INTEGER}
 };
 
