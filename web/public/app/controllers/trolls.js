@@ -95,6 +95,8 @@ function trollsCtrl($scope, $http, authService) {
     var d = new Date();
     if (date !== null && date !== undefined) {
       d = new Date(date);
+    } else {
+      return null;
     }
 
     var t = 0;
@@ -121,6 +123,9 @@ function trollsCtrl($scope, $http, authService) {
     var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false};
     var dtf = new Intl.DateTimeFormat('fr-FR', options);
     var d = vm.adjustDate(date, minutesToAdd, reverted, adjustTimeZone);
+    if (d === null) {
+      return null;
+    }
     return dtf.format(d);
   };
 
