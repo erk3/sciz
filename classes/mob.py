@@ -16,7 +16,7 @@ class MOB(sg.SqlAlchemyBase):
     # ID unique du monstre
     id = Column(Integer)
     # SCIZ notifs ?
-    sciz_notif = Column(Boolean)
+    shadowed = Column(Boolean, default=False)
     # ID du groupe
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
     # ID du metamob

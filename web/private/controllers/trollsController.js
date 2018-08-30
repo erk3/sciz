@@ -79,4 +79,38 @@ TrollsController.updateTroll = function (req, res) {
 
 }
 
+TrollsController.updateTrollVisibility = function (req, res) {
+  
+  var groupID = (req.body.groupID) ? parseInt(req.body.groupID) : 0;
+  var trollID = (req.body.trollID) ? parseInt(req.body.trollID) : 0;
+  var shadowed = req.body.shadowed;
+
+  if (shadowed === null) {  
+    res.status(400).json({message: 'Une erreur est survenue ! '});
+    return;
+  }
+
+  var where = {
+    id: trollID,
+    group_id: groupID,
+    user_id: trollID
+  };
+
+  var data = {
+    shadowed: shadowed
+  };
+ 
+  DB.Troll.update(data, {where: where})
+  .then(function (troll) {
+    if (shadowed) {
+      res.json({success: true, message: 'Notifications futures du troll ' + trollID + ' masquées !'});
+    } else {
+      res.json({success: true, message: 'Notifications futures du troll ' + trollID + ' visibles !'});
+    }
+  })
+  .catch(function (error) {
+    res.status(500).json({message: 'Une erreur est survenue ! ' + error.message});
+  });
+}
+
 module.exports = TrollsController;

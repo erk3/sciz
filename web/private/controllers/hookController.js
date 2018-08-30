@@ -14,7 +14,7 @@ HookController.getNotifs = function (req, res) {
   DB.Event.scope().findAndCountAll({where: {
     [Op.and]: [
       {id:{[Op.gt]: hook.last_event_id}},
-      {notif_to_push: true},
+      {hidden: false},
       {group_id: hook.group_id}
     ]},
     attributes: ['id', 'notif'],

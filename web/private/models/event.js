@@ -23,7 +23,7 @@ EventTemplate.modelDefinition = {
   },
   time: {type: sequelize.DATE},
   notif: {type: sequelize.STRING},
-  notif_to_push: {type: sequelize.BOOLEAN},
+  hidden: {type: sequelize.BOOLEAN},
   type: {type: sequelize.STRING},
   battle_id: {type: sequelize.INTEGER},
   cdm_id: {type: sequelize.INTEGER},

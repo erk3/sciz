@@ -183,41 +183,35 @@ class SQLHelper:
         event.group_id = obj.group_id
         event.time = obj.time
         event.notif = sg.pretty_print(obj, True)
-        event.notif_to_push = False
+        event.hidden = False
         event.type = "UNKNWON"
         if isinstance(obj, CDM):
-            if (obj.mob.sciz_notif or obj.troll.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.cdm_id = obj.id
             event.type = "CDM"
         elif isinstance(obj, AA):
-            if (obj.troll.sciz_notif or obj.troll_cible.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.aa_id = obj.id
             event.type = "AA"
         elif isinstance(obj, IDC):
-            if (obj.troll.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.idc_id = obj.id
             event.type = "IDC"
         elif isinstance(obj, IDT):
-            if (obj.troll.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.idt_id = obj.id
             event.type = "IDT"
         elif isinstance(obj, PIEGE):
-            if (obj.troll.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.piege_id = obj.id
             event.type = "PIEGE"
         elif isinstance(obj, PORTAL):
-            if (obj.troll.sciz_notif):
-                event.notif_to_push = True
+            event.hidden = True if obj.troll.shadowed else False
             event.portal_id = obj.id
             event.type = "PORTAL"
         elif isinstance(obj, BATTLE):
-            if ((obj.att_troll != None and obj.att_troll.sciz_notif) or (obj.att_mob != None and obj.att_mob.sciz_notif) or (obj.def_troll != None and obj.def_troll.sciz_notif) or (obj.def_mob != None and obj.def_mob.sciz_notif)):
-                event.notif_to_push = True
+            if ((obj.att_troll is None or obj.att_troll.shadowed) and (obj.def_troll is None or obj.def_troll.shadowed)):
+                event.hidden = True
             event.battle_id = obj.id
             event.type = "BATTLE"
         self.session.add(event)
@@ -237,7 +231,7 @@ class SQLHelper:
         except orm.exc.NoResultFound:
             mob = new_mob
             sg.logger.info("Creating MOB %s..." % (mob.id, ))
-            mob.sciz_notif = True
+            mob.shadowed = False
             mob.link_metamob(self.session.query(METAMOB).all())
         self.session.add(mob)
         self.session.commit()

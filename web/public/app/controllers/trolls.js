@@ -65,6 +65,20 @@ function trollsCtrl($scope, $http, authService) {
       });
   };
 
+  vm.updateTrollVisibility = function (troll) {
+    $http({
+      method: 'POST',
+      url: '/api/trolls/updateVisibility',
+      data: {groupID: vm.user.currentAssoc.group_id, trollID: troll.id, shadowed: troll.shadowed}
+    })
+      .then(function (response) {
+        if (response && response.data) {
+          vm.updateStatus = true;
+          vm.updateStatusMessage = response.data.message;
+        }
+      });
+  };
+
   vm.displayHours = function (minutes) {
     if (minutes === null || minutes === undefined) {
       return null;

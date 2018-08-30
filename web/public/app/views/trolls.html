@@ -41,7 +41,12 @@
             <p>{{tc.troll.nom}} (<a href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{tc.troll.id}}">{{tc.troll.id}}</a>)</p>
               <button class="btn btn-light btn-xs" type="button" ng-click="tc.updateTroll(tc.troll)" ng-disabled="tc.troll.sinceLastMHsp4Call < 1 || tc.troll.clicked">
               <span class="glyphicon glyphicon-refresh"></span> Mise à jour
-            </button><br/><br/>
+            </button><br/>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="tc.troll.shadowed" ng-change="tc.updateTrollVisibility(tc.troll)" value=""> <span style="font-size: 75%">Masquer les futures notifications ?</span>
+              </label>
+            </div>
             <cite><small>Race : {{tc.troll.race}}</small></cite>
             <cite><small>Niveau : {{tc.troll.niv}} ({{tc.troll.pi}} PI)</small></cite>
             <cite><small>Date de création : {{tc.displayDate(tc.troll.inscription, 0, false, true)}}</small></cite>

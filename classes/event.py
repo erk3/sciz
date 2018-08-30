@@ -18,8 +18,8 @@ class EVENT(sg.SqlAlchemyBase):
     time = Column(DateTime())
     # Notification
     notif = Column(String(500))
-    # Notification a pousser ?
-    notif_to_push = Column(Boolean)
+    # Notification masquée ?
+    hidden = Column(Boolean)
     # Type d'évènement
     type = Column(String(50))
     # ID de l'évènement de combat

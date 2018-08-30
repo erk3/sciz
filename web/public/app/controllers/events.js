@@ -11,6 +11,7 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   vm.lastID = 0;
   vm.busy = false;
   vm.noMoreEvent = false;
+  vm.displayHidden = false;
   vm.blasonError = 'images/MyNameIsNobody.gif';
 
   vm.user = authService.refreshLocalData();
@@ -104,17 +105,6 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       .then(function (response) {
         if (response && response.data) {
           var events = angular.fromJson(response.data);
-          /*
-          for (var i = 0, len = events.length; i < len; i++) {
-            events[i].sub = (events[i].cdm_id === null) ? events[i].sub : events[i].cdm;
-            events[i].sub = (events[i].battle_id === null) ? events[i].sub : events[i].battle;
-            events[i].sub = (events[i].piege_id === null) ? events[i].sub : events[i].piege;
-            events[i].sub = (events[i].portal_id === null) ? events[i].sub : events[i].portal;
-            events[i].sub = (events[i].idc_id === null) ? events[i].sub : events[i].idc;
-            events[i].sub = (events[i].idt_id === null) ? events[i].sub : events[i].idt;
-            events[i].sub = (events[i].aa_id === null) ? events[i].sub : events[i].aa;
-          }
-          */
           var oldLength = vm.events.length;
           vm.events = (old) ? vm.events.concat(events) : events.concat(vm.events);
           if (oldLength <= 0) {

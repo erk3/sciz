@@ -44,7 +44,7 @@ class HOOK(sg.SqlAlchemyBase):
         if not self.revoked and self.url != None:
             try:
                 # Find the events
-                events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.notif_to_push == True, EVENT.group_id == self.group_id).order_by(asc(EVENT.time)).all()
+                events = sg.db.session.query(EVENT).filter(EVENT.id > self.last_event_id, EVENT.hidden == False, EVENT.group_id == self.group_id).order_by(asc(EVENT.time)).all()
                 res = []
                 max_id = 0
                 for event in events:
