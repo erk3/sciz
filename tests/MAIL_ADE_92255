@@ -1,0 +1,148 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id OCDLCTPPjVvUEQAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Tue, 04 Sep 2018 00:17:55 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id C00402A60984
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:17:54 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.216.174; helo=mail-qt0-f174.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="vRWK4i24";
+	dkim-atps=neutral
+Received: from mail-qt0-f174.google.com (mail-qt0-f174.google.com [209.85.216.174])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 5250E2A608A4
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:17:54 +0000 (UTC)
+Received: by mail-qt0-f174.google.com with SMTP id t5-v6so2205642qtn.3
+        for <feedthebat@sciz.cerv.ovh>; Mon, 03 Sep 2018 17:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=EA16GQnEuMPUdXqbSiqEmM+1rqt6eX2ab+SWhv/qLb8=;
+        b=vRWK4i24sRqig5Vzs7m0luPBvUjYZZB56hypyW/5CPqwqRsuegP48Q8MtHy2GoxA3e
+         w8JPiJUavqugoLssf285USRJSHjMLyjBC7e8t59ahM30xVWcDC9F5EgSfp7xRqWIU/g6
+         NC+KdMrKLgbNmqXFb3NtqWrjAdlCtB+Um/j8UxBDQjcaYi0mdsBujI4D/1tsZHKNtfoG
+         MGTxZYs/0TtvMdy28Up+2c+bFbiGpWXvVm9LYGTqaT3hr3uyvQlV/3KM8yiiSp7K4NCR
+         G+zm3e1SqazjCKjikNl+UKFTcytAYAz11ZulIhHrU3et+VbpsANR/zg/zKx8rJ/WDXOi
+         N1wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=EA16GQnEuMPUdXqbSiqEmM+1rqt6eX2ab+SWhv/qLb8=;
+        b=C2IBB2EbqIcQNQVGHw9Z7nFv26St1iZDW0MaK6D+SjUwCwN35aOUgGaO2WTgxOpMpu
+         LEbxOS/sjHzYSriKue8hOjiwt1wt0oc1vmmKz0NnLJisjgvV3Z6FKwWtix+XBRgQAv6W
+         3VCj6ax8pPS61bpel07747S9R02uWrXvZ6SSurJKQSEyqtKBqGH3gvcbRvkv0K+pGGJi
+         TiYJjpwJnwbeEOTYtmnltocUC8Sb+gHrURgHhetc8rCI3Xjs53k1gZ48Eg3HnhXK2U2s
+         crELziQTSLpmbF2Ik5+IGmFJBsuJmDJlFx89lPOoOBHwA78p+PWDimuUiK8wiCoQV3GH
+         d3Qg==
+X-Gm-Message-State: APzg51DdipwurrcONc3VBu0Z0vBqR+6h94TAyCrIFQ+r+ycqWHS2XdBt
+	UPQo/dtwhBzovQhqEflt/jNxvEEbi12DXOFRUSMeiQ==
+X-Google-Smtp-Source: ANB0VdZkTibHJTFF0RN695oa79chGtezhJckHpFoTu3y8C3EI0GLiQjV3igBeqvNa6Uf+jLZGra669quFfduFqE2+C4=
+X-Received: by 2002:a0c:e490:: with SMTP id n16-v6mr26909685qvl.119.1536020272794;
+ Mon, 03 Sep 2018 17:17:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <cc4da3f98db53d065d1f5f243f53f3b5@games.mountyhall.com>
+In-Reply-To: <cc4da3f98db53d065d1f5f243f53f3b5@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Tue, 4 Sep 2018 02:17:40 +0200
+Message-ID: <CAMO4vGeQ=sDVLpM2CRkZUNTxS-AhPtww-1wwepEPtEN0VMYF-w@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Sortil=C3=A8ge_=3A_Augmentation_de_l=C2=B4Es?=
+	=?UTF-8?Q?quive?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="000000000000ba51a5057500961e"
+
+--000000000000ba51a5057500961e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: sam. 24 mars 2018 =C3=A0 22:30
+Subject: [MountyHall] Sortil=C3=A8ge : Augmentation de l=C2=B4Esquive
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 24/03/2018 22:30:47.
+***********************************************************
+
+Vous avez lanc=C3=A9 le Sortil=C3=A8ge Augmentation de l=C2=B4Esquive
+Le sortil=C3=A8ge a eu l'effet th=C3=A9orique suivant (hors d=C3=A9cumul) :=
+ ESQ : +1000
+
+
+Pour une dur=C3=A9e de 2 tour(s).
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--000000000000ba51a5057500961e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <b class=3D"gmail_sendername" dir=
+=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mo=
+untyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: sam. 24 mars 2018 =
+=C3=A0=C2=A022:30<br>Subject: [MountyHall] Sortil=C3=A8ge : Augmentation de=
+ l=C2=B4Esquive<br>To:  &lt;<a href=3D"mailto:censored@gmail.com">=
+censored@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br=
+>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 24/03/2018 22:30:47.<br>
+***********************************************************<br>
+<br>
+Vous avez lanc=C3=A9 le Sortil=C3=A8ge Augmentation de l=C2=B4Esquive<br>
+Le sortil=C3=A8ge a eu l&#39;effet th=C3=A9orique suivant (hors d=C3=A9cumu=
+l) : ESQ : +1000<br>
+<br>
+<br>
+Pour une dur=C3=A9e de 2 tour(s).<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--000000000000ba51a5057500961e--
