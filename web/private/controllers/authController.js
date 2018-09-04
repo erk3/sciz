@@ -79,7 +79,7 @@ AuthController.authenticate = function (req, res) {
               var token = jwt.sign(
                 {type: 'user', id: user.id, assocs: lightAssocs},
                 config.keys.secret, 
-                {expiresIn: '30m'});
+                {expiresIn: user.session_duration + 'm'});
               var blasonURL = (user.trolls.length > 0) ? user.trolls[0].blason_url : 'images/MyNameIsobody.gif';
               res.status(200).json({
                 success: true,
