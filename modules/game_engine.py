@@ -82,4 +82,17 @@ class GameEngine:
         if battle.subtype and u"rafale" in battle.subtype.lower() and hasattr(battle, 'rafale'):
             battle.capa_effet = 'REG -{}'.format(battle.rafale)
             battle.capa_tour = 1 if battle.resist else 2
+        # Invisibilité
+        if battle.subtype and u"invisibilité" in battle.subtype.lower() and at is not None:
+            at.invisible = True
+        # Invisibilité
+        if battle.subtype and u"lévitation" in battle.subtype.lower() and at is not None:
+            at.levite = True
+        # Glue
+        if battle.subtype and u"glue" in battle.subtype.lower() and dt is not None and battle.resist:
+            at.immobile = True
+        # Retraite
+        if hasattr(battle, 'retraite') and battle.retraite is not None:
+            # Modifie la position connue du troll ?
+            pass
         return battle
