@@ -49,7 +49,8 @@
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_troll_id">
 			  <p>{{ec.cur.sub.def_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.def_troll.id}}">{{ec.cur.sub.def_troll.id}}</a>)</p>
         <cite ng-if="ec.cur.sub.fatigue && !ec.cur.sub.att_troll_id"><small>Fatigue : +{{ec.cur.sub.fatigue}}</small></cite>
-        <cite ng-if="ec.cur.sub.rm && !ec.cur.sub.att_troll_id"><small>Résistance Magique : +{{ec.cur.sub.rm}}</small></cite>
+        <cite ng-if="ec.cur.sub.rm"><small>Résistance Magique : +{{ec.cur.sub.rm}}</small></cite>
+        <cite ng-if="ec.cur.sub.retraite"><small>Retraite vers {{ec.cur.sub.retraite}}</small></cite>
 			</blockquote>
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_mob_id">
         <p>{{ec.cur.sub.def_mob.nom}} [{{ec.cur.sub.def_mob.age}}] <span ng-if="ec.cur.sub.def_mob.tag">{{ec.cur.sub.def_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.def_mob.id}}">{{ec.cur.sub.def_mob.id}}</a>)</p>
@@ -67,9 +68,19 @@
           <td>{{ec.cur.sub.att}}</td>
           <td ng-if="ec.cur.isTouched && ec.cur.sub.crit"><b>Critique</b></td>
           <td ng-if="ec.cur.isTouched && !ec.cur.sub.crit">Touché</td>
-          <td ng-if="!ec.cur.isTouched"><b>Esquivé</b></td>
-          <td>{{ec.cur.sub.esq}}</td>
-          <td class="inverse">Jet d'esquive</td>
+          <td ng-if="!ec.cur.isTouched && !ec.cur.sub.parade"><b>Esquive</b></td>
+          <td ng-if="!ec.cur.isTouched && ec.cur.sub.parade"><b>Parade</b></td>
+          <td>{{ec.cur.sub.esq}}<span ng-if="ec.cur.sub.parade"> + {{ec.cur.sub.par}}</span></td>
+          <td class="inverse">Jet d'esquive<span ng-if="ec.cur.sub.parade"> + parade</span></td>
+        </tr>
+        <tr ng-if="(ec.cur.sub.destab !== null) && (ec.cur.sub.stab !== null)">
+          <td class="inverse">Jet de déstablisation</td>
+          <td>{{ec.cur.sub.destab}}</td>
+          <td ng-if="ec.cur.isTouched && ec.cur.sub.crit"><b>Critique</b></td>
+          <td ng-if="ec.cur.isTouched && !ec.cur.sub.crit">Mise à terre</td>
+          <td ng-if="!ec.cur.isTouched"><b>Esquive</b></td>
+          <td>{{ec.cur.sub.stab}}</td>
+          <td class="inverse">Jet de stabilité</td>
         </tr>
         <tr ng-if="ec.cur.sub.capa_effet">
           <td class="inverse">Capacité</td>

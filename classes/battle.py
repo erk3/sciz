@@ -37,6 +37,8 @@ class BATTLE(sg.SqlAlchemyBase):
     att = Column(Integer)
     # Jet d'esquive
     esq = Column(Integer)
+    # Jet de parade
+    par = Column(Integer)
     # Jet de dégâts (sans compter armure)
     deg = Column(Integer)
     # Armure
@@ -63,8 +65,12 @@ class BATTLE(sg.SqlAlchemyBase):
     resist = Column(Boolean)
     # Critique ?
     crit = Column(Boolean)
+    # Dodge ?
+    dodge = Column(Boolean)
     # Perfect dodge ?
     perfect_dodge = Column(Boolean)
+    # Parade ?
+    parade = Column(Boolean)
     # Cible décédée ?
     dead = Column(Boolean)
     # Gain de RM
@@ -77,6 +83,10 @@ class BATTLE(sg.SqlAlchemyBase):
     fatigue = Column(Integer)
     # Direction de la retraite effectuée ?
     retraite = Column(String(50))
+    # Jet de déstabilisation
+    destab = Column(Integer)
+    # Jet de stabilité
+    stab = Column(Integer)
 
     # Associations One-To-Many
     att_troll = relationship("TROLL", primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="atts")
@@ -93,23 +103,31 @@ class BATTLE(sg.SqlAlchemyBase):
     # Additional build logics (see MailParser)
     def build(self):
         self.type = self.type.capitalize()
-        if self.subtype:
-            self.subtype = self.subtype.capitalize()
-        else:
-            self.subtype = u'Attaque' if self.pv or self.deg else u'Attaque esquivée'
         self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else None
         self.pv = self.pv or self.deg # Pas d'armure
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
-        if hasattr(self, 'resist') :
+        if hasattr(self, 'resist'):
             self.resist = self.resist is not None
         if hasattr(self, 'att') and self.att is not None and hasattr(self, 'esq') and self.esq is not None:
             self.crit = int(self.att) > int(self.esq) * 2
+            self.dodge = int(self.esq) >= int(self.att)
             self.perfect_dodge = int(self.esq) > int(self.att) * 2
-            self.subtype += u' esquivé(e)' if not self.pv and not self.deg and not u'esquivé' in self.subtype else ''
+            if hasattr(self, 'par') and self.par is not None:
+                self.parade = int(self.par) > (int(self.att) - int(self.esq))
+        if hasattr(self, 'destab') and self.destab is not None and hasattr(self, 'stab') and self.stab is not None:
+            self.crit = int(self.destab) > int(self.stab) * 2
+            self.dodge = int(self.destab) >= int(self.stab)
+            self.perfect_dodge = int(self.stab) > int(self.destab) * 2
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
         self.dead |= u'mort' in self.type
-        self.subtype += u' parfaitement' if self.perfect_dodge else ''
+        if self.subtype is not None:
+            self.subtype = self.subtype.capitalize()
+            self.subtype += u' esquivé(e)' if self.dodge and not self.parade else ''
+            self.subtype += u' parfaitement' if self.perfect_dodge else ''
+            self.subtype += u' parée' if self.parade else ''
+        else:
+            self.subtype = re.sub(u'résistée?|réduit', '', self.type)
 
     def build_att(self):
         # Common
@@ -118,7 +136,7 @@ class BATTLE(sg.SqlAlchemyBase):
         # ATT
         if hasattr(self, 'def_id') and self.def_id is not None:
             if len(self.def_id) >= 7: # Mob
-                res = re.search('((?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.def_name)
+                res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.def_name)
                 self.def_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
                 self.def_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
                 self.def_mob_tag = res.groupdict()['mob_tag']
@@ -128,10 +146,10 @@ class BATTLE(sg.SqlAlchemyBase):
             else:
                 self.def_troll_nom = self.def_name
                 self.def_troll_id = self.def_id
-        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type:
-            self.type += u' réduit'
         if hasattr(self, 'contre_att') and self.contre_att is not None:
-            self.subtype += u' Contre-Attaque'
+            self.subtype = u' Contre-Attaque'
+        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type:
+            self.type += u' résisté'
         self.build()
    
     def build_def(self):
@@ -141,7 +159,7 @@ class BATTLE(sg.SqlAlchemyBase):
         # DEF
         if hasattr(self, 'att_id') and self.att_id is not None:
             if len(self.att_id) >= 7: # Mob
-                res = re.search('((?P<mob_det>une?)\s+(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.att_name)
+                res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.att_name)
                 self.att_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
                 self.att_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
                 self.att_mob_tag = res.groupdict()['mob_tag']
@@ -151,16 +169,18 @@ class BATTLE(sg.SqlAlchemyBase):
             else:
                 self.att_troll_nom = self.att_name
                 self.att_troll_id = self.att_id
-        if hasattr(self, 'resist') and self.resist is not None:
-            self.type += u' résisté'
-        if self.capa_effet:
+        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type:
+            self.type += u' réduit'
+        if hasattr(self, 'capa_effet') and self.capa_effet is not None:
             self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
-        self.retraite = 'N+' if u"haut" in self.retraite.lower() else self.retraite
-        self.retraite = 'N-' if u"bas" in self.retraite.lower() else self.retraite
-        self.retraite = 'Y+' if u"nohrdikan" in self.retraite.lower() else self.retraite
-        self.retraite = 'Y-' if u"mydikan" in self.retraite.lower() else self.retraite
-        self.retraite = 'X+' if u"orhykan" in self.retraite.lower() else self.retraite
-        self.retraite = 'X-' if u"oxhykan" in self.retraite.lower() else self.retraite
+            self.subtype = self.capa_desc if self.subtype is None else self.subtype
+        if hasattr(self, 'retraite') and self.retraite is not None:
+            self.retraite = 'N+' if u"haut" in self.retraite.lower() else self.retraite
+            self.retraite = 'N-' if u"bas" in self.retraite.lower() else self.retraite
+            self.retraite = 'Y+' if u"nohrdikan" in self.retraite.lower() else self.retraite
+            self.retraite = 'Y-' if u"mydikan" in self.retraite.lower() else self.retraite
+            self.retraite = 'X+' if u"orhykan" in self.retraite.lower() else self.retraite
+            self.retraite = 'X-' if u"oxhykan" in self.retraite.lower() else self.retraite
         self.build()
  
     def build_capa(self):       
@@ -186,6 +206,20 @@ class BATTLE(sg.SqlAlchemyBase):
     
     def build_def_parcho(self):
         self.build_def()
+    
+    def build_def_potion(self):
+        self.build_def()
+    
+    def build_att_ldp(self):
+        if self.subtype is None: # potion
+            self.type += u' raté'
+        self.build_att()
+    
+    def build_def_ldp(self):
+        self.build_def()
+    
+    def build_att_balayage(self):
+        self.build_att()
 
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided

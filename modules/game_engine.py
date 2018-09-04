@@ -67,30 +67,33 @@ class GameEngine:
             # battle.capa_tour = 1
             pass
         # Charger
-        if battle.subtype and u"charger" in battle.subtype.lower():
+        if battle.subtype is not None and u"charger" in battle.subtype.lower():
             battle.subtype = battle.subtype.replace("Charger", "Charge")
         # Hypno
-        if battle.subtype and battle.subtype.lower() == u"hypnotisme" and at is not None and at.base_esq:
+        if battle.subtype is not None and battle.subtype.lower() == u"hypnotisme" and at is not None and at.base_esq:
             dim = math.trunc(at.base_esq * 1.5) if not battle.resist else math.trunc(at.base_esq / 3)
             battle.capa_effet = 'ESQ -{}D6'.format(dim)
             battle.capa_tour = 1
         # Siphon des ames
-        if battle.subtype and u"siphon" in battle.subtype.lower() and hasattr(battle, 'siphon'):
+        if battle.subtype is not None and u"siphon" in battle.subtype.lower() and hasattr(battle, 'siphon'):
             battle.capa_effet = 'ATT -{}'.format(battle.siphon)
             battle.capa_tour = 1 if battle.resist else 2
         # Rafale psychique
-        if battle.subtype and u"rafale" in battle.subtype.lower() and hasattr(battle, 'rafale'):
+        if battle.subtype is not None and u"rafale" in battle.subtype.lower() and hasattr(battle, 'rafale'):
             battle.capa_effet = 'REG -{}'.format(battle.rafale)
             battle.capa_tour = 1 if battle.resist else 2
         # Invisibilité
-        if battle.subtype and u"invisibilité" in battle.subtype.lower() and at is not None:
+        if battle.subtype is not None and u"invisibilité" in battle.subtype.lower() and at is not None:
             at.invisible = True
         # Invisibilité
-        if battle.subtype and u"lévitation" in battle.subtype.lower() and at is not None:
+        if battle.subtype is not None and u"lévitation" in battle.subtype.lower() and at is not None:
             at.levite = True
         # Glue
-        if battle.subtype and u"glue" in battle.subtype.lower() and dt is not None and battle.resist:
-            at.immobile = True
+        if battle.subtype is not None and u"glue" in battle.subtype.lower() and dt is not None and battle.resist:
+            dt.immobile = True
+        # Balayage
+        if battle.subtype is not None and u"balayage" in battle.subtype.lower() and dt is not None and not battle.dodge:
+            dt.terre = True
         # Retraite
         if hasattr(battle, 'retraite') and battle.retraite is not None:
             # Modifie la position connue du troll ?

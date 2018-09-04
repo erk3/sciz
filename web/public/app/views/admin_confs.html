@@ -73,7 +73,7 @@
   <div class="row" ng-repeat="conf in ac.confs">
     <div ng-if="(conf.section === ac.confSection) && conf.key.startsWith('s_') && conf.key !== 's_short' && conf.key !== 's_long'" class="input-group col-sm-10" ng-class="{'has-error':!ac.isUnboxConfValueValid(conf)}">
       <pre style="white-space: pre" class="input-group-addon">{{conf.key.substring(2).padStart(20)}}</pre>
-      <input type="text" class="form-control" ng-model="conf.value" required>
+      <textarea rows="1" class="form-control" ng-model="conf.value" required>
     </div>
   </div>
   <br/>
@@ -82,7 +82,7 @@
   <div class="row" ng-repeat="conf in ac.confs">
     <div ng-if="(conf.section === ac.confSection) && !conf.key.startsWith('s_')" class="input-group col-sm-10" ng-class="{'has-error':!ac.isUnboxConfValueValid(conf)}">
       <pre style="white-space: pre" class="input-group-addon">{{conf.key.padStart(20)}}</pre>
-      <input type="text" class="form-control" ng-model="conf.value" required>
+      <textarea rows="1" class="form-control" ng-model="conf.value" required>
     </div>
   </div>
 

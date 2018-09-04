@@ -1,0 +1,158 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from 0f5c5cbedd6d.cerv.ovh
+	by 0f5c5cbedd6d.cerv.ovh (Dovecot) with LMTP id JOR/IR7+TFocBAAAEkUYHA
+	for <feedthebat@sciz.cerv.ovh>; Wed, 03 Jan 2018 16:00:30 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTP id 779804B72
+	for <feedthebat@sciz.cerv.ovh>; Wed,  3 Jan 2018 16:00:30 +0000 (UTC)
+Authentication-Results: 0f5c5cbedd6d.cerv.ovh (amavisd-new);
+	dkim=pass (2048-bit key) header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.128.171; helo=mail-wr0-f171.google.com; envelope-from=censored@gmail.com; receiver=feedthebat@sciz.cerv.ovh 
+Received: from mail-wr0-f171.google.com (mail-wr0-f171.google.com [209.85.128.171])
+	by 0f5c5cbedd6d.cerv.ovh (Postfix) with ESMTPS id 1D3534B41
+	for <feedthebat@sciz.cerv.ovh>; Wed,  3 Jan 2018 16:00:29 +0000 (UTC)
+Received: by mail-wr0-f171.google.com with SMTP id p17so2039169wre.7
+        for <feedthebat@sciz.cerv.ovh>; Wed, 03 Jan 2018 08:00:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=4wlJ83ZwA/SfXBtmiN8zBGoNDys5vXbionjFxVJ5aFA=;
+        b=e047nMf1Es7J4+7EVOWXTXP1D74I1POEK/ORpqVOjxGjjTGoLcrdpQNRlO195kOxvM
+         0MoETv86y09VRO9E8XCK8PSCSUW4hARByLIV9iF3qxjURtt748ee5pz57+Wja5eqv9B8
+         beBR7f3fg9FYyL6r4a1CnOtvRWgyDqyeOoPn2E3dB5mdVmYvFfG06njU24cHyyjHFJv9
+         K4E+vykCKy2xUFQWBIivcWkvOQHQgC5eXOGh7317QBneBbZWCJGb7y/FRMDewl7wLhuC
+         lXkLGKA3qTUifwussaaswrGuoQ2vzLF/bIXowHqAQ4jn972YV3LRI/qGEaAZsnqJK97V
+         5n+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=4wlJ83ZwA/SfXBtmiN8zBGoNDys5vXbionjFxVJ5aFA=;
+        b=Qy4RxmqrCkWhE1oOytBogkhfUEFY+qeY3H+pp/WetzKhnatVPIAnPcPosTHX3pVuQI
+         VeHpiW6a2c/m1R3wzveCekfC8NnaokSAWOM3GvMFoo21zMUKPB8CszNh2ni6lpbuJZBt
+         x7K6c7LtCtLAfg627hreC8GEbvSKk13Xkq0WChZruWwcFGvd17drL6ZzskD7nqr8878R
+         LejTM0vEA6f0dF05C2Loch5IboonuUXmpGuYxzAzzJDg1ZIOYyCuwRwELJVmN3GKrUXM
+         VgxFfGisl2vYLVOwTYAA/2Ww1U/8ZwgGYlwpwa9mvTWeS7bm//jgeoklpY7lQFzxXSnB
+         nIhw==
+X-Gm-Message-State: AKGB3mL8X4DkGGQyrHHYLcG9GBRFXmvAuCxpozRvotrqIFxT7RFzykIo
+	0994W9fVp+TZZrFFjMzI0yC/FSTSnjQXkbCE7aQ=
+X-Google-Smtp-Source: ACJfBovgVbHyGIhS8OdhzrV2SNDrUJgvZoiSJn7bqAN/KFpfXHmbJgnAOy8Pzy7E+2FNIfDypijPTarPgtxI1F/F0No=
+X-Received: by 10.223.138.195 with SMTP id z3mr1969862wrz.152.1514995229216;
+ Wed, 03 Jan 2018 08:00:29 -0800 (PST)
+MIME-Version: 1.0
+Received: by 10.223.132.5 with HTTP; Wed, 3 Jan 2018 08:00:28 -0800 (PST)
+In-Reply-To: <CA+qVeQzN_+-zVcXVAodVQ3fWL-UhW3gTSfG6KWKm5-HKz-22Sw@mail.gmail.com>
+References: <fb0d971350593905ed1ce4522eb88861@games.mountyhall.com> <CA+qVeQzN_+-zVcXVAodVQ3fWL-UhW3gTSfG6KWKm5-HKz-22Sw@mail.gmail.com>
+From: =?UTF-8?B?WnVsIEthw68=?= <censored@gmail.com>
+Date: Wed, 3 Jan 2018 17:00:28 +0100
+Message-ID: <CA+qVeQxs809OWTY6SBaD8C-W4JzDj=_pjE0nDHQ1MLTDm9iDMQ@mail.gmail.com>
+Subject: Fwd: [MountyHall] Balayage
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="001a114973287957030561e150b2"
+
+--001a114973287957030561e150b2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : Zul Ka=C3=AF <censored@gmail.com>
+Date : 15 d=C3=A9cembre 2017 =C3=A0 11:09
+Objet : Fwd: [MountyHall] Balayage
+=C3=80 : censored@sciz.cerv.ovh
+
+
+
+---------- Message transf=C3=A9r=C3=A9 ----------
+De : MountyHall-Bot <bot@mountyhall.com>
+Date : 23 juin 2017 =C3=A0 11:04
+Objet : [MountyHall] Balayage
+=C3=80 : censored@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0109047 : Zul
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 23/06/2017 11:04:28.
+***********************************************************
+
+Vous avez balay=C3=A9 le Tr=C3=B5ll Morocazotz (107246)
+
+Votre Jet de d=C3=A9stabilisation est de.............: 1001
+Le Jet de stabilit=C3=A9 de votre adversaire est de.: 500
+
+Vous avez donc MIS =C3=80 TERRE votre adversaire par un coup critique
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--001a114973287957030561e150b2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Message transf=
+=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b class=3D"gmail_sendername">Zul Ka=
+=C3=AF</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:censored@gmail.com">=
+censored@gmail.com</a>&gt;</span><br>Date=C2=A0: 15 d=C3=A9cembre 2017 =
+=C3=A0 11:09<br>Objet=C2=A0: Fwd: [MountyHall] Balayage<br>=C3=80=C2=A0: zu=
+l.orqc4i49@sciz.cerv.ovh<br><br><br><div dir=3D"ltr"><br><div class=3D"gmai=
+l_quote">---------- Message transf=C3=A9r=C3=A9 ----------<br>De=C2=A0: <b =
+class=3D"gmail_sendername">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=
+=3D"mailto:bot@mountyhall.com" target=3D"_blank">bot@mountyhall.com</a>&gt;=
+</span><br>Date=C2=A0: 23 juin 2017 =C3=A0 11:04<br>Objet=C2=A0: [MountyHal=
+l] Balayage<br>=C3=80=C2=A0: <a href=3D"mailto:censored@gmail.com" targ=
+et=3D"_blank">censored@gmail.com</a><br><br><br>=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<wbr>=
+=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0109047 : Zul<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 23/06/2017 11:04:28.<br>
+******************************<wbr>*****************************<br>
+<br>
+Vous avez balay=C3=A9 le Tr=C3=B5ll Morocazotz (107246)<br>
+<br>
+Votre Jet de d=C3=A9stabilisation est de.............: 1001<br>
+Le Jet de stabilit=C3=A9 de votre adversaire est de.: 500<br>
+<br>
+Vous avez donc MIS =C3=80 TERRE votre adversaire par un coup critique<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Foru<wbr>m</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br></div>
+</div><br></div>
+
+--001a114973287957030561e150b2--

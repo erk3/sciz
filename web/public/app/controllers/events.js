@@ -67,8 +67,9 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       att = (e.sub.att_mob_id) ? e.sub.att_mob.nom + ' [' + e.sub.att_mob.age + '] (' + e.sub.att_mob.id + ')' : att;
       var def = (e.sub.def_troll_id) ? e.sub.def_troll.nom + ' (' + e.sub.def_troll.id + ')' : '';
       def = (e.sub.def_mob_id) ? e.sub.def_mob.nom + ' [' + e.sub.def_mob.age + '] (' + e.sub.def_mob.id + ')' : def;
-      var action = (e.sub.type) ? e.sub.type : '';
-      action += (e.sub.subtype) ? (action ? ' (' + e.sub.subtype + ')' : e.sub.subtype) : '';
+      var action = (e.sub.subtype) ? e.sub.subtype : '';
+      // var action = (e.sub.type) ? e.sub.type : '';
+      // action += (e.sub.subtype) ? (action ? ' (' + e.sub.subtype + ')' : e.sub.subtype) : '';
       s = time + ' ' + action;
       s += (att) ? ' de ' + att_decorator_f + att + decorator_b : '';
       s += (def) ? ' sur ' + def_decorator_f + def + decorator_b : '';
@@ -178,7 +179,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
   vm.switchBATTLE = function () {
     vm.cur.attBlason = (vm.cur.sub.att_troll_id) ? vm.cur.sub.att_troll.blason_url : ((vm.cur.sub.att_mob_id) ? vm.cur.sub.att_mob.metamob.blason_url : vm.blasonError);
     vm.cur.defBlason = (vm.cur.sub.def_troll_id) ? vm.cur.sub.def_troll.blason_url : ((vm.cur.sub.def_mob_id) ? vm.cur.sub.def_mob.metamob.blason_url : vm.blasonError);
-    vm.cur.isTouched = (vm.cur.sub.att > vm.cur.sub.esq);
+    vm.cur.isTouched = vm.cur.sub.att > vm.cur.sub.esq + (vm.cur.sub.par ? vm.cur.sub.par : 0);
+    vm.cur.isTouched |= vm.cur.sub.destab > vm.cur.sub.stab;
   };
 
   /*

@@ -30,6 +30,7 @@ BattleTemplate.modelDefinition = {
   subtype: {type: sequelize.STRING},
   att: {type: sequelize.INTEGER},
   esq: {type: sequelize.INTEGER},
+  par: {type: sequelize.INTEGER},
   deg: {type: sequelize.INTEGER},
   arm: {type: sequelize.INTEGER},
   pv: {type: sequelize.INTEGER},
@@ -43,12 +44,17 @@ BattleTemplate.modelDefinition = {
   capa_tour: {type: sequelize.INTEGER},
   resist: {type: sequelize.BOOLEAN},
   crit: {type: sequelize.BOOLEAN},
+  dodge: {type: sequelize.BOOLEAN},
   perfect_dodge: {type: sequelize.BOOLEAN},
+  parade: {type: sequelize.BOOLEAN},
   dead: {type: sequelize.BOOLEAN},
   px: {type: sequelize.INTEGER},
   rm: {type: sequelize.INTEGER},
   mm: {type: sequelize.INTEGER},
-  fatigue: {type: sequelize.INTEGER}
+  fatigue: {type: sequelize.INTEGER},
+  retraite: {type: sequelize.STRING},
+  destab: {type: sequelize.INTEGER},
+  stab: {type: sequelize.INTEGER}
 };
 
 BattleTemplate.modelOptions = {

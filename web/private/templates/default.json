@@ -2,12 +2,12 @@
    {
       "section":"battle_format",
       "key":"s_short",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead}"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_retraite} {o.s_capa} {o.s_dead}"
    },
    {
       "section":"battle_format",
       "key":"s_long",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px})"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_retraite} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_par} {o.s_destab} {o.s_stab} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px} {o.s_rm} {o.s_mm})"
    },
    {
       "section":"battle_format",
@@ -51,8 +51,23 @@
    },
    {
       "section":"battle_format",
+      "key":"destab",
+      "value":"destab {}"
+   },
+   {
+      "section":"battle_format",
       "key":"esq",
       "value":"esq {}"
+   },
+   {
+      "section":"battle_format",
+      "key":"par",
+      "value":"par {}"
+   },
+   {
+      "section":"battle_format",
+      "key":"stab",
+      "value":"stab {}"
    },
    {
       "section":"battle_format",
@@ -146,6 +161,11 @@
    },
    {
       "section":"battle_format",
+      "key":"retraite",
+      "value":"(retraite {})"
+   },
+   {
+      "section":"battle_format",
       "key":"s_delimiter",
       "value":";"
    },
@@ -162,7 +182,12 @@
    {
       "section":"troll_format",
       "key":"s_long",
-      "value":"{o.s_troll_nom} {o.s_troll_stats}"
+      "value":"{o.s_troll_nom} {o.s_etat} {o.s_troll_stats}"
+   },
+   {
+      "section":"troll_format",
+      "key":"s_etat",
+      "value":"{o.s_sep}{o.s_immobile}{o.s_delimiter}{o.s_camouflage}{o.s_delimiter}{o.s_intangible}{o.s_delimiter}{o.s_course}{o.s_delimiter}{o.s_invisible}{o.s_delimiter}{o.s_levite}{o.s_delimiter}{o.s_terre}"
    },
    {
       "section":"troll_format",
@@ -408,6 +433,41 @@
       "section":"troll_format",
       "key":"bonus_rm_mag",
       "value":"/{:+d}"
+   },
+   {
+      "section":"troll_format",
+      "key":"intangible",
+      "value":"Intangible"
+   },
+   {
+      "section":"troll_format",
+      "key":"camouflage",
+      "value":"Camouflé"
+   },
+   {
+      "section":"troll_format",
+      "key":"invisible",
+      "value":"Invisible"
+   },
+   {
+      "section":"troll_format",
+      "key":"immobile",
+      "value":"Immobilisé"
+   },
+   {
+      "section":"troll_format",
+      "key":"terre",
+      "value":"A terre"
+   },
+   {
+      "section":"troll_format",
+      "key":"course",
+      "value":"En course"
+   },
+   {
+      "section":"troll_format",
+      "key":"levite",
+      "value":"Lévite"
    },
    {
       "section":"mob_format",

@@ -278,7 +278,8 @@ class TROLL(sg.SqlAlchemyBase):
                     continue
                 elif hasattr(self, key) and getattr(self, key) is not None:
                     if isinstance(getattr(self, key), bool):
-                        s = value.format(sg.boolean2French(getattr(self, key)))
+                        # s = value.format(sg.boolean2French(getattr(self, key), value))
+                        s = sg.boolean2French(getattr(self, key), value)
                     else:
                         s = value.format(getattr(self, key))
                 elif hasattr(self, key + '_min') or hasattr(self, key + '_max'):
@@ -317,11 +318,14 @@ class TROLL(sg.SqlAlchemyBase):
                     self.s_troll_stats = re.sub(r'\{o\.s_%s\}' % (match), '', self.s_troll_stats)
         # Return the final formated representation
         self.s_troll_stats = self.s_troll_stats.format(o=self)
+        self.s_etat = self.s_etat.format(o=self)
         res = self.s_long
         res = res.format(o=self)
         res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
         # Adjust some things about spacing, None values and line break
         res = re.sub(r'None', '', res)
+        res = re.sub(r'\s*%s{2,}\s*' % self.s_delimiter, '%s' % (self.s_sep), res)
+        res = re.sub(r'%s\s*%s' % (self.s_delimiter, self.s_sep, ), '%s' % self.s_sep, res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
         if attrs is not None and len(attrs) == 1 and len(re.findall(self.s_sep, res)) <= 1:

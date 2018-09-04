@@ -137,7 +137,7 @@ function trollsCtrl($scope, $http, authService) {
       return ((n === null || n === undefined) ? nullValue : (positivePrefix + n + suffix));
     };
 
-    troll.tPos = (troll.pos_x !== null) ? 'X = ' + troll.pos_x + ' | Y = ' + troll.pos_y + ' | N = ' + troll.pos_n : '?';
+    troll.tPos = (troll.pos_x === null) ? '?' : 'X = ' + troll.pos_x + ' | Y = ' + troll.pos_y + ' | N = ' + troll.pos_n;
     troll.tConcentration = plus(troll.base_concentration, '', '', '?', ' %');
     troll.tVie = plus(troll.pv, '', '', '?', '');
     troll.tLifePercent = plus(troll.pv / troll.base_bonus_pv_max * 100, '', '', 0, '');
@@ -154,7 +154,15 @@ function trollsCtrl($scope, $http, authService) {
       troll.tFatigueStr = troll.fatigue >= 31 && troll.fatigue < 41 ? 'Lessivé (' + troll.fatigue + ')' : troll.tFatigueStr;
       troll.tFatigueStr = troll.fatigue >= 41 && troll.fatigue < 128 ? 'Complètement épuisé (' + troll.fatigue + ')' : troll.tFatigueStr;
     }
-
+    troll.tEtat = '';
+    troll.tEtat += troll.intangible ? (troll.tEtat === '' ? '' : ' ; ') + 'Intangible' : '';
+    troll.tEtat += troll.camouflage ? (troll.tEtat === '' ? '' : ' ; ') + 'Camouglé' : '';
+    troll.tEtat += troll.invisible ? (troll.tEtat === '' ? '' : ' ; ') + 'Invisible' : '';
+    troll.tEtat += troll.levite ? (troll.tEtat === '' ? '' : ' ; ') + 'Lévite' : '';
+    troll.tEtat += troll.course ? (troll.tEtat === '' ? '' : ' ; ') + 'En course' : '';
+    troll.tEtat += troll.terre ? (troll.tEtat === '' ? '' : ' ; ') + 'A terre' : '';
+    troll.tEtat += troll.immobile ? (troll.tEtat === '' ? '' : ' ; ') + 'Immobilisé' : '';
+    troll.tEtat = troll.tEtat === '' ? 'Normal' : troll.tEtat;
     troll.tPA = plus(troll.pa, '', '', '?', ' PA / 6');
     troll.tDLA = plus(vm.displayDate(troll.dla, 0, false, true), '', '', '?', '');
     troll.tLastSP4Call = plus(vm.displayDate(troll.last_mhsp4_call, 0, false, true), '', '', '?', '');

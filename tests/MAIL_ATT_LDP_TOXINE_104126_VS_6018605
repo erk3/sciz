@@ -1,0 +1,158 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id sGXJNDBfiVtrHAAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Fri, 31 Aug 2018 15:30:56 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id B86E02A60974
+	for <feedthebat@sciz.cerv.ovh>; Fri, 31 Aug 2018 15:30:56 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.218.48; helo=mail-oi0-f48.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="f/sPGgZn";
+	dkim-atps=neutral
+Received: from mail-oi0-f48.google.com (mail-oi0-f48.google.com [209.85.218.48])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 3F6C92A6096C
+	for <feedthebat@sciz.cerv.ovh>; Fri, 31 Aug 2018 15:30:55 +0000 (UTC)
+Received: by mail-oi0-f48.google.com with SMTP id t68-v6so22311472oie.12
+        for <feedthebat@sciz.cerv.ovh>; Fri, 31 Aug 2018 08:30:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=zvVAHFY0riLAv6QihZqkQfSlcJU2nAVCoP3plYPPTiM=;
+        b=f/sPGgZnyUFbrDFY3sOIp9kQ7raF+y1G0u24vStLykVA5zkKAvQZiDPEbtcppHuE48
+         vD6affEC/o0WjkZwtdM8aneEODqjw07J92Xa6VS/+p1EfopIaZsCF9UUoLBz4zT5I1um
+         RDKWxpD4cxwnDeF1Imn2FfxKyxPNMeka8wSYXHJQb3DLFmpeXFbB0w87n8ETMYbFFw3G
+         r+/Ia7CBcMZRG+ggaledf/agIHeuKN4b+e5oUdq56PVjeAhiq/t/uIeWmXRnfjyfxIJt
+         2yUSflxrwIIONzVu5Rq4tNjQXqQz0e5Wa6xezcMOrUzNIb99CLcm9cCFOHZYx66Xj0Pl
+         t+pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=zvVAHFY0riLAv6QihZqkQfSlcJU2nAVCoP3plYPPTiM=;
+        b=F5yWgMlMYLdGS1Y1xipSQ/f1/GFpM3nrctk5sN9AyoHgitGVuaqNMhZ3p5zIK1uVh6
+         1b+nS2e837D2znZlprcmXNE61/z4O2hbdEKK5kfOf85JuePC7ezZR7H5WP/0RKqK17Ea
+         zomEqz2REguzXAKm3L8/Tiig/mGPy+D3Vfu2zGxud+o2jzGGRK15I3yRPwxHKbXyW334
+         j6MfIFJG0rHkQ3/YK10BeQuPlGRfla9Ad7j+6FutDLdbN9eG0W/jMrBviHEi4b/nlmw3
+         n+2AfDi7b5ZgVkrXedSCzvMc0IYFlfwWnztTPiVZ4Tg7EYrYBXzEZcibXM8pWezPGpKK
+         0qkw==
+X-Gm-Message-State: APzg51Bw6KvJ2je3N5O+uC+3eqUxTSu2nnKD3gSLfkzeGc+xGp4kPRk7
+	+vIw51Qh2oCPWOiIiZ7iAK92cQgq8j9atk5CShOd2g==
+X-Google-Smtp-Source: ANB0Vda4TV+IB1uuy+N7wG2mCNuQO+TxuL+aGRPWMRt1yn81wT3siiXqVqUaf1LZ+huiZWWv7nAjUXm90rEz2LL5ndg=
+X-Received: by 2002:aca:5489:: with SMTP id i131-v6mr8142389oib.340.1535729453399;
+ Fri, 31 Aug 2018 08:30:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <433d5681d456cf22ecad634e61927b62@games.mountyhall.com>
+In-Reply-To: <433d5681d456cf22ecad634e61927b62@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Fri, 31 Aug 2018 17:30:40 +0200
+Message-ID: <CALtH2Ji0rxOfqEKPeR5=6Ya8NqEpOYtDO9mXs01wUVOs8M-bmg@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_Lancer_de_Potion_sur_G?=
+	=?UTF-8?Q?louton_Attentionn=C3=A9_=5BB=C3=A9b=C3=A9=5D=286018605=29?=
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="0000000000008a84740574bce033"
+
+--0000000000008a84740574bce033
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mar. 3 avr. 2018 =C3=A0 12:58
+Subject: [MountyHall] Comp=C3=A9tence Lancer de Potion sur Glouton Attentio=
+nn=C3=A9
+[B=C3=A9b=C3=A9](6018605)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 03/04/2018 12:58:42.
+***********************************************************
+
+Un jet de lancer de (28 / 100 %)
+
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Toxine Violente
+                        (28 sur 100 %).
+Vous avez touch=C3=A9 votre cible.
+
+Son effet est le suivant :
+ PV : -10 D3
+ - un Glouton Attentionn=C3=A9 [B=C3=A9b=C3=A9] a =C3=A9t=C3=A9 influenc=C3=
+=A9 par l'effet de la Potion.
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000008a84740574bce033
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: mar. 3 avr. 201=
+8 =C3=A0=C2=A012:58<br>Subject: [MountyHall] Comp=C3=A9tence Lancer de Poti=
+on sur Glouton Attentionn=C3=A9 [B=C3=A9b=C3=A9](6018605)<br>To:  &lt;<a hr=
+ef=3D"mailto:censored@gmail.com">censored@gmail.com</a>&gt;<b=
+r></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 03/04/2018 12:58:42.<br>
+***********************************************************<br>
+<br>
+Un jet de lancer de (28 / 100 %)<br>
+<br>
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Toxine Violente <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 (28 sur 100 %).<br>
+Vous avez touch=C3=A9 votre cible.<br>
+<br>
+Son effet est le suivant : <br>
+=C2=A0PV : -10 D3<br>
+=C2=A0- un Glouton Attentionn=C3=A9 [B=C3=A9b=C3=A9] a =C3=A9t=C3=A9 influe=
+nc=C3=A9 par l&#39;effet de la Potion.<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000008a84740574bce033--

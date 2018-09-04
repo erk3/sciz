@@ -18,9 +18,12 @@ def createDirName(file_path):
             if exc.errno != errno.EEXIST:
                 raise
 
-def boolean2French(boolean):
+def boolean2French(boolean, val=None):
     if isinstance (boolean, bool):
-        return 'Oui' if boolean else 'Non'
+        if val is None:
+            return 'Oui' if boolean else 'Non'
+        else:
+            return val if boolean else ''
     return boolean
 
 def parseFrenchBoolean(boolean):

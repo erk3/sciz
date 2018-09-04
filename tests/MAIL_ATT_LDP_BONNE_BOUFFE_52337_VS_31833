@@ -1,0 +1,160 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from cerv.ovh
+	by cerv.ovh with LMTP id wAdOJodVNlvXLgAAqi0s4g
+	for <feedthebat@sciz.cerv.ovh>; Fri, 29 Jun 2018 15:51:35 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by cerv.ovh (Postfix) with ESMTP id 9050615D8
+	for <feedthebat@sciz.cerv.ovh>; Fri, 29 Jun 2018 15:51:35 +0000 (UTC)
+X-Virus-Scanned: Yes
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.208.172; helo=mail-lj1-f172.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lN/662Ft";
+	dkim-atps=neutral
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by cerv.ovh (Postfix) with ESMTPS id 3457615D7
+	for <feedthebat@sciz.cerv.ovh>; Fri, 29 Jun 2018 15:51:09 +0000 (UTC)
+Received: by mail-lj1-f172.google.com with SMTP id g3-v6so7686932ljk.12
+        for <feedthebat@sciz.cerv.ovh>; Fri, 29 Jun 2018 08:51:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+        bh=Jyz1sQ977Bbp7SkfcnvmG7emc8ZhZgjPFY1Z2oC0ZdM=;
+        b=lN/662FtmPoM4DfOOHUtWu8S4V2uqwI7i7osl3GmSSEWSTjU4WY/r5wxdCw2dzttyN
+         TImUXUIH0AAj9XMCGo42khqEUslfSNgEfTyw3DHkz2vBuHs76xDNk+sDktagoGfHohv2
+         YibMQJ3hNg/NtElh9oDrFUFFiqj5I+WpGuhuLCDQz9jQoEflaZEfx8MM0So9jcgLzuF4
+         Ftj3QRPAc81IqLmSJ4x66BPf0nwuyePYPiXHhiDwJ/FJy6tv3dSCYvt7Z0t5R8O85Drv
+         mceXr+mUrA96p5aVFK+SGIN8ZYaKyc0q5NpJfV3epbCvAYC4THbA023RQd576GcMs8zk
+         +p8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to;
+        bh=Jyz1sQ977Bbp7SkfcnvmG7emc8ZhZgjPFY1Z2oC0ZdM=;
+        b=sn0yJC+UGX7kPH3T94bIhVVZnY5gWDJX0xOgQgVmQbcGODXP9Glf0U7wsIiv8aYlnP
+         UopTNGbTuAjlCjwO43/OAterG1+gdwG5iTxqEO+iZaC49L3B3cVpcKhcIb8Kwx8k37fg
+         SRG76gqW9ihNzEArDW5vBrNszp23/CN2lcQTYOsCNvV1VoF3h5c6W1AzLnJFZ1CqK0Z/
+         9Nur4741ZrGI5WtQdpvQ1TWib/RrVhObXcdM+NT7BB1RaZdynVgwpYDpvfjUSOsa/DWX
+         RzHlhIvmeWlYA1IrmuJWaNZPuH84pr6YeaFw85bGtuNX88ypxzGINKpYl4Q4PmhjUG6P
+         zocg==
+X-Gm-Message-State: APt69E3ve3qptzfVcIE7rZ0ZRWGBrzOHyDJuMWxkoP6+3bucI2V/m0PF
+	SyTEeJWthbpKwJa/aq/rYnU935k/dg5QDf1vzVFVaQ==
+X-Google-Smtp-Source: AAOMgpfdObLIHkytlBnzNoUQ6bs/3XSL+ui0EanXpms7iW3e3a1jakejyPp+ldmx280Langq8QOqArv0hwYPotoX4sM=
+X-Received: by 2002:a2e:9243:: with SMTP id v3-v6mr2870279ljg.92.1530287462345;
+ Fri, 29 Jun 2018 08:51:02 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a2e:3e0d:0:0:0:0:0 with HTTP; Fri, 29 Jun 2018 08:51:01
+ -0700 (PDT)
+In-Reply-To: <b7b10c10afb2ada545834d763c0a3c77@games.mountyhall.com>
+References: <b7b10c10afb2ada545834d763c0a3c77@games.mountyhall.com>
+From: =?UTF-8?Q?Censored?= <censored@gmail.com>
+Date: Fri, 29 Jun 2018 17:51:01 +0200
+Message-ID: <CAM9WhfPQ0x8R14gPc0NqOJxwoZ5xe2DZ+hj9bXgVQ6+Cm9+jmQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_Lancer_de_Potion_sur_M?=
+	=?UTF-8?Q?ORKH=2831833=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="00000000000098f07c056fc9d0fe"
+
+--00000000000098f07c056fc9d0fe
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ----------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: 2018-06-23 22:27 GMT+02:00
+Subject: [MountyHall] Comp=C3=A9tence Lancer de Potion sur MORKH(31833)
+To: censored@gmail.com
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B052337 : Hethan
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 23/06/2018 22:27:34.
+***********************************************************
+
+Un jet de lancer de (49 / 67 %)
+
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Elixir de Bonne Bouffe
+                        (49 sur 67 %).
+Vous avez touch=C3=A9 votre cible.
+
+Son effet est le suivant :
+ DEG : +5 | REG : +5
+ - MORKH a =C3=A9t=C3=A9 influenc=C3=A9 par l'effet de la Potion.
+
+L'effet se fera sentir durant 5 tours apr=C3=A8s celui-ci.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+--00000000000098f07c056fc9d0fe
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><div class=3D"gmail_quote">---------- Forwarded messag=
+e ----------<br>From: <b class=3D"gmail_sendername">MountyHall-Bot</b> <spa=
+n dir=3D"ltr">&lt;<a href=3D"mailto:bot@mountyhall.com">bot@mountyhall.com<=
+/a>&gt;</span><br>Date: 2018-06-23 22:27 GMT+02:00<br>Subject: [MountyHall]=
+ Comp=C3=A9tence Lancer de Potion sur MORKH(31833)<br>To: <a href=3D"mailto=
+:censored@gmail.com">censored@gmail.com</a><br><br><br>=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D<wbr>=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D<wbr>=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B052337 : Hethan<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 23/06/2018 22:27:34.<br>
+******************************<wbr>*****************************<br>
+<br>
+Un jet de lancer de (49 / 67 %)<br>
+<br>
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Elixir de Bonne Bouffe <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 (49 sur 67 %).<br>
+Vous avez touch=C3=A9 votre cible.<br>
+<br>
+Son effet est le suivant : <br>
+=C2=A0DEG : +5 | REG : +5<br>
+=C2=A0- MORKH a =C3=A9t=C3=A9 influenc=C3=A9 par l&#39;effet de la Potion.<=
+br>
+<br>
+L&#39;effet se fera sentir durant 5 tours apr=C3=A8s celui-ci.<br>
+<br>
+******************************<wbr>*****************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/<wbr>Forum</a><br>
+******************************<wbr>*****************************<br>
+<br>
+</div><br></div>
+
+--00000000000098f07c056fc9d0fe--
