@@ -75,6 +75,8 @@ class BATTLE(sg.SqlAlchemyBase):
     px = Column(Integer)
     # Fatigue
     fatigue = Column(Integer)
+    # Direction de la retraite effectuée ?
+    retraite = Column(String(50))
 
     # Associations One-To-Many
     att_troll = relationship("TROLL", primaryjoin="and_(BATTLE.att_troll_id==TROLL.id, BATTLE.group_id==TROLL.group_id)", back_populates="atts")
@@ -153,6 +155,12 @@ class BATTLE(sg.SqlAlchemyBase):
             self.type += u' résisté'
         if self.capa_effet:
             self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
+        self.retraite = 'N+' if u"haut" in self.retraite.lower() else self.retraite
+        self.retraite = 'N-' if u"bas" in self.retraite.lower() else self.retraite
+        self.retraite = 'Y+' if u"nohrdikan" in self.retraite.lower() else self.retraite
+        self.retraite = 'Y-' if u"mydikan" in self.retraite.lower() else self.retraite
+        self.retraite = 'X+' if u"orhykan" in self.retraite.lower() else self.retraite
+        self.retraite = 'X-' if u"oxhykan" in self.retraite.lower() else self.retraite
         self.build()
  
     def build_capa(self):       

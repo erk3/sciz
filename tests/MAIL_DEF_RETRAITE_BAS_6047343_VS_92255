@@ -1,0 +1,169 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id KGKRLwvOjVsYDgAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Tue, 04 Sep 2018 00:12:59 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id B66AC2A60984
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:12:59 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.222.175; helo=mail-qk1-f175.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="UEnEJKWP";
+	dkim-atps=neutral
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 3F0C82A608A4
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:12:58 +0000 (UTC)
+Received: by mail-qk1-f175.google.com with SMTP id h138-v6so1305770qke.8
+        for <feedthebat@sciz.cerv.ovh>; Mon, 03 Sep 2018 17:12:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=0UmbSvMVajrol7/KYTBPhySc5HOirkN7lIRmvjgyKAs=;
+        b=UEnEJKWPq82TMJm6B0U5teViKjoegquqOfIe4CdiSxKMz22secI1u9IqMZKiseHOj6
+         ro9JH+etyT805ieU/BTlL7YiI0D4mk7LnKcR+jmW6kgJ11r3MPcJEF8lZYJb/2Igt7+Z
+         vEVyeHsMNJ9UIZgt++tVKauzJaFBkz++QMFLS/N1wkx15hasIp+vYq35hkQGv2j5OWvB
+         iFvTxJuPHQB8DIm+lUj4xXcWTdeczgMBmESqp0Dzddq9vzDLo2Uc9ZXYXuwdx4roBdSY
+         LHAhvmrG73vk/Y8ptiGYdhf22Fo0zqdXpA7RqA2UfMSuF3UerwxXHWKOoi6BbyLHFVw9
+         ibVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=0UmbSvMVajrol7/KYTBPhySc5HOirkN7lIRmvjgyKAs=;
+        b=o/XTQZiXqfZrVBdwPtctQ8iH6sJ6+ensbKLwgevpJZJSx8upUlXVeh03i2HI/L/Tcd
+         SM/rwriRC+AnXc0gPSGs8C8rDuKjB/Bx2liGL5uO+nZL62ina8WG5UNpfSpBXQSGFo7u
+         TQP+jWstJcXYDrgUqXyMPHWlOyOQyovYlLMD4pRXFE7hnjPaXGeO36snCGGuQTvooGTQ
+         AHGrNlK82uLI2EujORb+hMEImIDwvUUgpTK/cnlXI7G44PEWYMGMyWJOwuhWrZUMMaF4
+         eRlFWg9WjuU1DvW0JQEus8cLQaD35Dyns5qBnzNhbd+OwmGCx0x0ulApaflH5GN5L5Nf
+         rCYA==
+X-Gm-Message-State: APzg51C8cpBK6UAOrv83L+RQ0AyLokkT8AywF58127UB693eHqp+Ev7w
+	XP8Oa/oL8bI3+AJ7qsetZb2fwlmv/cy6AUhEiOjkVw==
+X-Google-Smtp-Source: ANB0VdaDXOoBY51jyCNImKSQDiZcEhFuNDAujVGzupW8EGBVfPyz3mF1QJgcRLe/R94tT2/c7klpboCYillhMxepefY=
+X-Received: by 2002:a37:2590:: with SMTP id l16-v6mr27542806qkl.244.1536019977301;
+ Mon, 03 Sep 2018 17:12:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <1e76b5d05558e3b4882b4a012521c3c7@localhost.localdomain>
+In-Reply-To: <1e76b5d05558e3b4882b4a012521c3c7@localhost.localdomain>
+From: Censored <censored@gmail.com>
+Date: Tue, 4 Sep 2018 02:12:45 +0200
+Message-ID: <CAMO4vGdeP4MbggdJdfQCyq15Xo0jgDGMbCdP+GD=LqX8YA76Kw@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_D=C3=A9fenseur_=2D_Attaque_d=27un_Crasc_Ma?=
+	=?UTF-8?Q?exus_Parasitus_=5BJeune=5D_=286047343=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000001d72dd05750085e8"
+
+--0000000000001d72dd05750085e8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mer. 27 juin 2018 =C3=A0 16:39
+Subject: [MountyHall] D=C3=A9fenseur - Attaque d'un Crasc Maexus Parasitus
+[Jeune] (6047343)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 27/06/2018 16:39:40.
+***********************************************************
+
+Le Monstre n=C2=B06047343 (un Crasc Maexus Parasitus [Jeune]) vous a attaqu=
+=C3=A9.
+
+Sa Capacit=C3=A9 Sp=C3=A9ciale vous affecte automatiquement.
+
+ Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89
+
+ Il vous a inflig=C3=A9  1000 points de d=C3=A9g=C3=A2ts.
+ Votre Armure vous prot=C3=A8ge et vous ne perdrez que 1 points de vie.
+ Il vous reste actuellement 999 points de vie.
+
+Vous avez ex=C3=A9cut=C3=A9 un mouvement de retraite vers le Bas.
+
+
+Votre Armure d'anneaux de l'Ours en Mithril a =C3=A9t=C3=A9 abim=C3=A9e par=
+ ce coup.
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000001d72dd05750085e8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <b class=3D"gmail_sendername" dir=
+=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mo=
+untyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: mer. 27 juin 2018 =
+=C3=A0=C2=A016:39<br>Subject: [MountyHall] D=C3=A9fenseur - Attaque d&#39;u=
+n Crasc Maexus Parasitus [Jeune] (6047343)<br>To:  &lt;<a href=3D"mailto:=
+censored@gmail.com">censored@gmail.com</a>&gt;<br></div><br><br=
+>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 27/06/2018 16:39:40.<br>
+***********************************************************<br>
+<br>
+Le Monstre n=C2=B06047343 (un Crasc Maexus Parasitus [Jeune]) vous a attaqu=
+=C3=A9.<br>
+<br>
+Sa Capacit=C3=A9 Sp=C3=A9ciale vous affecte automatiquement.<br>
+<br>
+=C2=A0Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89<br>
+<br>
+=C2=A0Il vous a inflig=C3=A9=C2=A0 1000 points de d=C3=A9g=C3=A2ts.<br>
+=C2=A0Votre Armure vous prot=C3=A8ge et vous ne perdrez que 1 points de vie=
+.<br>
+=C2=A0Il vous reste actuellement 999 points de vie.<br>
+<br>
+Vous avez ex=C3=A9cut=C3=A9 un mouvement de retraite vers le Bas.<br>
+<br>
+<br>
+Votre Armure d&#39;anneaux de l&#39;Ours en Mithril a =C3=A9t=C3=A9 abim=C3=
+=A9e par ce coup.<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000001d72dd05750085e8--

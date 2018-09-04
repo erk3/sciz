@@ -1,0 +1,211 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id 4C2FF0nOjVsYDgAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Tue, 04 Sep 2018 00:14:01 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 56C522A60984
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:14:01 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.216.175; helo=mail-qt0-f175.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Nn9vnI/p";
+	dkim-atps=neutral
+Received: from mail-qt0-f175.google.com (mail-qt0-f175.google.com [209.85.216.175])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id E00672A608A4
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:14:00 +0000 (UTC)
+Received: by mail-qt0-f175.google.com with SMTP id k38-v6so2156820qtk.11
+        for <feedthebat@sciz.cerv.ovh>; Mon, 03 Sep 2018 17:14:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=tZsj3XGkCCOSvwuMkTqWuF5D/FdjWxjUx8vmGo8O38s=;
+        b=Nn9vnI/pgodhFzwEMPT/U1HtO7mKRRXlQLPnDjQO5kcfwpCsoNLnYkRhSCzEsGerUC
+         r1lKYCTqb0RyYekJwzpjOC9W551MRB5cTjEnkubBRr7aXwi5KjpzaKIVtyVUODtU9Ziv
+         9AXop93YdLOHLFk6E9OH/Z8VNxtJbL2VED5dCiGKSiUA+crMvdOeqksKuTePGxdBubvS
+         QIvqxNZ0X7iBql63oIbNbO9lLyzBya60DXGuX6p4mqLvKsKBBvPsKUKEzfzrZaAf/O16
+         IyWN2i6kX+9XkbyQZ+XYXW8MsB8yYoea21CGG0NeCAC8WwOzIAYdVyG9hxtuOI587uaB
+         KhIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=tZsj3XGkCCOSvwuMkTqWuF5D/FdjWxjUx8vmGo8O38s=;
+        b=tLtZKFaSX8RRKqGGx6xgU9rtll0jC07Hcp3mGGZh5zJAC95s9s5p98cREk2d800UXb
+         wplIRifFzaFbzd7FN2V2Pxs+Cm78Fkgsw4QdCtU9qb7GOQxkXFl8UckTZtKUDibG9U+m
+         zBer/UcpinOi42IGaOiE1i7Y8Q1KZj5y94eaEGdaJBgiPUi00SiIz3R6/5P3SyUWQeZf
+         n2t9gb2NCR2MRITa1NcNVliYhbHx5GR4GBblpJnw3kMPVjgJLdAnammHl+GV3ypykf/8
+         ArM7hQjgEyLx+IhyxxbR/IMVEucwwljImq7o5BzuSdQK9YXzep/onetIUAAVHmRMXB3f
+         cu8A==
+X-Gm-Message-State: APzg51BurJXhfxSl4xFLfEfZx/K4vwHE1572VchGzoxc9aJMNC/rwSgn
+	NfaIWWqQYG2RfTaHvQEMTayuD4tvs17ayhaIqBMK+g==
+X-Google-Smtp-Source: ANB0VdYW2rWxYbGhfg6z2vnuuQz6gd/PKbIAaFHbS/zd0g7KO0Jzb3jU0+6ZNFjS2Gj8TCPN4XEtAfoNu+aINeXKTqI=
+X-Received: by 2002:a0c:83c4:: with SMTP id k62-v6mr13175575qva.88.1536020033925;
+ Mon, 03 Sep 2018 17:13:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <ecbe1d73cfbd7657ba5f95d4d4587f30@localhost.localdomain>
+In-Reply-To: <ecbe1d73cfbd7657ba5f95d4d4587f30@localhost.localdomain>
+From: Censored <censored@gmail.com>
+Date: Tue, 4 Sep 2018 02:13:42 +0200
+Message-ID: <CAMO4vGf2-YnbpaPUvdifsd+yz=8sLsJi+YPd6TQZ1_+mOXSRag@mail.gmail.com>
+Subject: =?UTF-8?B?RndkOiBbTW91bnR5SGFsbF0gRMOpZmVuc2V1ciAtIEF0dGFxdWUgcsOpc2lzdMOpZSBkJw==?=
+	=?UTF-8?B?dW4gTW9ocmcgW1LDqWNlbnRdICg1OTg5MTExKQ==?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000007d7764057500889e"
+
+--0000000000007d7764057500889e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: sam. 17 f=C3=A9vr. 2018 =C3=A0 13:47
+Subject: [MountyHall] D=C3=A9fenseur - Attaque r=C3=A9sist=C3=A9e d'un Mohr=
+g [R=C3=A9cent]
+(5989111)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 17/02/2018 13:41:09.
+***********************************************************
+
+Le Monstre n=C2=B05989111 (un Mohrg [R=C3=A9cent]) vous a attaqu=C3=A9 magi=
+quement.
+
+Sa Capacit=C3=A9 Sp=C3=A9ciale vous affecte automatiquement.
+
+ Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89
+
+ Vous avez r=C3=A9ussi votre jet de R=C3=A9sistance Magique et diminuez don=
+c l'effet
+de l'attaque.
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 3 points.
+
+
+ Il vous a inflig=C3=A9  1 points de d=C3=A9g=C3=A2ts.
+ Votre Armure vous prot=C3=A8ge et vous ne perdrez que 1 points de vie.
+ Il vous reste actuellement 999 points de vie.
+
+Vous avez ex=C3=A9cut=C3=A9 un mouvement de retraite vers le Haut.
+
+
+Votre Anneau de protection des Mages a =C3=A9t=C3=A9 tr=C3=A8s abim=C3=A9 p=
+ar ce coup.
+De plus, le monstre a utilis=C3=A9 sa capacit=C3=A9 sp=C3=A9ciale :
+                        Mortification
+Elle a pour effet REDUIT : PV : -15
+Pour une dur=C3=A9e de 1 tour(s).
+
+Seuil de R=C3=A9sistance de la Cible.....: 99 %
+Jet de R=C3=A9sistance...........................: 58
+
+La capacit=C3=A9 sp=C3=A9ciale a donc un EFFET REDUIT de moiti=C3=A9.
+
+ Vous avez r=C3=A9ussi votre jet de R=C3=A9sistance Magique et diminuez don=
+c l'effet
+de la capacit=C3=A9.
+Vous n'avez pas augment=C3=A9 votre R=C3=A9sistance Magique.
+
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000007d7764057500889e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <b class=3D"gmail_sendername" dir=
+=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mo=
+untyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: sam. 17 f=C3=A9vr.=
+ 2018 =C3=A0=C2=A013:47<br>Subject: [MountyHall] D=C3=A9fenseur - Attaque r=
+=C3=A9sist=C3=A9e d&#39;un Mohrg [R=C3=A9cent] (5989111)<br>To:  &lt;<a hre=
+f=3D"mailto:censored@gmail.com">censored@gmail.com</a>&gt;<br=
+></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 17/02/2018 13:41:09.<br>
+***********************************************************<br>
+<br>
+Le Monstre n=C2=B05989111 (un Mohrg [R=C3=A9cent]) vous a attaqu=C3=A9 magi=
+quement.<br>
+<br>
+Sa Capacit=C3=A9 Sp=C3=A9ciale vous affecte automatiquement.<br>
+<br>
+=C2=A0Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89<br>
+<br>
+=C2=A0Vous avez r=C3=A9ussi votre jet de R=C3=A9sistance Magique et diminue=
+z donc l&#39;effet de l&#39;attaque.<br>
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 3 points.<br>
+<br>
+<br>
+=C2=A0Il vous a inflig=C3=A9=C2=A0 1 points de d=C3=A9g=C3=A2ts.<br>
+=C2=A0Votre Armure vous prot=C3=A8ge et vous ne perdrez que 1 points de vie=
+.<br>
+=C2=A0Il vous reste actuellement 999 points de vie.<br>
+<br>
+Vous avez ex=C3=A9cut=C3=A9 un mouvement de retraite vers le Haut.<br>
+<br>
+<br>
+Votre Anneau de protection des Mages a =C3=A9t=C3=A9 tr=C3=A8s abim=C3=A9 p=
+ar ce coup.<br>
+De plus, le monstre a utilis=C3=A9 sa capacit=C3=A9 sp=C3=A9ciale : <br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 Mortification<br>
+Elle a pour effet REDUIT : PV : -15<br>
+Pour une dur=C3=A9e de 1 tour(s).<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 99 %<br>
+Jet de R=C3=A9sistance...........................: 58<br>
+<br>
+La capacit=C3=A9 sp=C3=A9ciale a donc un EFFET REDUIT de moiti=C3=A9.<br>
+<br>
+=C2=A0Vous avez r=C3=A9ussi votre jet de R=C3=A9sistance Magique et diminue=
+z donc l&#39;effet de la capacit=C3=A9.<br>
+Vous n&#39;avez pas augment=C3=A9 votre R=C3=A9sistance Magique.<br>
+<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000007d7764057500889e--
