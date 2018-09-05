@@ -102,7 +102,7 @@ class BATTLE(sg.SqlAlchemyBase):
     
     # Additional build logics (see MailParser)
     def build(self):
-        self.type = self.type.capitalize()
+        self.type = self.type.strip().capitalize()
         self.arm = int(self.deg) - int(self.pv) if self.pv and self.deg else None
         self.pv = self.pv or self.deg # Pas d'armure
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
@@ -122,13 +122,13 @@ class BATTLE(sg.SqlAlchemyBase):
             self.dead = self.dead is not None 
         self.dead |= u'mort' in self.type
         if self.subtype is not None:
-            self.subtype = self.subtype.capitalize()
+            self.subtype = self.subtype.strip().capitalize()
             self.subtype += u' esquivé(e)' if self.dodge and not self.parade else ''
             self.subtype += u' parfaitement' if self.perfect_dodge else ''
             self.subtype += u' parée' if self.parade else ''
         else:
             self.subtype = re.sub(u'résistée?|réduit', '', self.type)
-
+        
     def build_att(self):
         # Common
         self.att_troll_id = self.troll_id
