@@ -296,6 +296,8 @@ class TROLL(sg.SqlAlchemyBase):
             setattr(self, 's_' + key, s)
         # Compute some things
         self.s_troll_nom = self.stringify_name()
+        self.s_last_mhsp4_call = sg.format_time(self.last_mhsp4_call, self.s_time) if self.s_last_mhsp4_call else ''
+        self.s_last_update = self.s_last_update.format(o=self) if self.s_last_mhsp4_call != '' else ''
         self.s_dla = sg.format_time(self.dla, self.s_time) if self.dla else ''
         self.s_next_dla = sg.format_time(self.estimate_next_dla(), self.s_time)
         self.s_dla_full = self.s_dla_full.format(o=self) if self.s_dla != '' else ''
@@ -317,15 +319,16 @@ class TROLL(sg.SqlAlchemyBase):
                 if match not in attrs and match != "sep":
                     self.s_troll_stats = re.sub(r'\{o\.s_%s\}' % (match), '', self.s_troll_stats)
         # Return the final formated representation
-        self.s_troll_stats = self.s_troll_stats.format(o=self)
         self.s_etat = self.s_etat.format(o=self)
+        self.s_troll_stats = self.s_troll_stats.format(o=self)
         res = self.s_long
         res = res.format(o=self)
         res = res.encode(sg.DEFAULT_CHARSET).decode('string-escape').decode(sg.DEFAULT_CHARSET)
         # Adjust some things about spacing, None values and line break
         res = re.sub(r'None', '', res)
-        res = re.sub(r'\s*%s{2,}\s*' % self.s_delimiter, '%s' % (self.s_sep), res)
+        res = re.sub(r'%s{2,}' % self.s_delimiter, '%s' % (self.s_delimiter), res)
         res = re.sub(r'%s\s*%s' % (self.s_delimiter, self.s_sep, ), '%s' % self.s_sep, res)
+        res = re.sub(r'%s\s*%s' % (self.s_sep, self.s_delimiter, ), '%s' % self.s_sep, res)
         res = re.sub(r'\s*%s+\s*' % self.s_sep, '%s' % (self.s_sep), res)
         res = re.sub(r'%s$' % self.s_sep, '', res)
         if attrs is not None and len(attrs) == 1 and len(re.findall(self.s_sep, res)) <= 1:

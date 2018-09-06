@@ -182,7 +182,7 @@
    {
       "section":"troll_format",
       "key":"s_long",
-      "value":"{o.s_troll_nom} {o.s_etat} {o.s_troll_stats}"
+      "value":"{o.s_troll_nom} {o.s_troll_stats}"
    },
    {
       "section":"troll_format",
@@ -192,7 +192,12 @@
    {
       "section":"troll_format",
       "key":"s_troll_stats",
-      "value":"{o.s_sep}{o.s_race}{o.s_sep}{o.s_niv}{o.s_sep}{o.s_fatigue}{o.s_sep}{o.s_dla_full}{o.s_sep}{o.s_pos}{o.s_sep}{o.s_pv_ratio}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_sorts}{o.s_sep}{o.s_comps}{o.s_sep}"
+      "value":"{o.s_sep}{o.s_last_update}{o.s_sep}{o.s_etat}{o.s_sep}{o.s_race}{o.s_sep}{o.s_niv}{o.s_sep}{o.s_fatigue}{o.s_sep}{o.s_dla_full}{o.s_sep}{o.s_pos}{o.s_sep}{o.s_pv_ratio}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_sorts}{o.s_sep}{o.s_comps}{o.s_sep}"
+   },
+   {
+      "section":"troll_format",
+      "key":"s_last_update",
+      "value":"{o.s_sep}Dernier appel MH (SP4) : {o.s_last_mhsp4_call}"
    },
    {
       "section":"troll_format",
