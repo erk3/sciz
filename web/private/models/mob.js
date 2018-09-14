@@ -73,7 +73,11 @@ MobTemplate.modelDefinition = {
   tour_max: {type: sequelize.INTEGER},
   chargement: {type: sequelize.STRING},
   bonus_malus:  {type: sequelize.STRING},
-  portee_capa: {type: sequelize.STRING}
+  portee_capa: {type: sequelize.STRING},
+  pos_x: {type: sequelize.INTEGER},
+  pos_y: {type: sequelize.INTEGER},
+  pos_n: {type: sequelize.INTEGER},
+  last_seen: {type: sequelize.DATE}
 };
 
 MobTemplate.modelOptions = {

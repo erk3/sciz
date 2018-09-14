@@ -10,22 +10,10 @@ EventsController.getEvents = function (req, res) {
   var lastID = (req.query.lastID) ? parseInt(req.query.lastID) : 0;
   var groupID = (req.query.groupID) ? parseInt(req.query.groupID) : 0;
   
-  var where = {};
-
-  /*
-  if (req.query.includeHidden) {
-    where = {[DB.Op.and]: [
-      {group_id: groupID},
-      {id: {[DB.Op.gt]: lastID}}
-    ]};
-  } else {
-  */
-    where = {[DB.Op.and]: [
-      {group_id: groupID},
-      // {hidden: false},
-      {id: {[DB.Op.gt]: lastID}}
-    ]};
-  //}
+  var where = {[DB.Op.and]: [
+    {group_id: groupID},
+    {id: {[DB.Op.gt]: lastID}}
+  ]};
   
   var getEvents = function (events) {
     var promises = []

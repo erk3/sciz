@@ -22,7 +22,6 @@ from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE, SIG_DFL) 
 
 ## SCIZ
-
 class SCIZ:
 
     # Constructor
@@ -100,8 +99,6 @@ class SCIZ:
         self.adminHelper = AdminHelper()
         if cmd == 'init':
             self.adminHelper.init()
-        elif cmd == 'users':
-            self.adminHelper.add_json_users(arg)
         elif cmd == 'auto':
             self.adminHelper.auto_tasks()
         elif cmd == 'group':
@@ -134,10 +131,6 @@ if __name__ == '__main__':
             action='store_true',
             help='instruct SCIZ to start the recurrent automagic things')
     
-    parser.add_argument('-u', '--users',
-            metavar = 'USERS_FILE', type=str,
-            help='instruct SCIZ to create or update users from JSON')
-    
     parser.add_argument('-r', '--request',
             metavar='REQUEST_CLI | help', type=str,
             help='instruct SCIZ to pull internal data')
@@ -151,7 +144,7 @@ if __name__ == '__main__':
             help='instruct SCIZ to push the pending notifications for a hook')
     
     parser.add_argument('-s', '--script',
-            metavar='PUBLIC_SCRIPT [troll]', choices=['profil4', 'caract', 'trolls2', 'monstres', 'tresors', 'capas'],
+            metavar='PUBLIC_SCRIPT [troll]', choices=['profil4', 'trolls2', 'monstres', 'tresors', 'capas', 'vue2'],
             help='instruct SCIZ to call a MountyHall Public Script / FTP')
 
     parser.add_argument('-i', '--init',
@@ -206,9 +199,6 @@ if __name__ == '__main__':
         elif args.request:
             sg.logger.info('Requesting SCIZ...')
             sciz.request(args.request, args.rargs)
-        elif args.users:
-            sg.logger.info('Updating users...')
-            sciz.admin('users', args.users)
         else:
             parser.print_help()
         sg.logger.info('Nothing else to do, going to sleep now.')

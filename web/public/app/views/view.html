@@ -1,0 +1,102 @@
+<div class="container-fluid" style="margin: 30px;">
+	<div class="row">
+    
+    <!-- Left panel : fitlers and buttons -->
+    <div class="col-md-3">
+      <ol class="breadcrumb">
+        <li class="active"><h5><strong>Filtres</strong></h5></li>
+      </ol>
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label class="col-md-5 control-label">Vu il y a moins de</label>
+          <div class="col-md-3">
+            <input type="number" class="form-control" min="1" ng-model="vc.date" ng-change="vc.applyFilters()" required>
+          </div>
+          <div class="col-md-3 control-label">
+            <span>jours</span>
+          </div>
+        </div>
+        <!-- Filtre -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Texte</label>
+          <div class="col-md-8">
+            <input type="text" class="form-control" ng-model="vc.filter" ng-change="vc.applyFilters()" required>
+          </div>
+        </div>
+        <!-- Profondeur -->
+        <div class="form-group">
+          <label class="col-md-3 control-label">Profondeur</label>
+          <div class="col-md-8">
+            <div class="input-group">
+              <input type="number" max="0" class="form-control" ng-model="vc.minProf" ng-change="vc.applyFilters()"><span class="input-group-addon">à</span><input type="number" max="0" class="form-control" ng-model="vc.maxProf" ng-change="vc.applyFilters()">
+            </div>
+          </div>
+        </div>
+        
+        <!-- Centrer -->
+        <ol class="breadcrumb">
+          <li class="active"><h5><strong>Réglages</strong></h5></li>
+        </ol>
+        <div class="form-group">
+          <label class="col-md-4 control-label">Centrer sur</label>
+          <div class="col-md-8">
+            <div class="btn-group" uib-dropdown is-open="status.isopen">
+              <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                Sélectionner un trõll <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li ng-repeat="troll in vc.trolls" role="menuitem"><a href="#" ng-click="vc.origX = troll.pos_x; vc.origY = troll.pos_y; vc.origN = troll.pos_n; vc.portee = troll.base_vue + troll.bonus_vue_phy + troll.bonus_vue_mag">{{troll.nom}}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <div class="input-group">
+              <span class="input-group-addon">X</span>
+              <input type="number" class="form-control" ng-model="vc.origX">
+              <span class="input-group-addon">Y</span>
+              <input type="number" class="form-control" ng-model="vc.origY">
+              <span class="input-group-addon">N</span>
+              <input type="number" max="0" class="form-control" ng-model="vc.origN">
+            </div>
+          </div>
+        </div>
+        <!-- Portée -->
+        <div class="form-group">
+          <label class="col-md-6 control-label">Avec une portée de</label>
+          <div class="col-md-3">
+            <input type="number" min="0" class="form-control" ng-model="vc.portee" required>
+          </div>
+          <div class="col-md-3 control-label">
+            <span>cases</span>
+          </div>
+        </div><br/>
+        <div class="text-center">
+          <button class="btn btn-light" type="button" ng-click="vc.loadView()">
+            <span class="glyphicon glyphicon-refresh"></span> Rafraichir
+          </button>
+        </div><br/>
+      </form>
+    </div>
+    
+    <!-- Right panel : 2D view -->
+    <div class="col-md-9">
+      <div id="mountyhall-view-wrapper">
+        <div id="mountyhall-view">
+          <div id="mountyhall-view-grid">
+            <!-- Here will be inserted the view -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Icone d'aide -->
+    <p id="help-icon" class="text-center" style="magin-top: 10px;" tooltips tooltip-template="Glissez la carte en maintenant le bouton de la souris enfonçé\nZoomez et Dézoomez avec la molette de la souris" tooltip-class="tooltip" tooltip-side="top"><span class="glyphicon glyphicon-question-sign"></span></p>
+    <!-- Sponsor -->
+    <p class="text-center" style="font-size: 80%;">Propulsé par <a href="https://chrall.dystroy.org/">Chrall</a></p>
+  </div>
+  
+</div>

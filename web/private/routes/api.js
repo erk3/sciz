@@ -15,6 +15,7 @@ var TemplatesController = require('../controllers/templatesController.js');
 var PublicController = require('../controllers/publicController.js');
 var HookController = require('../controllers/hookController.js');
 var PadController = require('../controllers/padController.js');
+var ViewController = require('../controllers/viewController.js');
 
 var APIRoutes = function(passport) {
   
@@ -47,6 +48,7 @@ var APIRoutes = function(passport) {
   router.get('/admin/confs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getConfs));
   router.get('/admin/assocs', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.getAssocs));
   router.get('/assocs', passport.authenticate('jwt', {session: false}), allowAuthenticated(AdminController.getAllRealAssocs));
+  router.get('/view', passport.authenticate('jwt', {session: false}), allowAuthenticated(ViewController.getView));
 
   // DELETE routes
   router.delete('/admin/hooks', passport.authenticate('jwt', {session: false}), allowAuthorized(config.accessLevels.admin, AdminController.revokeHook));

@@ -1,8 +1,8 @@
 angular
   .module('app')
-  .controller('TrollsCtrl', ['$scope', '$http', 'authService', trollsCtrl]);
+  .controller('TrollsCtrl', ['$scope', '$http', 'authService', 'utilService', trollsCtrl]);
 
-function trollsCtrl($scope, $http, authService) {
+function trollsCtrl($scope, $http, authService, utilService) {
   var vm = this;
 
   vm.user = authService.refreshLocalData();
@@ -30,7 +30,7 @@ function trollsCtrl($scope, $http, authService) {
             if (troll === null || vm.slides[i].id === troll.id) {
               vm.troll = vm.slides[i];
               vm.troll.clicked = false;
-              vm.troll.sinceLastMHsp4Call = Math.floor((vm.adjustDate(new Date(), 0, false, false) - vm.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
+              vm.troll.sinceLastMHsp4Call = Math.floor((utilService.adjustDate(new Date(), 0, false, false) - utilService.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
               break;
             }
           }
@@ -39,7 +39,7 @@ function trollsCtrl($scope, $http, authService) {
             item.callback = function () {
               vm.troll = item;
               vm.troll.clicked = false;
-              vm.troll.sinceLastMHsp4Call = Math.floor((vm.adjustDate(new Date(), 0, false, false) - vm.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
+              vm.troll.sinceLastMHsp4Call = Math.floor((utilService.adjustDate(new Date(), 0, false, false) - utilService.adjustDate(vm.troll.last_mhsp4_call, 0, false, true)) / 3600000);
             };
             // Comptute the string reprs of the troll
             item = vm.trollToStr(item);
@@ -91,44 +91,6 @@ function trollsCtrl($scope, $http, authService) {
     return sign + Math.trunc(minutes / 60) + ' h ' + (minutes % 60) + ' m ';
   };
 
-  vm.adjustDate = function (date, minutesToAdd, reverted, adjustTimeZone) {
-    var d = new Date();
-    if (date !== null && date !== undefined) {
-      d = new Date(date);
-    } else {
-      return null;
-    }
-
-    var t = 0;
-    if (adjustTimeZone !== null && adjustTimeZone !== undefined && adjustTimeZone !== false) {
-      t = new Date(date).getTimezoneOffset() * 60 * 1000;
-    }
-
-    var m = 0;
-    if (minutesToAdd !== null && minutesToAdd !== undefined) {
-      m = minutesToAdd * 60 * 1000;
-    }
-
-    var r = 1;
-    if (reverted !== null && reverted !== undefined && reverted !== false) {
-      r = -1;
-    }
-
-    d.setTime(d.getTime() + m + (t * r));
-
-    return d;
-  };
-
-  vm.displayDate = function (date, minutesToAdd, reverted, adjustTimeZone) {
-    var options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false};
-    var dtf = new Intl.DateTimeFormat('fr-FR', options);
-    var d = vm.adjustDate(date, minutesToAdd, reverted, adjustTimeZone);
-    if (d === null) {
-      return null;
-    }
-    return dtf.format(d);
-  };
-
   vm.trollToStr = function (troll) {
     var plus = function (n, positivePrefix, negativePrefix, nullValue, suffix) {
       if (Number.isInteger(n)) {
@@ -164,8 +126,8 @@ function trollsCtrl($scope, $http, authService) {
     troll.tEtat += troll.immobile ? (troll.tEtat === '' ? '' : ' ; ') + 'Immobilisé' : '';
     troll.tEtat = troll.tEtat === '' ? 'Normal' : troll.tEtat;
     troll.tPA = plus(troll.pa, '', '', '?', ' PA / 6');
-    troll.tDLA = plus(vm.displayDate(troll.dla, 0, false, true), '', '', '?', '');
-    troll.tLastSP4Call = plus(vm.displayDate(troll.last_mhsp4_call, 0, false, true), '', '', '?', '');
+    troll.tDLA = plus(utilService.displayDate(troll.dla, 0, false, true), '', '', '?', '');
+    troll.tLastSP4Call = plus(utilService.displayDate(troll.last_mhsp4_call, 0, false, true), '', '', '?', '');
     troll.bTour = plus(vm.displayHours(troll.base_tour), '', '', '?', '');
     var malusTourBlessure = Math.trunc((250 * (troll.base_bonus_pv_max - troll.pv)) / troll.base_bonus_pv_max);
     troll.tMalusTourBlessure = plus(vm.displayHours(malusTourBlessure), '', '', '?', '');
@@ -175,7 +137,7 @@ function trollsCtrl($scope, $http, authService) {
     troll.tBMMTour = plus(vm.displayHours(bmmTour), '', '', '?', '');
     var nextTour = Math.max(troll.base_tour, troll.base_tour + malusTourBlessure + poidsTour + bmmTour);
     troll.bNextTour = plus(vm.displayHours(nextTour), '', '', '?', '');
-    troll.tNextDLA = plus(vm.displayDate(troll.dla, nextTour, false, true), '', '', '?', '');
+    troll.tNextDLA = plus(utilService.displayDate(troll.dla, nextTour, false, true), '', '', '?', '');
 
     troll.bAtt = plus(troll.base_att, '', '', '?', 'D6');
     troll.bAttPhy = plus(troll.bonus_att_phy, '+', '', '?', '');

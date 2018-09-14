@@ -87,5 +87,15 @@ function routesConfig($stateProvider, $urlRouterProvider, $httpProvider, $locati
       }
     });
 
+  $stateProvider
+    .state('view', {
+      url: '/view',
+      templateUrl: 'app/views/view.html',
+      controller: 'ViewCtrl as vc',
+      data: {
+        accessLevel: staticData.accessLevels.user
+      }
+    });
+
   $httpProvider.interceptors.push('requestInterceptor');
 }

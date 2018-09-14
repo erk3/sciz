@@ -66,6 +66,7 @@ TrollTemplate.modelDefinition = {
   pos_x: {type: sequelize.INTEGER},
   pos_y: {type: sequelize.INTEGER},
   pos_n: {type: sequelize.INTEGER},
+  last_seen: {type: sequelize.DATE},
   pv: {type: sequelize.INTEGER},
   bonus_pv_phy: {type: sequelize.INTEGER},
   bonus_pv_mag: {type: sequelize.INTEGER},

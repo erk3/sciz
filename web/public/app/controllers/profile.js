@@ -4,7 +4,7 @@ angular
 
 function profileCtrl($http, $window, $document, authService) {
   var vm = this;
-  const stepDynSpRefresh = 1;
+  const stepDynSpRefresh = 2;
   const stepStaticSpRefresh = 0;
 
   vm.updateProfile = updateProfile;

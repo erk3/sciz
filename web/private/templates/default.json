@@ -221,8 +221,13 @@
    },
    {
       "section":"troll_format",
+      "key":"s_last_seen_at",
+      "value":"({o.s_last_seen})"
+   },
+   {
+      "section":"troll_format",
       "key":"s_pos",
-      "value":"{o.s_pos_x} | {o.s_pos_y} | {o.s_pos_n}"
+      "value":"{o.s_pos_x} | {o.s_pos_y} | {o.s_pos_n} {o.s_last_seen_at}"
    },
    {
       "section":"troll_format",
@@ -482,7 +487,7 @@
    {
       "section":"mob_format",
       "key":"s_mob_stats",
-      "value":"{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_arm_mag}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_voleur}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_att_mag}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_sang_froid}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
+      "value":"{o.s_sep}{o.s_pos}{o.s_sep}{o.s_niv}{o.s_sep}{o.s_pv}{o.s_sep}{o.s_att}{o.s_sep}{o.s_esq}{o.s_sep}{o.s_deg}{o.s_sep}{o.s_reg}{o.s_sep}{o.s_arm_phy}{o.s_sep}{o.s_arm_mag}{o.s_sep}{o.s_vue}{o.s_sep}{o.s_mm}{o.s_sep}{o.s_rm}{o.s_sep}{o.s_capa}{o.s_sep}{o.s_vlc}{o.s_sep}{o.s_voleur}{o.s_sep}{o.s_att_dist}{o.s_sep}{o.s_att_mag}{o.s_sep}{o.s_nb_att}{o.s_sep}{o.s_dla}{o.s_sep}{o.s_sang_froid}{o.s_sep}{o.s_tour}{o.s_sep}{o.s_chargement}{o.s_sep}{o.s_bonus_malus}"
    },
    {
       "section":"mob_format",
@@ -493,6 +498,31 @@
       "section":"mob_format",
       "key":"s_sep",
       "value":"\\n"
+   },
+   {
+      "section":"mob_format",
+      "key":"s_pos",
+      "value":"{o.s_pos_x} | {o.s_pos_y} | {o.s_pos_n} {o.s_last_seen_at}"
+   },
+   {
+      "section":"mob_format",
+      "key":"s_last_seen_at",
+      "value":"({o.s_last_seen})"
+   },
+   {
+      "section":"mob_format",
+      "key":"pos_x",
+      "value":"X = {}"
+   },
+   {
+      "section":"mob_format",
+      "key":"pos_y",
+      "value":"Y = {}"
+   },
+   {
+      "section":"mob_format",
+      "key":"pos_n",
+      "value":"N = {}"
    },
    {
       "section":"mob_format",
@@ -807,7 +837,7 @@
    {
       "section":"piege_format",
       "key":"posn",
-      "value":"Z = {}"
+      "value":"N = {}"
    },
    {
       "section":"piege_format",
@@ -857,7 +887,7 @@
    {
       "section":"portal_format",
       "key":"posn",
-      "value":"Z = {}"
+      "value":"N = {}"
    },
    {
       "section":"portal_format",
@@ -872,7 +902,7 @@
    {
       "section":"portal_format",
       "key":"dst_posn",
-      "value":"Z = {}"
+      "value":"N = {}"
    },
    {
       "section":"portal_format",
@@ -887,7 +917,7 @@
    {
       "section":"portal_format",
       "key":"disp_posn",
-      "value":"Z = {:+d}"
+      "value":"N = {:+d}"
    },
    {
       "section":"idc_format",
@@ -937,7 +967,7 @@
    {
       "section":"idc_format",
       "key":"posn",
-      "value":"Z = {}"
+      "value":"N = {}"
    },
    {
       "section":"aa_format",
@@ -1072,7 +1102,7 @@
    {
       "section":"idt_format",
       "key":"posn",
-      "value":"Z = {}"
+      "value":"N = {}"
    },
    {
       "section":"assoctrollscapas_format",

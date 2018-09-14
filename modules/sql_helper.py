@@ -21,6 +21,7 @@ from classes.conf import CONF
 from classes.group import GROUP
 from classes.pad import PAD
 from classes.portal import PORTAL
+from classes.lieu import LIEU
 from classes.idc import IDC
 from classes.idt import IDT
 from classes.metatresor import METATRESOR
@@ -74,109 +75,89 @@ class SQLHelper:
             raise
 
     # Add any object (dispatcher)
-    def add(self, obj):
+    def add(self, obj, autocommit=True):
         if isinstance(obj, MOB):
-            return self.__add_mob(obj)
+            return self.__add_mob(obj, autocommit)
         elif isinstance(obj, CDM):
-            return self.__add_cdm(obj)
+            return self.__add_cdm(obj, autocommit)
         elif isinstance(obj, AA):
-            return self.__add_aa(obj)
+            return self.__add_aa(obj, autocommit)
         elif isinstance(obj, PIEGE):
-            return self.__add_piege(obj)
+            return self.__add_piege(obj, autocommit)
         elif isinstance(obj, PORTAL):
-            return self.__add_portal(obj)
+            return self.__add_portal(obj, autocommit)
+        elif isinstance(obj, LIEU):
+            return self.__add_lieu(obj, autocommit)
         elif isinstance(obj, TROLL):
-            return self.__add_troll(obj)
+            return self.__add_troll(obj, autocommit)
         elif isinstance(obj, BATTLE):
-            return self.__add_battle(obj)
+            return self.__add_battle(obj, autocommit)
         elif isinstance(obj, USER):
-            return self.__add_user(obj)
+            return self.__add_user(obj, autocommit)
         elif isinstance(obj, GROUP):
-            return self.__add_group(obj)
+            return self.__add_group(obj, autocommit)
         elif isinstance(obj, CONF):
-            return self.__add_conf(obj)
+            return self.__add_conf(obj, autocommit)
         elif isinstance(obj, IDC):
-            return self.__add_idc(obj)
+            return self.__add_idc(obj, autocommit)
         elif isinstance(obj, IDT):
-            return self.__add_idt(obj)
+            return self.__add_idt(obj, autocommit)
         elif isinstance(obj, AssocTrollsCapas):
-            return self.__add_assoc_trolls_capas(obj)
+            return self.__add_assoc_trolls_capas(obj, autocommit)
         else:
             sg.logger.error('No routine to add object %s to DB' % (obj, ))
 
     # Insert or update a USER
-    def __add_user(self, new_user):
-        user = None
-        try:
-            old_user = self.session.query(USER).filter(USER.id == new_user.id).one() 
-            user = self.session.merge(new_user)
-            sg.logger.debug('Updating user %s...' % (user.id, ))
-        except orm.exc.NoResultFound:
-            user = new_user
-            sg.logger.info('Creating user %s...' % (user.id, ))
-        self.session.add(user)
-        self.session.commit()
+    def __add_user(self, user, autocommit=True):
+        sg.logger.debug('Creating or updating user %s...' % (user.id, ))
+        user = self.session.merge(user)
+        if autocommit:
+            self.session.commit()
         return user
     
     # Add a TROLL
-    def __add_troll(self, new_troll):
-        troll = None
-        try:
-            troll = self.session.query(TROLL).filter(and_(TROLL.id == new_troll.id, TROLL.group_id == new_troll.group_id)).one()
-            sg.logger.debug("Updating troll %s..." % (troll.id, ))
-            troll.update_from_new(new_troll)
-        except orm.exc.NoResultFound:
-            troll = new_troll
-            sg.logger.info("Creating troll %s..." % (troll.id, ))
-        self.session.add(troll)
-        self.session.commit()
+    def __add_troll(self, troll, autocommit=True):
+        sg.logger.debug('Creating or updating troll %s...' % (troll.id, ))
+        troll = self.session.merge(troll)
+        if autocommit:
+            self.session.commit()
         return troll
             
     # Add a CONF
-    def __add_conf(self, new_conf):
+    def __add_conf(self, new_conf, autocommit=True):
+        sg.logger.debug('Creating o updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
         conf = None
         try:
             conf = self.session.query(CONF).filter(and_(CONF.key == new_conf.key, CONF.section == new_conf.section, CONF.group_id == new_conf.group_id)).one() 
-            sg.logger.debug('Updating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
             conf.value = new_conf.value
-            self.session.add(conf)
         except orm.exc.NoResultFound:
-            sg.logger.info('Creating conf %s for group %s...' % (new_conf.key, new_conf.group_id, ))
             conf = new_conf
         self.session.add(conf) 
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return conf
     
     # Add a GROUP
-    def __add_group(self, new_group):
-        group = None
-        try:
-            group = self.session.query(GROUP).filter(GROUP.id == new_group.id).one()
-            sg.logger.debug('Updating group %s...' % (group.name, ))
-        except orm.exc.NoResultFound:
-            group = new_group
-            sg.logger.info('Creatin group %s...' % (group.name, ))
-        self.session.add(group)
-        self.session.commit()
+    def __add_group(self, group, autocommit=True):
+        sg.logger.debug('Creating o updating group %s...' % (group.name, ))
+        group = self.session.merge(group)
         pad = PAD()
         pad.group_id = group.id
-        self.__add_pad(pad)
+        self.__add_pad(pad, False)
+        if autocommit: 
+            self.session.commit()
         return group
     
     # Add a PAD
-    def __add_pad(self, new_pad):
-        pad = None
-        try:
-            pad = self.session.query(PAD).filter(PAD.group_id == new_pad.group_id).one()
-        except orm.exc.NoResultFound:
-            pad = new_pad
-            sg.logger.info('Creatin pad for group %s...' % (new_pad.group_id, ))
-        self.session.add(pad)
-        self.session.commit()
+    def __add_pad(self, pad, autocommit=True):
+        sg.logger.debug('Creating or updating pad for group %s...' % (pad.group_id, ))
+        pad = self.session.merge(pad)
+        if autocommit:
+            self.session.commit()
         return pad
 
     # Add an EVENT
-    def add_event(self, obj):
+    def add_event(self, obj, autocommit=True):
         if obj is None:
             return None
         event = EVENT()
@@ -215,128 +196,137 @@ class SQLHelper:
             event.battle_id = obj.id
             event.type = "BATTLE"
         self.session.add(event)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return event
         
     # Add a MOB
-    def __add_mob(self, new_mob):
+    def __add_mob(self, new_mob, autocommit=True):
+        sg.logger.debug("Creating or updating mob %s..." % (new_mob.id, ))
         mob = None
         try:
             mob = self.session.query(MOB).filter(and_(MOB.id == new_mob.id, MOB.group_id == new_mob.group_id)).one()
-            sg.logger.info("Updating mob %s..." % (mob.id, ))
             mob.update_from_new(new_mob)
-            if mob.metamob_id is None:
-                mob.link_metamob(self.session.query(METAMOB).all())
-            self.session.add(mob)
         except orm.exc.NoResultFound:
             mob = new_mob
-            sg.logger.info("Creating MOB %s..." % (mob.id, ))
-            mob.shadowed = False
+        if mob.metamob_id is None:
             mob.link_metamob(self.session.query(METAMOB).all())
         self.session.add(mob)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return mob
 
     # Add a PIEGE
-    def __add_piege(self, piege):
+    def __add_piege(self, piege, autocommit=True):
         troll = TROLL()
         troll.id = piege.troll_id
         troll.nom = piege.troll_nom
         troll.group_id = piege.group_id
-        self.__add_troll(troll)
+        self.__add_troll(troll, False)
         self.session.add(piege)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return piege
     
     # Add an IDC
-    def __add_idc(self, idc):
+    def __add_idc(self, idc, autocommit=True):
         troll = TROLL()
         troll.id = idc.troll_id
         troll.nom = idc.troll_nom
         troll.group_id = idc.group_id
-        self.__add_troll(troll)
+        self.__add_troll(troll, False)
         self.session.add(idc)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return idc
 
     # Add an IDT
-    def __add_idt(self, idt):
+    def __add_idt(self, idt, autocommit=True):
         idt.link_metatresor(self.session.query(METATRESOR).all())
         troll = TROLL()
         troll.id = idt.troll_id
         troll.nom = idt.troll_nom
         troll.group_id = idt.group_id
-        self.__add_troll(troll)
+        self.__add_troll(troll, False)
         self.session.add(idt)
-        self.session.commit()
+        if autocommit: 
+            self.session.commit()
         return idt
 
     # Add a PORTAL
-    def __add_portal(self, portal):
+    def __add_portal(self, portal, autocommit=True):
         if portal.id is None:
             return None
         troll = TROLL()
         troll.id = portal.troll_id
         troll.nom = portal.troll_nom
         troll.group_id = portal.group_id
-        self.__add_troll(troll)
-        try:
-            portal = self.session.query(PORTAL).filter(PORTAL.id == portal.id).one()
-            sg.logger.warning('The portal %s already exists, aborting...' % (portal.id))
-            return None
-        except orm.exc.NoResultFound:
-            self.session.add(portal)
+        self.__add_troll(troll, False)
+        portal = self.session.merge(portal)
+        if autocommit:
             self.session.commit()
         return portal
 
+    # Add a LIEU
+    def __add_lieu(self, lieu, autocommit=True):
+        if lieu.id is None:
+            return None
+        lieu = self.session.merge(lieu)
+        if autocommit:
+            self.session.commit()
+        return lieu
+
     # Add a CDM
-    def __add_cdm(self, cdm):
+    def __add_cdm(self, cdm, autocommit=True):
         mob = MOB()
         mob.populate_from_cdm(cdm)
-        self.__add_mob(mob)
+        self.__add_mob(mob, False)
         troll = TROLL()
         troll.id = cdm.troll_id
         troll.nom = cdm.troll_nom
         troll.group_id = cdm.group_id
-        self.__add_troll(troll)
+        self.__add_troll(troll, False)
         self.session.add(cdm)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return cdm
     
     # Add an ASSOC between a Troll and a Capa (Sort / Compétence)
-    def __add_assoc_trolls_capas(self, assoc):
-        self.session.add(assoc)
-        self.session.commit()
+    def __add_assoc_trolls_capas(self, assoc, autocommit=True):
+        assoc = self.session.merge(assoc)
+        if autocommit: 
+            self.session.commit()
         return assoc
  
    # Add a AA
-    def __add_aa(self, aa):
+    def __add_aa(self, aa, autocommit=True):
         troll_cible = TROLL()
         troll_cible.populate_from_aa(aa)
-        self.__add_troll(troll_cible)
+        self.__add_troll(troll_cible, False)
         troll = TROLL()
         troll.id = aa.troll_id
         troll.nom = aa.troll_nom
         troll.group_id = aa.group_id
-        self.__add_troll(troll)
+        self.__add_troll(troll, False)
         self.session.add(aa)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return aa
     
     # Add a BATTLE
-    def __add_battle(self, battle):
+    def __add_battle(self, battle, autocommit=True):
         if battle.att_troll_id != None:
             att_troll = TROLL()
             att_troll.id = battle.att_troll_id
             att_troll.group_id = battle.group_id
             att_troll.nom = battle.att_troll_nom
-            att_troll = self.__add_troll(att_troll)
+            att_troll = self.__add_troll(att_troll, False)
         if battle.def_troll_id != None:
             def_troll = TROLL()
             def_troll.id = battle.def_troll_id
             def_troll.group_id = battle.group_id
             def_troll.nom = battle.def_troll_nom
-            def_troll = self.__add_troll(def_troll)
+            def_troll = self.__add_troll(def_troll, False)
         if battle.att_mob_id != None:
             att_mob = MOB()
             att_mob.id = battle.att_mob_id
@@ -344,7 +334,7 @@ class SQLHelper:
             att_mob.nom = battle.att_mob_nom
             att_mob.age = battle.att_mob_age
             att_mob.tag = battle.att_mob_tag
-            att_mob = self.__add_mob(att_mob)
+            att_mob = self.__add_mob(att_mob, False)
         if battle.def_mob_id != None:
             def_mob = MOB()
             def_mob.id = battle.def_mob_id
@@ -352,38 +342,16 @@ class SQLHelper:
             def_mob.nom = battle.def_mob_nom
             def_mob.age = battle.def_mob_age
             def_mob.tag = battle.def_mob_tag
-            def_mob = self.__add_mob(def_mob)
+            def_mob = self.__add_mob(def_mob, False)
         battle.att_troll = att_troll if battle.att_troll_id else None
         battle.def_troll = def_troll if battle.def_troll_id else None
         battle.att_mob = att_mob if battle.att_mob_id else None
         battle.def_mob = def_mob if battle.def_mob_id else None
-	battle = sg.ge.play(battle)
+	battle = sg.ge.play(battle) # Play the battle
         self.session.add(battle)
-        self.session.commit()
+        if autocommit:
+            self.session.commit()
         return battle
-    
-    # Prevent the update of attrs to None
-    @event.listens_for(TROLL, 'before_update')
-    @event.listens_for(USER, 'before_update')
-    @event.listens_for(METAMOB, 'before_update')
-    @event.listens_for(METATRESOR, 'before_update')
-    @event.listens_for(METACAPA, 'before_update')
-    @event.listens_for(MOB, 'before_update')
-    @event.listens_for(CDM, 'before_update')
-    @event.listens_for(AA, 'before_update')
-    @event.listens_for(IDC, 'before_update')
-    @event.listens_for(IDT, 'before_update')
-    @event.listens_for(BATTLE, 'before_update')
-    @event.listens_for(PIEGE, 'before_update')
-    @event.listens_for(PORTAL, 'before_update')
-    @event.listens_for(GROUP, 'before_update')
-    @event.listens_for(HOOK, 'before_update')
-    def before_udpate(mapper, connection, target):
-        state = inspect(target)
-        for attr in state.attrs:
-            hist = state.get_history(attr.key, True)
-            if hist.has_changes() and hist.added[0] is None and len(hist.deleted) > 0:
-                setattr(target, attr.key, hist.deleted[0])
     
     # Destructor
     def __del__(self):

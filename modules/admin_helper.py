@@ -119,84 +119,70 @@ class AdminHelper:
                         conf.touch()
                         sg.db.add(conf)
 
-    # Create or update users from JSON file, then if a group is set also do the binding and create the troll
-    def add_json_users(self, json_file):
-        with codecs.open(json_file, 'r', sg.DEFAULT_CHARSET) as f:
-            data = json.load(f)
-            for u in data[self.json_users_tag]:
-                user = USER()
-                user.build_from_json(u)
-                role = user.role if hasattr(user, 'role') and user.role else 1
-                user = sg.db.add(user)
-                if sg.group:
-                    try:
-                        assoc = sg.db.session.query(AssocUsersGroups).filter(AssocUsersGroups.user_id == user.id, AssocUsersGroups.group_id == sg.group.id).one()
-                        assoc.role = role
-                    except NoResultFound as e:
-                        assoc = AssocUsersGroups(user_id=user.id, group_id=sg.group.id, role=role);
-                        user.groups.append(assoc)
-                    user.pwd = None # Required for avoiding double hashing
-                    sg.db.add(user)
-                    troll = TROLL()
-                    troll.id = user.id
-                    troll.user_id = user.id
-                    troll.group_id = sg.group.id
-                    sg.db.add(troll)
-
     def auto_tasks(self):
-        global locked
-        locked = False
-        mailDirPath = self.mailDirPath
-        auto_task_mail_walk = self.__auto_task_mail_walk
-        auto_task_hook_push = self.__auto_task_hook_push
-        # Definition of the watchdog handler
-        class MailFileHandler(FileSystemEventHandler):
-            def on_created(self, event):
-                if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
-                    return
-                self.process(event.src_path)
-            def on_moved(self, event):
-                if event.is_directory or not (os.sep + 'new' + os.sep) in event.dest_path:
-                    return
-                self.process(event.dest_path)
-            def on_modified(self, event):
-                if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
-                    return
-                self.process(event.src_path)
-            def process(self, path):
-                global locked
-                try:
+        pid = os.fork()
+        if pid == 0:
+            # Son of the fork. For avoiding long updates from MH (Vue2 in particular) blocking the mails
+            sg.db.session = sg.db.sessionMaker() # For avoiding concurrent sessions
+            while True:
+                time.sleep(120)
+                self.__auto_task_per_user_check()
+                self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
+        else:
+            # Dad of the fork
+            global locked
+            locked = False
+            mailDirPath = self.mailDirPath
+            auto_task_mail_walk = self.__auto_task_mail_walk
+            auto_task_hook_push = self.__auto_task_hook_push
+            # Definition of the watchdog handler
+            class MailFileHandler(FileSystemEventHandler):
+                def on_created(self, event):
+                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
+                        return
+                    self.process(event.src_path)
+                def on_moved(self, event):
+                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.dest_path:
+                        return
+                    self.process(event.dest_path)
+                def on_modified(self, event):
+                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
+                        return
+                    self.process(event.src_path)
+                def on_deleted(self, event):
+                    pass
+                def process(self, path):
+                    global locked
                     while locked:
                         time.sleep(1)
                     locked = True
-                    m = re.search(mailDirPath + '(' + os.sep + ')?(?P<flatname>[^\.' + os.sep + ']+).*', path)
-                    flatname = m.group('flatname')
-                    sg.logger.info('New mail %s for group %s' % (path, flatname,))
-                    auto_task_mail_walk(flatname)
-                    auto_task_hook_push(flatname)
-                except Exception as e:
-                    sg.logger.error(str(e))
-                locked = False 
-        # Actual logic for the auto tasks
-        eh = MailFileHandler()
-        obs = Observer()
-        obs.schedule(eh, self.mailDirPath, recursive=True)
-        obs.start()
-        try:
-            while True:
-                time.sleep(120)
-                while locked:
-                    time.sleep(1)
-                locked = True
-                self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
-                self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
-                self.__auto_task_per_user_check()
-                self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
-                self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
-                locked = False
-        except KeyboardInterrupt:
-            obs.stop()
-        obs.join()
+                    if os.path.exists(path): # Mail could have been processed while waiting
+                        try:
+                            m = re.search(mailDirPath + '(' + os.sep + ')?(?P<flatname>[^\.' + os.sep + ']+).*', path)
+                            flatname = m.group('flatname')
+                            auto_task_mail_walk(flatname)
+                            auto_task_hook_push(flatname)
+                        except Exception as e:
+                            sg.logger.error(str(e))
+                    locked = False
+            # Actual logic for the auto tasks
+            eh = MailFileHandler()
+            obs = Observer()
+            obs.schedule(eh, self.mailDirPath, recursive=True)
+            obs.start()
+            try:
+                while True:
+                    time.sleep(120)
+                    while locked:
+                        time.sleep(1)
+                    locked = True
+                    self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
+                    self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
+                    self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
+                    locked = False
+            except KeyboardInterrupt:
+                obs.stop()
+            obs.join()
 
     def __auto_task_per_user_check(self):
         users = sg.db.session.query(USER).all()
@@ -205,22 +191,24 @@ class AdminHelper:
         sg.logger.info('Checking if an SP refresh is needed for each user...')
         for user in users:
             if user.dyn_sp_refresh:
-                if not user.last_dyn_sp_call or ((datetime.datetime.utcnow() - user.last_dyn_sp_call).total_seconds() >= (user.dyn_sp_refresh * 60)):
+                if not user.last_dyn_sp_call or ((datetime.datetime.utcnow() - user.last_dyn_sp_call).total_seconds() >= (user.dyn_sp_refresh * 60 * 2)):
                     user.last_dyn_sp_call = datetime.datetime.utcnow()
                     users_dyn_sp.append(user)
             if user.static_sp_refresh:
-                if not user.last_static_sp_call or ((datetime.datetime.utcnow() - user.last_static_sp_call).total_seconds() >= (user.static_sp_refresh * 60)):
+                if not user.last_static_sp_call or ((datetime.datetime.utcnow() - user.last_static_sp_call).total_seconds() >= (user.static_sp_refresh * 60 * 2)):
                     user.last_static_sp_call = datetime.datetime.utcnow()
                     users_static_sp.append(user)
             sg.db.add(user)
         mh = MHCaller()
         if len(users_dyn_sp) > 0:
             for user in users_dyn_sp:
-                sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
                 try:
+                    sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
                     mh.profil4_sp_call(user, False)
+                    sg.logger.info('Calling Vue2 MH SP for %s...', (user.id, ))
+                    mh.vue2_sp_call(user, False)
                 except Exception as e:
-                    sg.logger.error("Fail to call Profil4 MH SP! (Error: %s)" % (str(e), ))
+                    sg.logger.error("Fail to call MH SP! (Error: %s)" % (str(e), ))
         if len(users_static_sp) > 0:
             pass
     
@@ -233,7 +221,6 @@ class AdminHelper:
             sg.db.add(conf)
     
     def __auto_task_mh_ftp_call(self):
-        sg.logger.info('Updating MH FTPs for all...')
         mh = MHCaller()
         try:
             mh.call('trolls2', [])

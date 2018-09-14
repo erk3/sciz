@@ -63,13 +63,14 @@ class MailWalker:
             # Finally walk over the mails
             for (file_name, subject, body, time, vie) in sorted_mails:
                 try:
+                    sg.logger.info('New mail %s' % (file_name, ))
                     objs = self.mp.parse(subject, body, group)
                     if objs != None:
                         if not type(objs) is list: objs = [objs]
                         for obj in objs:
                             if not isinstance(obj, MAILHELPER):
-                                obj = sg.db.add(obj)
-                                sg.db.add_event(obj)
+                                obj = sg.db.add(obj, True)
+                                sg.db.add_event(obj, True)
 
                     # Archive the mail
                     new_file = self.mailDirPath + os.sep + group.mail.split('@')[0] + os.sep + 'parsed' + os.sep + os.path.basename(file_name)

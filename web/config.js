@@ -30,7 +30,8 @@ config.db.details = {
   dialect: 'mysql',
   operatorsAliases: Op,
   define: {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
   },
   logging: false
 };

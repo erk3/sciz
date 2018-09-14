@@ -197,6 +197,7 @@ class Requester:
     
     def __request_troll_update(self, id):
         # The third parameter 'verbose' handles the output
+        self.mhCaller.call('vue2', [id], False)
         self.mhCaller.call('profil4', [id], True)
 
     def __request_troll_aa(self, id, limit):

@@ -23,6 +23,7 @@ var MetacapaTemplate = require('../models/metacapa.js');
 var IDTTemplate = require('../models/idt.js');
 var EventTemplate = require('../models/event.js');
 var PadTemplate = require('../models/pad.js');
+var LieuTemplate = require('../models/lieu.js');
 
 /*
  * Main database connection
@@ -58,6 +59,7 @@ Templates.push(MetacapaTemplate);
 Templates.push(IDTTemplate);
 Templates.push(EventTemplate);
 Templates.push(PadTemplate);
+Templates.push(LieuTemplate);
 
 Templates.forEach(function (Template) {
   DB[Template.name] = DB.define(Template.table, Template.modelDefinition, Template.modelOptions);

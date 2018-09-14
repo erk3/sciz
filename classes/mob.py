@@ -107,6 +107,14 @@ class MOB(sg.SqlAlchemyBase):
     bonus_malus = Column(String(150))
     # Portée du pouvoir (capacité spéciale)
     portee_capa = Column(String(50))
+    # Position axe X
+    pos_x = Column(Integer)
+    # Position axe Y
+    pos_y = Column(Integer)
+    # Posistion axe N
+    pos_n = Column(Integer)
+    # Date de dernière vue à la position
+    last_seen = Column(DateTime)
 
     # Associations Many-To-One
     cdms = relationship("CDM", primaryjoin="and_(MOB.id==CDM.mob_id, MOB.group_id==CDM.group_id)", back_populates="mob")
@@ -145,7 +153,7 @@ class MOB(sg.SqlAlchemyBase):
 
     # Update mob definition with the more accurate value
     def update_from_new(self, mob):
-        sg.copy_properties(mob, self, ['age', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus', 'portee_capa'], False)
+        sg.copy_properties(mob, self, ['nom', 'age', 'tag', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'nb_att_tour', 'vit_dep', 'vlc', 'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus', 'portee_capa', 'pos_x', 'pos_y', 'pos_n', 'last_seen'], False)
         
         self.niv_min = sg.do_unless_none((max), (self.niv_min, mob.niv_min))
         self.pv_min = sg.do_unless_none((max), (self.pv_min, mob.pv_min))
@@ -207,6 +215,9 @@ class MOB(sg.SqlAlchemyBase):
             self.s_capa = '%s %s %s' % (self.s_capa, self.s_delimiter, self.s_capa_tour)
         if self.s_capa_desc:
             self.s_capa = '%s %s %s' % (self.s_capa_desc, self.s_delimiter, self.s_capa)
+        self.s_pos = self.s_pos.format(o=self) if self.s_pos_x != '' else ''
+        self.s_last_seen = sg.format_time(self.last_seen, self.s_time) if self.last_seen else ''
+        self.s_last_seen_at = self.s_last_seen_at.format(o=self) if self.last_seen else ''
         # Filter out attrs not wanted (but separator)
         if attrs is not None:
             for match in re.findall('\{o\.s_(.+?)\}', self.s_mob_stats):

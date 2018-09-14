@@ -98,15 +98,15 @@ class MailParser:
         ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(ignored_regexps, subject)
         if key is not None: 
-            sg.logger.warning('Ignored mail, aborting...')
+            sg.logger.warning('Ignored mail \'%s\', aborting...' % (subject, ))
             return None
         # Loop over the regexp for subject matching
         regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(regexps, subject)
         if key is None:
-            sg.logger.warning('No regexp matching mail subject \'%s\', aborting...' % (subject))
+            sg.logger.warning('No regexp matching mail subject \'%s\', aborting...' % (subject, ))
             return None
-        sg.logger.info('Found \'%s\' in the mail subject' % (key))
+        sg.logger.info('Found \'%s\'' % (key))
         # Routine is called based on key, which must be 'CLASS(_\w+)?'
         # formated, for CLASS.build or CLASS.build_\1 to be called.
         # This is probably dangerous behavior but since no people should be

@@ -56,6 +56,8 @@ class TROLL(sg.SqlAlchemyBase):
     pos_y = Column(Integer)
     # Posistion axe N
     pos_n = Column(Integer)
+    # Date de dernière vue à la position
+    last_seen = Column(DateTime)
     # Nombre de points de vie restants
     pv = Column(Integer)
     # Bonus de PdV physique
@@ -233,12 +235,6 @@ class TROLL(sg.SqlAlchemyBase):
         self.aa_base_arm_phy_max = sg.do_unless_none((min), (self.aa_base_arm_phy_max, aa.arm_phy_max))
         self.aa_base_vue_max = sg.do_unless_none((min), (self.aa_base_vue_max, aa.vue_max))
         
-    def update_from_new(self, troll):
-        lst = ['pv']
-        if self.nom is None: # Update the name of the troll only if not known so far (on the fly troll adding case)
-            lst.append('nom')
-        sg.copy_properties(troll, self, lst, False)
-
     def estimate_next_dla(self):
         try:
             self.nextDLA = None
@@ -296,8 +292,10 @@ class TROLL(sg.SqlAlchemyBase):
             setattr(self, 's_' + key, s)
         # Compute some things
         self.s_troll_nom = self.stringify_name()
-        self.s_last_mhsp4_call = sg.format_time(self.last_mhsp4_call, self.s_time) if self.s_last_mhsp4_call else ''
+        self.s_last_mhsp4_call = sg.format_time(self.last_mhsp4_call, self.s_time) if self.last_mhsp4_call else ''
         self.s_last_update = self.s_last_update.format(o=self) if self.s_last_mhsp4_call != '' else ''
+        self.s_last_seen = sg.format_time(self.last_seen, self.s_time) if self.last_seen else ''
+        self.s_last_seen_at = self.s_last_seen_at.format(o=self) if self.last_seen else ''
         self.s_dla = sg.format_time(self.dla, self.s_time) if self.dla else ''
         self.s_next_dla = sg.format_time(self.estimate_next_dla(), self.s_time)
         self.s_dla_full = self.s_dla_full.format(o=self) if self.s_dla != '' else ''
