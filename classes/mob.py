@@ -115,6 +115,8 @@ class MOB(sg.SqlAlchemyBase):
     pos_n = Column(Integer)
     # Date de dernière vue à la position
     last_seen = Column(DateTime)
+    # Mort ?
+    dead = Column(Boolean)
 
     # Associations Many-To-One
     cdms = relationship("CDM", primaryjoin="and_(MOB.id==CDM.mob_id, MOB.group_id==CDM.group_id)", back_populates="mob")
@@ -199,6 +201,10 @@ class MOB(sg.SqlAlchemyBase):
                     setattr(self, key, value)
                     continue
                 elif hasattr(self, key) and getattr(self, key) is not None:
+                    try: 
+                        setattr(self, key, int(getattr(self, key)))
+                    except ValueError:
+                        pass
                     if isinstance(getattr(self, key), bool):
                         s = value.format(sg.boolean2French(getattr(self, key)))
                     else:
@@ -215,9 +221,9 @@ class MOB(sg.SqlAlchemyBase):
             self.s_capa = '%s %s %s' % (self.s_capa, self.s_delimiter, self.s_capa_tour)
         if self.s_capa_desc:
             self.s_capa = '%s %s %s' % (self.s_capa_desc, self.s_delimiter, self.s_capa)
-        self.s_pos = self.s_pos.format(o=self) if self.s_pos_x != '' else ''
         self.s_last_seen = sg.format_time(self.last_seen, self.s_time) if self.last_seen else ''
         self.s_last_seen_at = self.s_last_seen_at.format(o=self) if self.last_seen else ''
+        self.s_pos = self.s_pos.format(o=self) if self.s_pos_x != '' else ''
         # Filter out attrs not wanted (but separator)
         if attrs is not None:
             for match in re.findall('\{o\.s_(.+?)\}', self.s_mob_stats):

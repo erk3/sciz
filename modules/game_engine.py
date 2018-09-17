@@ -98,4 +98,7 @@ class GameEngine:
         if hasattr(battle, 'retraite') and battle.retraite is not None:
             # Modifie la position connue du troll ?
             pass
+        # Monstre mort ?
+        if hasattr(battle, 'dead') and battle.dead is not None and dm is not None:
+            dm.dead = True
         return battle

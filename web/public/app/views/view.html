@@ -45,7 +45,7 @@
                 Sélectionner un trõll <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                <li ng-repeat="troll in vc.trolls" role="menuitem"><a href="#" ng-click="vc.origX = troll.pos_x; vc.origY = troll.pos_y; vc.origN = troll.pos_n; vc.portee = troll.base_vue + troll.bonus_vue_phy + troll.bonus_vue_mag">{{troll.nom}}</a></li>
+                <li ng-repeat="troll in vc.trolls" role="menuitem"><a href="#" ng-click="vc.origX = troll.pos_x; vc.origY = troll.pos_y; vc.origN = troll.pos_n; vc.portee = troll.base_vue + troll.bonus_vue_phy + troll.bonus_vue_mag; vc.loadView();">{{troll.nom}}</a></li>
               </ul>
             </div>
           </div>

@@ -9,8 +9,7 @@ ViewController.getView = function (req, res) {
   
   var groupID = (req.query.groupID) ? parseInt(req.query.groupID) : 0;
     
-  // var where_troll = {[DB.Op.and]: [ {id: req.user.id}, {user_id: req.user.id}, {group_id: groupID} ]};
-  var where_troll = {[DB.Op.and]: [ {user_id: {[DB.Op.ne]: null}}, {group_id: groupID} ]};
+  var where_troll = {[DB.Op.and]: [ {user_id: {[DB.Op.not]: null}}, {group_id: groupID} ]};
   
   DB.Troll.unscoped().findAll({where: where_troll, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n', 'last_seen', 'base_vue', 'bonus_vue_phy', 'bonus_vue_mag']})
     .then(function (trolls) {
@@ -42,14 +41,16 @@ ViewController.getView = function (req, res) {
         ]
       };
 
-      var where_group = {[DB.Op.and]: [ {group_id: groupID}, where_orig_x, where_orig_y, where_orig_n ]};
+      var where_group_troll = {[DB.Op.and]: [ {group_id: groupID}, where_orig_x, where_orig_y, where_orig_n ]};
+      
+      var where_group_mob = {[DB.Op.and]: [ {group_id: groupID}, {dead: {[DB.Op.not]: true}}, where_orig_x, where_orig_y, where_orig_n ]};
 
       var where_no_group = {[DB.Op.and]: [ where_orig_x, where_orig_y, where_orig_n ]};
      
       var promises = []
       
-      promises[0] = DB.Troll.unscoped().findAll({where: where_group, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
-      promises[1] = DB.Mob.unscoped().findAll({where: where_group, attributes: ['id', 'nom', 'age', 'tag', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
+      promises[0] = DB.Troll.unscoped().findAll({where: where_group_troll, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
+      promises[1] = DB.Mob.unscoped().findAll({where: where_group_mob, attributes: ['id', 'nom', 'age', 'tag', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
       promises[2] = DB.Lieu.unscoped().findAll({where: where_no_group, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n']});
      
       Promise.all(promises)

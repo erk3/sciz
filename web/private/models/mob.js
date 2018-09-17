@@ -77,7 +77,8 @@ MobTemplate.modelDefinition = {
   pos_x: {type: sequelize.INTEGER},
   pos_y: {type: sequelize.INTEGER},
   pos_n: {type: sequelize.INTEGER},
-  last_seen: {type: sequelize.DATE}
+  last_seen: {type: sequelize.DATE},
+  dead: {type: sequelize.BOOLEAN}
 };
 
 MobTemplate.modelOptions = {

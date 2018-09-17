@@ -16,7 +16,7 @@ class LIEU(sg.SqlAlchemyBase):
     # Identifiant unique
     id = Column(Integer, autoincrement=True)
     # Nom du lieu
-    nom = Column(String(50))
+    nom = Column(String(250))
     # Pos X du lieu
     pos_x = Column(Integer)
     # Pos Y du lieu

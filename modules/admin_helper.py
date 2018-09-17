@@ -123,7 +123,7 @@ class AdminHelper:
         pid = os.fork()
         if pid == 0:
             # Son of the fork. For avoiding long updates from MH (Vue2 in particular) blocking the mails
-            sg.db.session = sg.db.sessionMaker() # For avoiding concurrent sessions
+            sg.db.connect() # For avoiding concurrent session
             while True:
                 time.sleep(120)
                 self.__auto_task_per_user_check()
@@ -163,6 +163,7 @@ class AdminHelper:
                             auto_task_mail_walk(flatname)
                             auto_task_hook_push(flatname)
                         except Exception as e:
+                            sg.db.session.rollback()
                             sg.logger.error(str(e))
                     locked = False
             # Actual logic for the auto tasks

@@ -273,8 +273,11 @@ class TROLL(sg.SqlAlchemyBase):
                     setattr(self, key, value)
                     continue
                 elif hasattr(self, key) and getattr(self, key) is not None:
+                    try: 
+                        setattr(self, key, int(getattr(self, key)))
+                    except ValueError:
+                        pass
                     if isinstance(getattr(self, key), bool):
-                        # s = value.format(sg.boolean2French(getattr(self, key), value))
                         s = sg.boolean2French(getattr(self, key), value)
                     else:
                         s = value.format(getattr(self, key))

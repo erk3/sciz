@@ -64,11 +64,11 @@ class SQLHelper:
     def connect(self):
         try:
             db_url = 'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name, )
-            self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET)
+            self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_pre_ping=True)
             if self.db_name and not database_exists(self.engine.url):
                 create_database(self.engine.url)
-            self.sessionMaker = orm.sessionmaker(bind=self.engine)
-            self.session = self.sessionMaker()
+            self.sessionMaker = orm.sessionmaker(bind=self.engine, expire_on_commit = False)
+            self.session = orm.scoped_session(self.sessionMaker)
         except (exc.SQLAlchemyError, exc.DBAPIError) as e:
             e.sciz_logger_flag = True
             sg.logger.error('Fail to conect to the DB! (SQLAlchemy error: %s)' % (str(e), ))
