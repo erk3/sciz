@@ -221,6 +221,9 @@ function createAssoc (req, res, potentialAssoc, data) {
         if (!troll) {
           troll = {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id, user_id: potentialAssoc.where.user_id};
           DB.Troll.create(troll);
+        } else if (troll.user_id === null) {
+          var data = {user_id: potentialAssoc.where.user_id};
+          DB.Troll.update(data, potentialTroll);
         }
         res.json({success: true});
       });
@@ -251,6 +254,9 @@ function updateAssoc (req, res, potentialAssoc, data) {
         if (!troll) {
           troll = {group_id: potentialAssoc.where.group_id, id: potentialAssoc.where.user_id, user_id: potentialAssoc.where.user_id};
           DB.Troll.create(troll);
+        } else if (troll.user_id === null) {
+          var data = {user_id: potentialAssoc.where.user_id};
+          DB.Troll.update(data, potentialTroll);
         }
         res.json({success: true});
       });
@@ -346,6 +352,9 @@ AdminController.leaveGroup = function (req, res) {
     if (!assoc) {
       res.status(401).json({message: 'Le dernier administrateur ne peut pas quitter le groupe !'});
     } else {
+      var potentialTroll = {where: {group_id: req.query.groupID, user_id: req.user.id}};
+      var data = {user_id: null};
+      DB.Troll.update(data, potentialTroll);
       DB.AssocUsersGroups.destroy(potentialAssoc)
       .then(function (assoc) {
         res.json({success: true});
@@ -359,12 +368,11 @@ AdminController.leaveGroup = function (req, res) {
 
 AdminController.excludeGroup = function (req, res) {
   var potentialAssoc = {where: {group_id: req.query.groupID, user_id: req.query.userID}};
-  
   if (req.body.userID === req.user.id) {
     res.status(401).json({message: 'Un administraeur ne peut pas s\'exclure lui même !'});
   } else {
     var potentialTroll = {where: {group_id: req.query.groupID, user_id: req.query.userID}};
-    var data = {user_id: null}
+    var data = {user_id: null};
     DB.Troll.update(data, potentialTroll);
     DB.AssocUsersGroups.destroy(potentialAssoc)
       .then(function (assoc) {
