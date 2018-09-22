@@ -93,6 +93,11 @@ class AA(sg.SqlAlchemyBase):
                     setattr(self, key, value)
                     continue
                 elif hasattr(self, key) and getattr(self, key) is not None:
+                    try:
+                        if isinstance(getattr(self, key), (str, unicode)):
+                          setattr(self, key, int(getattr(self, key)))
+                    except ValueError, TypeError:
+                        pass
                     if isinstance(getattr(self, key), bool):
                         s = value.format(sg.boolean2French(getattr(self, key)))
                     else:

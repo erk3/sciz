@@ -230,9 +230,10 @@ class BATTLE(sg.SqlAlchemyBase):
                     setattr(self, key, value)
                     continue
                 elif hasattr(self, key) and (getattr(self, key) is not None) and (not isinstance(getattr(self, key), bool) or getattr(self, key)):
-                    try: 
-                        setattr(self, key, int(getattr(self, key)))
-                    except ValueError:
+                    try:
+                        if isinstance(getattr(self, key), (str, unicode)):
+                          setattr(self, key, int(getattr(self, key)))
+                    except ValueError, TypeError:
                         pass
                     s = re.sub(r'\n', ' ', value.format(getattr(self, key)))
             except KeyError as e:

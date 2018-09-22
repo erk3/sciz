@@ -463,8 +463,8 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
     var min = vm.minProf;
     var max = vm.maxProf;
     var date = vm.date;
-    var name = vm.filter.trim();
-    var rname = new RegExp(name, 'i');
+    var name = vm.filter;
+    var rname = (name === '' || name === undefined || name === null) ? null : new RegExp(name.trim(), 'i');
     if (min > 0) {
       min *= -1;
     }
@@ -476,9 +476,6 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
       max = min;
       min = temp;
     }
-    // if (!$("#mh-view-depth-cb").prop("checked")) {
-    //  min = max = NaN;
-    // }
     document.querySelectorAll('#mountyhall-view-grid .mh-cell').forEach(function (e) {
       var cell = angular.element(e).dat('cell');
       ['lieux', 'mobs', 'trolls'].forEach(function (key) {
@@ -493,22 +490,23 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
             var filtered = (min && o.pos_n < min) ||
               (date && utilService.dateDiffInDays(new Date(o.last_seen), new Date()) > date) ||
               (max && o.pos_n > max) ||
-              (rname && !rname.test(o.nom));
+              (rname !== null && !rname.test(o.nom));
             if ((i < elems.length) && (filtered !== wasFiltered)) {
               changed = true;
               elems[i].classList.toggle('filtered', filtered);
-              if (filtered) {
-                elems[i].classList.add('filtered');
-              } else {
-                elems[i].classList.remove('filtered');
-              }
             }
             if (!filtered) {
               n++;
             }
           }
           if (changed) {
-            angular.element(document.querySelector('.nb-' + key, e)).text(n).toggleClass('filtered', !n);
+            var nbElem = angular.element(e.querySelector('.nb-' + key));
+            if (nbElem && nbElem.length > 0) {
+              nbElem.text(n);
+              if ((n === 0 && !nbElem[0].classList.contains('filtered')) || (n !== 0 && nbElem[0].classList.contains('filtered'))) {
+                nbElem[0].classList.toggle('filtered');
+              }
+            }
           }
         }
       });
