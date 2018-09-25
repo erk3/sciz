@@ -148,7 +148,7 @@ class BATTLE(sg.SqlAlchemyBase):
                 self.def_troll_id = self.def_id
         if hasattr(self, 'contre_att') and self.contre_att is not None:
             self.subtype = u' Contre-Attaque'
-        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type:
+        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type and not u'Insulte' in self.type:
             self.type += u' résisté'
         self.build()
    
@@ -219,6 +219,17 @@ class BATTLE(sg.SqlAlchemyBase):
         self.build_def()
     
     def build_att_balayage(self):
+        self.build_att()
+    
+    def build_att_insulte(self):
+        if hasattr(self, 'resist') and self.resist is not None:
+            self.type += u' sans effet'
+        elif hasattr(self, 'insulte_nok') and self.insulte_nok is not None:
+            self.type += u' efficace'
+        elif hasattr(self, 'insulte_meh') and self.insulte_meh is not None:
+            self.type += u' à l\'effet incertain'
+        elif hasattr(self, 'insulte_ok') and self.insulte_ok is not None:
+            self.type += u' inefficace'
         self.build_att()
 
     def stringify(self, reprs, short, attrs):

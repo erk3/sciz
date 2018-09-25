@@ -130,14 +130,14 @@ class MOB(sg.SqlAlchemyBase):
     
     # Loop over every metamobs in the list to find the longest one matching the mob name...
     def link_metamob(self, metamobs):
-        result_id = -1
+        result_id = None
         result_nom = ''
-        if self.nom != None:
+        if self.nom is not None:
             for metamob in metamobs:
                 if metamob.nom in self.nom and len(metamob.nom) > len(result_nom):
                     result_nom = metamob.nom
                     result_id = metamob.id
-            if result_id > 0:
+            if result_id is not None:
                 self.metamob_id = result_id
             else:
                 sg.logger.warning('Cannot match \'%s\' to a metamob' % self.nom)
@@ -187,9 +187,9 @@ class MOB(sg.SqlAlchemyBase):
         if str_format:
             return str_format.format(o=self)
         if self.tag:
-            return '%s [%s] %s (%d)' % (self.nom, self.age, self.tag, self.id)
+            return '%s [%s] %s (%d)' % (self.nom, self.age, self.tag, int(self.id))
         else:
-            return '%s [%s] (%d)' % (self.nom, self.age, self.id)
+            return '%s [%s] (%d)' % (self.nom, self.age, int(self.id))
     
     def stringify(self, reprs, short, attrs):
         self.s_mob_nom = self.stringify_name()

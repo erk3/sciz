@@ -64,6 +64,7 @@ class SQLHelper:
     def connect(self):
         try:
             db_url = 'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name, )
+            # MySQL variable 'innodb_lock_wait_timeout' should be increased to something like 120 seconds (default 50)
             self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_pre_ping=True)
             if self.db_name and not database_exists(self.engine.url):
                 create_database(self.engine.url)

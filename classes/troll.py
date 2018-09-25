@@ -259,9 +259,9 @@ class TROLL(sg.SqlAlchemyBase):
     def stringify_name(self, str_format=None):
         if str_format:
             return str_format.format(o=self)
-        self.s_nom_troll = ('%s (%d)' % (self.nom, self.id))
+        self.s_nom_troll = ('%s (%d)' % (self.nom, int(self.id)))
         if self.user and self.user.pseudo:
-            self.s_nom_troll = ('%s (%d)' % (self.user.pseudo, self.id))
+            self.s_nom_troll = ('%s (%d)' % (self.user.pseudo, int(self.id)))
         return self.s_nom_troll
 
     def stringify(self, reprs, short, attrs):

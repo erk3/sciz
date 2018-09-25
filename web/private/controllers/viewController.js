@@ -19,7 +19,8 @@ ViewController.getView = function (req, res) {
       var origY = (req.query.origY) ? parseInt(req.query.origY) : (troll.pos_y || 0);
       var origN = (req.query.origN) ? parseInt(req.query.origN) : (troll.pos_n || 0);
       var portee = (req.query.portee) ? parseInt(req.query.portee) : (troll.base_vue || 0) + (troll.bonus_vue_phy || 0) + (troll.bonus_vue_mag || 0);
-      
+      portee = Math.max(portee, 0);
+
       var where_orig_x = {
         [DB.Op.and]: [
           {pos_x: {[DB.Op.gte]: origX - portee}},
