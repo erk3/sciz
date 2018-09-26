@@ -118,7 +118,7 @@ function trollsCtrl($scope, $http, authService, utilService) {
     }
     troll.tEtat = '';
     troll.tEtat += troll.intangible ? (troll.tEtat === '' ? '' : ' ; ') + 'Intangible' : '';
-    troll.tEtat += troll.camouflage ? (troll.tEtat === '' ? '' : ' ; ') + 'Camouglé' : '';
+    troll.tEtat += troll.camouflage ? (troll.tEtat === '' ? '' : ' ; ') + 'Camouflé' : '';
     troll.tEtat += troll.invisible ? (troll.tEtat === '' ? '' : ' ; ') + 'Invisible' : '';
     troll.tEtat += troll.levite ? (troll.tEtat === '' ? '' : ' ; ') + 'Lévite' : '';
     troll.tEtat += troll.course ? (troll.tEtat === '' ? '' : ' ; ') + 'En course' : '';
