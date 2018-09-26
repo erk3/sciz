@@ -11,6 +11,7 @@ from classes.portal import PORTAL
 from classes.idc import IDC
 from classes.idt import IDT
 from modules.mail_helper import MAILHELPER
+import itertools
 import modules.globals as sg
 
 ## MailParser class for SCIZ
@@ -120,20 +121,44 @@ class MailParser:
         # associated regexps to match in the mail
         regexps = self.__load_regexps_section([sg.CONF_SECTION_COMMON, _class, key])
         matchs = map(lambda (k, r): (k, r.finditer(body)), regexps)
+        # We build a base event with the regexps that matched only once (first entry in res dictionnary)
+        # And a list of events with the regexps that matched several time in the following entries of res dictionnary
+        FLAG_EXCLUDE = 'FLAG_EXCLUDE'
+        FLAG_CHECK_EXCLUDES = 'FLAG_CHECK_EXCLUDES'
+        excludes = []
         for (key, matchall) in matchs:
-            i = 0
+            # Filter out any excluded match for this regexp and count the number of resulting items to process (in a new set)
+            c = 0
+            matchall_filtered = []
             for match in matchall:
                 if match is not None:
-                    if not res.has_key(i):
-                        res[i] = {}
-                    res[i].update(match.groupdict())
+                    if match.groupdict().has_key(FLAG_EXCLUDE): # If an exclude is flagged, add it for next iterations (following regexp matchs at this position won't be processed)
+                        excludes.append((match.start(), match.end()))
+                    if (len(excludes) == 0 or not match.groupdict().has_key(FLAG_CHECK_EXCLUDES) or not any((match.start() >= s and match.end() <= e) for (s,e) in excludes)):
+                        matchall_filtered.append(match)
+                        c += 1
+            # Populate the entries
+            i = 1 if c > 1 else 0
+            for match in matchall_filtered:
+                if not res.has_key(i):
+                    res[i] = {}
+                res[i].update(match.groupdict())
                 i += 1
-        # Update all the events with the first one
-        if len(res) > 1:
+        n = len(res)
+        # Look for any DUPLICATE flag (parent object will lose its flag but child object will keep it and should be specialy processed in build methods)
+        FLAGS_DUPLICATE = ['capa_dead']
+        for i in xrange(n):
+            if any((res[i].has_key(flag) and res[i][flag] is not None) for flag in FLAGS_DUPLICATE):
+                res[len(res)] = res[i].copy()
+                for flag in FLAGS_DUPLICATE:
+                    del res[i][flag]
+        # Update all the (not duplicated) events with the first one
+        if n > 1:
             for (key, value) in res[0].items():
                 for (i, values) in res.items():
                     if i > 0 and not values.has_key(key):
                         res[i].update({key: value})
+            del res[0]
         # Finally, create and populate the object (CDM, BATTLE, PIEGE...)
         # usging the dictionary of named group that matched
         objs = []

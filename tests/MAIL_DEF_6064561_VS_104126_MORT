@@ -1,0 +1,158 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id +AlZO9Wtq1vPagAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:03:33 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id E26D92A60ADE
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:03:33 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.174; helo=mail-oi1-f174.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="InZd7DTS";
+	dkim-atps=neutral
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 665C32A60015
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:03:30 +0000 (UTC)
+Received: by mail-oi1-f174.google.com with SMTP id a203-v6so4839036oib.0
+        for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 09:03:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=E+3IrxlW67JDX/HL+VBWf9+tPubt+yTP62T1C2MBhw4=;
+        b=InZd7DTS62ijABeM3vNkyF2ptBxY/pbgglprto+KQAZd9WJuqtiKdGD8j4x7/QpUh0
+         Bx3EMTtIpLRWmdJWLlBxmp0s4A8kunnWpdslr6kPBTy1BtM6h27cJHmPIjMeLEfA/miA
+         sHkpg2JfcI5NqXy/lqesj7Iy6Af7x4hJIJILzae0e43w0exRcxiGKVbYviH/1CBjbDkU
+         imqeYv0ZzJ+1gKBkadKgXRNwvSRtNbDDRTAfOmjIfbVz6QwONjjjiDgh21zoCRnvY50+
+         Lr9dbeVr6nj2Ifwq0IrFZkdyLWn4qsx5ICO33ajtSQeQ/eSKNHegIWha4AWpbH8trr0U
+         CNWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=E+3IrxlW67JDX/HL+VBWf9+tPubt+yTP62T1C2MBhw4=;
+        b=FsB4LSluQEUtf13jIcA3d5ZkXRe8FgfZJK87aPEnl2sUIuFW6dcclqmjpBs9OmBqtm
+         uaKQLinXCdYpFGmeIB6FdI/p/bJ7d7bI8mDJ8b5zBKqMl8ZztTPDO5CpXeZQgpg+JGqe
+         vMNFWpBfN6J0SeB2EGhxkAtN//R5xtOgE+Zhtg5IQnwvkaAZBcbzolvnzglkotHw1qA8
+         qEEeXoiaLqEwWq35CRBeVjEgxtiT2btT4QaWYz6B37BOYeVh0Z+qm+dmCuOU2xFm0mnM
+         FsOChXDQ1RcNKCoIKMWgYu2IC87e+0C5pfYM2uvKGXj6Smp61KCV0y36RmRAkF3kwdVe
+         I7Cw==
+X-Gm-Message-State: ABuFfogvFy6kEQnZN/lMDAnLXW664IvSvD0VTo9HAyJ6d+XZaIcRfdUK
+	QGXBMLMq6Si4chr3ItfVyzriArG/DnFx/sn1p+GIxQ==
+X-Google-Smtp-Source: ACcGV60urtlKO9g3V8b6gv2ZwZB63sDbjc7/OB4ITD2uxn6iUntiughdpk+jQx7Uu3f5zoO7pjBam2QNS4pSlslJs4k=
+X-Received: by 2002:aca:ab0e:: with SMTP id u14-v6mr1020617oie.53.1537977802536;
+ Wed, 26 Sep 2018 09:03:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <ef2158c86dcf8ab3be98a8789adb0967@localhost.localdomain>
+In-Reply-To: <ef2158c86dcf8ab3be98a8789adb0967@localhost.localdomain>
+From: Censored <censored@gmail.com>
+Date: Wed, 26 Sep 2018 18:03:04 +0200
+Message-ID: <CALtH2Jgq=Eovrgi8W3pxfc4zea4ZnPuGVGc1JbH6krpbDUGaSQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_D=C3=A9fenseur_=2D_Attaque_mortelle_d=27un?=
+	=?UTF-8?Q?_Phoenix_=5BNouveau=5D_=286064561=29?=
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="00000000000097bc950576c85c28"
+
+--00000000000097bc950576c85c28
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: ven. 20 juil. 2018 =C3=A0 08:45
+Subject: [MountyHall] D=C3=A9fenseur - Attaque mortelle d'un Phoenix [Nouve=
+au]
+(6064561)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 20/07/2018 08:45:42.
+***********************************************************
+
+Le Monstre n=C2=B06064561 (un Phoenix [Nouveau]) vous a attaqu=C3=A9.
+
+Son jet d'Attaque est de......................: 77
+Votre jet d'Esquive est de....................: 56
+
+ Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89
+
+ Il vous a inflig=C3=A9  37 points de d=C3=A9g=C3=A2ts.
+ Votre Armure vous prot=C3=A8ge et vous ne perdrez que 20 points de vie.
+ Il vous a TU=C3=89 et vous r=C3=A9appara=C3=AEtrez ailleurs dans le Hall.
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+--00000000000097bc950576c85c28
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: ven. 20 juil. 2=
+018 =C3=A0=C2=A008:45<br>Subject: [MountyHall] D=C3=A9fenseur - Attaque mor=
+telle d&#39;un Phoenix [Nouveau] (6064561)<br>To:  &lt;<a href=3D"mailto:=
+censored@gmail.com">censored@gmail.com</a>&gt;<br></div><br><br=
+>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 20/07/2018 08:45:42.<br>
+***********************************************************<br>
+<br>
+Le Monstre n=C2=B06064561 (un Phoenix [Nouveau]) vous a attaqu=C3=A9.<br>
+<br>
+Son jet d&#39;Attaque est de......................: 77<br>
+Votre jet d&#39;Esquive est de....................: 56<br>
+<br>
+=C2=A0Vous avez donc =C3=A9t=C3=A9 TOUCH=C3=89<br>
+<br>
+=C2=A0Il vous a inflig=C3=A9=C2=A0 37 points de d=C3=A9g=C3=A2ts.<br>
+=C2=A0Votre Armure vous prot=C3=A8ge et vous ne perdrez que 20 points de vi=
+e.<br>
+=C2=A0Il vous a TU=C3=89 et vous r=C3=A9appara=C3=AEtrez ailleurs dans le H=
+all.<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--00000000000097bc950576c85c28--

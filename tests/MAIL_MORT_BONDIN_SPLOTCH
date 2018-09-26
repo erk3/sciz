@@ -1,0 +1,223 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from cerv.ovh
+	by cerv.ovh (Dovecot) with LMTP id pDT6B6yD/Vp1GwAAqi0s4g
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:30:33 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by cerv.ovh (Postfix) with ESMTP id 3824C4672
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:30:33 +0000 (UTC)
+Authentication-Results: cerv.ovh (amavisd-new); dkim=pass (2048-bit key)
+	header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.218.50; helo=mail-oi0-f50.google.com; envelope-from=censored@gmail.com; receiver=feedthebat@sciz.cerv.ovh 
+Received: from mail-oi0-f50.google.com (mail-oi0-f50.google.com [209.85.218.50])
+	by cerv.ovh (Postfix) with ESMTPS id B49D443DD
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:30:32 +0000 (UTC)
+Received: by mail-oi0-f50.google.com with SMTP id a6-v6so3973055oia.2
+        for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 06:30:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=S07MZfGQzijRadxO63Ca2yxlaV4euhTq83jTckBV7Uc=;
+        b=gFENlIo1RwIGfG8XbRJVxDQVnz5PsbPyHbFkG+JL7vn1PJfnSUmfI2KCi7kjerS+MB
+         0Jfmph3WD665Xu3KA5W2fZwhhFI467BP7AgT26FESLOHKYF/keksSt7L5x4Bm1gzD5v/
+         Sh6Tf61CONrl3ZqRuiNS/fpy+QB7grLd1Wn/OGSotpYOmj5QcVqjQtJMk8tMkGKfCRFX
+         dWWl6MVVnbW/Ri/N9yUybjcs85g05B47ypm2KBVbkYpZq3JMfWT3LY6WQy+yXyl+ToG1
+         pM3EILkGsDDZaZECmPGyq5xxC8aGYYQ/10D30yiVcmGGLRUTH7tCFFFmiLWSEf1r3U3e
+         Z5Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=S07MZfGQzijRadxO63Ca2yxlaV4euhTq83jTckBV7Uc=;
+        b=jXYJDGSWVgy4Nk6w5GdiTmulSeI8SV0GJs42PkyQTKsi2ct2zMt7YtPEN8JpE0abeG
+         LXXfs1G2FlbcV8qsLCx1zotT89BSkIQBWjAbHZiHhwdasyANQA0Lykj36kQkmqKWG5Bi
+         yaxr/SS3iLXo7CvNwAImoOwPau8fOeO2rojjmnmJBDv6RDnS+i2Q4H0wMf7OSvaAdsms
+         IB1L3DrJidXFw3rGE8/MQ5bzAlDNfXcWkcuZ2RyS9Gw7f5rsmP07CtRl0cvINVfZM7hX
+         X95vmGxAnWxbkbAB3quYhzjoqMHyG7vLtoV+NpWR09UOHMJaCJ5Wc8zeZic1zFpoTrlW
+         ixdQ==
+X-Gm-Message-State: ALKqPwcUgCjH41tGZDWzfHbQnLUPTzr3dQqQtDHVhfT0OQIUOrZztDOC
+	qnwSSX1JXSnBMomcHVaIWKHNkFWvWTXLPvp55A4Q3g==
+X-Google-Smtp-Source: AB8JxZobt1BoknbJZ7v+4/ElyUgYfp5SRYBgLlpei6+Q/tzIbqWR61sbsgeGLmvPimtZxQ82vlSIrTEqmh1dcTqJ05s=
+X-Received: by 2002:aca:af83:: with SMTP id y125-v6mr2993234oie.274.1526563830976;
+ Thu, 17 May 2018 06:30:30 -0700 (PDT)
+MIME-Version: 1.0
+References: <d7353f0fafc2b4556e65a54721a28fa7@smartphone.mountyhall.com>
+In-Reply-To: <d7353f0fafc2b4556e65a54721a28fa7@smartphone.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Thu, 17 May 2018 15:30:15 +0200
+Message-ID: <CALtH2Jh3xQyEbXt5OxpT+RDM2-RAzpvL9Oe+juYsF=WikqoPVQ@mail.gmail.com>
+Subject: Fwd: [MountyHall] Attaquant - Attaque critique mortelle (Projectile
+ Magique) sur un Bondin [Jeune] (6006816)
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="000000000000df5df8056c66d663"
+
+--000000000000df5df8056c66d663
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: sam. 24 mars 2018 =C3=A0 14:58
+Subject: [MountyHall] Attaquant - Attaque critique mortelle (Projectile
+Magique) sur un Bondin [Jeune] (6006816)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 24/03/2018 14:49:10.
+***********************************************************
+
+Vous avez attaqu=C3=A9 un Bondin [Jeune] (6006816) gr=C3=A2ce =C3=A0 un sor=
+til=C3=A8ge.
+
+
+
+Votre Jet d'Attaque est de....................: 134
+Le Jet d'Esquive de votre adversaire est de...: 25
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 10 %
+Jet de R=C3=A9sistance...........................: 47
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.
+
+
+Vous lui avez inflig=C3=A9 82 points de d=C3=A9g=C3=A2ts.
+Son Armure le prot=C3=A8ge et il ne perdra que 80 points de vie.
+Vous l'avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain de sa=
+ pr=C3=A9sence
+mal=C3=A9fique.
+A sa mort,  il d=C3=A9clenche : SPLOTCH!
+
+                        Explosion Acide
+Elle a pour effet : PV : -5D3
+Pour une dur=C3=A9e de 3 tour(s).
+
+Seuil de R=C3=A9sistance de la Cible.....: 90 %
+Jet de R=C3=A9sistance...........................: 100
+
+La Cible subit donc pleinement l'effet de la capacit=C3=A9 sp=C3=A9ciale.
+
+ Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez donc =
+pleinement
+l'effet de la capacit=C3=A9.
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.
+
+Vous avez massacr=C3=A9 le monstre. Il n'en reste plus rien.
+
+Il a, de plus, laiss=C3=A9 tomber un tr=C3=A9sor et 2 centaines de Gigots d=
+e Gob'.
+
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--000000000000df5df8056c66d663
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: sam. 24 mars 20=
+18 =C3=A0=C2=A014:58<br>Subject: [MountyHall] Attaquant - Attaque critique =
+mortelle (Projectile Magique) sur un Bondin [Jeune] (6006816)<br>To:  &lt;<=
+a href=3D"mailto:censored@gmail.com">censored@gmail.com</a>&g=
+t;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 24/03/2018 14:49:10.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 un Bondin [Jeune] (6006816) gr=C3=A2ce =C3=A0 un sor=
+til=C3=A8ge.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 134<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 25<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 10 %<br>
+Jet de R=C3=A9sistance...........................: 47<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 82 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure le prot=C3=A8ge et il ne perdra que 80 points de vie.<br>
+Vous l&#39;avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain d=
+e sa pr=C3=A9sence mal=C3=A9fique.<br>
+A sa mort,=C2=A0 il d=C3=A9clenche : SPLOTCH!<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 Explosion Acide<br>
+Elle a pour effet : PV : -5D3<br>
+Pour une dur=C3=A9e de 3 tour(s).<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 90 %<br>
+Jet de R=C3=A9sistance...........................: 100<br>
+<br>
+La Cible subit donc pleinement l&#39;effet de la capacit=C3=A9 sp=C3=A9cial=
+e.<br>
+<br>
+=C2=A0Vous avez rat=C3=A9 votre jet de R=C3=A9sistance Magique et subissez =
+donc pleinement l&#39;effet de la capacit=C3=A9.<br>
+Vous avez augment=C3=A9 votre R=C3=A9sistance Magique de 1 point.<br>
+<br>
+Vous avez massacr=C3=A9 le monstre. Il n&#39;en reste plus rien.<br>
+<br>
+Il a, de plus, laiss=C3=A9 tomber un tr=C3=A9sor et 2 centaines de Gigots d=
+e Gob&#39;.<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--000000000000df5df8056c66d663--

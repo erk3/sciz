@@ -1,0 +1,185 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from cerv.ovh
+	by cerv.ovh (Dovecot) with LMTP id 2xSnLY2F/VoEIgAAqi0s4g
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:37:17 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by cerv.ovh (Postfix) with ESMTP id AE05543DD
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:37:17 +0000 (UTC)
+Authentication-Results: cerv.ovh (amavisd-new); dkim=pass (2048-bit key)
+	header.d=gmail.com
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=209.85.218.46; helo=mail-oi0-f46.google.com; envelope-from=censored@gmail.com; receiver=feedthebat@sciz.cerv.ovh 
+Received: from mail-oi0-f46.google.com (mail-oi0-f46.google.com [209.85.218.46])
+	by cerv.ovh (Postfix) with ESMTPS id 2D5194672
+	for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 13:37:17 +0000 (UTC)
+Received: by mail-oi0-f46.google.com with SMTP id e80-v6so3974749oig.11
+        for <feedthebat@sciz.cerv.ovh>; Thu, 17 May 2018 06:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=bnB5GB2BA9zZ7XlcUc/AWxRI0S/Be5WoNHCnAn4KIgw=;
+        b=fk40mJ/IwBM9KB3Ak8AA1HkfCx1W/ezvhsQwCCg1Q3R4LTbFE1bvPDYlR3k25uMbPZ
+         4vDqUPuWc+AhQhfq7n3c3aoK5+0g2/A9+fqQrnyi0yqoQ3D1kbr3n7VkYrEP9c6hpHfA
+         8BxqWu1Xh/stJRa4IQ3vM6BbeLO71MZd2VIdcVhG0gKHDjYYFwNbJ15GwZU/c0bKupfW
+         C9o3qWik87az1RE5Jbf9MNBpQAmibYw+r0M6gGQchkyxd4JgHivwdT1DHwB8pPEFiGLB
+         bnhMUVpW/aYTLNSRdwbdkhE19AMY3K9MAVunwqe4F3LL9GSkM5T6XBQwOzsE3Y37sfv8
+         x9Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=bnB5GB2BA9zZ7XlcUc/AWxRI0S/Be5WoNHCnAn4KIgw=;
+        b=K5RsWIBnoT4xfJVvUNJFDho5/nDeoqIFyobRGjePkvTwKqhd8Iwva0ue7rZ0+rKk4Z
+         EJxoIZNjzZ6pIUvBYBKFVLk/55BleGpK55lW4QnZim+LFeK+StckkrZbbr4o0MlqJY5X
+         DVK8jeEIEphsnGuh8E1V+Y71hWpyWAS//2V6b4KC5XbQxr1qN/w9WCTCsyj3kWv0uMNR
+         DNdDnTWCHIo2HcnkijkXJi8Tfpge2yInSY0n5CHcGYS69x677IuEfBxs5Sv+yppNZcRb
+         AxGPBX4uT2Qtd3a+YDsYwPyarJxSqUAgb1tPX3ONLkk6wJMvKYFZfKXcB6TG+Rr45Luu
+         YMOw==
+X-Gm-Message-State: ALKqPwcTEnxfbBOWO3Z5hL9OQIpyf9L3B0QdV4VOKykECH2IpNsMLwM/
+	XXwjKW9o8BMxUuOvD8sMDa6JpUxTKY3/5xkuxTCkgQ==
+X-Google-Smtp-Source: AB8JxZr1axIpYEhw55et8ERUvOL+0NV4ZMkcRft6Qq6uVMKd5LlrGp1Wt4Vv/kI+j65GNuPKyQRDxAhVbXszV/enXSk=
+X-Received: by 2002:aca:4d4b:: with SMTP id a72-v6mr3007442oib.177.1526564235710;
+ Thu, 17 May 2018 06:37:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <c3ce24f4267a6f0f36b9d02bb2cf2b3a@games.mountyhall.com>
+In-Reply-To: <c3ce24f4267a6f0f36b9d02bb2cf2b3a@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Thu, 17 May 2018 15:37:02 +0200
+Message-ID: <CALtH2JhJD7wAL-QUNAXNAVtxYAk-zNGOCv3Ppxgtcr7povGSfQ@mail.gmail.com>
+Subject: Fwd: [MountyHall] Attaquant - Attaque critique mortelle (Projectile
+ Magique) sur une Coccicruelle [Larve] (4806556)
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="000000000000ff17ba056c66ee65"
+
+--000000000000ff17ba056c66ee65
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: jeu. 19 sept. 2013 =C3=A0 00:25
+Subject: [MountyHall] Attaquant - Attaque critique mortelle (Projectile
+Magique) sur une Coccicruelle [Larve] (4806556)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 19/09/2013 00:25:44.
+***********************************************************
+
+Vous avez attaqu=C3=A9 une Coccicruelle [Larve] (4806556) gr=C3=A2ce =C3=A0=
+ un sortil=C3=A8ge.
+
+Votre Jet d'Attaque est de....................: 84
+Le Jet d'Esquive de votre adversaire est de...: 35
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+Seuil de R=C3=A9sistance de la Cible.....: 10 %
+Jet de R=C3=A9sistance...........................: 54
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 5 points.
+
+
+Vous lui avez inflig=C3=A9 57 points de d=C3=A9g=C3=A2ts.
+Vous l'avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain de sa=
+ pr=C3=A9sence
+mal=C3=A9fique.
+
+A sa mort,  il d=C3=A9clenche : la B=C3=A9n=C3=A9diction de la Coccicruelle=
+  :Glissade
+
+Il a, de plus, laiss=C3=A9 tomber un tr=C3=A9sor et 3 centaines de Gigots d=
+e
+Gob'.Toute votre Concentration a =C3=A9t=C3=A9 absorb=C3=A9e.
+
+Pour cette action, vous avez gagn=C3=A9 un total de 14 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--000000000000ff17ba056c66ee65
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: jeu. 19 sept. 2=
+013 =C3=A0=C2=A000:25<br>Subject: [MountyHall] Attaquant - Attaque critique=
+ mortelle (Projectile Magique) sur une Coccicruelle [Larve] (4806556)<br>To=
+:  &lt;<a href=3D"mailto:censored@gmail.com">censored@gmail.c=
+om</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 19/09/2013 00:25:44.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 une Coccicruelle [Larve] (4806556) gr=C3=A2ce =C3=A0=
+ un sortil=C3=A8ge.<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 84<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 35<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 10 %<br>
+Jet de R=C3=A9sistance...........................: 54<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 5 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 57 points de d=C3=A9g=C3=A2ts.<br>
+Vous l&#39;avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain d=
+e sa pr=C3=A9sence mal=C3=A9fique.<br>
+<br>
+A sa mort,=C2=A0 il d=C3=A9clenche : la B=C3=A9n=C3=A9diction de la Coccicr=
+uelle=C2=A0 :Glissade<br>
+<br>
+Il a, de plus, laiss=C3=A9 tomber un tr=C3=A9sor et 3 centaines de Gigots d=
+e Gob&#39;.Toute votre Concentration a =C3=A9t=C3=A9 absorb=C3=A9e.<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 14 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--000000000000ff17ba056c66ee65--

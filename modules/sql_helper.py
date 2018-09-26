@@ -221,7 +221,8 @@ class SQLHelper:
     def __add_piege(self, piege, autocommit=True):
         troll = TROLL()
         troll.id = piege.troll_id
-        troll.nom = piege.troll_nom
+        if piege.troll_nom:
+            troll.nom = piege.troll_nom
         troll.group_id = piege.group_id
         self.__add_troll(troll, False)
         self.session.add(piege)
@@ -233,7 +234,8 @@ class SQLHelper:
     def __add_idc(self, idc, autocommit=True):
         troll = TROLL()
         troll.id = idc.troll_id
-        troll.nom = idc.troll_nom
+        if idc.troll_nom:
+            troll.nom = idc.troll_nom
         troll.group_id = idc.group_id
         self.__add_troll(troll, False)
         self.session.add(idc)
@@ -246,7 +248,8 @@ class SQLHelper:
         idt.link_metatresor(self.session.query(METATRESOR).all())
         troll = TROLL()
         troll.id = idt.troll_id
-        troll.nom = idt.troll_nom
+        if idt.troll_nom:
+            troll.nom = idt.troll_nom
         troll.group_id = idt.group_id
         self.__add_troll(troll, False)
         self.session.add(idt)
@@ -260,7 +263,8 @@ class SQLHelper:
             return None
         troll = TROLL()
         troll.id = portal.troll_id
-        troll.nom = portal.troll_nom
+        if portal.troll_nom:
+            troll.nom = portal.troll_nom
         troll.group_id = portal.group_id
         self.__add_troll(troll, False)
         portal = self.session.merge(portal)
@@ -284,7 +288,8 @@ class SQLHelper:
         self.__add_mob(mob, False)
         troll = TROLL()
         troll.id = cdm.troll_id
-        troll.nom = cdm.troll_nom
+        if cdm.troll_nom:
+            troll.nom = cdm.troll_nom
         troll.group_id = cdm.group_id
         self.__add_troll(troll, False)
         self.session.add(cdm)
@@ -306,7 +311,8 @@ class SQLHelper:
         self.__add_troll(troll_cible, False)
         troll = TROLL()
         troll.id = aa.troll_id
-        troll.nom = aa.troll_nom
+        if aa.troll_nom:
+            troll.nom = aa.troll_nom
         troll.group_id = aa.group_id
         self.__add_troll(troll, False)
         self.session.add(aa)
@@ -320,29 +326,37 @@ class SQLHelper:
             att_troll = TROLL()
             att_troll.id = battle.att_troll_id
             att_troll.group_id = battle.group_id
-            att_troll.nom = battle.att_troll_nom
+            if battle.att_troll_nom:
+                att_troll.nom = battle.att_troll_nom
             att_troll = self.__add_troll(att_troll, False)
         if battle.def_troll_id != None:
             def_troll = TROLL()
             def_troll.id = battle.def_troll_id
             def_troll.group_id = battle.group_id
-            def_troll.nom = battle.def_troll_nom
+            if battle.def_troll_nom:
+                def_troll.nom = battle.def_troll_nom
             def_troll = self.__add_troll(def_troll, False)
         if battle.att_mob_id != None:
             att_mob = MOB()
             att_mob.id = battle.att_mob_id
             att_mob.group_id = battle.group_id
-            att_mob.nom = battle.att_mob_nom
-            att_mob.age = battle.att_mob_age
-            att_mob.tag = battle.att_mob_tag
+            if battle.att_mob_nom:
+                att_mob.nom = battle.att_mob_nom
+            if battle.att_mob_age:
+                att_mob.age = battle.att_mob_age
+            if battle.att_mob_tag:
+                att_mob.tag = battle.att_mob_tag
             att_mob = self.__add_mob(att_mob, False)
         if battle.def_mob_id != None:
             def_mob = MOB()
             def_mob.id = battle.def_mob_id
             def_mob.group_id = battle.group_id
-            def_mob.nom = battle.def_mob_nom
-            def_mob.age = battle.def_mob_age
-            def_mob.tag = battle.def_mob_tag
+            if battle.def_mob_nom:
+                def_mob.nom = battle.def_mob_nom
+            if battle.def_mob_age:
+                def_mob.age = battle.def_mob_age
+            if battle.def_mob_tag:
+                def_mob.tag = battle.def_mob_tag
             def_mob = self.__add_mob(def_mob, False)
         battle.att_troll = att_troll if battle.att_troll_id else None
         battle.def_troll = def_troll if battle.def_troll_id else None

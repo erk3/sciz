@@ -120,7 +120,9 @@ class BATTLE(sg.SqlAlchemyBase):
             self.perfect_dodge = int(self.stab) > int(self.destab) * 2
         if hasattr(self, 'dead'):
             self.dead = self.dead is not None 
-        self.dead |= u'mort' in self.type
+        if hasattr(self, 'dead_mult'):
+            self.dead = (self.dead or (self.dead_mult is not None)) if hasattr(self, 'dead') else (self.dead_mult is not None)
+        # self.dead |= u'mort' in self.type
         if self.subtype is not None:
             self.subtype = self.subtype.strip().capitalize()
             self.subtype += u' esquivé(e)' if self.dodge and not self.parade else ''
@@ -130,6 +132,11 @@ class BATTLE(sg.SqlAlchemyBase):
             self.subtype = re.sub(u'résistée?|réduit', '', self.type)
         
     def build_att(self):
+        # This object is flaged as a duplicate for capa_dead ? Then invert it
+        if hasattr(self, 'capa_dead') and self.capa_dead is not None:
+            self.alter_capa_dead()
+            self.build_def()
+            return
         # Common
         self.att_troll_id = self.troll_id
         self.att_troll_nom = self.troll_nom
@@ -144,11 +151,11 @@ class BATTLE(sg.SqlAlchemyBase):
                     self.def_mob_tag = self.def_mob_tag.replace('\r', '').replace('\n', '')
                 self.def_mob_id = self.def_id
             else:
-                self.def_troll_nom = self.def_name
+                self.def_troll_nom = self.def_name.replace('\r', '').replace('\n', '')
                 self.def_troll_id = self.def_id
         if hasattr(self, 'contre_att') and self.contre_att is not None:
             self.subtype = u' Contre-Attaque'
-        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type and not u'Insulte' in self.type:
+        if hasattr(self, 'resist') and self.resist is not None and not any(i in self.type for i in [u'résisté', u'réduit', u'Insulte', u'Hurlement']):
             self.type += u' résisté'
         self.build()
    
@@ -167,9 +174,9 @@ class BATTLE(sg.SqlAlchemyBase):
                     self.att_mob_tag = self.att_mob_tag.replace('\r', '').replace('\n', '')
                 self.att_mob_id = self.att_id
             else:
-                self.att_troll_nom = self.att_name
+                self.att_troll_nom = self.att_name.replace('\r', '').replace('\n', '')
                 self.att_troll_id = self.att_id
-        if hasattr(self, 'resist') and self.resist is not None and not u'résisté' in self.type and not u'réduit' in self.type:
+        if hasattr(self, 'resist') and self.resist is not None and not any(i in self.type for i in [u'résisté', u'réduit']):
             self.type += u' réduit'
         if hasattr(self, 'capa_effet') and self.capa_effet is not None:
             self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
@@ -225,12 +232,52 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, 'resist') and self.resist is not None:
             self.type += u' sans effet'
         elif hasattr(self, 'insulte_nok') and self.insulte_nok is not None:
-            self.type += u' efficace'
+            self.type += u' inefficace'
         elif hasattr(self, 'insulte_meh') and self.insulte_meh is not None:
             self.type += u' à l\'effet incertain'
         elif hasattr(self, 'insulte_ok') and self.insulte_ok is not None:
-            self.type += u' inefficace'
+            self.type += u' efficace'
         self.build_att()
+    
+    def build_att_he(self):
+        if hasattr(self, 'resist') and self.resist is not None:
+            self.type += u' inefficace'
+        else:
+            self.type += u' efficace'
+        self.build_att()
+
+    def alter_capa_dead(self):
+        # Zero out everything not needed
+        ATTR_TO_KEEP = ['time', 'type', 'group_id', 'troll_id', 'troll_nom', 'def_id', 'def_name']
+        ATTRS_TO_DELETE = []
+        for attr in vars(self):
+            if not attr.startswith('_') and not attr.startswith('capa_dead') and not attr in ATTR_TO_KEEP:
+                ATTRS_TO_DELETE.append(attr)
+        for attr in ATTRS_TO_DELETE:
+            delattr(self, attr)
+        # Invert things
+        if hasattr(self, 'capa_dead_desc') and self.capa_dead_desc is not None:
+            self.type = self.capa_dead_desc
+            self.capa_desc = self.capa_dead_desc
+        if hasattr(self, 'capa_dead_effet') and self.capa_dead_effet is not None:
+            self.capa_effet = self.capa_dead_effet
+        if hasattr(self, 'capa_dead_subdesc') and self.capa_dead_subdesc is not None:
+            if not hasattr(self, 'capa_dead_effet') or self.capa_dead_effet is None:
+                self.capa_effet = self.capa_dead_subdesc
+            else:
+                self.type += ' (' + self.capa_dead_subdesc + ')'
+                self.capa_desc += ' (' + self.capa_dead_subdesc + ')'
+        if hasattr(self, 'capa_dead_tour') and self.capa_dead_tour is not None:
+            self.capa_tour = self.capa_dead_tour
+        if hasattr(self, 'capa_dead_sr') and self.capa_dead_sr is not None:
+            self.sr = self.capa_dead_sr
+        if hasattr(self, 'capa_dead_resi') and self.capa_dead_resi is not None:
+            self.resi = self.capa_dead_resi
+        if hasattr(self, 'capa_dead_resist'):
+            self.resist = self.capa_dead_resist
+        if hasattr(self, 'def_id') and self.def_id is not None:
+            self.att_id = self.def_id
+            self.att_name = self.def_name
 
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
@@ -271,7 +318,7 @@ class BATTLE(sg.SqlAlchemyBase):
         self.s_capa = self.s_capa_effet
         if self.s_capa_tour:
             self.s_capa = '%s %s' % (self.s_capa, self.s_capa_tour)
-        if self.s_capa_desc:
+        if self.s_capa_desc and self.s_capa_desc.lower() != self.s_subtype.lower():
             self.s_capa = '%s %s %s' % (self.s_capa_desc, self.s_delimiter, self.s_capa)
         # Enclose some things
         if self.soin and self.blessure is None and self.pv is not None: # Not sacrifice 
@@ -289,7 +336,8 @@ class BATTLE(sg.SqlAlchemyBase):
         res = re.sub(r'(\s*\))+', ')', res)
         res = re.sub(r'(\)\()|(\(\))', ' ', res)
         res = re.sub(r'\s*:(\s*|\n|\\n)*(\(|$)', r' \2', res)
-        res = re.sub(r' +', ' ', res)
+        res = re.sub(r'\s+', ' ', res)
+        res = re.sub(r'\s*%s*\s*$' % self.s_delimiter, '', res)
         res = re.sub(r'\\n', '\n', res)
         return res
 

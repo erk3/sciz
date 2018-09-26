@@ -1,0 +1,191 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id +DOQB1iuq1sEbAAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:05:44 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 10C552A60AE4
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:05:44 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.180; helo=mail-oi1-f180.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="DYEubSNe";
+	dkim-atps=neutral
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 89D132A60015
+	for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 16:05:43 +0000 (UTC)
+Received: by mail-oi1-f180.google.com with SMTP id u74-v6so3526047oia.11
+        for <feedthebat@sciz.cerv.ovh>; Wed, 26 Sep 2018 09:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=1MvecyjEwYU4XhZrkvuQtOn+PXCSjoFlGfAiGoHdjX0=;
+        b=DYEubSNeUdd6vFAciC/ZfoCMoUTBhHjzU85P7GhBJXbW6GWtihUCqlWaNjOFU50+19
+         AfHwtaLOqLl1nGLPzcY5dWqn6TafKAWlu9BxY/XQ7aRO5Br8rQ4EgfOwqyNRuuvu4fqu
+         lLtgjR2WgrQ9+C7sYc4icJUADAwwrVBP9HTsDpFK3XHSWtL3z/6sWgcgByCV5v5uduQ8
+         WS1aFOwIxGA+7dHYJOrkZJEkSXQbE4INhQ31dPJUXg0S1UnIbry4onYbbrEEEs7CLo4z
+         WeoXlf1LHVJZ2zAwkir6bqTs9b7e2z3pmzeLTbWkY5zmE1NYn007ReQmm+Uz1Dez/gC5
+         m8lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=1MvecyjEwYU4XhZrkvuQtOn+PXCSjoFlGfAiGoHdjX0=;
+        b=Gn+hWAiMtuvRW1bZv/CosQmJDcYsMQmThyZpzSCyrRJ8t8F3Thow8Zzg/TWCSP7NcN
+         w7AlI+RjjP9SdC+fBfT2L5ap2W8LMchyGI+EBNtPgXgGnPRZ26f+ndKKwLfU/pEU9Rw+
+         13KaYs+vR+cUnBS1et/epjL/ootLLOqyajQd0Wc9b3cTXdifVq3xbhwGKv/YulETPa54
+         TgPJSrDH7bqXF+z7Fu+XP8RmQT+SAE192/6t6hqlr5N4QIgBkXW9EzHdY4P1jC2Mrml8
+         J3VSMisV4yu3X7dTCa5h8ZyIWSwYkfdYVsbgKO+YeSdhSEBjguORd/c1rByL8m6s3966
+         0Rjg==
+X-Gm-Message-State: ABuFfogsYEWxcsIyVmwfw9eLjbJpIHJjxzp+BpLm0Rd9UJGMftgwWzZm
+	jxELdv+2/A1HUHXGjWlFyUbDsLgEe02Jl57se+hHrQ==
+X-Google-Smtp-Source: ACcGV614g7smIuVJmbECWJjHMsa2VwhXdBQAgtbELfXK+Oio/GzH7Zf9f27UBGUQFeSGtQuHS5Jhn4wF1x2dMTz3UgQ=
+X-Received: by 2002:aca:2213:: with SMTP id b19-v6mr1072670oic.362.1537977935807;
+ Wed, 26 Sep 2018 09:05:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <cbc005cf54b75abf399b210a23dbc4e3@smartphone.mountyhall.com>
+In-Reply-To: <cbc005cf54b75abf399b210a23dbc4e3@smartphone.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Wed, 26 Sep 2018 18:05:22 +0200
+Message-ID: <CALtH2JhSW0SEmu57RNQKhNC2qn1dek+GBhZMyWb0gQFT2eHbug@mail.gmail.com>
+Subject: Fwd: [MountyHall] Attaquant - Attaque mortelle (Projectile Magique)
+ sur Le Verre De Troll (75858)
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="0000000000008947f60576c86443"
+
+--0000000000008947f60576c86443
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: lun. 23 oct. 2017 =C3=A0 06:39
+Subject: [MountyHall] Attaquant - Attaque mortelle (Projectile Magique) sur
+Le Verre De Troll (75858)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 23/10/2017 06:34:02.
+***********************************************************
+
+Vous avez attaqu=C3=A9 le Tr=C3=B5ll Le Verre De Troll (75858) gr=C3=A2ce =
+=C3=A0 un sortil=C3=A8ge.
+
+
+
+Votre Jet d'Attaque est de....................: 141
+Le Jet d'Esquive de votre adversaire est de...: 97
+
+Vous avez donc TOUCH=C3=89 votre adversaire
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 31 %
+Jet de R=C3=A9sistance...........................: 84
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 6 points.
+
+
+Vous lui avez inflig=C3=A9 54 points de d=C3=A9g=C3=A2ts.
+Son Armure le prot=C3=A8ge et il ne perdra que 50 points de vie.
+Vous l'avez TU=C3=89 et il r=C3=A9appara=C3=AFtra ailleurs dans le Hall.
+De plus, il a laiss=C3=A9 tomber Une poign=C3=A9e de Gigots de Gob'.
+Enfin, son sac laisse =C3=A9chapper 2 tr=C3=A9sors.
+
+Votre Karma a =C3=A9t=C3=A9 influenc=C3=A9 par cette action.
+
+Pour cette action, vous avez gagn=C3=A9 un total de 51 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000008947f60576c86443
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: lun. 23 oct. 20=
+17 =C3=A0=C2=A006:39<br>Subject: [MountyHall] Attaquant - Attaque mortelle =
+(Projectile Magique) sur Le Verre De Troll (75858)<br>To:  &lt;<a href=3D"m=
+ailto:censored@gmail.com">censored@gmail.com</a>&gt;<br></div=
+><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 23/10/2017 06:34:02.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 le Tr=C3=B5ll Le Verre De Troll (75858) gr=C3=A2ce =
+=C3=A0 un sortil=C3=A8ge.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 141<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 97<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 31 %<br>
+Jet de R=C3=A9sistance...........................: 84<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 6 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 54 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure le prot=C3=A8ge et il ne perdra que 50 points de vie.<br>
+Vous l&#39;avez TU=C3=89 et il r=C3=A9appara=C3=AFtra ailleurs dans le Hall=
+.<br>
+De plus, il a laiss=C3=A9 tomber Une poign=C3=A9e de Gigots de Gob&#39;.<br=
+>
+Enfin, son sac laisse =C3=A9chapper 2 tr=C3=A9sors.<br>
+<br>
+Votre Karma a =C3=A9t=C3=A9 influenc=C3=A9 par cette action.<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 51 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000008947f60576c86443--

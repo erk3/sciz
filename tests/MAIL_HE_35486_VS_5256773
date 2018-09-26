@@ -1,0 +1,163 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id OB+NAs5iqluxZQAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Tue, 25 Sep 2018 16:31:10 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id EBACB2A60ADF
+	for <feedthebat@sciz.cerv.ovh>; Tue, 25 Sep 2018 16:31:09 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.221.53; helo=mail-wr1-f53.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QNU+fSS8";
+	dkim-atps=neutral
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 9D0472A60016
+	for <feedthebat@sciz.cerv.ovh>; Tue, 25 Sep 2018 16:31:06 +0000 (UTC)
+Received: by mail-wr1-f53.google.com with SMTP id v16-v6so24027557wro.11
+        for <feedthebat@sciz.cerv.ovh>; Tue, 25 Sep 2018 09:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:mime-version:subject:date:references:to:message-id;
+        bh=S2vimvQBojVGPQUIAW2mcMavGfCz6fx0iPulb0+cb+o=;
+        b=QNU+fSS8q/35sE7ZiqGSHPPymr/nOBSfMxTKh/e0OXBjsmORto4YAxHi54koKAzVuK
+         kKQqfY/Jf2MCGSfRnkFsDACIPUSwinzIewwoH9MlyTM3x9USv3xsDs0+AjulSHHnntnn
+         PTMw14nH0FO7fVqWrLPLK5DexgVvfa0qq2VfYB04e/uwydqE4yDrwY1h4wK/lmG2tiVT
+         OMqns6J2T/KBji61+TRxlXjRWe4KUX+1MTu7/PEGOkGESxD1hwK4XeVFUZVzNSagTNj0
+         ugYVx6tYdR/tzpX6KKvsBuWK0ZjYQ05bLwYgGho08ekfiIqwduISXyYutQ0IphREl+yD
+         WDdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:mime-version:subject:date:references:to
+         :message-id;
+        bh=S2vimvQBojVGPQUIAW2mcMavGfCz6fx0iPulb0+cb+o=;
+        b=iWLlLA1NKCXQetDohw6Lx5XkFPpdSPFRb4xLiqm3crP/L0NER+Ap9Md2Qw+Tu91C69
+         udoy5BXj87T79OKF8viInyakk9FO7wmTjkQmWx0tsY3JoLwEPMhFOvt8XOb/iMJhzvFR
+         6u/N6150ULgJyZW+PScrpELdhSqR2rBV1xE7MnJ10nc4yambIUSuEMz563tBu2Vkxirh
+         DlCyK7I88s0ypxXiihmEtLNv614FQyItjToy8cQqrvEug1AbSI5/LP6tlJ0v91vZF13H
+         s33/sPSR77/wCM298Ji0jq42Fbub9XggY4OOBgHG6B9X2ruZ2oHfeZr0bTBh1rgpKYzB
+         oOWw==
+X-Gm-Message-State: ABuFfohw2QnzLQJi3/1uoXHI5LeW7lUDDrvAFTblO8uyDwDfjDtfPpsQ
+	QE4xp+juHTww07TPMenubPLqGCk3
+X-Google-Smtp-Source: ACcGV61/b4aKSSC2wMoW6VBfN7WQ83oxZRU4apbGQZ350V+w7P+crNsjA9WD/bHWLqVa+y+uCxRJkA==
+X-Received: by 2002:a5d:6782:: with SMTP id v2-v6mr1800543wru.245.1537893065981;
+        Tue, 25 Sep 2018 09:31:05 -0700 (PDT)
+From: Censored <censored@gmail.com>
+X-Google-Original-From: Censored <censored@yahoo.fr>
+Mime-Version: 1.0 (Apple Message framework v1085)
+Content-Type: multipart/alternative; boundary=Apple-Mail-1268--907367698
+Subject: =?iso-8859-1?Q?Fwd=3A_=5BMountyHall=5D_Comp=E9tence_Hurlement_Ef?=
+ =?iso-8859-1?Q?frayant_sur_un_Chonchon_Coriace_=5BAdulte=5D_=285?=
+ =?iso-8859-1?Q?256773=29?=
+Date: Tue, 25 Sep 2018 18:31:04 +0200
+X-Priority: 3
+References: <aa37e31acd493db911557b448b3b4d62@games.mountyhall.com>
+To: feedthebat@sciz.cerv.ovh
+Message-Id: <AAE4DA77-A333-4BD4-8AE2-7659F219B09C@yahoo.fr>
+
+
+--Apple-Mail-1268--907367698
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=iso-8859-1
+
+
+
+D=E9but du message r=E9exp=E9di=E9 :
+
+> De : MountyHall-Bot <bot@mountyhall.com>
+> Date : 26 janvier 2015 07:56:12 HNEC
+> =C0 : censored@yahoo.fr
+> Objet : [MountyHall] Comp=E9tence Hurlement Effrayant sur un Chonchon =
+Coriace [Adulte] (5256773)
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+> MOUNTYHALL - La Terre des Tr=F5lls
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> Tr=F5ll n=B035486 : grrr!!
+>=20
+> Vous avez =E9t=E9 impliqu=E9 dans un =E9v=E9nement : COMPETENCE.
+> Il =E9tait alors aux alentours de : 26/01/2015 07:56:12.
+> ***********************************************************
+>=20
+> Seuil de R=E9sistance de la Cible.....: 17 %
+> Jet de R=E9sistance...........................: 63
+>=20
+> La Cible subit donc pleinement l'effet de la comp=E9tence.
+>=20
+> Elle est Effray=E9e, elle va prendre la fuite.
+>=20
+> Vous avez augment=E9 votre Ma=EEtrise Magique de 2 points.
+>=20
+> ***********************************************************
+> Vous avez configur=E9 votre compte pour recevoir un Email
+> lorsque votre Tr=F5ll est impliqu=E9 dans un =E9v=E9nement.
+> Si vous ne d=E9sirez plus recevoir ces Emails, veuillez changer
+> cette configuration dans le profil de votre Tr=F5ll.
+>=20
+> Le Site        : http://www.mountyhall.com
+> Pour Jouer     : http://games.mountyhall.com
+> Des Questions  : http://www.mountyhall.com/Forum
+> *****************************************
+
+
+--Apple-Mail-1268--907367698
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=iso-8859-1
+
+<html><head></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; -webkit-line-break: after-white-space; =
+"><br><div><br><div>D=E9but du message r=E9exp=E9di=E9 :</div><br =
+class=3D"Apple-interchange-newline"><blockquote type=3D"cite"><div =
+style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; =
+margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1);"><b>De : </b></span><span =
+style=3D"font-family:'Helvetica'; font-size:medium;">MountyHall-Bot =
+&lt;<a =
+href=3D"mailto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br></span></=
+div><div style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: =
+0px; margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1);"><b>Date : </b></span><span =
+style=3D"font-family:'Helvetica'; font-size:medium;">26 janvier 2015 =
+07:56:12 HNEC<br></span></div><div style=3D"margin-top: 0px; =
+margin-right: 0px; margin-bottom: 0px; margin-left: 0px;"><span =
+style=3D"font-family:'Helvetica'; font-size:medium; color:rgba(0, 0, 0, =
+1);"><b>=C0 : </b></span><span style=3D"font-family:'Helvetica'; =
+font-size:medium;"><a =
+href=3D"mailto:censored@yahoo.fr">censored@yahoo.fr</a><br></span></div><d=
+iv style=3D"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; =
+margin-left: 0px;"><span style=3D"font-family:'Helvetica'; =
+font-size:medium; color:rgba(0, 0, 0, 1);"><b>Objet : </b></span><span =
+style=3D"font-family:'Helvetica'; font-size:medium;"><b>[MountyHall] =
+Comp=E9tence Hurlement Effrayant sur un Chonchon Coriace [Adulte] =
+(5256773)</b><br></span></div><br><div>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>MOUNTYHALL=
+ - La Terre des Tr=F5lls<br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br><br>Tr=F5ll n=B035486 =
+: grrr!!<br><br>Vous avez =E9t=E9 impliqu=E9 dans un =E9v=E9nement : =
+COMPETENCE.<br>Il =E9tait alors aux alentours de : 26/01/2015 =
+07:56:12.<br>***********************************************************<b=
+r><br>Seuil de R=E9sistance de la Cible.....: 17 %<br>Jet de =
+R=E9sistance...........................: 63<br><br>La Cible subit donc =
+pleinement l'effet de la comp=E9tence.<br><br>Elle est Effray=E9e, elle =
+va prendre la fuite.<br><br>Vous avez augment=E9 votre Ma=EEtrise =
+Magique de 2 =
+points.<br><br>***********************************************************=
+<br>Vous avez configur=E9 votre compte pour recevoir un Email<br> =
+lorsque votre Tr=F5ll est impliqu=E9 dans un =E9v=E9nement.<br>Si vous =
+ne d=E9sirez plus recevoir ces Emails, veuillez changer<br> cette =
+configuration dans le profil de votre Tr=F5ll.<br><br>Le Site =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <a =
+href=3D"http://www.mountyhall.com">http://www.mountyhall.com</a><br>Pour =
+Jouer &nbsp;&nbsp;&nbsp;&nbsp;: <a =
+href=3D"http://games.mountyhall.com">http://games.mountyhall.com</a><br>De=
+s Questions &nbsp;: <a =
+href=3D"http://www.mountyhall.com/Forum">http://www.mountyhall.com/Forum</=
+a><br>*****************************************</div></blockquote></div><b=
+r></body></html>=
+
+--Apple-Mail-1268--907367698--
