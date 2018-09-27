@@ -1,0 +1,145 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id gFaJJ4lMhlsxFgAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Wed, 29 Aug 2018 07:34:33 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 937562A60859
+	for <feedthebat@sciz.cerv.ovh>; Wed, 29 Aug 2018 07:34:33 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.216.177; helo=mail-qt0-f177.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="aPJB0SiG";
+	dkim-atps=neutral
+Received: from mail-qt0-f177.google.com (mail-qt0-f177.google.com [209.85.216.177])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 128EB2A6084E
+	for <feedthebat@sciz.cerv.ovh>; Wed, 29 Aug 2018 07:34:32 +0000 (UTC)
+Received: by mail-qt0-f177.google.com with SMTP id g44-v6so4659949qtb.12
+        for <feedthebat@sciz.cerv.ovh>; Wed, 29 Aug 2018 00:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=Kx9KvBlkKjWwTDO/51hE/H+CoXDQPYz1Zc1vpbaZCzU=;
+        b=aPJB0SiGwtx2oqDUDTqAUQ+FRyO+fOOyJP5vo+jpg8dDgox0wpzG4NJbWYR+ki1JsZ
+         kcA4wR+atOyMYEP0zRoRgjVV4m2dHFcaJJ1Hr4Adbnt1OTJnGaps71Q3V4Q5IirbWOhA
+         RpOrCOIrFefnCt4g/w9jcyR2ajDcVq7dZT2h2nohU0dlTuGvqE7STwb4kOlKZPFElnGM
+         c8BdUOQCQNebwD08slXiQbPZou2oQENEKe2whpWgCQBalS3VeH3PD8KDbUxKtDE1jL/P
+         BuuHceY+0dsbmOGszOGzHtcbu8MA5cAE8ygNroOouIeINTWgnheyu7lUWt9gpjhd+DLG
+         JbbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=Kx9KvBlkKjWwTDO/51hE/H+CoXDQPYz1Zc1vpbaZCzU=;
+        b=foCCOBEAoFqUHXLNZrH7Zicl8lJ1cGvMdGw9sIY2dwIRjeleQ1j9m4qkldBGqhgWBv
+         fOdnz1QeiIqhvr1sxexZnLqhhaDKwPlz+0fkbY0NpHuXWa+UWiu52OXll4HIAmpr+EMN
+         /yt/aveLpyszn9jMU6LiEhw0mtFoltrasRc2SlZukBOBHvFsOMhuH3VGKXA2VzH3Tu7k
+         K5/kF/mZDuObXN1MAMbIhwq3XV98BDBM0TcCw40t3jMhIC5ZuBQcMCGtDAJE/+lhkTQr
+         DX/3FKvwVlv+PA8Id1qJ9DWEBOs6eJp/mHGZ0Gz6P+TmByDn3aSgzIorDs7KrSGfiVoN
+         O7Qg==
+X-Gm-Message-State: APzg51DLQaD8JRYc3CO4UY9PqJx3nklPFrqp7csX23GmyKACFHI/koR9
+	4l4f6ophIPVZSfngLxsrAGsxM+OsRtPZTW6CUhSb1g==
+X-Google-Smtp-Source: ANB0VdYAcrMvKhT2YQSBjt463yW6ZSm6FX42cOD4vfosfdIllhEx2SzGGGRO5grsRW7Zwo7J4efxGxXzhFZkOWtPdmE=
+X-Received: by 2002:aed:2a6a:: with SMTP id k39-v6mr5355845qtf.102.1535528071363;
+ Wed, 29 Aug 2018 00:34:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <3d99f0338c4b930751d248e280cb7ae3@games.mountyhall.com>
+In-Reply-To: <3d99f0338c4b930751d248e280cb7ae3@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Wed, 29 Aug 2018 09:34:17 +0200
+Message-ID: <CAMO4vGfMszThrdj-XeLjvEJCx2QXhBH75KctdAmpF8mo090ncg@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_R=C3=A9sultat_d=27un_pouvoir_du_monstre_?=
+	=?UTF-8?Q?n=C2=B05857330_=28une_Hydre_=5BL=C3=A9gendaire=5D=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000003c7f0c05748dfdad"
+
+--0000000000003c7f0c05748dfdad
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mar. 28 ao=C3=BBt 2018 =C3=A0 13:12
+Subject: [MountyHall] R=C3=A9sultat d'un pouvoir du monstre n=C2=B05857330 =
+(une Hydre
+[L=C3=A9gendaire])
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : POUVOIR=
+.
+Il =C3=A9tait alors aux alentours de : 28/08/2018 13:12:19.
+***********************************************************
+
+Le monstre n=C2=B05857330 (une Hydre [L=C3=A9gendaire]) a d=C3=A9clench=C3=
+=A9 : Marque de la
+B=C3=AAte
+C'est une mal=C3=A9diction qui r=C3=A9duira votre R=C3=A9g=C3=A9n=C3=A9rati=
+on.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000003c7f0c05748dfdad
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <b class=3D"gmail_sendername" dir=
+=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mo=
+untyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: mar. 28 ao=C3=BBt =
+2018 =C3=A0=C2=A013:12<br>Subject: [MountyHall] R=C3=A9sultat d&#39;un pouv=
+oir du monstre n=C2=B05857330 (une Hydre [L=C3=A9gendaire])<br>To:  &lt;<a =
+href=3D"mailto:censored@gmail.com">censored@gmail.com</a>&gt;=
+<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : POUVOIR=
+.<br>
+Il =C3=A9tait alors aux alentours de : 28/08/2018 13:12:19.<br>
+***********************************************************<br>
+<br>
+Le monstre n=C2=B05857330 (une Hydre [L=C3=A9gendaire]) a d=C3=A9clench=C3=
+=A9 : Marque de la B=C3=AAte<br>
+C&#39;est une mal=C3=A9diction qui r=C3=A9duira votre R=C3=A9g=C3=A9n=C3=A9=
+ration.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000003c7f0c05748dfdad--
