@@ -447,7 +447,7 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
     }
     var cCaller = bubbleService.getCurrentBubble().caller;
     var mob = cCaller.dat('mob');
-    c.html('Vu la dernière fois : ' + utilService.displayDate(mob.last_seen, 0, false, true));
+    c.html('<p>Identifiant : ' + mob.id + '<br>Vu la dernière fois : ' + utilService.displayDate(mob.last_seen, 0, false, true) + '</p>');
   }
 
   function gonfleurTroll(c) {
@@ -456,7 +456,7 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
     }
     var cCaller = bubbleService.getCurrentBubble().caller;
     var troll = cCaller.dat('troll');
-    c.html('Vu la dernière fois : ' + utilService.displayDate(troll.last_seen, 0, false, true));
+    c.html('<p>Identifiant : ' + troll.id + '<br>Vu la dernière fois : ' + utilService.displayDate(troll.last_seen, 0, false, true) + '</p>');
   }
 
   function applyFilters() {
@@ -490,7 +490,7 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
             var filtered = (min && o.pos_n < min) ||
               (date && utilService.dateDiffInDays(new Date(o.last_seen), new Date()) > date) ||
               (max && o.pos_n > max) ||
-              (rname !== null && !rname.test(o.nom));
+              (rname !== null && (!rname.test(o.nom + ' ' + o.id)));
             if ((i < elems.length) && (filtered !== wasFiltered)) {
               changed = true;
               elems[i].classList.toggle('filtered', filtered);
