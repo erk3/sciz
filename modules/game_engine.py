@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # Imports
-import ConfigParser, math
+import ConfigParser, math, datetime
 from classes.battle import BATTLE
+from classes.portal import PORTAL
 import modules.globals as sg
 
 ## GameEngine class for SCIZ
@@ -21,6 +22,8 @@ class GameEngine:
     def play(self, obj):
         if isinstance(obj, BATTLE):
             return self.__play_battle(obj)
+        if isinstance(obj, PORTAL):
+            return self.__play_portal(obj)
         return None
 
     # Play battle
@@ -102,3 +105,12 @@ class GameEngine:
         if hasattr(battle, 'dead') and battle.dead is not None and dm is not None:
             dm.dead = True
         return battle
+
+    # Play portal
+    def __play_portal(self, portal):
+        # Update troll pos
+        portal.troll.pos_x = portal.posx
+        portal.troll.pos_y = portal.posy
+        portal.troll.pos_n = portal.posn
+        portal.troll.last_seen = portal.time 
+        return portal

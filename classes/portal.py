@@ -15,6 +15,8 @@ class PORTAL(sg.SqlAlchemyBase):
     __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
     # Identifiant unique
     id = Column(Integer, autoincrement=True)
+    # Identifiant du portail
+    portal_id = Column(Integer)
     # Date de création
     time = Column(DateTime())
     # ID du troll

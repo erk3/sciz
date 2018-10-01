@@ -259,14 +259,16 @@ class SQLHelper:
 
     # Add a PORTAL
     def __add_portal(self, portal, autocommit=True):
-        if portal.id is None:
+        if portal.portal_id is None:
             return None
         troll = TROLL()
         troll.id = portal.troll_id
         if portal.troll_nom:
             troll.nom = portal.troll_nom
         troll.group_id = portal.group_id
-        self.__add_troll(troll, False)
+        troll = self.__add_troll(troll, False)
+        portal.troll = troll
+        portal = sg.ge.play(portal) # Play the portal
         portal = self.session.merge(portal)
         if autocommit:
             self.session.commit()
