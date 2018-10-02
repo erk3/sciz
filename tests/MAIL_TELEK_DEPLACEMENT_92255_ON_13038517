@@ -1,0 +1,145 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id AOoyBkvQjVv2FAAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Tue, 04 Sep 2018 00:22:35 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 0E7FC2A60984
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:22:35 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.216.180; helo=mail-qt0-f180.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="GQvtetq2";
+	dkim-atps=neutral
+Received: from mail-qt0-f180.google.com (mail-qt0-f180.google.com [209.85.216.180])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id A69E72A608A4
+	for <feedthebat@sciz.cerv.ovh>; Tue,  4 Sep 2018 00:22:34 +0000 (UTC)
+Received: by mail-qt0-f180.google.com with SMTP id h4-v6so2196812qtj.7
+        for <feedthebat@sciz.cerv.ovh>; Mon, 03 Sep 2018 17:22:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=HpvJWGaI+1FodSCtqLxDgYNp18V2QT0ic7DYtx0WmdU=;
+        b=GQvtetq2ktWQ13YeFp4ecObGTRIXbWCQgN9HZznl3uj40OCg2n4TYyw8r79acCNcPQ
+         7Y6deKQf8bwXknF0ObAjjREFsRkeHvXYjFnr5RAtZRNadS2A2qA7q2BuHqLzQUu434Rl
+         arx5t0B0JtUc/czRhgkit6KydmGiJIrrzIByMHu6TSptzyh2cBm/zHLptdq2m4zujie6
+         tCSXbCFCdEYElDLaNz8wyjxKzbC0ZO695q0pugdQ6vMAuQjb+zAze1aV/RRqQ4QEnlt6
+         RtmRPxFTXyA60tt8bcN7Q37yFaEaz4VYuTqR23QteO01K8AgeT6KQ2xJNchhqL8jJlso
+         V77A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=HpvJWGaI+1FodSCtqLxDgYNp18V2QT0ic7DYtx0WmdU=;
+        b=XuGfzRWba1VW/XH6ZjP3o96XQjLWSMNnUDkyd+uLEWEUvWPNbGvaHHKubzm5NECv2K
+         /aFrTG/lrrUO2AmHpNfDSKojAKMjXdpIekc5C8wwzJc4/FL7aQFUYNzI8Pnz8j8bwi6f
+         1EVbuqJUTYpj3NUkNJaWnoyKJKf7kPCsqOMRc7G7RHMYZ/r7mzfXySFrdEhqF7olwI9p
+         yrbSuRVYgrre1JUngOywXiIyBbtiz9O6ZXgpdzDWuPxVpfF4butO2EqHqcSizhXYtbS+
+         Yp48i79PL2ihdzkE6nBJArGjc2kyS4aotmaQCVcwWD0+4xT/VT2BxHiSV5KQDqKPmy3n
+         9MEg==
+X-Gm-Message-State: APzg51DFqZ5Ug9/THD4DktgWUXKFmd++vOidUZ6UlrWWgjVgnwkWjJCo
+	Rzmx9iUBim6RHlcwWaVhAoQYx146xtzoGlGXgnnc2g==
+X-Google-Smtp-Source: ANB0VdZQ1liqLt4v/qOK3eS0//QTlqokBj95YeMqBb8GoyTF4qnpbtb2fc1vacN/d5cNr3LIqImMEJYz95pPIwOqPoY=
+X-Received: by 2002:a0c:ec47:: with SMTP id n7-v6mr21230769qvq.56.1536020553010;
+ Mon, 03 Sep 2018 17:22:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <483dd4d930cf37c7b92a2ede5809e133@games.mountyhall.com>
+In-Reply-To: <483dd4d930cf37c7b92a2ede5809e133@games.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Tue, 4 Sep 2018 02:22:21 +0200
+Message-ID: <CAMO4vGdScEf-P08=0q5GwXn1mvhM3OS9QiMW5ike7c=LQd9Mng@mail.gmail.com>
+Subject: =?UTF-8?B?RndkOiBbTW91bnR5SGFsbF0gU29ydGlsw6hnZSA6IFTDqWzDqWtpbsOpc2ll?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000006e10f6057500a788"
+
+--0000000000006e10f6057500a788
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: jeu. 30 ao=C3=BBt 2018 =C3=A0 13:26
+Subject: [MountyHall] Sortil=C3=A8ge : T=C3=A9l=C3=A9kin=C3=A9sie
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B092255 : Cageux
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.
+Il =C3=A9tait alors aux alentours de : 30/08/2018 13:26:46.
+***********************************************************
+
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : T=C3=A9l=C3=A9kin=C3=A9sie
+Vous avez d=C3=A9plac=C3=A9 : Armure de pierre (13038517) en  X =3D -97 et =
+Y =3D 25
+
+
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000006e10f6057500a788
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <b class=3D"gmail_sendername" dir=
+=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a href=3D"mailto:bot@mo=
+untyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: jeu. 30 ao=C3=BBt =
+2018 =C3=A0=C2=A013:26<br>Subject: [MountyHall] Sortil=C3=A8ge : T=C3=A9l=
+=C3=A9kin=C3=A9sie<br>To:  &lt;<a href=3D"mailto:censored@gmail.com"=
+>censored@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B092255 : Cageux<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : SORTILE=
+GE.<br>
+Il =C3=A9tait alors aux alentours de : 30/08/2018 13:26:46.<br>
+***********************************************************<br>
+<br>
+Vous avez utilis=C3=A9 le Sortil=C3=A8ge : T=C3=A9l=C3=A9kin=C3=A9sie<br>
+Vous avez d=C3=A9plac=C3=A9 : Armure de pierre (13038517) en=C2=A0 X =3D -9=
+7 et Y =3D 25<br>
+<br>
+<br>
+Vous avez =C3=A9galement gagn=C3=A9 1 PX pour la r=C3=A9ussite.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000006e10f6057500a788--

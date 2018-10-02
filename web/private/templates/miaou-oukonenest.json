@@ -1052,12 +1052,12 @@
    {
       "section":"idt_format",
       "key":"s_short",
-      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
+      "value":"{o.s_time} {o.s_action} de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
    },
    {
       "section":"idt_format",
       "key":"s_long",
-      "value":"{o.s_time} IdT de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
+      "value":"{o.s_time} {o.s_action} de {o.s_nom_full} : {o.s_type} {o.s_templates} {o.s_mithril} {o.s_tresor_id} {o.s_effet} {o.s_pos}"
    },
    {
       "section":"idt_format",
@@ -1068,6 +1068,16 @@
       "section":"idt_format",
       "key":"s_pos",
       "value":"en {o.s_posx} | {o.s_posy} | {o.s_posn}"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_action_idt",
+      "value":"IdT"
+   },
+   {
+      "section":"idt_format",
+      "key":"s_action_telek",
+      "value":"Télékinésie"
    },
    {
       "section":"idt_format",

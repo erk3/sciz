@@ -72,7 +72,7 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
   vm.minProf = -100;
   vm.maxProf = 0;
   vm.date = 2;
-  vm.filter = "";
+  vm.filter = '';
   vm.origX = null;
   vm.origY = null;
   vm.origN = null;

@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 import re, datetime, ConfigParser
 import modules.globals as sg
 
-# Class of an Identification Des Trésors
+# Class of an Identification Des Trésors (and Télékinésie)
 class IDT(sg.SqlAlchemyBase):
 
     # SQL Table Mapping
@@ -25,6 +25,8 @@ class IDT(sg.SqlAlchemyBase):
     troll_id = Column(Integer, ForeignKey('trolls.id', ondelete="CASCADE"))
     # ID du groupe d'appartenance
     group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
+    # Action sur l'objet
+    action = Column(String(50))
     # Nom de l'objet
     type = Column(String(250))
     # Templates de l'objet
@@ -87,6 +89,14 @@ class IDT(sg.SqlAlchemyBase):
             self.type = res.groupdict()['nom']
             self.effet = res.groupdict()['effet']
 
+    def build_idt(self):
+        self.action = "idt" # Format will trigger action_idt, see stringify routine
+        self.build()
+    
+    def build_telek(self):
+        self.action = "telek" # Format will trigger action_telek, see stringify routine
+        self.build()
+
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided
         for (key, value) in reprs:
@@ -110,6 +120,8 @@ class IDT(sg.SqlAlchemyBase):
         # Add the troll name
         self.s_nom_full = self.troll.stringify_name()
         # Compute some additional things
+        self.s_action = getattr(self, 's_action_' + self.action)
+        self.s_action += ' (ramassage)' if self.s_posx == '' else ''
         self.s_pos = self.s_pos.format(o=self) if self.s_posx != '' else ''
         # Return the final formated representation
         if short:

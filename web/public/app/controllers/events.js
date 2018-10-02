@@ -84,7 +84,8 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
     } else if (e.idc_id) {
       s = time + ' Identification de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') d\'un ' + e.sub.type + ' ' + e.sub.qualite;
     } else if (e.idt_id) {
-      s = time + ' Identification de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') : ' + vm.displayTreasureFullName(e.sub);
+      var a = (e.sub.action === 'telek') ? 'Télékinésie' : 'Identification';
+      s = time + ' ' + a + ' de ' + e.sub.troll.nom + ' (' + e.sub.troll.id + ') : ' + vm.displayTreasureFullName(e.sub);
     }
     return s;
   };

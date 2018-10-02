@@ -17,6 +17,7 @@ PortalTemplate.modelDefinition = {
     allowNull: false,
     autoincrement: true
   },
+  portal_id: {type: sequelize.INTEGER},
   group_id: {
     type: sequelize.INTEGER,
     primaryKey: 'PrimaryKeyConstraint',

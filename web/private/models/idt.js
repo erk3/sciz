@@ -26,6 +26,7 @@ IDTTemplate.modelDefinition = {
   tresor_id: {type: sequelize.INTEGER},
   troll_id: {type: sequelize.INTEGER},
   time: {type: sequelize.DATE},
+  action: {type: sequelize.STRING},
   type: {type: sequelize.STRING},
   templates: {type: sequelize.STRING},
   mithril: {type: sequelize.BOOLEAN},
