@@ -152,12 +152,14 @@ class MailParser:
                 res[len(res)] = res[i].copy()
                 for flag in FLAGS_DUPLICATE:
                     del res[i][flag]
-        # Update all the (not duplicated) events with the first one
+        # Update all the (not duplicated) events with the attrs (not filtered) from the first one
+        ATTRS_ONLY_ON_BASE_EVENT = ['px', 'mm', 'rm']
         if n > 1:
             for (key, value) in res[0].items():
                 for (i, values) in res.items():
-                    if i > 0 and not values.has_key(key):
-                        res[i].update({key: value})
+                    if i == 1 or (i > 1 and not key in ATTRS_ONLY_ON_BASE_EVENT):
+                        if not values.has_key(key):
+                            res[i].update({key: value})
             del res[0]
         # Finally, create and populate the object (CDM, BATTLE, PIEGE...)
         # usging the dictionary of named group that matched
