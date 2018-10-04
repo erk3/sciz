@@ -121,7 +121,7 @@ class IDT(sg.SqlAlchemyBase):
         self.s_nom_full = self.troll.stringify_name()
         # Compute some additional things
         self.s_action = getattr(self, 's_action_' + self.action)
-        self.s_action += ' (ramassage)' if self.s_posx == '' else ''
+        self.s_action += ' (ramassage)' if self.s_posx == '' and self.action == 'telek' else ''
         self.s_pos = self.s_pos.format(o=self) if self.s_posx != '' else ''
         # Return the final formated representation
         if short:

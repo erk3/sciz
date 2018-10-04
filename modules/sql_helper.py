@@ -192,8 +192,9 @@ class SQLHelper:
             event.portal_id = obj.id
             event.type = "PORTAL"
         elif isinstance(obj, BATTLE):
-            if ((obj.att_troll is None or obj.att_troll.shadowed) and (obj.def_troll is None or obj.def_troll.shadowed)):
-                event.hidden = True
+            event.hidden |= obj.att_troll is not None and obj.att_troll.shadowed and obj.def_troll is not None and obj.def_troll.shadowed
+            event.hidden |= obj.att_troll is None and obj.def_troll is not None and obj.def_troll.shadowed
+            event.hidden |= obj.att_troll is not None and obj.att_troll.shadowed and obj.def_troll is None
             event.battle_id = obj.id
             event.type = "BATTLE"
         self.session.add(event)

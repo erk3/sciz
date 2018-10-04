@@ -100,6 +100,22 @@ class BATTLE(sg.SqlAlchemyBase):
 
     # Constructor is handled by SqlAlchemy do not override
     
+    # Utility name setter
+    def setName(self, prefix, oid, name):
+        if len(oid) >= 7 or (len(oid) == 6 and int(oid) > 300000): # Mob
+            res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', name)
+            setattr(self, prefix + 'mob_nom', res.groupdict()['mob_name'].replace('\r', '').replace('\n', ''))
+            setattr(self, prefix + 'mob_age', res.groupdict()['mob_age'].replace('\r', '').replace('\n', ''))
+            mob_tag = res.groupdict()['mob_tag']
+            if mob_tag:
+                setattr(self, prefix + 'mob_tag', mob_tag.replace('\r', '').replace('\n', ''))
+            else:
+                setattr(self, prefix + 'mob_tag', '')
+            setattr(self, prefix + 'mob_id', oid)
+        else:
+            setattr(self, prefix + 'troll_nom', name.replace('\r', '').replace('\n', ''))
+            setattr(self, prefix + 'troll_id', oid)
+ 
     # Additional build logics (see MailParser)
     def build(self):
         self.type = self.type.strip().capitalize()
@@ -122,7 +138,6 @@ class BATTLE(sg.SqlAlchemyBase):
             self.dead = self.dead is not None 
         if hasattr(self, 'dead_mult'):
             self.dead = (self.dead or (self.dead_mult is not None)) if hasattr(self, 'dead') else (self.dead_mult is not None)
-        # self.dead |= u'mort' in self.type
         if self.subtype is not None:
             self.subtype = self.subtype.strip().capitalize()
             self.subtype += u' esquivé(e)' if self.dodge and not self.parade else ''
@@ -137,22 +152,14 @@ class BATTLE(sg.SqlAlchemyBase):
             self.alter_capa_dead()
             self.build_def()
             return
-        # Common
-        self.att_troll_id = self.troll_id
-        self.att_troll_nom = self.troll_nom
+        # DEF
+        if hasattr(self, 'troll_id') and self.troll_id is not None:
+            self.setName('att_', self.troll_id, self.troll_nom)
+        elif hasattr(self, 'mob_id') and self.mob_id is not None:
+            self.setName('att_', self.mob_id, self.mob_nom)
         # ATT
         if hasattr(self, 'def_id') and self.def_id is not None:
-            if len(self.def_id) >= 7: # Mob
-                res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.def_name)
-                self.def_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
-                self.def_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
-                self.def_mob_tag = res.groupdict()['mob_tag']
-                if self.def_mob_tag:
-                    self.def_mob_tag = self.def_mob_tag.replace('\r', '').replace('\n', '')
-                self.def_mob_id = self.def_id
-            else:
-                self.def_troll_nom = self.def_name.replace('\r', '').replace('\n', '')
-                self.def_troll_id = self.def_id
+            self.setName('def_', self.def_id, self.def_name)
         if hasattr(self, 'contre_att') and self.contre_att is not None:
             self.subtype = u' Contre-Attaque'
         if hasattr(self, 'resist') and self.resist is not None and not any(i in self.type for i in [u'résisté', u'réduit', u'Insulte', u'Hurlement']):
@@ -160,22 +167,14 @@ class BATTLE(sg.SqlAlchemyBase):
         self.build()
    
     def build_def(self):
-        # Common
-        self.def_troll_id = self.troll_id
-        self.def_troll_nom = self.troll_nom
-        # DEF
+        # DEf
+        if hasattr(self, 'troll_id') and self.troll_id is not None:
+            self.setName('def_', self.troll_id, self.troll_nom)
+        elif hasattr(self, 'mob_id') and self.mob_id is not None:
+            self.setName('def_', self.mob_id, self.mob_nom)
+        # ATT
         if hasattr(self, 'att_id') and self.att_id is not None:
-            if len(self.att_id) >= 7: # Mob
-                res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_name>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', self.att_name)
-                self.att_mob_nom = res.groupdict()['mob_name'].replace('\r', '').replace('\n', '')
-                self.att_mob_age = res.groupdict()['mob_age'].replace('\r', '').replace('\n', '')
-                self.att_mob_tag = res.groupdict()['mob_tag']
-                if self.att_mob_tag:
-                    self.att_mob_tag = self.att_mob_tag.replace('\r', '').replace('\n', '')
-                self.att_mob_id = self.att_id
-            else:
-                self.att_troll_nom = self.att_name.replace('\r', '').replace('\n', '')
-                self.att_troll_id = self.att_id
+            self.setName('att_', self.att_id, self.att_name)
         if hasattr(self, 'resist') and self.resist is not None and not any(i in self.type for i in [u'résisté', u'réduit']):
             self.type += u' réduit'
         if hasattr(self, 'capa_effet') and self.capa_effet is not None:
@@ -227,6 +226,9 @@ class BATTLE(sg.SqlAlchemyBase):
     
     def build_att_balayage(self):
         self.build_att()
+    
+    def build_def_balayage(self):
+        self.build_def()
     
     def build_att_insulte(self):
         if hasattr(self, 'resist') and self.resist is not None:
