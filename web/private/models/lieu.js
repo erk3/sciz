@@ -18,7 +18,8 @@ LieuTemplate.modelDefinition = {
   nom: {type: sequelize.STRING},
   pos_x: {type: sequelize.INTEGER},
   pos_y: {type: sequelize.INTEGER},
-  pos_n: {type: sequelize.INTEGER}
+  pos_n: {type: sequelize.INTEGER},
+  last_seen: {type: sequelize.DATE}
 };
 
 LieuTemplate.modelOptions = {

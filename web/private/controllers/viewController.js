@@ -52,7 +52,7 @@ ViewController.getView = function (req, res) {
       
       promises[0] = DB.Troll.unscoped().findAll({where: where_group_troll, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
       promises[1] = DB.Mob.unscoped().findAll({where: where_group_mob, attributes: ['id', 'nom', 'age', 'tag', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
-      promises[2] = DB.Lieu.unscoped().findAll({where: where_no_group, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n']});
+      promises[2] = DB.Lieu.unscoped().findAll({where: where_no_group, attributes: ['id', 'nom', 'pos_x', 'pos_y', 'pos_n', 'last_seen']});
      
       Promise.all(promises)
         .then(function (objs) {

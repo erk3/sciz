@@ -220,6 +220,7 @@ class MHCaller:
                     elif flag == 4:
                         lieu = LIEU()
                         lieu.id, lieu.nom, lieu.pos_x, lieu.pos_y, lieu.pos_n = line.split(';')
+                        lieu.last_seen = last_seen
                         sg.db.add(lieu, False)
             sg.db.session.commit()
             if verbose:

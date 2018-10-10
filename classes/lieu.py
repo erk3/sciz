@@ -23,6 +23,8 @@ class LIEU(sg.SqlAlchemyBase):
     pos_y = Column(Integer)
     # Pos N du lieu
     pos_n = Column(Integer)
+    # Date de dernière vue à la position
+    last_seen = Column(DateTime)
 
     # Constructor is handled by SqlAlchemy, do not override
 

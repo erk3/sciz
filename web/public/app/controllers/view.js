@@ -307,6 +307,12 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
       classes: 'troll',
       blower: gonfleurTroll
     });
+
+    hGrid.bubbleOn('.lieu', {
+      side: 'horizontal',
+      classes: 'lieu',
+      blower: gonfleurLieu
+    });
   }
 
   function applyZoom(e) {
@@ -457,6 +463,16 @@ function viewCtrl($window, $document, $scope, $http, authService, bubbleService,
     var cCaller = bubbleService.getCurrentBubble().caller;
     var troll = cCaller.dat('troll');
     c.html('<p>Identifiant : ' + troll.id + '<br>Vu la dernière fois : ' + utilService.displayDate(troll.last_seen, 0, false, true) + '</p>');
+  }
+
+  function gonfleurLieu(c) {
+    if (vm.zoom < 3) {
+      return false;
+    }
+    var cCaller = bubbleService.getCurrentBubble().caller;
+    var lieu = cCaller.dat('lieu');
+    console.log(lieu);
+    c.html('<p>Vu la dernière fois : ' + utilService.displayDate(lieu.last_seen, 0, false, true) + '</p>');
   }
 
   function applyFilters() {
