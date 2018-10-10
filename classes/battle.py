@@ -248,6 +248,10 @@ class BATTLE(sg.SqlAlchemyBase):
             self.type += u' efficace'
         self.build_att()
 
+    def build_att_marquage(self):
+        # Tag is already included in the name mob, nothing fancy to do
+        self.build_att()
+
     def alter_capa_dead(self):
         # Zero out everything not needed
         ATTR_TO_KEEP = ['time', 'type', 'group_id', 'troll_id', 'troll_nom', 'def_id', 'def_name']
