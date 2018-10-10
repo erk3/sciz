@@ -1,8 +1,8 @@
 angular
   .module('app')
-  .controller('EventsCtrl', ['$http', '$window', 'authService', 'faviconService', 'globalService', eventsCtrl]);
+  .controller('EventsCtrl', ['$http', '$window', 'authService', 'faviconService', 'globalService', 'notificationService', eventsCtrl]);
 
-function eventsCtrl($http, $window, authService, faviconService, globalService) {
+function eventsCtrl($http, $window, authService, faviconService, globalService, notificationService) {
   var vm = this;
   vm.searchValue = '';
   vm.events = [];
@@ -68,8 +68,6 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
       var def = (e.sub.def_troll_id) ? e.sub.def_troll.nom + ' (' + e.sub.def_troll.id + ')' : '';
       def = (e.sub.def_mob_id) ? e.sub.def_mob.nom + ' [' + e.sub.def_mob.age + '] (' + e.sub.def_mob.id + ')' : def;
       var action = (e.sub.subtype) ? e.sub.subtype : '';
-      // var action = (e.sub.type) ? e.sub.type : '';
-      // action += (e.sub.subtype) ? (action ? ' (' + e.sub.subtype + ')' : e.sub.subtype) : '';
       s = time + ' ' + action;
       s += (att) ? ' de ' + att_decorator_f + att + decorator_b : '';
       s += (def) ? ' sur ' + def_decorator_f + def + decorator_b : '';
@@ -121,6 +119,10 @@ function eventsCtrl($http, $window, authService, faviconService, globalService) 
             vm.offset = vm.events.length;
             if (!old) {
               faviconService.add(vm.events.length - oldLength);
+              var i = 0;
+              for (i = 0; i < events.length; i++) {
+                notificationService.show(vm.user.currentAssoc.group.name, events[i].notif);
+              }
             }
           }
           if (old && events.length <= 0) {

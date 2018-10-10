@@ -69,7 +69,7 @@ TrollsController.updateTroll = function (req, res) {
         if (data) {
           res.json({message: data});
         } else {
-          res.status(500).json({message: 'Une erreur est survenue !' + data_err});
+          res.status(500).json({message: 'Une erreur est survenue !' + err});
         }
       });
   })

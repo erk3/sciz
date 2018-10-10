@@ -21,6 +21,7 @@
     "components-font-awesome": "=5.0.6",
     "angular-ui-carousel": "=0.1.10",
     "angular-material": "=1.1.8",
+    "angular-web-notification": "=1.2.30",
     "ngstorage": "=0.3.11"
   },
   "devDependencies": {
