@@ -52,7 +52,7 @@ BattleTemplate.modelDefinition = {
   rm: {type: sequelize.INTEGER},
   mm: {type: sequelize.INTEGER},
   fatigue: {type: sequelize.INTEGER},
-  retraite: {type: sequelize.STRING},
+  direction: {type: sequelize.STRING},
   destab: {type: sequelize.INTEGER},
   stab: {type: sequelize.INTEGER}
 };

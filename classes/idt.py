@@ -90,11 +90,11 @@ class IDT(sg.SqlAlchemyBase):
             self.effet = res.groupdict()['effet']
 
     def build_idt(self):
-        self.action = "idt" # Format will trigger action_idt, see stringify routine
+        self.action = 'idt' # Format will trigger action_idt, see stringify routine
         self.build()
     
     def build_telek(self):
-        self.action = "telek" # Format will trigger action_telek, see stringify routine
+        self.action = 'telek' # Format will trigger action_telek, see stringify routine
         self.build()
 
     def stringify(self, reprs, short, attrs):

@@ -2,12 +2,12 @@
    {
       "section":"battle_format",
       "key":"s_short",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_retraite} {o.s_capa} {o.s_dead}"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_direction} {o.s_capa} {o.s_dead}"
    },
    {
       "section":"battle_format",
       "key":"s_long",
-      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_retraite} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_par} {o.s_destab} {o.s_stab} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px} {o.s_rm} {o.s_mm})"
+      "value":"{o.s_time} {o.s_subtype} {o.s_crit}{o.s_resist} {o.s_det_att} {o.s_att_nom} {o.s_det_def} {o.s_def_nom} : {o.s_pv} {o.s_blessure} {o.s_soin} {o.s_vie} {o.s_direction} {o.s_capa} {o.s_dead} ({o.s_att} {o.s_esq} {o.s_par} {o.s_destab} {o.s_stab} {o.s_deg} {o.s_arm} {o.s_sr} {o.s_resi} {o.s_fatigue} {o.s_px} {o.s_rm} {o.s_mm})"
    },
    {
       "section":"battle_format",
@@ -161,8 +161,8 @@
    },
    {
       "section":"battle_format",
-      "key":"retraite",
-      "value":"(retraite {})"
+      "key":"s_dir_retraite",
+      "value":"retraite"
    },
    {
       "section":"battle_format",

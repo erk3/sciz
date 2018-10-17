@@ -1,0 +1,140 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id +OKjOrXwvlu8SgAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Thu, 11 Oct 2018 06:41:57 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id E00E52A607A2
+	for <feedthebat@sciz.cerv.ovh>; Thu, 11 Oct 2018 06:41:57 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.178; helo=mail-oi1-f178.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="gQMlz+9w";
+	dkim-atps=neutral
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 401902A607A1
+	for <feedthebat@sciz.cerv.ovh>; Thu, 11 Oct 2018 06:41:57 +0000 (UTC)
+Received: by mail-oi1-f178.google.com with SMTP id u74-v6so6138188oia.11
+        for <feedthebat@sciz.cerv.ovh>; Wed, 10 Oct 2018 23:41:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=sCqMNQJ4pZF8nu007N4ZfbMnSTvAcU5+ww7wesnN7WU=;
+        b=gQMlz+9wMfnWE4x++S1hG/a6OVBY2Pnq4dixhNla8WB35qW9S2/J+wBxXnrFLPYJer
+         VL1Jxsbm0qGFB8SeQKXVdPAwrxdpXsENKc2NenaRtvaVN574O6q8nTG9SSNRByIqgDhp
+         iRsJ0vzyU14VONBitgPjRvOFlLkmjK9EHbO+XiU8Zv7+3O5bPoisZqt9WKLfYlhQeq0E
+         yR/C9XMEz+hp60/UupNQZL+mC7VejrWEgbEMrXAGgXivLSy9PX94B1Gxv8Mv7T2XteMH
+         3wweFvxeUAjUALquHy1pxK8DV8DWeQJm6OpI7XarW6SUKA76lSxWl0KtOiGIWDd3WmM0
+         RqnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=sCqMNQJ4pZF8nu007N4ZfbMnSTvAcU5+ww7wesnN7WU=;
+        b=mUdM3HPq3wAGihbwu1aEJIWXUmjPMInlt34MHyhK3ubmP0b9cKI9IALo3zjRHzHhb7
+         IzJkqKjpRnSO3UUkWBzAMhM1h1zYZeU31ojy6WJn4NhAeF5B+4bJvVsl/sFNxvRwFX6n
+         ofVmjfxhMCXjv8K+n9yPOKgPmm998EGMDAiAlzir+GvVcf3qIAh1OHRKgqrWuTS79/Xy
+         Rq5p3p1o6e4ioPvAFS8Fv1heDrYNpi7c0vuulCg8csCvoMn8q0n88mW9NCjSUgkBARRh
+         /+EfJYytnIrmUs4B5OyThU1cj6/HqSQMeybnTkuubgEmFoFIovDEZ6ETtxI5Me9E039e
+         jF2Q==
+X-Gm-Message-State: ABuFfoiuVq+9dtfeTisg4Gh8qxZRlpgm5fz32ImGbPnQV+xtrgUTNHG+
+	5UVm4QkRnD6igJQn2LEf17xcr+RDNWTId3hZ2jjsjA==
+X-Google-Smtp-Source: ACcGV62qUayAYKlspNLwUp6IExdakw8KYYuaaJ56Kg+P33SgeSnFn5xW0rofF7cwOQWHO7urzVxPjmix+QATyOqgcZo=
+X-Received: by 2002:aca:3646:: with SMTP id d67-v6mr155025oia.327.1539240115497;
+ Wed, 10 Oct 2018 23:41:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <cbc7e1be960185129406f4184a584180@smartphone.mountyhall.com>
+In-Reply-To: <cbc7e1be960185129406f4184a584180@smartphone.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Thu, 11 Oct 2018 08:41:45 +0200
+Message-ID: <CALtH2JjKGtoVa-xzctYwoAQBDgZ2MgY=DOVR_zRqdnN-Vbe_yA@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_Pistage_sur_Tahini_=2810?=
+	=?UTF-8?Q?8759=29?=
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Content-Type: multipart/alternative; boundary="0000000000004eefc70577ee44af"
+
+--0000000000004eefc70577ee44af
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: ven. 21 juil. 2017 =C3=A0 23:59
+Subject: [MountyHall] Comp=C3=A9tence Pistage sur Tahini (108759)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 21/07/2017 23:59:03.
+***********************************************************
+
+Vous =C3=AAtes en X=3D-80, Y=3D-38, N=3D-43
+Vous avez retrouv=C3=A9 la trace de votre cible : le Troll Tahini (108759)
+Elle se trouve  plus vers l'Orhykan, plus vers le Nohrdikan
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+--0000000000004eefc70577ee44af
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: MountyHall-Bot &lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;<br>Date: ven. 21 juil. 2=
+017 =C3=A0=C2=A023:59<br>Subject: [MountyHall] Comp=C3=A9tence Pistage sur =
+Tahini (108759)<br>To:  &lt;<a href=3D"mailto:censored@gmail.com">=
+censored@gmail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br=
+>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 21/07/2017 23:59:03.<br>
+***********************************************************<br>
+<br>
+Vous =C3=AAtes en X=3D-80, Y=3D-38, N=3D-43<br>
+Vous avez retrouv=C3=A9 la trace de votre cible : le Troll Tahini (108759)<=
+br>
+Elle se trouve=C2=A0 plus vers l&#39;Orhykan, plus vers le Nohrdikan<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div></div>
+
+--0000000000004eefc70577ee44af--

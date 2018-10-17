@@ -81,8 +81,8 @@ class BATTLE(sg.SqlAlchemyBase):
     px = Column(Integer)
     # Fatigue
     fatigue = Column(Integer)
-    # Direction de la retraite effectuée ?
-    retraite = Column(String(50))
+    # Direction de la retraite / pistage ?
+    direction = Column(String(50))
     # Jet de déstabilisation
     destab = Column(Integer)
     # Jet de stabilité
@@ -138,6 +138,18 @@ class BATTLE(sg.SqlAlchemyBase):
             self.dead = self.dead is not None 
         if hasattr(self, 'dead_mult'):
             self.dead = (self.dead or (self.dead_mult is not None)) if hasattr(self, 'dead') else (self.dead_mult is not None)
+        if hasattr(self, 'direction') and self.direction is not None:
+            self.dir = self.direction
+            self.direction = ''
+            self.direction += ('X+ (X = %s) ' % self.pos_x if hasattr(self, 'pos_x') and self.pos_x is not None else 'X+ ') if u"orhykan" in self.dir.lower() else ''
+            self.direction += ('X- (X = %s) ' % self.pos_x if hasattr(self, 'pos_x') and self.pos_x is not None else 'X- ') if u"oxhykan" in self.dir.lower() else ''
+            self.direction += ('Y+ (Y = %s) ' % self.pos_y if hasattr(self, 'pos_y') and self.pos_y is not None else 'Y+ ') if u"nohrdikan" in self.dir.lower() else ''
+            self.direction += ('Y- (Y = %s) ' % self.pos_y if hasattr(self, 'pos_y') and self.pos_y is not None else 'Y- ') if u"mydikan" in self.dir.lower() else ''
+            self.direction += ('N+ (N = %s) ' % self.pos_n if hasattr(self, 'pos_n') and self.pos_n is not None else 'N+ ') if u"haut" in self.dir.lower() else ''
+            self.direction += ('N- (N = %s) ' % self.pos_n if hasattr(self, 'pos_n') and self.pos_n is not None else 'N- ') if u"bas" in self.dir.lower() else ''
+            self.direction = self.dir if self.direction is '' else self.direction
+            if 'zone' in self.direction.lower():
+                self.direction = ' X = %s | Y = %s | N = %s' % (self.pos_x, self.pos_y, self.pos_n) 
         if self.subtype is not None:
             self.subtype = self.subtype.strip().capitalize()
             self.subtype += u' esquivé(e)' if self.dodge and not self.parade else ''
@@ -180,13 +192,6 @@ class BATTLE(sg.SqlAlchemyBase):
         if hasattr(self, 'capa_effet') and self.capa_effet is not None:
             self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
             self.subtype = self.capa_desc if self.subtype is None else self.subtype
-        if hasattr(self, 'retraite') and self.retraite is not None:
-            self.retraite = 'N+' if u"haut" in self.retraite.lower() else self.retraite
-            self.retraite = 'N-' if u"bas" in self.retraite.lower() else self.retraite
-            self.retraite = 'Y+' if u"nohrdikan" in self.retraite.lower() else self.retraite
-            self.retraite = 'Y-' if u"mydikan" in self.retraite.lower() else self.retraite
-            self.retraite = 'X+' if u"orhykan" in self.retraite.lower() else self.retraite
-            self.retraite = 'X-' if u"oxhykan" in self.retraite.lower() else self.retraite
         self.build()
  
     def build_capa(self):       
@@ -250,6 +255,9 @@ class BATTLE(sg.SqlAlchemyBase):
 
     def build_att_marquage(self):
         # Tag is already included in the name mob, nothing fancy to do
+        self.build_att()
+    
+    def build_att_pistage(self):
         self.build_att()
 
     def alter_capa_dead(self):
@@ -320,6 +328,12 @@ class BATTLE(sg.SqlAlchemyBase):
         else:
             self.s_det_def = ''
             self.s_def_nom = ''
+        # Compute some additional things
+        if hasattr(self, 'direction') and self.direction is not None:
+            if 'pistage' in self.type.lower():
+                self.s_direction = '%s' % (self.direction, )
+            else:
+                self.s_direction = '(%s %s)' % (self.s_dir_retraite, self.direction, )
         # Add the capa
         self.s_capa = self.s_capa_effet
         if self.s_capa_tour:

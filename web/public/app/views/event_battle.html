@@ -50,7 +50,7 @@
 			  <p>{{ec.cur.sub.def_troll.nom}} (<a ng-href="http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ={{ec.cur.sub.def_troll.id}}">{{ec.cur.sub.def_troll.id}}</a>)</p>
         <cite ng-if="ec.cur.sub.fatigue && !ec.cur.sub.att_troll_id"><small>Fatigue : +{{ec.cur.sub.fatigue}}</small></cite>
         <cite ng-if="ec.cur.sub.rm"><small>Résistance Magique : +{{ec.cur.sub.rm}}</small></cite>
-        <cite ng-if="ec.cur.sub.retraite"><small>Retraite vers {{ec.cur.sub.retraite}}</small></cite>
+        <cite ng-if="ec.cur.sub.direction && ec.cur.sub.type != 'Pistage'"><small>Retraite vers {{ec.cur.sub.direction}}</small></cite>
 			</blockquote>
 			<blockquote class="blockquote-reverse" ng-if="ec.cur.sub.def_mob_id">
         <p>{{ec.cur.sub.def_mob.nom}} [{{ec.cur.sub.def_mob.age}}] <span ng-if="ec.cur.sub.def_mob.tag">{{ec.cur.sub.def_mob.tag}} </span>(<a ng-href="http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ={{ec.cur.sub.def_mob.id}}">{{ec.cur.sub.def_mob.id}}</a>)</p>
@@ -63,6 +63,10 @@
   <div class="row">
     <table class="table table-condensed text-center" style="margin-top: 20px;">
       <tbody>
+        <tr ng-if="(ec.cur.sub.type == 'Pistage')">
+          <td class="inverse">Direction</td>
+          <td>{{ec.cur.sub.direction}}</td>
+        </tr>
         <tr ng-if="(ec.cur.sub.att !== null) && (ec.cur.sub.def !== null)">
           <td class="inverse">Jet d'attaque</td>
           <td>{{ec.cur.sub.att}}</td>
