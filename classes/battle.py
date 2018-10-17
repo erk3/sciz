@@ -329,6 +329,7 @@ class BATTLE(sg.SqlAlchemyBase):
             self.s_det_def = ''
             self.s_def_nom = ''
         # Compute some additional things
+        self.s_direction = None
         if hasattr(self, 'direction') and self.direction is not None:
             if 'pistage' in self.type.lower():
                 self.s_direction = '%s' % (self.direction, )
