@@ -134,13 +134,14 @@ class MHCaller:
                             sub = None if not capa.has_key('types') or len (capa['types']) < 1 else capa['types'][n-1]
                             try:
                                 if sub is None:
-                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n, AssocTrollsCapas.subtype == sub).one()
+                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n, AssocTrollsCapas.subtype == sub, AssocTrollsCapas.group_id == troll.group_id).one()
                                 else:
-                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n).one()
+                                    assoc = sg.db.session.query(AssocTrollsCapas).filter(AssocTrollsCapas.metacapa_id == metacapa.id, AssocTrollsCapas.troll_id == user.id, AssocTrollsCapas.niv == n, AssocTrollsCapas.group_id == troll.group_id).one()
                             except NoResultFound, MultipleResultsFound:
                                 assoc = AssocTrollsCapas()
-                            assoc.troll_id = user.id
+                            assoc.troll_id = troll.id
                             assoc.metacapa_id = metacapa.id
+                            assoc.group_id = troll.group_id
                             assoc.niv = n
                             assoc.percent = percent
                             assoc.subtype = sub

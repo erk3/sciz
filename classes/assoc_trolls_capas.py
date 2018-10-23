@@ -15,6 +15,8 @@ class AssocTrollsCapas(sg.SqlAlchemyBase):
     __tablename__ = 'assoc_trolls_capas'
     troll_id = Column(Integer, ForeignKey('trolls.user_id', ondelete="CASCADE"), primary_key=True)
     metacapa_id = Column(Integer, ForeignKey('metacapas.id', ondelete="CASCADE"), primary_key=True)
+    # ID du groupe d'appartenance
+    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"), primary_key=True)
     # Niveau
     niv = Column(Integer, default=1, primary_key=True)
     # Pourcentage
@@ -38,6 +40,7 @@ class AssocTrollsCapas(sg.SqlAlchemyBase):
 
     troll = relationship("TROLL", back_populates="capas")
     metacapa = relationship("METACAPA", back_populates="trolls")
+    group = relationship('GROUP')
 
     def stringify(self, reprs, short, attrs):
         # Build the string representations provided

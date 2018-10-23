@@ -74,6 +74,7 @@ DB.AssocUsersGroups.belongsTo(DB.User, {foreignKey: 'user_id', targetKey: 'id', 
 // Assocs Trolls Capa
 DB.AssocTrollsCapas.belongsTo(DB.Metacapa, {foreignKey: 'metacapa_id', targetKey: 'id', onDelete: 'cascade'});
 DB.AssocTrollsCapas.belongsTo(DB.Troll, {foreignKey: 'troll_id', targetKey: 'id', onDelete: 'cascade'});
+DB.AssocTrollsCapas.belongsTo(DB.Group, {foreignKey: 'group_id', targetKey: 'id', onDelete: 'cascade'});
 // User
 DB.User.prototype.comparePasswords = UserTemplate.comparePasswords;
 DB.User.hasMany(DB.Troll, {foreignKey: 'user_id', sourceKey: 'id'});
@@ -106,6 +107,7 @@ DB.Metacapa.hasMany(DB.AssocTrollsCapas, {foreignKey: 'metacapa_id', sourceKey: 
 DB.Metatresor.hasMany(DB.IDT, {foreignKey: 'metatresor_id', sourceKey: 'id'});
 // Group
 DB.Group.hasMany(DB.AssocUsersGroups, {as: 'assocs', foreignKey: 'group_id', sourceKey: 'id'});
+DB.Group.hasMany(DB.AssocTrollsCapas, {as: 'assocsTrollsCapas', foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Conf, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Troll, {foreignKey: 'group_id', sourceKey: 'id'});
 DB.Group.hasMany(DB.Mob, {foreignKey: 'group_id', sourceKey: 'id'});

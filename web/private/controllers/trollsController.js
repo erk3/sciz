@@ -19,7 +19,7 @@ TrollsController.getTrolls = function (req, res) {
   var getTrollsWithCapas = function (trolls) {
     var promises = []
     for (var i = 0; i < trolls.length; i++) {
-      promises[i] = DB.AssocTrollsCapas.findAll({where: {troll_id: trolls[i].user_id}});
+      promises[i] = DB.AssocTrollsCapas.findAll({where: {troll_id: trolls[i].user_id, group_id: trolls[i].group_id}});
     }
     Promise.all(promises)
       .then(function (capas) {
