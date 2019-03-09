@@ -1,0 +1,1094 @@
+---
+### Format configuration for SCIZ ###
+
+Abréviations:
+  Identification des trésors: 'IdT'
+  Identification des Champignons: 'IdC'
+  Analyse anatomique: 'AA'
+  Connaissance des monstres: 'CdM'
+  Coup de butoir: 'CdB'
+
+Event:
+  Notification: '{Horodatage} {Type d''événement} de {Troll}'
+  Attributs:
+    Horodatage:
+      Attribut: '{o.time}'
+      Format temporel: '%d/%m %Hh%M:%S'
+    Troll:
+      Préfixe: ''
+      Attribut: '{o.owner.pseudo}'
+      Suffixe: ''
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.sciz_type}'
+      Suffixe: ''
+    PX:
+      Préfixe: '(px +'
+      Attribut: '{o.px}'
+      Suffixe: ')'
+    RM:
+      Préfixe: '(rm +'
+      Attribut: '{o.rm}'
+      Suffixe: ')'
+    MM:
+      Préfixe: '(mm +'
+      Attribut: '{o.mm}'
+      Suffixe: ')'
+    Fatigue:
+      Préfixe: '(fatigue +'
+      Attribut: '{o.fatigue}'
+      Suffixe: ')'
+    Séparateur:
+      Attribut: 'True'
+      Valeur: ';'
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+tresorEvent:
+  Notification: '{Horodatage} {Type d''événement} de {Troll} : {Nom du trésor} {Templates} {Mithril} {Identifiant du trésor} {Effet du trésor} {Position} {PX}'
+  Attributs construits:
+    Position: 'en {Position X} {Position Y} {Position N}'
+  Attributs:
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Identifiant du trésor:
+      Préfixe: '('
+      Attribut: '{o.tresor_id}'
+      Suffixe: ')'
+    Nom du trésor:
+      Préfixe: ''
+      Attribut: '{o.str_nom}'
+      Suffixe: ''
+    Templates:
+      Préfixe: ''
+      Attribut: '{o.templates}'
+      Suffixe: ''
+    Mithril:
+      Attribut: '{o.mithril}'
+      Valeur: 'en Mithril'
+    Effet du trésor:
+      Préfixe: '('
+      Attribut: '{o.effet}'
+      Suffixe: ')'
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+
+champiEvent:
+  Notification: '{Horodatage} {Type d''événement} de {Troll} : {Nom du champignon} {Identifiant du champignon} {Qualité} {Position} {PX}'
+  Attributs construits:
+    Position: 'en {Position X} {Position Y} {Position N}'
+  Attributs:
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Identifiant du champignon:
+      Préfixe: '('
+      Attribut: '{o.champi_id}'
+      Suffixe: ')'
+    Nom du champignon:
+      Préfixe: ''
+      Attribut: '{o.nom}'
+      Suffixe: ''
+    Qualité:
+      Préfixe: ''
+      Attribut: '{o.qualite}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+
+tpEvent:
+  Notification: '{Horodatage} Portail de téléportation {Identifiant du Portail} de {Troll} {Position} {Destination} {Dispersion} {PX}'
+  Attributs construits:
+    Position: 'en {Position X} {Position Y} {Position N}'
+    Destination: 'vers {Destination X} {Destination Y} {Destination N}'
+    Dispersion: '({Dispersion X} {Dispersion Y} {Dispersion N})'
+  Attributs:
+    Identifiant du Portail:
+      Préfixe: '('
+      Attribut: '{o.portail_id}'
+      Suffixe: ')'
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Destination X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x_dst}'
+      Suffixe: ''
+    Destination Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y_dst}'
+      Suffixe: ''
+    Destination N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n_dst}'
+      Suffixe: ''
+    Dispersion X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x_disp}'
+      Suffixe: ''
+    Dispersion Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y_dst}'
+      Suffixe: ''
+    Dispersion N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n_disp}'
+      Suffixe: ''
+
+cpEvent:
+  Notification: '{Horodatage} Piège à {Type de piège} {Identifiant du Piège} de {Troll} {Position} {MM du piège} {PX}'
+  Attributs construits:
+    Position: 'en {Position X} {Position Y} {Position N}'
+  Attributs:
+    Identifiant du Piège:
+      Préfixe: '('
+      Attribut: '{o.piege_id}'
+      Suffixe: ')'
+    Type de piège:
+      Préfixe: ''
+      Attribut: '{o.piege_type}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    MM du piège:
+      Préfixe: '(MM '
+      Attribut: '{o.piege_mm}'
+      Suffixe: ')'
+
+aaEvent:
+  Notification: '{Horodatage} Analyse anatomique de {Troll} sur {Troll cible} : {Blessure} {Caractéristiques} {PX}'
+  Attributs construits:
+    Caractéristiques: '{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARM}{Délimiteur}{VUE}'
+  Attributs:
+    Troll cible:
+      Préfixe: ''
+      Attribut: '{o.troll.nom}'
+      Suffixe: ''
+    Blessure:
+      Préfixe: ''
+      Attribut: '{o.blessure}'
+      Suffixe: '%'
+    Niveau:
+      Préfixe: 'Niv '
+      Attribut: '{o.niv}'
+      Suffixe: ''
+    PV:
+      Préfixe: 'PV '
+      Attribut: '{sg.str_min_max(o.base_pdv_min, o.base_pdv_max)}'
+      Suffixe: ''
+    Vie restante:
+      Préfixe: 'Vie restante : '
+      Attribut: '{sg.str_min_max(o.vie_min, o.vie_max)}'
+      Suffixe: ''
+    ATT:
+      Préfixe: 'ATT '
+      Attribut: '{sg.str_min_max(o.base_att_min, o.base_att_max)}'
+      Suffixe: 'D6'
+    ESQ:
+      Préfixe: 'ESQ '
+      Attribut: '{sg.str_min_max(o.base_esq_min, o.base_esq_max)}'
+      Suffixe: 'D6'
+    DEG:
+      Préfixe: 'DEG '
+      Attribut: '{sg.str_min_max(o.base_deg_min, o.base_deg_max)}'
+      Suffixe: 'D3'
+    REG:
+      Préfixe: 'REG '
+      Attribut: '{sg.str_min_max(o.base_reg_min, o.base_reg_max)}'
+      Suffixe: 'D3'
+    ARM:
+      Préfixe: 'ARM '
+      Attribut: '{sg.str_min_max(o.base_arm_min, o.base_arm_max)}'
+      Suffixe: ''
+    VUE:
+      Préfixe: 'VUE '
+      Attribut: '{sg.str_min_max(o.base_vue_min, o.base_vue_max)}'
+      Suffixe: ' cases'
+
+cdmEvent:
+  Notification: '{Horodatage} Connaissance des monstres {Niveau CDM} de {Troll} sur {Monstre cible} : {Blessure} {Caractéristiques} {PX}'
+  Attributs construits:
+    Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
+    Caractéristiques: '{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}'
+  Attributs:
+    Monstre cible:
+      Préfixe: ''
+      Attribut: '{o.mob.nom_complet}'
+      Suffixe: ''
+    Niveau CDM:
+      Préfixe: '('
+      Attribut: '{o.cdm_niv}'
+      Suffixe: ')'
+    Blessure:
+      Préfixe: ''
+      Attribut: '{o.blessure}'
+      Suffixe: '%'
+    Niveau:
+      Préfixe: 'Niv '
+      Attribut: '{sg.str_min_max(o.niv_min, o.niv_max)}'
+      Suffixe: ''
+    PV:
+      Préfixe: 'PV '
+      Attribut: '{sg.str_min_max(o.pdv_min, o.pdv_max)}'
+      Suffixe: ''
+    Vie restante:
+      Préfixe: 'Vie restante : '
+      Attribut: '{sg.str_min_max(o.vie_min, o.vie_max)}'
+      Suffixe: ''
+    ATT:
+      Préfixe: 'ATT '
+      Attribut: '{sg.str_min_max(o.att_min, o.att_max)}'
+      Suffixe: 'D6'
+    ESQ:
+      Préfixe: 'ESQ '
+      Attribut: '{sg.str_min_max(o.esq_min, o.esq_max)}'
+      Suffixe: 'D6'
+    DEG:
+      Préfixe: 'DEG '
+      Attribut: '{sg.str_min_max(o.deg_min, o.deg_max)}'
+      Suffixe: 'D6'
+    REG:
+      Préfixe: 'REG '
+      Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
+      Suffixe: 'D6'
+    ARMP:
+      Préfixe: 'ARMP '
+      Attribut: '{sg.str_min_max(o.arm_phy_min, o.arm_phy_max)}'
+      Suffixe: ''
+    ARMM:
+      Préfixe: 'ARMM '
+      Attribut: '{sg.str_min_max(o.arm_mag_min, o.arm_mag_max)}'
+      Suffixe: ''
+    VUE:
+      Préfixe: 'VUE '
+      Attribut: '{sg.str_min_max(o.vue_min, o.vue_max)}'
+      Suffixe: ' cases'
+    MM:
+      Préfixe: 'MM '
+      Attribut: '{sg.str_min_max(o.mm_min, o.mm_max)}'
+      Suffixe: ''
+    RM:
+      Préfixe: 'RM '
+      Attribut: '{sg.str_min_max(o.rm_min, o.rm_max)}'
+      Suffixe: ''
+    Durée du tour:
+      Préfixe: 'Tour : '
+      Attribut: '{sg.str_min_max(o.tour_min, o.tour_max)}'
+      Suffixe: 'h'
+    Capacité spéciale (description):
+      Préfixe: ''
+      Attribut: '{o.capa_desc}'
+      Suffixe: ' ; '
+    Capacité spéciale (effet):
+      Préfixe: ''
+      Attribut: '{o.capa_effet}'
+      Suffixe: ''
+    Capacité spéciale (durée):
+      Préfixe: ' ; '
+      Attribut: '{o.capa_tour}'
+      Suffixe: 'T'
+    Capacité spéciale (portée):
+      Préfixe: ' ; '
+      Attribut: '{o.capa_portee}'
+      Suffixe: ''
+    Nombre d'attaque:
+      Préfixe: 'ATT/T : '
+      Attribut: '{o.nb_att_tour}'
+      Suffixe: ''
+    Vitesse de déplacement:
+      Préfixe: 'Vitesse : '
+      Attribut: '{o.vit_dep}'
+      Suffixe: ''
+    VLC:
+      Préfixe: 'Voit le caché : '
+      Attribut: '{sg.boolean2French(o.vlc)}'
+      Suffixe: ''
+    Voleur:
+      Préfixe: 'Voleur : '
+      Attribut: '{sg.boolean2French(o.voleur)}'
+      Suffixe: ''
+    Attaque à distance:
+      Préfixe: 'Attaque à distance : '
+      Attribut: '{sg.boolean2French(o.att_dist)}'
+      Suffixe: ''
+    Attaque magique:
+      Préfixe: 'Attaque magique : '
+      Attribut: '{sg.boolean2French(o.att_mag)}'
+      Suffixe: ''
+    DLA:
+      Préfixe: 'DLA : '
+      Attribut: '{o.dla}'
+      Suffixe: ''
+    Sang froid:
+      Préfixe: 'Sang froid : '
+      Attribut: '{o.sang_froid}'
+      Suffixe: ''
+    Chargement:
+      Préfixe: 'Chargement : '
+      Attribut: '{o.chargement}'
+      Suffixe: ''
+    Bonus/Malus:
+      Préfixe: 'Bonus/Malus : '
+      Attribut: '{o.bonus_malus}'
+      Suffixe: ''
+
+battleEvent:
+  Notification: '{Horodatage} {Mort} {Type d''événement} {Esquivé} {Paré} {Critique} {Résisté} {Attaquant} {Défenseur} {Autre} {Trésor} {Impact} {Direction} {Position} ({Caractéristiques})'
+  Attributs construits:
+    Esquivé: '{Esquivé normalement} {Esquivé parfaitement}'
+    Capacité spéciale: '({Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)})'
+    Position: '({Position X} {Position Y} {Position N})'
+    Direction: '({Motif direction} {Direction X} {Direction Y} {Direction N})'
+    Impact: ' : {PV} {Blessure} {Soin} {Vie} {Capacité spéciale}'
+    Caractéristiques: '{ATT} {DESTAB} {ESQ} {STAB} {PAR} {REF} {DEG} {ARM} {RESI} {SR} {Fatigue} {MM} {RM} {PX}'
+  Attributs:
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Attaquant:
+      Préfixe: 'de '
+      Attribut: '{o.att_being.nom_complet}'
+      Suffixe: ''
+    Défenseur:
+      Préfixe: 'sur '
+      Attribut: '{o.def_being.nom_complet}'
+      Suffixe: ''
+    Autre:
+      Préfixe: 's''interposant pour '
+      Attribut: '{o.autre_being.nom_complet}'
+      Suffixe: ''
+    Trésor:
+      Préfixe: ' affectant '
+      Attribut: '{o.tresor_private.nom_complet}'
+      Suffixe: ''
+    Esquivé normalement:
+      Attribut: '{o.esquive}'
+      Valeur: 'esquivé(e)'
+    Esquivé parfaitement:
+      Attribut: '{o.esquive_parfaite}'
+      Valeur: 'parfaitement'
+    Paré:
+      Attribut: '{o.parade}'
+      Valeur: ''
+    Critique:
+      Attribut: '{o.critique}'
+      Valeur: 'critique'
+    Résisté:
+      Attribut: '{o.resist}'
+      Valeur: 'résisté(e)'
+    Mort:
+      Préfixe: ''
+      Attribut: '{o.mort}'
+      Valeur: 'MORT'
+      Suffixe: ' - '
+    PV:
+      Préfixe: '-'
+      Attribut: '{o.pv}'
+      Suffixe: 'PV'
+    Blessure:
+      Préfixe: 'blessure -'
+      Attribut: '{o.blessure}'
+      Suffixe: ''
+    Soin:
+      Préfixe: 'soin +'
+      Attribut: '{o.soin}'
+      Suffixe: ''
+    Vie:
+      Préfixe: '(reste '
+      Attribut: '{o.str_vie}'
+      Suffixe: 'PV)'
+    ATT:
+      Préfixe: 'att '
+      Attribut: '{o.att}'
+      Suffixe: ''
+    DESTAB:
+      Préfixe: 'destab '
+      Attribut: '{o.destab}'
+      Suffixe: ''
+    ESQ:
+      Préfixe: 'esq '
+      Attribut: '{o.esq}'
+      Suffixe: ''
+    STAB:
+      Préfixe: 'stab '
+      Attribut: '{o.stab}'
+      Suffixe: ''
+    PAR:
+      Préfixe: 'par '
+      Attribut: '{o.par}'
+      Suffixe: ''
+    REF:
+      Préfixe: 'ref '
+      Attribut: '{o.ref}'
+      Suffixe: ''
+    DEG:
+      Préfixe: 'deg '
+      Attribut: '{o.deg}'
+      Suffixe: ''
+    ARM:
+      Préfixe: 'arm '
+      Attribut: '{o.arm}'
+      Suffixe: ''
+    SR:
+      Préfixe: 'sr '
+      Attribut: '{o.sr}'
+      Suffixe: ''
+    RESI:
+      Préfixe: 'resi '
+      Attribut: '{o.resi}'
+      Suffixe: ''
+    Capacité spéciale (description):
+      Préfixe: ''
+      Attribut: '{o.capa_desc}'
+      Suffixe: ' ; '
+    Capacité spéciale (effet):
+      Préfixe: ''
+      Attribut: '{o.capa_effet}'
+      Suffixe: ''
+    Capacité spéciale (durée):
+      Préfixe: ' pour '
+      Attribut: '{o.capa_tour}'
+      Suffixe: 'T'
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Motif direction:
+      Préfixe: ''
+      Attribut: '{o.dir_for}'
+      Suffixe: ''
+    Direction X:
+      Préfixe: ''
+      Attribut: '{o.dir_x}'
+      Suffixe: ''
+    Direction Y:
+      Préfixe: ''
+      Attribut: '{o.dir_y}'
+      Suffixe: ''
+    Direction N:
+      Préfixe: ''
+      Attribut: '{o.dir_n}'
+      Suffixe: ''
+
+Lieu:
+  Notification: '{Nom du lieu} {Identifiant du lieu} {Caractéristiques}'
+  Attributs construits:
+    Position: 'Position : {Position X} {Position Y} {Position N}'
+    Caractéristiques: '{Délimiteur}{Position}{Délimiteur}{Date d''observation}'
+  Attributs:
+    Identifiant du lieu:
+      Préfixe: '('
+      Attribut: '{o.id}'
+      Suffixe: ')'
+    Nom du lieu:
+      Préfixe: ''
+      Attribut: '{o.nom}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Date d'observation:
+      Préfixe: 'Vu le '
+      Attribut: '{o.last_seen_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+Piege:
+  Notification: '{Nom du lieu} {Identifiant du lieu} ({MM}) {Caractéristiques}'
+  Attributs:
+    MM:
+      Préfixe: 'mm '
+      Attribut: '{o.piege_mm}'
+      Suffixe: ''
+
+Portail:
+  Notification: '{Nom du lieu} {Identifiant du lieu} {Caractéristiques}'
+  Attributs construits:
+    Destination: 'Destination : {Destination X} {Destination Y} {Destination N}'
+    Dispersion: 'Dispersion : {Dispersion X} {Dispersion Y} {Dispersion N}'
+    Caractéristiques: '{Délimiteur}{Position}{Délimiteur}{Destination}{Délimiteur}{Dispersion}{Délimiteur}{Date d''observation}'
+  Attributs:
+    Destination X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x_dst}'
+      Suffixe: ''
+    Destination Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y_dst}'
+      Suffixe: ''
+    Destination N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n_dst}'
+      Suffixe: ''
+    Dispersion X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x_disp}'
+      Suffixe: ''
+    Dispersion Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y_dst}'
+      Suffixe: ''
+    Dispersion N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n_disp}'
+      Suffixe: ''
+
+ChampiPrivate:
+  Notification: '{Nom du champignon} {Qualité} {Identifiant du champignon} {Caractéristiques}'
+  Attributs construits:
+    Position: 'Position : {Position X} {Position Y} {Position N}'
+    Caractéristiques: '{Délimiteur}{Position}{Délimiteur}{Date de cueillette}{Délimiteur}{Date d''observation}'
+  Attributs:
+    Identifiant du champignon:
+      Préfixe: '('
+      Attribut: '{o.champi_id}'
+      Suffixe: ')'
+    Nom du champignon:
+      Préfixe: ''
+      Attribut: '{o.nom}'
+      Suffixe: ''
+    Qualité:
+      Préfixe: ''
+      Attribut: '{o.qualite}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Date de cueillette:
+      Préfixe: 'Cueilli le '
+      Attribut: '{o.fraicheur}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Date d'observation:
+      Préfixe: 'Vu le '
+      Attribut: '{o.last_seen_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+TresorPrivate:
+  Notification: '{Nom du trésor} {Templates} {Mithril} {Identifiant du trésor} {Caractéristiques}'
+  Attributs construits:
+    Position: 'Position : {Position X} {Position Y} {Position N}'
+    Caractéristiques: '{Délimiteur}{Type}{Délimiteur}{Effet du trésor}{Délimiteur}{Position}{Délimiteur}{Date d''observation}'
+  Attributs:
+    Identifiant du trésor:
+      Préfixe: '('
+      Attribut: '{o.tresor_id}'
+      Suffixe: ')'
+    Nom du trésor:
+      Préfixe: ''
+      Attribut: '{o.nom}'
+      Suffixe: ''
+    Type:
+      Préfixe: 'Type : '
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Templates:
+      Préfixe: ''
+      Attribut: '{o.templates}'
+      Suffixe: ''
+    Mithril:
+      Attribut: '{o.mithril}'
+      Valeur: 'en Mithril'
+    Effet du trésor:
+      Préfixe: 'Effet : '
+      Attribut: '{o.effet}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Date d'observation:
+      Préfixe: 'Vu le '
+      Attribut: '{o.last_seen_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+TrollPrivate:
+  Notification: '{Nom du troll} {Identifiant du troll}{Caractéristiques}{Délimiteur}{Date d''observation}{Délimiteur}{Date de mise à jour (SP)}{Délimiteur}{Date de mise à jour (Evénement)}'
+  Attributs construits:
+    Points d'investissement: 'PI {PI (Disponibles)}{PI}'
+    DLA: 'DLA {DLA actuelle} {Séparateur} {DLA suivante}'
+    Concentration: '{CONC} {BONUS_CONC}'
+    Vie: '{PDV} {BONUS_PDV}'
+    Attaque: '{ATT} {BONUS_ATT}'
+    Esquive: '{ESQ} {Nombre d''attaques subies} {BONUS_ESQ}'
+    Réflexe/Stabilité: '{REF_STAB} {BONUS_ESQ}'
+    Dégats: '{DEG} {BONUS_DEG}'
+    Régénération: '{REG} {BONUS_REG}'
+    Armure: '{ARM} {BONUS_ARM}'
+    Vue: '{VUE} {BONUS_VUE}'
+    Maitrise Magique: '{MM} {BONUS_MM}'
+    Résistance Magique: '{RM} {BONUS_RM}'
+    Position: 'Position : {Position X} {Position Y} {Position N}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{PV}{Délimiteur}{PA}{Délimiteur}{DLA}{Délimiteur}{Statut}{Délimiteur}{Actions programmées}{Délimiteur}{Fatigue}{Délimiteur}{Concentration}{Délimiteur}{Position}{Délimiteur}{Vie}{Délimiteur}{Attaque}{Délimiteur}{Esquive}{Délimiteur}{Réflexe/Stabilité}{Délimiteur}{Dégats}{Délimiteur}{Régénération}{Délimiteur}{Armure}{Délimiteur}{Vue}{Délimiteur}{Maitrise Magique}{Délimiteur}{Résistance Magique}{Délimiteur}{Corpulence}{Délimiteur}{Agilité}{Délimiteur}{Points d''investissement}'
+  Attributs:
+    Identifiant du troll:
+      Préfixe: '('
+      Attribut: '{o.troll_id}'
+      Suffixe: ')'
+    Nom du troll:
+      Préfixe: ''
+      Attribut: '{o.troll.nom}'
+      Suffixe: ''
+    Blessure:
+      Préfixe: ''
+      Attribut: '{o.blessure}'
+      Suffixe: '%'
+    Race:
+      Préfixe: 'Race : '
+      Attribut: '{o.troll.race}'
+      Suffixe: ''
+    Fatigue:
+      Préfixe: 'Fatigue : '
+      Attribut: '{o.str_fatigue}'
+      Suffixe: ''
+    Niveau:
+      Préfixe: 'Niveau '
+      Attribut: '{o.troll.niv}'
+      Suffixe: ''
+    PV:
+      Préfixe: 'Points de vie : '
+      Attribut: '{sg.str_min_max(o.vie_min, o.vie_max)}'
+      Suffixe: ''
+    CONC:
+      Préfixe: 'Concentration '
+      Attribut: '{o.base_concentration}'
+      Suffixe: '%'
+    BONUS_CONC:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_concentration_phy, o.bonus_concentration_mag)}'
+      Suffixe: ''
+    PDV:
+      Préfixe: 'PdV : '
+      Attribut: '{sg.str_min_max(o.base_pdv_min, o.base_pdv_max)}'
+      Suffixe: ''
+    BONUS_PDV:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_pdv_phy, o.bonus_pdv_mag)}'
+      Suffixe: ''
+    ATT:
+      Préfixe: 'Attaque : '
+      Attribut: '{sg.str_min_max(o.base_att_min, o.base_att_max)}'
+      Suffixe: 'D6'
+    BONUS_ATT:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_att_phy, o.bonus_att_mag)}'
+      Suffixe: ''
+    ESQ:
+      Préfixe: 'Esquive : '
+      Attribut: '{sg.str_min_max(o.base_esq_min, o.base_esq_max)}'
+      Suffixe: 'D6'
+    BONUS_ESQ:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_esq_phy, o.bonus_esq_mag)}'
+      Suffixe: ''
+    Nombre d'attaques subies:
+      Préfixe: '-'
+      Attribut: '{o.nb_att_sub}'
+      Suffixe: 'D6'
+    DEG:
+      Préfixe: 'Dégâts : '
+      Attribut: '{sg.str_min_max(o.base_deg_min, o.base_deg_max)}'
+      Suffixe: 'D3'
+    BONUS_DEG:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_deg_phy, o.bonus_deg_mag)}'
+      Suffixe: ''
+    REG:
+      Préfixe: 'Régénération : '
+      Attribut: '{sg.str_min_max(o.base_reg_min, o.base_reg_max)}'
+      Suffixe: 'D3'
+    BONUS_REG:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_reg_phy, o.bonus_reg_mag)}'
+      Suffixe: ''
+    ARM:
+      Préfixe: 'Armure : '
+      Attribut: '{sg.str_min_max(o.base_arm_min, o.base_arm_max)}'
+      Suffixe: 'D3'
+    BONUS_ARM:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_arm_phy, o.bonus_arm_mag)}'
+      Suffixe: ''
+    VUE:
+      Préfixe: 'Vue : '
+      Attribut: '{sg.str_min_max(o.base_vue_min, o.base_vue_max)}'
+      Suffixe: ''
+    BONUS_VUE:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_vue_phy, o.bonus_vue_mag)}'
+      Suffixe: ''
+    MM:
+      Préfixe: 'Maitrise Magique : '
+      Attribut: '{sg.str_min_max(o.base_mm_min, o.base_mm_max)}'
+      Suffixe: ''
+    BONUS_MM:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_mm_phy, o.bonus_mm_mag)}'
+      Suffixe: ''
+    RM:
+      Préfixe: 'Résistance Magique : '
+      Attribut: '{sg.str_min_max(o.base_rm_min, o.base_rm_max)}'
+      Suffixe: ''
+    BONUS_RM:
+      Préfixe: ''
+      Attribut: '{sg.str_phy_mag(o.bonus_rm_phy, o.bonus_rm_mag)}'
+      Suffixe: ''
+    Corpulence:
+      Préfixe: 'Corpulence : '
+      Attribut: '{o.corpulence}'
+      Suffixe: ' points'
+    Agilité:
+      Préfixe: 'Agilité : '
+      Attribut: '{o.agilite}'
+      Suffixe: ' points'
+    REF_STAB:
+      Préfixe: 'Réflexe/Stabilité : '
+      Attribut: '{o.reflexe_stabilite}'
+      Suffixe: 'D6'
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    PA:
+      Préfixe: 'PA : '
+      Attribut: '{o.pa}'
+      Suffixe: '/6'
+    PI:
+      Préfixe: ''
+      Attribut: '{o.pi}'
+      Suffixe: ''
+    PI (Disponibles):
+      Préfixe: ''
+      Attribut: '{o.pi_disp}'
+      Suffixe: '/'
+    DLA actuelle:
+      Préfixe: ''
+      Attribut: '{o.next_dla}'
+      Format temporel: '%Hh%M'
+      Suffixe: ''
+    DLA suivante:
+      Préfixe: '~'
+      Attribut: '{o.estimate_dla}'
+      Format temporel: '%Hh%M'
+      Suffixe: ''
+    Actions programmées:
+      Préfixe: 'Actions programmées : '
+      Attribut: '{o.actions}'
+      Suffixe: ''
+    Statut:
+      Préfixe: 'Statut : '
+      Attribut: '{o.statut}'
+      Suffixe: ''
+    Date d'observation:
+      Préfixe: 'Vu le '
+      Attribut: '{o.last_seen_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Date de mise à jour (Evénement):
+      Préfixe: 'Mis à jour (Evénement) le '
+      Attribut: '{o.last_event_update_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Date de mise à jour (SP):
+      Préfixe: 'Mis à jour (SP4) le '
+      Attribut: '{o.last_sp4_update_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Séparateur:
+      Attribut: 'True'
+      Valeur: '|'
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+MobPrivate:
+  Notification: '{Nom du monstre} {Age du monstre} {Identifiant du monstre} {Mort}{Délimiteur}{Propriétaire}{Délimiteur}{Caractéristiques}{Délimiteur}{Date d''observation}{Délimiteur}{Date de mise à jour}'
+  Attributs construits:
+    Position: 'Position : {Position X} {Position Y} {Position N}'
+    Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{Points de vie}{Délimiteur}{Vie restante}{Délimiteur}{Position}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}'
+  Attributs:
+    Identifiant du monstre:
+      Préfixe: '('
+      Attribut: '{o.mob_id}'
+      Suffixe: ')'
+    Nom du monstre:
+      Préfixe: ''
+      Attribut: '{o.mob.nom}'
+      Suffixe: ''
+    Age du monstre:
+      Préfixe: '['
+      Attribut: '{o.mob.age}'
+      Suffixe: ']'
+    Propriétaire:
+      Préfixe: 'Propriétaire : '
+      Attribut: '{o.owner.nom_complet}'
+      Suffixe: ''
+    Blessure:
+      Préfixe: 'Blessure : '
+      Attribut: '{o.blessure}'
+      Suffixe: '%'
+    Race:
+      Préfixe: 'Race : '
+      Attribut: '{o.mob.race}'
+      Suffixe: ''
+    Niveau:
+      Préfixe: 'Niveau '
+      Attribut: '{sg.str_min_max(o.niv_min, o.niv_max)}'
+      Suffixe: ''
+    Points de vie:
+      Préfixe: 'PdV : '
+      Attribut: '{sg.str_min_max(o.pdv_min, o.pdv_max)}'
+      Suffixe: ''
+    Vie restante:
+      Préfixe: 'Vie restante : '
+      Attribut: '{sg.str_min_max(o.vie_min, o.vie_max)}'
+      Suffixe: ''
+    ATT:
+      Préfixe: 'Attaque : '
+      Attribut: '{sg.str_min_max(o.att_min, o.att_max)}'
+      Suffixe: 'D6'
+    ESQ:
+      Préfixe: 'Esquive : '
+      Attribut: '{sg.str_min_max(o.esq_min, o.esq_max)}'
+      Suffixe: 'D6'
+    DEG:
+      Préfixe: 'Dégâts : '
+      Attribut: '{sg.str_min_max(o.deg_min, o.deg_max)}'
+      Suffixe: 'D6'
+    REG:
+      Préfixe: 'Régénération : '
+      Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
+      Suffixe: 'D6'
+    ARMP:
+      Préfixe: 'Armure Physique : '
+      Attribut: '{sg.str_min_max(o.arm_phy_min, o.arm_phy_max)}'
+      Suffixe: ''
+    ARMM:
+      Préfixe: 'Armure Magique : '
+      Attribut: '{sg.str_min_max(o.arm_mag_min, o.arm_mag_max)}'
+      Suffixe: ''
+    VUE:
+      Préfixe: 'Vue : '
+      Attribut: '{sg.str_min_max(o.vue_min, o.vue_max)}'
+      Suffixe: ' cases'
+    MM:
+      Préfixe: 'Maitrise Magique : '
+      Attribut: '{sg.str_min_max(o.mm_min, o.mm_max)}'
+      Suffixe: ''
+    RM:
+      Préfixe: 'Résistance Magique : '
+      Attribut: '{sg.str_min_max(o.rm_min, o.rm_max)}'
+      Suffixe: ''
+    Durée du tour:
+      Préfixe: 'Tour : '
+      Attribut: '{sg.str_min_max(o.tour_min, o.tour_max)}'
+      Suffixe: 'h'
+    Capacité spéciale (description):
+      Préfixe: ''
+      Attribut: '{o.capa_desc}'
+      Suffixe: ' ; '
+    Capacité spéciale (effet):
+      Préfixe: ''
+      Attribut: '{o.capa_effet}'
+      Suffixe: ''
+    Capacité spéciale (durée):
+      Préfixe: ' ; '
+      Attribut: '{o.capa_tour}'
+      Suffixe: 'T'
+    Capacité spéciale (portée):
+      Préfixe: ' ; '
+      Attribut: '{o.capa_portee}'
+      Suffixe: ''
+    Nombre d'attaque:
+      Préfixe: 'Nombre d''attaque par tour : '
+      Attribut: '{o.nb_att_tour}'
+      Suffixe: ''
+    Vitesse de déplacement:
+      Préfixe: 'Vitesse : '
+      Attribut: '{o.vit_dep}'
+      Suffixe: ''
+    VLC:
+      Préfixe: 'Voit le caché : '
+      Attribut: '{sg.boolean2French(o.vlc)}'
+      Suffixe: ''
+    Voleur:
+      Préfixe: 'Voleur : '
+      Attribut: '{sg.boolean2French(o.voleur)}'
+      Suffixe: ''
+    Attaque à distance:
+      Préfixe: 'Attaque à distance : '
+      Attribut: '{sg.boolean2French(o.att_dist)}'
+      Suffixe: ''
+    Attaque magique:
+      Préfixe: 'Attaque magique : '
+      Attribut: '{sg.boolean2French(o.att_mag)}'
+      Suffixe: ''
+    DLA:
+      Préfixe: 'DLA : '
+      Attribut: '{o.dla}'
+      Suffixe: ''
+    Sang froid:
+      Préfixe: 'Sang froid : '
+      Attribut: '{o.sang_froid}'
+      Suffixe: ''
+    Chargement:
+      Préfixe: 'Chargement : '
+      Attribut: '{o.chargement}'
+      Suffixe: ''
+    Bonus/Malus:
+      Préfixe: 'Bonus/Malus : '
+      Attribut: '{o.bonus_malus}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''
+    Mort:
+      Attribut: '{o.mob.mort}'
+      Valeur: '(MORT)'
+    Date d'observation:
+      Préfixe: 'Vu le '
+      Attribut: '{o.last_seen_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Date de mise à jour:
+      Préfixe: 'Mis à jour (Evénement) le '
+      Attribut: '{o.last_event_update_at}'
+      Format temporel: '%d/%m à %Hh%M:%S'
+      Suffixe: ''
+    Séparateur:
+      Attribut: 'True'
+      Valeur: '|'
+    Délimiteur:
+      Attribut: 'True'
+      Valeur: '\n'
+
+TrollPrivateCapa:
+  Notification: '{Nom} {Type} {Pourcentage} {Niveau} {Valeurs}'
+  Attributs:
+    Nom:
+      Préfixe: ''
+      Attribut: '{o.metacapa.nom}'
+      Suffixe: ''
+    Type:
+      Préfixe: '('
+      Attribut: '{o.subtype}'
+      Suffixe: ')'
+    Niveau:
+      Préfixe: '(Niveau '
+      Attribut: '{o.niv}'
+      Suffixe: ' )'
+    Pourcentage:
+      Préfixe: ''
+      Attribut: '{o.percent}'
+      Suffixe: '%'
+    Valeurs:
+      Préfixe: '('
+      Attribut: '{o.values}'
+      Suffixe: ')'

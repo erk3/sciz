@@ -1,0 +1,204 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id gBBDBDq3WlyPdgAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Wed, 06 Feb 2019 10:30:18 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 0928E2A6088C
+	for <feedthebat@sciz.cerv.ovh>; Wed,  6 Feb 2019 10:30:18 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.41; helo=mail-ot1-f41.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YCmcjlEo";
+	dkim-atps=neutral
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 92BE62A60871
+	for <feedthebat@sciz.cerv.ovh>; Wed,  6 Feb 2019 10:30:17 +0000 (UTC)
+Received: by mail-ot1-f41.google.com with SMTP id e24so1690043otp.11
+        for <feedthebat@sciz.cerv.ovh>; Wed, 06 Feb 2019 02:30:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=HrF5HEXXMoCrkoU4i9jSMLdw4Q7/BLfzete80/XgjKk=;
+        b=YCmcjlEog64dZwLu1SNAueW1HHmT+uFo8vf6vlnSPpYezSOXagjEgwkWsY6652surf
+         Z6UVgwBVJd+KoJz839dmwTjcGBHFr4qMheGy0wlsUhCG4adZ82THKk2oBN+DADTwZBfP
+         Gu+x3Hs9byTWmmVHbLgxPmtDb35fma97xOqnpTnzEWN55NUFeY5y+S9JxdSqgXca3/qF
+         TxiR5DFS9NDkZxeZhZfDGouwuD/4dKQMtJuUGjU6Gg9iqBA9NhEYgsQt01jgne/Rng/j
+         Dbzki0ol50Rm0cI4M4AmNJrcvNCCwi0ZG9NPZAc2LbPH5s0Lxl0M+1xh29FaWvoJEUPk
+         7ydg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=HrF5HEXXMoCrkoU4i9jSMLdw4Q7/BLfzete80/XgjKk=;
+        b=Nw8oGTPbNAlGXRYofuNgEFgmx9EKbRftpxdsfgs3x9kUq3wi8doUfaAywaMHG52LOd
+         lkycRteSD2ZXFdlfc5svSCh9sffhXl4WA46cFAEbOrg+Rh6SxjBwrjrthxKzVZPlavrG
+         wqfnb93Gb1fQxEu8g+HjA3NcI8a44PW48sKIZ7NVbyOysaY+oSwQZMGSlYeC69rL8Aap
+         +47UhydoV7AdkLra0a2yRd2gU74H2ThNBsgMhZJZkJUkxEa+pygWvOZlwiyZSlgE0XEw
+         wd60g12L2S5EH+goJxcwu5Tu1PmtpLsa5w4Xv7+Qc50FINxQMAlA8rQUXOFHS3BidIUy
+         pYlA==
+X-Gm-Message-State: AHQUAuapiI0GG+botxpbqaAxXXNq9IpPkbl1TaL2QvXVb/vqp3iQ98Kn
+	qpVEYNOP11ZFV8pa6IdL18dhETB5opFRfQJV9MrFZA==
+X-Google-Smtp-Source: AHgI3IbG5D8U0AI1zi6W7ufT/Z1DSCe/YDZ1RLOtNLJXNF3DYINVXEg6lO4oAKNybukyOFOzrzDlt3ZK3iZ++gVNjNc=
+X-Received: by 2002:aca:4b8f:: with SMTP id y137mr5171528oia.132.1549449015751;
+ Wed, 06 Feb 2019 02:30:15 -0800 (PST)
+MIME-Version: 1.0
+References: <39ee62961c045ddfb324d14a69fb3481@mh2.mh.raistlin.fr>
+In-Reply-To: <39ee62961c045ddfb324d14a69fb3481@mh2.mh.raistlin.fr>
+From: Censored <censored@gmail.com>
+Date: Wed, 6 Feb 2019 11:29:37 +0100
+Message-ID: <CALtH2Jj59FdsHDPYRnh+yO8yJ_98tT5BUwgJcmdAgKdGHAOr2w@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Attaquant_=2D_Attaque_critique_morte?=
+	=?UTF-8?Q?lle_=28Projectile_Magique=29_sur_un_Prince_El=C3=A9mentaire_de_Feu_=5B?=
+	=?UTF-8?Q?Ultime=5D_=286178254=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000002e793205813736aa"
+
+--0000000000002e793205813736aa
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: mar. 5 f=C3=A9vr. 2019 =C3=A0 22:26
+Subject: [MountyHall] Attaquant - Attaque critique mortelle (Projectile
+Magique) sur un Prince El=C3=A9mentaire de Feu [Ultime] (6178254)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D\
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 05/02/2019 22:26:10.
+***********************************************************
+
+Vous avez attaqu=C3=A9 un Prince El=C3=A9mentaire de Feu [Ultime] (6178254)=
+ gr=C3=A2ce =C3=A0
+un sortil=C3=A8ge.
+
+
+
+Votre Jet d'Attaque est de....................: 1000
+Le Jet d'Esquive de votre adversaire est de...: 55
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 13 %
+Jet de R=C3=A9sistance...........................: 72
+
+La Cible subit donc pleinement l'effet du sortil=C3=A8ge.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.
+
+
+Vous lui avez inflig=C3=A9 1000 points de d=C3=A9g=C3=A2ts.
+Son Armure le prot=C3=A8ge et il ne perdra que 99 points de vie.
+Vous l'avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain de sa=
+ pr=C3=A9sence
+mal=C3=A9fique.
+
+Il a, de plus, laiss=C3=A9 tomber 3 tr=C3=A9sors.Votre Camouflage a =C3=A9t=
+=C3=A9 ANNUL=C3=89.
+
+
+
+Pour cette action, vous avez gagn=C3=A9 un total de 26 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email lorsque votre =
+Tr=C3=B5ll
+est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer cette
+configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+--=20
+Censored
+
+--0000000000002e793205813736aa
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <b class=3D=
+"gmail_sendername" dir=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a=
+ href=3D"mailto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;</span><br>Da=
+te: mar. 5 f=C3=A9vr. 2019 =C3=A0=C2=A022:26<br>Subject: [MountyHall] Attaq=
+uant - Attaque critique mortelle (Projectile Magique) sur un Prince El=C3=
+=A9mentaire de Feu [Ultime] (6178254)<br>To:  &lt;<a href=3D"mailto:censored=
+@gmail.com">censored@gmail.com</a>&gt;<br></div><br><br>=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D\<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 05/02/2019 22:26:10.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 un Prince El=C3=A9mentaire de Feu [Ultime] (6178254)=
+ gr=C3=A2ce =C3=A0 un sortil=C3=A8ge.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 1000<br>
+Le Jet d&#39;Esquive de votre adversaire est de...: 55<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 13 %<br>
+Jet de R=C3=A9sistance...........................: 72<br>
+<br>
+La Cible subit donc pleinement l&#39;effet du sortil=C3=A8ge.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 4 points.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 1000 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure le prot=C3=A8ge et il ne perdra que 999 points de vie.<br>
+Vous l&#39;avez TU=C3=89 et avez d=C3=A9barrass=C3=A9 le Monde Souterrain d=
+e sa pr=C3=A9sence mal=C3=A9fique.<br>
+<br>
+Il a, de plus, laiss=C3=A9 tomber 3 tr=C3=A9sors.Votre Camouflage a =C3=A9t=
+=C3=A9 ANNUL=C3=89.<br>
+<br>
+<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 26 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email lorsque votre =
+Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer cette co=
+nfiguration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div><br clear=3D"all"><br>-- <br><div dir=3D"ltr" class=3D"gmail_signatur=
+e" data-smartmail=3D"gmail_signature">Censored</div></div>
+
+--0000000000002e793205813736aa--

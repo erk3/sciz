@@ -1,0 +1,84 @@
+---
+### Setup configuration for SCIZ ###
+
+# Application configuration
+app:
+  name: 'SCIZ'
+
+# Incoming mails configuration
+mail:
+  domain_name: 'domaine.sciz.a.changer'
+  maildirs_base_path: '/var/mail/vhosts/'
+
+# Outgoing mails configuration
+smtp:
+  from: 'sciz-donotreply@domaine.a.changer'
+  pwd: 'smtp_passwd'
+  host: 'smtp.host.a.changer'
+  tls: false
+  port: 25
+
+# Logging configuration
+log:
+  file: 'logs/sciz.log'
+  file_max_size: 5000000000 # 500Mo
+  formatter: '%(asctime)s :: %(levelname)s :: %(module)s, line %(lineno)d :: %(message)s'
+
+# Web server configuration
+web:
+  port: 8080
+  tls: false
+  domain: '0.0.0.0'
+  secret: 'ThisShouldBeAVeryLongAndRandomSecret1234'
+
+# Database configuration
+# (user role must be superuser, necessary for the create extension unaccent and of course have rights to create database)
+db:
+  host: '127.0.0.1'
+  port: 5432
+  name: 'sciz'
+  user: 'sciz'
+  passwd: 'db_passwd'
+
+# Instance configuration (values in minutes)
+instance:
+  regex_filename: 'sciz_regex.yaml' # Must be directory based on this configuration file
+  default_format_filename: 'sciz_format.yaml' # Must be directory based on this configuration file
+  formula_filename: 'sciz_formula.yaml' # Must be directory based on this configuration file
+  ftp_refresh_rate: 1440 # One day in minutes
+  mail_max_retention: 1440 # One day in minutes
+
+# MountyHall related configuration
+mh:
+  sp_url: 'sp.mountyhall.com'
+  sp_p_id: 'Numero'
+  sp_p_apikey: 'Motdepasse'
+  sp_p_tresors: 'Tresors'
+  sp_p_champis: 'Champignons'
+  sp_p_lieux: 'Lieux'
+  profil4_path: 'SP_Profil4.php'
+  vue2_path: 'SP_Vue2.php'
+  ftp_url: 'ftp.mountyhall.com'
+  trolls2_path: 'Public_Trolls2.txt'
+  monstres_path: 'Public_Monstres.txt'
+  tresors_path: 'Public_Tresors.txt'
+  sorts_path: 'Public_Sortileges.txt'
+  comps_path: 'Public_Competences.txt'
+  troll_link: 'https://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ='
+  mob_link: 'http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ='
+  tresor_link: 'http://games.mountyhall.com/mountyhall/View/TresorHistory.php?ai_IDTresor='
+  mp_link: 'https://games.mountyhall.com/mountyhall/Messagerie/MH_Messagerie.php?cat=3&dest='
+  px_link: 'https://games.mountyhall.com/mountyhall/MH_Play/Actions/Play_a_DonPX.php?dest='
+
+# SCIZ HELP PAGE
+sciz_help: 'http://mountypedia.mountyhall.com/Outils/SCIZ'
+
+# Hooks related configuration
+hooks:
+  Miaou:
+    URL: 'https://miaou.dystroy.org/sciz-webhook'
+    #URL: 'http://miaou.dev/sciz-webhook'
+  Hangouts:
+    URL: ''
+  Discord:
+    URL: ''

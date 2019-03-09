@@ -1,64 +1,59 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-# Imports
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
+# IMPORTS
+from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
-import re, datetime, ConfigParser
 import modules.globals as sg
 
-# Class of a Lieu
-class LIEU(sg.SqlAlchemyBase):
 
-    # SQL Table Mapping
-    __tablename__ = 'lieux'
-    __table_args__ = (PrimaryKeyConstraint('id'), )
-    # Identifiant unique
-    id = Column(Integer, autoincrement=True)
-    # Nom du lieu
-    nom = Column(String(250))
-    # Pos X du lieu
-    pos_x = Column(Integer)
-    # Pos Y du lieu
-    pos_y = Column(Integer)
-    # Pos N du lieu
-    pos_n = Column(Integer)
-    # Date de dernière vue à la position
-    last_seen = Column(DateTime)
+# CLASS DEFINITION
+class Lieu(sg.sqlalchemybase):
 
     # Constructor is handled by SqlAlchemy, do not override
 
-    # Additional build logic (see MailParser)
-    def build(self):
-        pass
+    # Unique identifier
+    id = Column(Integer, primary_key=True)
+    # User ID (for privacy of special places like traps)
+    owner_id = Column(Integer, ForeignKey('being_troll.id', ondelete='SET NULL'))
+    # Name
+    nom = Column(String(250))
+    # Type of place (from SCIZ)
+    type = Column(String(50))
+    # X axis position
+    pos_x = Column(Integer)
+    # Y axis position
+    pos_y = Column(Integer)
+    # N axis position
+    pos_n = Column(Integer)
+    # Destroyed ?
+    destroyed = Column(Boolean, default=False)
+    # Last seen at ?
+    last_seen_at = Column(DateTime)
+    # Last seen by ?
+    last_seen_by = Column(Integer, ForeignKey('being_troll.id', ondelete='SET NULL'))
+    # Last seen with ?
+    last_seen_with = Column(String(50))
 
-    def stringify(self, reprs, short, attrs):
-        # Build the string representations provided
-        for (key, value) in reprs:
-            s = ''
-            try:
-                if key.startswith('s_'):
-                    setattr(self, key, value)
-                    continue
-                elif hasattr(self, key) and getattr(self, key) is not None and (not isinstance(getattr(self, key), bool) or getattr(self, key)):
-                    s = value.format(getattr(self, key))
-            except KeyError as e:
-                pass
-            setattr(self, 's_' + key, s)
-        # Compute some additional things
-        self.s_pos = self.s_pos.format(o=self)
-        # Return the final formated representation
-        if short:
-            res = self.s_short
-        else:
-            res = self.s_long
-        res = res.format(o=self)
-        res = re.sub(r'None', '', res)
-        res = re.sub(r' +', ' ', res)
-        return res
+    # Associations
+    owner = relationship('Troll', back_populates='owned_lieux', primaryjoin='Lieu.owner_id == Troll.id')
 
-    def __getattr__(self, name):
-        if hasattr(self, name) or name.startswith('_'):
-            return super(LIEU, self).__getattribute__(name)
-        else:
-            return None # Trick for the stringify logic (avoiding the raise of an error)
+    # SQL Table Mapping
+    __tablename__ = 'lieu'
+    __mapper_args__ = {
+        'polymorphic_identity': 'Lieu',
+        'polymorphic_on': type,
+    }
+
+    @hybrid_property
+    def tooltip(self):
+        return '%s (%s)' % (self.nom, self.id)
+
+    @hybrid_property
+    def is_public(self):
+        return True
+
+    @hybrid_property
+    def is_visible(self):
+        return not self.destroyed

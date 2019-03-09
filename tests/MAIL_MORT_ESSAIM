@@ -1,0 +1,106 @@
+Return-Path: <www-data@mountyhall.com>
+Delivered-To: censored@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id +CR+AIZKIlxuMAAAUNOa/A
+	for <censored@sciz.cerv.ovh>; Tue, 25 Dec 2018 15:19:34 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id E88A32A6084E
+	for <censored@sciz.cerv.ovh>; Tue, 25 Dec 2018 15:19:33 +0000 (UTC)
+X-Comment: SPF skipped for whitelisted relay - client-ip=77.238.176.163; helo=sonic311-31.consmr.mail.ir2.yahoo.com; envelope-from=www-data@mountyhall.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=none (p=none dis=none) header.from=mountyhall.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=yahoo.com header.i=@yahoo.com header.b="RzTqcYYx";
+	dkim-atps=neutral
+Received: from sonic311-31.consmr.mail.ir2.yahoo.com (sonic311-31.consmr.mail.ir2.yahoo.com [77.238.176.163])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 945382A6081A
+	for <censored@sciz.cerv.ovh>; Tue, 25 Dec 2018 15:19:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1545751167; bh=yPdhHOd6mHpEHngkZZCXDbSecM0VBkqTjngHhEGafGw=; h=To:Subject:Date:From:From:Subject; b=RzTqcYYxeVoPqs6YCFEx6Lxl36R5ZyybxRs/3TYpfDu0hSTQOrHFnj1OR13XdMfzarIwK9du4KKWa2WZ/1xcM46O9zyL5BssUftdN4IfwW+THK2TVFC+OWFZG/gCLhJSo01isj7LgalAiCAiVsOCdbuPLQoLuSYSmOEogLckkdKKesG+ZV3KCA3E4QypsunV5vbaNxaWq7HoD5N5Gx+2KWkpMWL8frVGfCekKKEOTiLjw7H0og8iiBuT7gVPkuEBTmtqMqFqVrkEP0t7RpaodV+OIbn7zYngozyoBbsUKNQFuckaE+Fzaj9gHyjIyauSMR87OgKU9h0HGg2yJnQmSg==
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Tue, 25 Dec 2018 15:19:27 +0000
+X-Apparently-To: censored@yahoo.fr; Tue, 25 Dec 2018 15:19:25 +0000
+Received-SPF: pass (domain of mountyhall.com designates 46.16.240.194 as permitted sender)
+X-YMailISG: yJCQ1QEWLDs1gYcpyjwcagCE9iER44IkqsXYakbR9gAXDONf
+ udhs7V9wzPPe63t22mMDy07aizOTNVNvnz_egBb3K7Vb9KP3b5JVYRUT5f13
+ qPXFd8bSFpzW1eSC6deb7dzBr400rWlXMSen_f7GU_BysTcBNT3cUsU.HL6Q
+ Mk1rEW8gUdrM4UIsxQI.w30g_PKMuVM9T3iTmHqCp6UNRix8M_CRO3DQIbbv
+ 0P6DVcL85sfQ2y5MtMZMDvQDL5ZUrAgBGqr0nrDuucgH.34gqJQbJat0dKf8
+ MJNX8Yi6JPIrKvkFY7gq1FxX2U.NyI4O30GmvIRzcFFDLPgRKkMRBvhmMKwH
+ xXQ_w.qxQOtPTl6zmcc7DElVJdvLuiTuyR9KDTwB73gUsdxu2AGYbnDDk6vK
+ RsWd_XsXWxehQ4Sgku7Tm9vdaTWPHA7wvRns3IuJVRxC64KRy0vvvFSevWGl
+ R2K46JjviM5i9nFO9Jmo62QQbaR6KCZ6uhJeUHTcyPfiSQheQ3TuEgdrAMbF
+ oBK1lH59LNgS94IMzxiVwIsLVaDOPH3DW54lklmJ0WcvdHtxMHYrGeO5dHzK
+ gR_6c3pqddDzg.pdp4E8g7f2i8_6B6SInQTlHhCFnx4CRBIIaxECipGAC9ce
+ DnaKoCiTdC0LhHS4M2OS36QI3VWWftk4yTK6wRiATCvEYzhSanqAOmrP7CNy
+ UIXkXLZTzpOWzY3MBM.xrS6wim4dJfRglbrrh4Bz3LM8fZ32tI2458w8JcMj
+ rS9nzCsxN9E0VtoUyMnDCVIx8hV76_oOFGOINUFZJk2VatTIG4Am3bqkHt71
+ vfDmglMLxLM2kDGQ9HLoVD9YeO31vsx1HTNWHrKp1P6mFHcqbFaw_E0hfXxU
+ dj61Y327dGGv6EzQzq7SE96VYldp.tzRsx6v6.MzpmcK.GvhXiNRvwu74XCo
+ b9AJCGvl2ys0xf0ZoPLH.d.fU8BDJGLMokcWA077Po5BMClbwEqMM2C_oi9X
+ LWoOzEUU_9KUNnlY1YXUpDR1AK7Kq1OfkR5mXwKWQ2LfsaQTx.mIv_lC8_vr
+ ixS24h8mV7zKOr65X._02Vg-
+Authentication-Results: mta1054.mail.ir2.yahoo.com  from=mountyhall.com; dkim=neutral (no sig)
+Received: from www-data by games.mountyhall.com with local (Exim 4.84_2)
+	(envelope-from <www-data@mountyhall.com>)
+	id 1gboUP-0004bj-6Z
+	for censored@yahoo.fr; Tue, 25 Dec 2018 16:19:25 +0100
+To: censored@yahoo.fr
+Subject: =?iso-8859-1?Q?[MountyHall]_Attaquant_-_Attaque_critique_mortelle_(Projec?=  =?iso-8859-1?Q?tile_Magique)_sur_un_Essaim_Crat=E9rien_Morticole_[Imago]_?=  =?iso-8859-1?Q?(6103099)?=
+X-PHP-Originating-Script: 1001:class.phpmailer.php
+Date: Tue, 25 Dec 2018 16:19:25 +0100
+From: MountyHall-Bot <bot@mountyhall.com>
+Message-ID: <7d801dcd157908ef928bab11e4ec2d09@games.mountyhall.com>
+X-Priority: 3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="iso-8859-1"
+X-Yahoo-Forwarded: From censored@yahoo.fr To censored@sciz.cerv.ovh
+
+================================
+MOUNTYHALL - La Terre des Trõlls
+================================
+
+Trõll n°106410 : NõSélf KhõnTrõll
+
+Vous avez été impliqué dans un événement : COMBAT.
+Il était alors aux alentours de : 25/12/2018 16:19:25.
+***********************************************************
+
+Vous avez attaqué un Essaim Cratérien Morticole [Imago] (6103099) grâce à un sortilège.
+
+
+
+Votre Jet d'Attaque est de....................: 154
+Le Jet d'Esquive de votre adversaire est de...: 41
+
+Vous avez donc TOUCHÉ votre adversaire par un coup critique
+
+
+
+Seuil de Résistance de la Cible.....: 16 %
+Jet de Résistance...........................: 81
+
+La Cible subit donc pleinement l'effet du sortilège.
+Vous avez augmenté votre Maîtrise Magique de 5 points.
+
+
+Vous lui avez infligé 102 points de dégâts.
+Vous l'avez TUÉ et avez débarrassé le Monde Souterrain de sa présence maléfique.
+A sa mort,  il déclenche : en mourrant, son corps explose et recouvre toute la caverne d'une substance visqueuse et corrosive.
+De plus,   apparait un Essaim de l'oeuf du précédent
+
+Il a, de plus, laissé tomber 2 trésors et 3 centaines de Gigots de Gob'.
+
+Votre Karma a été influencé par cette action.
+
+Pour cette action, vous avez gagné un total de 7 PX.
+
+***********************************************************
+Vous avez configuré votre compte pour recevoir un Email
+ lorsque votre Trõll est impliqué dans un événement.
+Si vous ne désirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Trõll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+

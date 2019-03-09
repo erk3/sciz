@@ -1,66 +1,66 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-# Imports
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
+# IMPORTS
+from classes.being_troll import Troll
+from sqlalchemy import event, Column, Integer, String, Text, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
+import re, datetime, os
 import modules.globals as sg
 
-# Class of an Event (Wrapper for Battle / Piege / CDM) 
-class EVENT(sg.SqlAlchemyBase):
 
-    # SQL Table Mapping
-    __tablename__ = 'events'
-    __table_args__ = (PrimaryKeyConstraint('id', 'group_id'), )
-    # ID unique
-    id = Column(Integer, autoincrement=True)
-    # Date de la notification
-    time = Column(DateTime())
-    # Notification
-    notif = Column(String(500))
-    # Notification masquée ?
-    hidden = Column(Boolean)
-    # Type d'évènement
-    type = Column(String(50))
-    # ID de l'évènement de combat
-    battle_id = Column(Integer, ForeignKey('battles.id', ondelete="CASCADE"))
-    # ID de l'évènement de CDM
-    cdm_id = Column(Integer, ForeignKey('cdms.id', ondelete="CASCADE"))
-    # ID de l'évènement de AA
-    aa_id = Column(Integer, ForeignKey('aas.id', ondelete="CASCADE"))
-    # ID de l'évènement de piège
-    piege_id = Column(Integer, ForeignKey('pieges.id', ondelete="CASCADE"))
-    # ID de l'évènement de portail
-    portal_id = Column(Integer, ForeignKey('portals.id', ondelete="CASCADE"))
-    # ID de l'évènement d'identification des champignons
-    idc_id = Column(Integer, ForeignKey('idcs.id', ondelete="CASCADE"))
-    # ID de l'évènement d'identification des trésors
-    idt_id = Column(Integer, ForeignKey('idts.id', ondelete="CASCADE"))
-    # ID du groupe d'appartenance de l'évènement
-    group_id = Column(Integer, ForeignKey('groups.id', ondelete="CASCADE"))
-    
-    # Associations One-To-One
-    battle = relationship("BATTLE", primaryjoin="and_(EVENT.battle_id==BATTLE.id, EVENT.group_id==BATTLE.group_id)", back_populates="event")
-    cdm = relationship("CDM", primaryjoin="and_(EVENT.cdm_id==CDM.id, EVENT.group_id==CDM.group_id)", back_populates="event")
-    aa = relationship("AA", primaryjoin="and_(EVENT.aa_id==AA.id, EVENT.group_id==AA.group_id)", back_populates="event")
-    piege = relationship("PIEGE", primaryjoin="and_(EVENT.piege_id==PIEGE.id, EVENT.group_id==PIEGE.group_id)", back_populates="event")
-    portal = relationship("PORTAL", primaryjoin="and_(EVENT.portal_id==PORTAL.id, EVENT.group_id==PORTAL.group_id)", back_populates="event")
-    idc = relationship("IDC", primaryjoin="and_(EVENT.idc_id==IDC.id, EVENT.group_id==IDC.group_id)", back_populates="event")
-    idt = relationship("IDT", primaryjoin="and_(EVENT.idt_id==IDT.id, EVENT.group_id==IDT.group_id)", back_populates="event")
-    # Associations One-To-Many
-    group = relationship("GROUP", back_populates="events")
+# CLASS DEFINITION
+class Event(sg.sqlalchemybase):
 
     # Constructor is handled by SqlAlchemy, do not override
 
-    # Get the actual notification associated to this event
-    def getNotif(self, short):
-        notif = ''
-        obj = None
-        obj = self.battle if self.battle_id is not None else obj
-        obj = self.cdm if self.cdm_id is not None else obj
-        obj = self.aa if self.aa_id is not None else obj
-        obj = self.piege if self.piege_id is not None else obj
-        obj = self.portal if self.portal_id is not None else obj
-        obj = self.idc if self.idc_id is not None else obj
-        obj = self.idt if self.idt_id is not None else obj
-        return sg.pretty_print(obj, short)
+    # Unique identifier
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    # Owner Troll ID
+    owner_id = Column(Integer, ForeignKey('being_troll.id'))
+    # Owner Troll name
+    owner_nom = Column(String(50))
+    # Datetime
+    time = Column(DateTime())
+    # Type of event (from MH)
+    mh_type = Column(String(50))
+    # Type of event (from SCIZ)
+    sciz_type = Column(String(50))
+    # Mail subject
+    mail_subject = Column(String(250))
+    # Mail body
+    mail_body = Column(Text)
+    # RM gain
+    rm = Column(Integer)
+    # MM gain
+    mm = Column(Integer)
+    # XP gain
+    px = Column(Integer)
+    # Tiredness loss
+    fatigue = Column(Integer)
+
+    # Associations
+    owner = relationship('Troll', primaryjoin='Event.owner_id == Troll.id')
+    #owner_private_troll = relationship('TrollPrivate', primaryjoin='and_(Event.owner_id == TrollPrivate.troll_id, Event.owner_id = TrollPrivate.viewer_id)')
+
+    # SQL Table Mapping
+    __tablename__ = 'event'
+    __mapper_args__ = {
+        'polymorphic_identity': 'Evénement',
+        'polymorphic_on': sciz_type,
+    }
+
+    # Additional build logic
+    def build(self):
+        self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
+
+
+# SQLALCHEMY LISTENERS (same listener types executed in order)
+@event.listens_for(Event, 'before_insert', propagate=True)
+def upsert_event_owner(mapper, connection, target):
+    owner_troll = sg.db.session.query(Troll).get(target.owner_id)
+    if owner_troll is None:
+        troll = Troll(id=target.owner_id, nom=target.owner_nom)
+        sg.db.upsert(troll)
+    elif target.owner_nom is None:
+        target.owner_nom = owner_troll.nom

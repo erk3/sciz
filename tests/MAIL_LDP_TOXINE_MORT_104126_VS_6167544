@@ -1,0 +1,174 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id aJa6Mll/T1zPfwAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Mon, 28 Jan 2019 22:16:57 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id C13D62A60875
+	for <feedthebat@sciz.cerv.ovh>; Mon, 28 Jan 2019 22:16:57 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.42; helo=mail-ot1-f42.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="J5q5ffgB";
+	dkim-atps=neutral
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 56F782A607DE
+	for <feedthebat@sciz.cerv.ovh>; Mon, 28 Jan 2019 22:16:57 +0000 (UTC)
+Received: by mail-ot1-f42.google.com with SMTP id g16so12124890otg.11
+        for <feedthebat@sciz.cerv.ovh>; Mon, 28 Jan 2019 14:16:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=5qN//8dtiVE/1f8sAAyMHPWSdJLxxathoXoeyXyAUHo=;
+        b=J5q5ffgBJAT3twWTZm1fL7FKXTJTzwVbBtyIfPPL7ntfE5ZjNnB0S3PN6BlRFRNGe7
+         mMyUvPNlIA+SzjgGNe2lDKaT0enwMII/9qsPmJ8ZR5mEnQuITdDmgY8tpF/d2wdWXRGf
+         ohlI0ntPHEdvva30S7mRuU1ReJed3IzB65td2uyQ2p0Ym5sSpO9SC+w6VHucVM4acYw8
+         CbuY4b526GRerSQ4VBGIdJzfsTxygKQxvPe8J2ZMDXw7ydCCI07dk4/yphoV9GebvBCA
+         n5ONDEJGMPSrG+qD9S+L3qcxDB7CmWWXEnXBNbMwTng/rw7sA2+AgeE546rgESJH2jkj
+         tpmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=5qN//8dtiVE/1f8sAAyMHPWSdJLxxathoXoeyXyAUHo=;
+        b=gZUk0Rtzdmf5PlUPqQBAsQGgzMlpF/huYOHBWcfuvqxGKA2wBxfHQtpbUKclJeurJ2
+         hyXxjPUZpW1QEHnWzAipuUYQq1IerDrRh7xgOLWuqb/w+7ZXVgX1SDIgWujqPklWPXQd
+         yBOHrTdLWFCc/t7ICIDLlbWIUtL8E0DQwAXR1kJhXr6FpM7cFGPS7gR2pc8GXLpcBjhC
+         Nls7uWe+jRLwP/hi02jGjVMb53tAM6gUxx4KB+6KucQEzFK1aZ8smmf5erarYp6UedkE
+         TaGlOQ4eJmwvcclTicrqIiTBvCR9oPa12kXnvUWP7xqmMtE66PKUQqXOYLW25KljGvTF
+         fn8g==
+X-Gm-Message-State: AJcUukfNzpEou5EMOjLgP5B7V5DhGSKrHtYeV8wwIz5zlSMGybItR47g
+	5iYyGrhBxfUq23+ImDT+w3F+nDmxmxabjtK+eoZPKQ==
+X-Google-Smtp-Source: ALg8bN7rVHFaoNKRFC0iyJlbkJccAUzB6B2t5FAdekjBmj1M+fa4+yNy8E3Jkntp1sIDV08vi1VZ8yqyZZBPw/JiZjE=
+X-Received: by 2002:a9d:3d24:: with SMTP id a33mr18078094otc.365.1548713815616;
+ Mon, 28 Jan 2019 14:16:55 -0800 (PST)
+MIME-Version: 1.0
+References: <0d041e0c8839db1f79b91f5887d3b3fe@mh2.mh.raistlin.fr>
+In-Reply-To: <0d041e0c8839db1f79b91f5887d3b3fe@mh2.mh.raistlin.fr>
+From: Censored <censored@gmail.com>
+Date: Mon, 28 Jan 2019 23:16:18 +0100
+Message-ID: <CALtH2JhKtNOfREve9RPG7qe0bmBVNB_pugB-Ob_QkoNe+um_fw@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Comp=C3=A9tence_=3A_Lancer_de_Potion_sur?=
+	=?UTF-8?Q?_Prince_Chevalier_du_Chaos_=5BFavori=5D=286167544=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="000000000000d6b26d05808c0851"
+
+--000000000000d6b26d05808c0851
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: lun. 28 janv. 2019 =C3=A0 23:10
+Subject: [MountyHall] Comp=C3=A9tence : Lancer de Potion sur Prince Chevali=
+er du
+Chaos [Favori](6167544)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.
+Il =C3=A9tait alors aux alentours de : 28/01/2019 23:09:59.
+***********************************************************
+
+Un jet de lancer de (39 / 100 %)
+
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Potions M=C3=A9lang=C3=A9es =
+(39 sur 100 %).
+Vous avez touch=C3=A9 votre cible.
+
+
+Son effet est le suivant :
+ PV : -20 D3
+ - un Prince Chevalier du Chaos [Favori] a =C3=A9t=C3=A9 tu=C3=A9 par cet e=
+ffet.
+De plus, il a laiss=C3=A9 tomber un tr=C3=A9sor.
+
+Vous avez massacr=C3=A9 le monstre. Il n'en reste plus rien.
+
+
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+--=20
+Censored
+
+--000000000000d6b26d05808c0851
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">---------- Forwarded message ---------<br>From: <b class=3D=
+"gmail_sendername" dir=3D"auto">MountyHall-Bot</b> <span dir=3D"ltr">&lt;<a=
+ href=3D"mailto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;</span><br>Da=
+te: lun. 28 janv. 2019 =C3=A0=C2=A023:10<br>Subject: [MountyHall] Comp=C3=
+=A9tence : Lancer de Potion sur Prince Chevalier du Chaos [Favori](6167544)=
+<br>To:  &lt;<a href=3D"mailto:censored@gmail.com">censored@g=
+mail.com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMPETE=
+NCE.<br>
+Il =C3=A9tait alors aux alentours de : 28/01/2019 23:09:59.<br>
+***********************************************************<br>
+<br>
+Un jet de lancer de (39 / 100 %)<br>
+<br>
+Vous avez r=C3=A9ussi =C3=A0 lancer la potion: Potions M=C3=A9lang=C3=A9es =
+(39 sur 100 %).<br>
+Vous avez touch=C3=A9 votre cible.<br>
+<br>
+<br>
+Son effet est le suivant : <br>
+=C2=A0PV : -20 D3<br>
+=C2=A0- un Prince Chevalier du Chaos [Favori] a =C3=A9t=C3=A9 tu=C3=A9 par =
+cet effet.<br>
+De plus, il a laiss=C3=A9 tomber un tr=C3=A9sor.<br>
+<br>
+Vous avez massacr=C3=A9 le monstre. Il n&#39;en reste plus rien.<br>
+<br>
+<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"https://www.mountyhall.com"=
+ rel=3D"noreferrer" target=3D"_blank">https://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"https://games.mountyhall.com" re=
+l=3D"noreferrer" target=3D"_blank">https://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"https://www.mountyhall.com/Forum" rel=3D"n=
+oreferrer" target=3D"_blank">https://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div><br clear=3D"all"><br>-- <br><div dir=3D"ltr" class=3D"gmail_signatur=
+e" data-smartmail=3D"gmail_signature"></div></div>
+
+--000000000000d6b26d05808c0851--

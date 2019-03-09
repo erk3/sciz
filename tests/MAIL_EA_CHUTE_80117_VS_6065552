@@ -1,0 +1,192 @@
+Return-Path: <censored@hotmail.fr>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id cLjgLQswGFwyBwAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Mon, 17 Dec 2018 23:23:55 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id B39E82A60842
+	for <feedthebat@sciz.cerv.ovh>; Mon, 17 Dec 2018 23:23:55 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.70.26; helo=eur03-am5-obe.outbound.protection.outlook.com; envelope-from=censored@hotmail.fr; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=none (p=none dis=none) header.from=hotmail.fr
+Received: from EUR03-AM5-obe.outbound.protection.outlook.com (mail-oln040092070026.outbound.protection.outlook.com [40.92.70.26])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 75C012A6079B
+	for <feedthebat@sciz.cerv.ovh>; Mon, 17 Dec 2018 23:23:55 +0000 (UTC)
+Received: from VE1EUR03FT008.eop-EUR03.prod.protection.outlook.com
+ (10.152.18.54) by VE1EUR03HT220.eop-EUR03.prod.protection.outlook.com
+ (10.152.19.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1382.18; Mon, 17 Dec
+ 2018 23:23:48 +0000
+Received: from AM0PR01MB4500.eurprd01.prod.exchangelabs.com (10.152.18.57) by
+ VE1EUR03FT008.mail.protection.outlook.com (10.152.18.75) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1382.18 via Frontend Transport; Mon, 17 Dec 2018 23:23:48 +0000
+Received: from AM0PR01MB4500.eurprd01.prod.exchangelabs.com
+ ([fe80::919d:cb93:3956:3de4]) by AM0PR01MB4500.eurprd01.prod.exchangelabs.com
+ ([fe80::919d:cb93:3956:3de4%5]) with mapi id 15.20.1425.021; Mon, 17 Dec 2018
+ 23:23:48 +0000
+From: =?iso-8859-1?Q?Censored?= <censored@hotmail.fr>
+To: "feedthebat@sciz.cerv.ovh" <feedthebat@sciz.cerv.ovh>
+Subject: =?iso-8859-1?Q?TR:_[MountyHall]_Attaquant_-_Attaque_annul=E9e_(Charger)_s?=
+ =?iso-8859-1?Q?ur_un_Bouj'Dla_Placide_Cogneur_[Doyen]_(6065552)?=
+Thread-Topic: =?iso-8859-1?Q?[MountyHall]_Attaquant_-_Attaque_annul=E9e_(Charger)_sur_u?=
+ =?iso-8859-1?Q?n_Bouj'Dla_Placide_Cogneur_[Doyen]_(6065552)?=
+Thread-Index: AQHUllga9nVQrQDak0CrFkRQ15XQr6WDkmbx
+Date: Mon, 17 Dec 2018 23:23:48 +0000
+Message-ID: <AM0PR01MB4500357A75E80D3D39FA1B65A1BC0@AM0PR01MB4500.eurprd01.prod.exchangelabs.com>
+References: <51e27756cd01807c6daea525407323b9@mh2.mh.raistlin.fr>
+In-Reply-To: <51e27756cd01807c6daea525407323b9@mh2.mh.raistlin.fr>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-incomingtopheadermarker: OriginalChecksum:5B62D4BF0B886CE3B869E54C0727F448F1471B5CA8009F2B91FA6D260F90E245;UpperCasedChecksum:E48105646A27767270788C18FDD598F1CF45D8EB9B5F3E86A08A533116DC3B55;SizeAsReceived:7241;Count:46
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [dG+2ZrtBS66DoEp3PDOL7KijkdIJY9G2]
+x-ms-publictraffictype: Email
+x-microsoft-exchange-diagnostics: 1;VE1EUR03HT220;6:3MQeW794uhcrtWD6uHsK0LXxlMlGRAIdkN9wwX7CLDMhYhP1MXLZxcKjux6nlXv69z47OE8b5JzYg+15/TQRj8c4wlHrIkjisgNAtR+aFYlGVICz0iO3jY+irDZbFoV68I/Z2CtQhqKNQKPozU4S/INId8rTsNuljW2A17tByxdEFUS1RaTPARTH538J/q4eybfwkGQETbQMPKRnxoLYIVXROgnANB3tzHn7f3r1M7RK1u9FbRSYKAH2S6s7IEWMXSnaMvmBSGuVwJSPzubVtzhxbqO5f2M4cE+ue796CLPoaIkQmIwtLQ2xBfRionQ8dlnkfcuGRpm8AZZmVwyzvxNCPB/ljWP42Pnn+vCdbej/CENc74p0na9N2xQfTq9ipHyCZ85rB1ScZp9qyrLIRzxt0cJ+TYko3AQJl+U9HVzYL5/FrY+PGpwY1dNoWk7pU63Kh6N1M6POPvSKFh7gBg==;5:otTR1DGWhbMMiSvp+fZpePwZyyPdkhtubMjk91exg0k5DFSsRHRKok4xdzc9f2VBC0/9n3pAXg0pvl4GU5NEZR3/vPrtFk4dEyhEKR1QXRPl23xNyEEYsaXr2q+vClmO7P2EpjtzQFVZBMEaOihaIAZDXjGwDrDgOUKiB5BMlyg=;7:LNgxYeYEzZU1Q60aIjsDpq6yEcagZfJOlKRXK0RMFr5JB9WSgI2TUyzJCfj7xfuUxmbC6Iqxl32alhk4EKPD10c1/CTr9KQtvW88BkA3DUIwsM5QLL5lYq4OgHj5dS5ihhrgMKzW/kQfpwmhW5uC9Q==
+x-incomingheadercount: 46
+x-eopattributedmessage: 0
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(201702061078)(5061506573)(5061507331)(1603103135)(2017031320274)(2017031323274)(2017031324274)(2017031322404)(1601125500)(1603101475)(1701031045);SRVR:VE1EUR03HT220;
+x-ms-traffictypediagnostic: VE1EUR03HT220:
+x-exchange-antispam-report-cfa-test: BCL:0;PCL:0;RULEID:(4566010)(82015058);SRVR:VE1EUR03HT220;BCL:0;PCL:0;RULEID:;SRVR:VE1EUR03HT220;
+x-microsoft-antispam-message-info: eHLH9fhljMhbl0PrfD1lLSnhxSdjKkPUFaN7gLoO/FtKOmALu5YPvAGYI15cE/qm
+Content-Type: multipart/alternative;
+	boundary="_000_AM0PR01MB4500357A75E80D3D39FA1B65A1BC0AM0PR01MB4500eurp_"
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: c001924d-3e68-4f40-89c2-901a49278da7
+X-MS-Exchange-CrossTenant-Network-Message-Id: f04f6e8e-297b-4fa6-7b7d-08d66476b2a3
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: c001924d-3e68-4f40-89c2-901a49278da7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2018 23:23:48.5168
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1EUR03HT220
+
+--_000_AM0PR01MB4500357A75E80D3D39FA1B65A1BC0AM0PR01MB4500eurp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+
+________________________________________
+De : MountyHall-Bot <bot@mountyhall.com>
+Envoy=E9 : lundi 17 d=E9cembre 2018 23:30
+=C0 : censored@hotmail.fr
+Objet : [MountyHall] Attaquant - Attaque annul=E9e (Charger) sur un Bouj'Dl=
+a Placide Cogneur [Doyen] (6065552)
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=F5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=F5ll n=B080117 : H=E9ra
+
+Vous avez =E9t=E9 impliqu=E9 dans un =E9v=E9nement : COMBAT.
+Il =E9tait alors aux alentours de : 17/12/2018 23:30:21.
+***********************************************************
+
+Vous avez attaqu=E9 un Bouj'Dla Placide Cogneur [Doyen] (6065552) gr=E2ce =
+=E0 une comp=E9tence.
+
+Un =E9v=E8nement al=E9atoire s'est produit durant votre ACTION : CHUTE (Rar=
+et=E9 : 1)
+Le sol s'est effondr=E9 sous vos pas et vous vous retrouvez 1 niveaux plus =
+bas. Vous n'=EAtes cependant pas bless=E9
+
+Votre attaque a =E9t=E9 interrompue et n'a pu =EAtre port=E9e.
+
+Votre fatigue a augment=E9 de 11 points.
+
+Votre Karma a =E9t=E9 influenc=E9 par cette action.
+
+Pour cette action, vous avez gagn=E9 un total de 1 PX.
+
+***********************************************************
+Vous avez configur=E9 votre compte pour recevoir un Email
+ lorsque votre Tr=F5ll est impliqu=E9 dans un =E9v=E9nement.
+Si vous ne d=E9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=F5ll.
+
+Le Site        : https://www.mountyhall.com
+Pour Jouer     : https://games.mountyhall.com
+Des Questions  : https://www.mountyhall.com/Forum
+***********************************************************
+
+
+--_000_AM0PR01MB4500357A75E80D3D39FA1B65A1BC0AM0PR01MB4500eurp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 12pt;=
+ color: rgb(0, 0, 0);">
+<br>
+</div>
+<div id=3D"appendonsend"></div>
+<font size=3D"2"><span style=3D"font-size:11pt;">
+<div class=3D"PlainText"><br>
+________________________________________<br>
+De : MountyHall-Bot &lt;bot@mountyhall.com&gt;<br>
+Envoy=E9 : lundi 17 d=E9cembre 2018 23:30<br>
+=C0 : censored@hotmail.fr<br>
+Objet : [MountyHall] Attaquant - Attaque annul=E9e (Charger) sur un Bouj'Dl=
+a Placide Cogneur [Doyen] (6065552)<br>
+<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=F5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=F5ll n=B080117 : H=E9ra<br>
+<br>
+Vous avez =E9t=E9 impliqu=E9 dans un =E9v=E9nement : COMBAT.<br>
+Il =E9tait alors aux alentours de : 17/12/2018 23:30:21.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=E9 un Bouj'Dla Placide Cogneur [Doyen] (6065552) gr=E2ce =
+=E0 une comp=E9tence.<br>
+<br>
+Un =E9v=E8nement al=E9atoire s'est produit durant votre ACTION : CHUTE (Rar=
+et=E9 : 1)<br>
+Le sol s'est effondr=E9 sous vos pas et vous vous retrouvez 1 niveaux plus =
+bas. Vous n'=EAtes cependant pas bless=E9<br>
+<br>
+Votre attaque a =E9t=E9 interrompue et n'a pu =EAtre port=E9e.<br>
+<br>
+Votre fatigue a augment=E9 de 11 points.<br>
+<br>
+Votre Karma a =E9t=E9 influenc=E9 par cette action.<br>
+<br>
+Pour cette action, vous avez gagn=E9 un total de 1 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=E9 votre compte pour recevoir un Email<br>
+&nbsp;lorsque votre Tr=F5ll est impliqu=E9 dans un =E9v=E9nement.<br>
+Si vous ne d=E9sirez plus recevoir ces Emails, veuillez changer<br>
+&nbsp;cette configuration dans le profil de votre Tr=F5ll.<br>
+<br>
+Le Site&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <a href=3D"https://www.=
+mountyhall.com">https://www.mountyhall.com</a><br>
+Pour Jouer&nbsp;&nbsp;&nbsp;&nbsp; : <a href=3D"https://games.mountyhall.co=
+m">https://games.mountyhall.com</a><br>
+Des Questions&nbsp; : <a href=3D"https://www.mountyhall.com/Forum">https://=
+www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div>
+</span></font>
+</body>
+</html>
+
+--_000_AM0PR01MB4500357A75E80D3D39FA1B65A1BC0AM0PR01MB4500eurp_--

@@ -1,246 +1,405 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-# Imports
-import ConfigParser, sqlalchemy, math
-from operator import attrgetter, add
-from sqlalchemy import desc, asc, or_, and_
-from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from classes.troll import TROLL
-from classes.user import USER
-from classes.mob import MOB
-from classes.cdm import CDM
-from classes.aa import AA
-from classes.battle import BATTLE
-from modules.mh_caller import MHCaller
-from modules.sql_helper import SQLHelper
+# IMPORTS
+from classes.being_troll_private import TrollPrivate
+from classes.being_mob_private import MobPrivate
+from classes.tresor_private import TresorPrivate
+from classes.champi_private import ChampiPrivate
+from classes.lieu_piege import Piege
+from classes.event import Event
+from classes.event_cdm import cdmEvent
+from classes.event_aa import aaEvent
+from classes.event_battle import battleEvent
+from classes.lieu import Lieu
+from classes.user import User
+from classes.being_mob import Mob
+from modules.sql_helper import unaccent
+from sqlalchemy import and_, or_, func, case
+from statistics import mean
+import re, datetime, dateutil.relativedelta
 import modules.globals as sg
 
-## Requester class for SCIZ
+
+# CLASS DEFINITION
 class Requester:
+
+    # Consts
+    mod_keywords = ['filter']
+    int_keywords = ['id', 'niv', 'x', 'y', 'n', 'select']
+    str_keywords = {'troll': TrollPrivate, 'event': Event,
+                    'bestiaire': cdmEvent, 'recherche': MobPrivate, 'mob': MobPrivate, 'recap': MobPrivate,
+                    'tresor': TresorPrivate, 'champi': ChampiPrivate, 'lieu': Lieu}
 
     # Constructor
     def __init__(self):
         self.check_conf()
-        self.mhCaller = MHCaller()
-    
+
     # Configuration loader and checker
     def check_conf(self):
         # No conf needed yet
         pass
 
-    # Dispatcher
-    def request(self, ids, args):
-        # Request on all trolls
-        ids = ids.lower()
-        if ids == 'trolls' or ids == 'users':
-            trolls = sg.db.session.query(TROLL).filter(TROLL.group_id==sg.group.id).all()
-            if ids == 'users':
-                trolls = filter(lambda x : x.user != None, trolls)
-            if len(args) == 1:
-                trolls = sorted(trolls, key=lambda x : sg.none_sorter(x, args[0])) # Work only if args == only an object attr (ex:'dla' ; not 'dla,pv' or 'event')
-            for troll in trolls:
-                self.__request_troll(troll.id, args)
+    # Request
+    def request(self, coterie_or_user, search):
+        search = search.lower()
+        # Special coterie handling
+        if '%coterie' in search in search:
+            search = search.replace('%coterie', '%troll')
+            members_list = coterie_or_user.members_list_sharing()
+            search += ' %id:' + ','.join([str(member) for member in members_list])
+            search += ' %select:' + str(len(members_list))
+        # Parse the keywords
+        args = {}
+        matchall = re.finditer(r'%(?P<type>\w+)(:(?P<subtype>(\d|\w|,|_|-)+))?', search)
+        for match in matchall:
+            type = match.groupdict()['type']
+            type = sg.flatten(type)
+            if type not in self.str_keywords and type not in self.int_keywords + self.mod_keywords:
+                continue
+            subtypes = match.groupdict()['subtype']
+            subtypes = [subtype for subtype in subtypes.split(',') if subtype != ''] if subtypes is not None else []
+            if type in self.int_keywords:
+                i = 0
+                while i < len(subtypes):
+                    if subtypes[i].count('_') == 1:
+                        subtypes[i] = subtypes[i].split('_')
+                        try:
+                            subtypes[i] = sorted(list(map(lambda x: int(x), subtypes[i])))
+                        except Exception as e:
+                            subtypes[i] = []
+                    else:
+                        try:
+                            subtypes[i] = int(subtypes[i])
+                        except Exception as e:
+                            del subtypes[i]
+                    i += 1
+                if any(x is not None for x in subtypes):
+                    if type not in args or args[type] is None:
+                        args[type] = subtypes
+                    else:
+                        args[type] = args[type] + subtypes
+            else:
+                if type not in args or args[type] is None:
+                    args[type] = subtypes
+                else:
+                    args[type] = args[type] + subtypes
+        # MP/PX handle
+        if args == {}:
+            if '%px' in search:
+                return coterie_or_user.px_link
+            if '%mp' in search:
+                return coterie_or_user.mp_link
+            if 'help' in search:
+                return sg.conf[sg.CONF_SCIZ_HELP]
+        # Build the query
+        res = []
+        for k in self.str_keywords:
+            if k in args:
+                # Get the viewers and query
+                if k in ['recherche', 'bestiaire']:
+                    query = self.requester_build_query(k, self.str_keywords[k], [], [], args)
+                elif k in ['event']:
+                    users_id = coterie_or_user.members_list_sharing(None, None, True) # Don't get events of people not sharing them
+                    query = self.requester_build_query(k, self.str_keywords[k], users_id, [], args)
+                else:
+                    # Remember here that reconciliation happened before
+                    sp4_users_id = coterie_or_user.members_list_sharing(True, True, True)
+                    users_id = coterie_or_user.members_list_sharing(False, True, True)
+                    if len(users_id) < 1:
+                        sp4_users_id = coterie_or_user.members_list_sharing(True, None, True)
+                        users_id = coterie_or_user.members_list_sharing(False, None, True)
+                    if len(users_id) < 1:
+                        sp4_users_id = coterie_or_user.members_list_sharing(True, True, None)
+                        users_id = coterie_or_user.members_list_sharing(False, True, None)
+                    if k == 'troll':
+                        query = self.requester_build_query(k, self.str_keywords[k], users_id, sp4_users_id, args)
+                    else:
+                        query = self.requester_build_query(k, self.str_keywords[k], users_id + sp4_users_id, [], args)
+                # Query
+                if query is not None:
+                    q = query.all()
+                    for r in q:
+                        s = None
+                        if k == 'recap':
+                            s = self.recap(r, users_id + sp4_users_id)
+                        elif k == 'recherche':
+                            sg.zero_out_but(r, ['mob_id', 'pos_x', 'pos_y', 'pos_n', 'last_seen_at'])
+                            s = sg.no.stringify(r)
+                        else:
+                            if k == 'bestiaire':
+                                r = self.bestiaire(r)
+                            s = sg.no.stringify(r, None, args['filter'] if 'filter' in args else None)
+                        if s is not None and s != '':
+                            res.append(s)
+        if len(res) < 1:
+            return ['Une chauve-souris l\'air bredouille et désemparée revient vers vous...']
+        return res
+
+    @staticmethod
+    def requester_build_query(key, cls, users_id, sp4_users_id, args):
+        # Setup
+        offset, limit = None, 1
+        query = sg.db.session.query(cls)
+        # Attrs
+        attr_id = 'id'
+        if cls is Event or cls is cdmEvent:
+            attr_id = 'owner_id'
+        elif hasattr(cls, key + '_id'):
+            attr_id = key + '_id'
+        elif key in ['recherche', 'recap']:
+            attr_id = 'mob_id'
+        attr_niv_min = 'niv' if hasattr(cls, 'niv') else 'niv_min'
+        attr_niv_max = 'niv' if hasattr(cls, 'niv') else 'niv_max'
+        attr_pos_x, attr_pos_y, attr_pos_n = 'pos_x', 'pos_y', 'pos_n'
+        # Class filters and query adjustements
+        if cls is Event:
+            filters = cls.owner_id.in_(users_id)
+        elif cls is cdmEvent:
+            query = query.outerjoin(User, cls.owner_id == User.id)
+            filters = and_(User.community_sharing == True)
+        elif cls is Lieu:
+            query = query.outerjoin(Piege)
+            filters = and_(cls.destroyed != True, or_(cls.owner_id == None, cls.owner_id.in_(users_id)))
         else:
-            id_lst = ids.split(',')
-            is_mob_lst = is_troll_lst = True
-            for id in id_lst:
-                is_troll_lst = is_troll_lst and (len(id) <= 6 and id.isdigit())
-                is_mob_lst = is_mob_lst and (len(id) == 7 and id.isdigit())
-            # Request on a specific list of mobs
-            if is_mob_lst and not is_troll_lst:
-                for id in id_lst:
-                    self.__request_mob(id, args)
-            # Request on a specific list of trolls
-            elif is_troll_lst and not is_mob_lst:
-                for id in id_lst:
-                    self.__request_troll(id, args)
-            # Request on an inconsitant list of ids
+            # Privates
+            query = query.distinct(getattr(cls, attr_id))
+            if key == 'recherche':
+                query = query.outerjoin(User, cls.viewer_id == User.id)
+            elif cls is TresorPrivate:
+                query = query.join(cls.tresor_meta)
+            elif cls is TrollPrivate:
+                query = query.join(cls.troll)
+            elif cls is MobPrivate:
+                query = query.join(cls.mob)
+            if key == 'recherche':
+                filters = and_(User.community_sharing == True, getattr(cls, attr_pos_x) != None, getattr(cls, attr_pos_y) != None, getattr(cls, attr_pos_n) != None)
+            if key == 'troll':
+                # Exclude personnal private for those not sharing it
+                filters = case([(cls.viewer_id.in_(users_id), and_(cls.viewer_id.in_(users_id), cls.troll_id != cls.viewer_id))], else_= cls.viewer_id.in_(sp4_users_id))
             else:
-                print 'Inconsistant list of ids...'
-
-    # Mob request
-    def __request_mob(self, id, args):
-        if len(args) > 0:
-            limit = 1
-            if len(args) > 1 and args[1].isdigit():
-                limit = int(args[1]) if int(args[1]) > 0 else limit
-            if args[0].lower() == 'cdm':
-                self.__request_mob_cdm(id, limit)
-            elif args[0].lower() == 'event':
-                self.__request_mob_event(id, limit)
-            elif args[0].lower() == 'recap':
-                self.__request_mob_recap(id)
-            else:
-                caracs = args[0].split(',')
-                self.__request_mob_caracs(id, caracs)
+                filters = cls.viewer_id.in_(users_id)
+        # Dynamic build filters
+        for k in args:
+            tmp_filter = None
+            for v in args[k]:
+                sub_tmp_filter = None
+                # INT keys
+                if k == 'id':
+                    if isinstance(v, list):
+                        sub_tmp_filter = and_(getattr(cls, attr_id) >= v[0], getattr(cls, attr_id) <= v[1])
+                    else:
+                        sub_tmp_filter = getattr(cls, attr_id) == v
+                elif k == 'niv' and cls not in [Event, Lieu]:
+                    if isinstance(v, list):
+                        sub_tmp_filter = and_(getattr(cls, attr_niv_min) >= v[0], getattr(cls, attr_niv_max) <= v[1])
+                    else:
+                        sub_tmp_filter = and_(getattr(cls, attr_niv_min) >= v, getattr(cls, attr_niv_max) <= v)
+                elif k == 'x':
+                    if isinstance(v, list):
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_x) >= v[0], getattr(cls, attr_pos_x) <= v[1])
+                    else:
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_x) >= v, getattr(cls, attr_pos_x) <= v)
+                elif k == 'y':
+                    if isinstance(v, list):
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_y) >= v[0], getattr(cls, attr_pos_y) <= v[1])
+                    else:
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_y) >= v, getattr(cls, attr_pos_y) <= v)
+                elif k == 'n':
+                    if isinstance(v, list):
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_n) >= v[0], getattr(cls, attr_pos_n) <= v[1])
+                    else:
+                        sub_tmp_filter = and_(getattr(cls, attr_pos_n) >= v, getattr(cls, attr_pos_n) <= v)
+                # Special select modifier
+                elif k == 'select':
+                    if isinstance(v, list):
+                        offset = max(v[0] - 1, 0)
+                        limit = max(min(v[1] - offset, 10), 1)
+                    else:
+                        limit = max(min(v, 10), 1)
+                # STR keys
+                elif k == key:
+                    # Remove accented chars
+                    v = sg.flatten(v)
+                    if k == 'event':
+                        sub_tmp_filter = or_(unaccent(getattr(cls, 'mail_subject')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls, 'mail_body')).ilike('%' + v + '%'))
+                    elif k == 'lieu':
+                        sub_tmp_filter = unaccent(getattr(cls, 'nom')).ilike('%' + v + '%')
+                    elif k == 'champi':
+                        sub_tmp_filter = or_(unaccent(getattr(cls, 'nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls, 'qualite')).ilike('%' + v + '%'))
+                    elif k == 'tresor':
+                        sub_tmp_filter = or_(unaccent(getattr(cls, 'nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls, 'templates')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.tresor_meta.property.mapper.class_, 'type')).ilike('%' + v + '%'))
+                    elif k == 'troll':
+                        sub_tmp_filter = or_(unaccent(getattr(cls.troll.property.mapper.class_, 'nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.troll.property.mapper.class_, 'race')).ilike('%' + v + '%'))
+                    elif k in ['mob', 'recap']:
+                        sub_tmp_filter = or_(unaccent(getattr(cls.mob.property.mapper.class_, 'nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.mob.property.mapper.class_, 'tag')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.mob.property.mapper.class_, 'age')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.mob.property.mapper.class_, 'race')).ilike('%' + v + '%'))
+                    elif k == 'recherche':
+                        sub_tmp_filter = or_(unaccent(getattr(cls.mob.property.mapper.class_, 'nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.mob.property.mapper.class_, 'age')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls.mob.property.mapper.class_, 'race')).ilike('%' + v + '%'))
+                    elif k == 'bestiaire':
+                        sub_tmp_filter = or_(unaccent(getattr(cls, 'mob_nom')).ilike('%' + v + '%'),
+                                             unaccent(getattr(cls, 'mob_age')).ilike('%' + v + '%'))
+                if sub_tmp_filter is not None:
+                    if tmp_filter is None:
+                        tmp_filter = sub_tmp_filter
+                    else:
+                        tmp_filter = and_(sub_tmp_filter, tmp_filter)
+            if tmp_filter is not None:
+                if filters is None:
+                    filters = tmp_filter
+                else:
+                    filters = and_(tmp_filter, filters)
+        if filters is not None:
+            query = query.filter(filters)
+        # Orders
+        if cls is Event:
+            query = query.order_by(cls.time.desc())
+        elif cls is cdmEvent:
+            offset, limit = None, 1
+            query = query.order_by(func.char_length(cls.mob_nom))
+        elif cls is Lieu:
+            query = query.order_by(cls.last_seen_at.desc())
+        elif cls is TrollPrivate:
+            query = query.order_by(getattr(cls, attr_id).desc(), cls.last_event_update_at.desc().nullslast(), cls.last_sp4_update_at.desc().nullslast(), cls.last_seen_at.desc().nullslast()).subquery()
+            join_cond = and_(getattr(cls, attr_id) == getattr(query.c, attr_id), cls.viewer_id == query.c.viewer_id)
+            query = sg.db.session.query(cls).join(query, join_cond).order_by(cls.last_event_update_at.desc().nullslast(), cls.last_sp4_update_at.desc().nullslast(), cls.last_seen_at.desc().nullslast())
         else:
-            self.__request_mob_caracs(id, None)
+            query = query.order_by(getattr(cls, attr_id).desc(), cls.last_event_update_at.desc().nullslast(), cls.last_seen_at.desc().nullslast()).subquery()
+            join_cond = and_(getattr(cls, attr_id) == getattr(query.c, attr_id), cls.viewer_id == query.c.viewer_id)
+            query = sg.db.session.query(cls).join(query, join_cond).order_by(cls.last_event_update_at.desc().nullslast(), cls.last_seen_at.desc().nullslast())
+        query = query.offset(offset).limit(limit)
+        return query
 
-    def __request_mob_recap(self, id):
-        try:
-            # Data pull from DB
-            mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
-            # cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).all()
-            try:
-                cdm = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).first()
-            except NoResultFound:
-                cdm = None
-            if cdm:
-                battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id), BATTLE.time > cdm.time)).order_by(asc(BATTLE.time)).all()
-            else:
-                battles = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(asc(BATTLE.time)).all()
-            #events = sorted(cdm + battles, key=attrgetter('time'))
-            # Vars
-            ptime = None
-            is_dead = False
-            tot = 0
-            pv_min = mob.pv_min
-            pv_max = mob.pv_max
-            reg_min = mob.reg_min * 1 if mob.reg_min else (mob.reg_max * 1 if mob.reg_max else None)
-            reg_max = mob.reg_max * 3 if mob.reg_max else (mob.reg_min * 3 if mob.reg_min else None)
-            tot_reg_min = tot_reg_max = 0
-            # Recap compute
-            if cdm:
-                if pv_min: pv_min = int(math.ceil(float(100 - cdm.blessure) / 100 * mob.pv_min))
-                if pv_max: pv_max = int(math.floor(float(100 - cdm.blessure) / 100 * mob.pv_max))
-
-            for battle in battles:
-                if battle.def_mob_id is not None and battle.pv > 0:
-                    is_dead = battle.dead
-                    ptime = battle.time if ptime is None or battle.dead else ptime
-                    tot += battle.pv
-                    if pv_min is not None: pv_min -= battle.pv
-                    if pv_max is not None: pv_max -= battle.pv
-                if battle.att_mob_id is not None:
-                    if reg_min is not None: tot_reg_min += reg_min
-                    if reg_max is not None: tot_reg_max += reg_max
-            # Pretty print
-            print ("%s [%s] (%d)" % (mob.nom, mob.age, mob.id)).encode(sg.DEFAULT_CHARSET)
-            if cdm and not is_dead:
-                print "Dernière CDM : %d%%  (%s)" % (cdm.blessure, cdm.time,)
-            if tot != 0 and not is_dead:
-                print "Total depuis %s : -%d PV %s" % ("" if cdm else ptime, tot, "(MORT)" if is_dead else "",)
-            if not is_dead:
-                if pv_min is not None or pv_max is not None:
-                    print "PdV restants : %s" % (sg.str_min_max(max(pv_min, 1), pv_max),)
-                if tot_reg_min or tot_reg_max:
-                    print "PdV régénérés : %s" % (sg.str_min_max(tot_reg_min, tot_reg_max),)
-            else:
-                print "Tué le %s" % (ptime,)
-        except NoResultFound:
-            print 'Aucune donnée pour le monstre n°%s' % (id, )
-
-    def __request_mob_cdm(self, id, limit):
-        try:        
-            cdms = sg.db.session.query(CDM).filter(CDM.mob_id==id, CDM.group_id==sg.group.id).order_by(desc(CDM.time)).limit(limit).all()
-            i = len(cdms) - 1
-            if i >= 0:
-                while i >= 0:
-                    val = sg.pretty_print(cdms[i], False, None)
-                    if val != '':
-                        print val
-                    i -= 1
-            else:
-                print 'Aucune CDM pour le montre n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucune CDM pour le monstre n°%s' % (id, )
-    
-    def __request_mob_event(self, id, limit):
-        try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_mob_id == id, BATTLE.def_mob_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
-            i = len(events) - 1
-            if i >= 0:
-                while i >= 0:
-                    val = sg.pretty_print(events[i], False, None)
-                    if val != '':
-                        print val
-                    i -= 1
-            else:
-                print 'Aucun évènement pour le monstre n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucun évènement pour le monstre n°%s' % (id, )
-    
-    def __request_mob_caracs(self, id, caracs):
-        try:
-            mob = sg.db.session.query(MOB).filter(MOB.group_id==sg.group.id, MOB.id == id).one()
-            val = sg.pretty_print(mob, False, caracs)
-            if val != '':
-                print val
-            else:
-                print 'Aucune donnée pour le monstre n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucune donnée pour le monstre n°%s' % (id, )
-    
-    # Trol request        
-    def __request_troll(self, id, args):
-        if len(args) > 0:
-            limit = 1
-            if len(args) > 1 and args[1].isdigit():
-                limit = int(args[1]) if int(args[1]) > 0 else limit
-            if args[0].lower() == 'event':
-                self.__request_troll_event(id, limit)
-            elif args[0].lower() == 'aa':
-                self.__request_troll_aa(id, limit)
-            elif args[0].lower() == 'recap':
-                self.__request_troll_recap(id)
-            elif args[0].lower() == 'update':
-                self.__request_troll_update(id)
-            else:
-                caracs = args[0].split(',')
-                self.__request_troll_caracs(id, caracs)
+    # Do a recap !
+    @staticmethod
+    def recap(o, users_id):
+        # Setup
+        vie_min, vie_max, blessure = o.vie_min, o.vie_max, o.blessure
+        degats = 0
+        replay = 0
+        mort, mort_time = False, 0
+        then = datetime.datetime.now() + dateutil.relativedelta.relativedelta(days=-2)
+        #then = datetime.datetime.min # FOR TESTING ONLY
+        last_play = then
+        if isinstance(o, TrollPrivate):
+            cls, attr_id, tour_min = aaEvent, 'troll_id', 9 * 60 # This is a really dummy approx, how can we do better ?
         else:
-            self.__request_troll_caracs(id, None)
-    
-    def __request_troll_recap(self, id):
-        pass
-    
-    def __request_troll_update(self, id):
-        # The third parameter 'verbose' handles the output
-        self.mhCaller.call('vue2', [id], False)
-        self.mhCaller.call('profil4', [id], True)
+            cls, attr_id, tour_min = cdmEvent, 'mob_id', o.tour_min
+        # Get last AA or CDM
+        last_aa_cdm = sg.db.session.query(cls).filter(getattr(cls, attr_id) == getattr(o, attr_id), cls.owner_id.in_(users_id), cls.time > last_play).order_by(cls.time.desc()).first()
+        # Get battle events
+        last_play = last_aa_cdm.time if last_aa_cdm is not None else last_play
+        battles = sg.db.session.query(battleEvent).filter(and_(battleEvent.owner_id.in_(users_id), battleEvent.time > last_play, or_(battleEvent.att_id == getattr(o, attr_id), battleEvent.def_id == getattr(o, attr_id)))).order_by(battleEvent.time.asc()).all()
+        # Compute
+        for battle in battles:
+            if getattr(o, attr_id) == battle.att_id:
+                elapsedTime = (battle.time - last_play).total_seconds() / 60
+                # A mob play everything in one time, so one hour should be large enough
+                # FIXME : how to estimate for a troll ?
+                if replay == 0 or elapsedTime > 60:
+                    replay += 1
+                last_play = battle.time
+            elif getattr(o, attr_id) == battle.def_id and battle.pv is not None:
+                degats += battle.pv
+                if battle.mort:
+                    mort, mort_time = True, battle.time
+        # Estimated reg
+        reg_min, reg_max = None, None
+        if hasattr(o, 'reg_min') and o.reg_min is not None:
+            reg_min = o.reg_min * replay
+        if hasattr(o, 'reg_max') and o.reg_max is not None:
+            reg_max = o.reg_max * replay * 3
+        # Estimated vie
+        if vie_min is not None:
+            vie_min -= degats
+        if vie_max is not None:
+            vie_max -= degats
+        # Prettyprint
+        res = o.nom_complet
+        recap = ''
+        if mort:
+            return res + '\n' + 'Tué le ' + sg.format_time(mort_time)
+        elif isinstance(o, MobPrivate) and o.mob.mort:
+            return res + ' est mort il y a quelques temps...'
+        if last_aa_cdm is not None and not mort:
+            recap += '\n' + str(last_aa_cdm.blessure) + '% de blessure le ' + sg.format_time(last_aa_cdm.time)
+        if degats > 0:
+            recap += '\n' + 'Total depuis' + (' le ' + sg.format_time(then) if last_aa_cdm is None else '') + ' : -' + str(degats)
+        if vie_min is not None and vie_max is not None and (len(battles) > 0 or last_aa_cdm is not None):
+            recap += '\n' + 'PdV restants : ' + sg.str_min_max(max(vie_min, 1), vie_max)
+        if isinstance(o, MobPrivate) and replay > 0:
+            recap += '\n' + 'A rejoué au minimum ' + str(replay) + ' fois' + (' depuis le ' + sg.format_time(then) if last_aa_cdm is None else '')
+        if reg_min is not None and reg_max is not None and replay > 0:
+            recap += '\n' + 'PdV minimums régénérés : ' + sg.str_min_max(reg_min, reg_max)
+        if recap == '':
+            recap = ' s\'ennuie !'
+        return res + recap
 
-    def __request_troll_aa(self, id, limit):
-        try:        
-            aas = sg.db.session.query(AA).filter(AA.troll_cible_id==id, AA.group_id==sg.group.id).order_by(desc(AA.time)).limit(limit).all()
-            i = len(aas) - 1
-            if i >= 0:
-                while i >= 0:
-                    val = sg.pretty_print(aas[i], False, None)
-                    if val != '':
-                        print val
-                    i -= 1
+    @staticmethod
+    def bestiaire(cdm):
+        if cdm is None or not isinstance(cdm, cdmEvent):
+            return None
+        # Get all the related CdM
+        res = sg.db.session.query(cdmEvent).outerjoin(User, User.community_sharing == True) \
+            .filter(cdmEvent.mob_nom == cdm.mob_nom, cdmEvent.mob_age == cdm.mob_age) \
+            .order_by(cdmEvent.time.desc()).all()
+        # Create a mob private
+        pm = MobPrivate()
+        pm.mob = Mob(nom=cdm.mob_nom, age=cdm.mob_age)
+        # Copy the fixed properties and compute a set of cdms regrouped by mob id
+        list_of_cdm_by_mob_id = {}
+        for p in res:
+            sg.copy_properties(p, pm, ['capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour', 'vit_dep',
+                                       'vlc', 'voleur', 'att_dist', 'att_mag'], False)
+            if p.mob_id in list_of_cdm_by_mob_id:
+                list_of_cdm_by_mob_id[p.mob_id] = list_of_cdm_by_mob_id[p.mob_id] + [p]
             else:
-                print 'Aucune AA pour le troll n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucune AA pour le troll n°%s' % (id, )
-
-    def __request_troll_event(self, id, limit):
-        try:
-            events = sg.db.session.query(BATTLE).filter(and_(BATTLE.group_id==sg.group.id, or_(BATTLE.att_troll_id == id, BATTLE.def_troll_id == id))).order_by(desc(BATTLE.time)).limit(limit).all()
-            i = len(events) - 1
-            if i >= 0:
-                while i >= 0:
-                    val = sg.pretty_print(events[i], False, None)
-                    if val != '':
-                        print val
-                    i -= 1
-            else:
-                print 'Aucun évènement pour troll n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucun évènement pour troll n°%s' % (id, )
-
-    def __request_troll_caracs(self, id, caracs):
-        try:
-            troll = sg.db.session.query(TROLL).filter(TROLL.group_id==sg.group.id, TROLL.id == id).one()
-            val = sg.pretty_print(troll, False, caracs)
-            if val != '':
-                print val
-            else:
-                print 'Aucune donnée pour le troll n°%s' % (id, )
-        except NoResultFound:
-            print 'Aucune donnée pour le troll n°%s' % (id, )
-
-    # Destructor
-    def __del__(self):
-        pass
+                list_of_cdm_by_mob_id[p.mob_id] = [p]
+        # Compute floating properties
+        for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm', 'rm', 'tour']:
+            attr_min = attr + '_min'
+            attr_max = attr + '_max'
+            aggregated_cdm_list = []
+            flag_min_max = False
+            # Compute real min/max for a same mob then add its final cdm to the aggregated list
+            for cdm_by_mob_id in list_of_cdm_by_mob_id:
+                aggregated_cdm = cdmEvent()
+                list_attr_min = list(filter(None.__ne__, (getattr(cdm, attr_min) for cdm in list_of_cdm_by_mob_id[cdm_by_mob_id])))
+                list_attr_max = list(filter(None.__ne__, (getattr(cdm, attr_max) for cdm in list_of_cdm_by_mob_id[cdm_by_mob_id])))
+                if len(list_attr_min) > 0:
+                    setattr(aggregated_cdm, attr_min, sg.do_unless_none(max, list_attr_min))
+                if len(list_attr_max) > 0:
+                    setattr(aggregated_cdm, attr_max, sg.do_unless_none(min, list_attr_max))
+                aggregated_cdm_list.append(aggregated_cdm)
+            # Compute the final value (excluding min or max only cdm if any cdm for a mob has both)
+            list_attr_min = []
+            list_attr_max = []
+            for cdm in aggregated_cdm_list:
+                _min = getattr(cdm, attr_min)
+                _max = getattr(cdm, attr_max)
+                if _min is not None and _max is not None:
+                    flag_min_max = True
+                    list_attr_min = []
+                    list_attr_max = []
+                if _min is not None:
+                    if not flag_min_max or _max is not None:
+                        list_attr_min.append(_min)
+                if _max is not None:
+                    if not flag_min_max or _min is not None:
+                        list_attr_max.append(_max)
+            if len(list_attr_min) > 0:
+                setattr(pm, attr_min, min(list_attr_min))
+                # setattr(pm, attr_min, round(mean(list_attr_min)))
+            if len(list_attr_max) > 0:
+                setattr(pm, attr_max, max(list_attr_max))
+                # setattr(pm, attr_max, round(mean(list_attr_max)))
+        return pm

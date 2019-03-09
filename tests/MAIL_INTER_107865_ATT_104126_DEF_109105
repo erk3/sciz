@@ -1,0 +1,205 @@
+Return-Path: <censored@gmail.com>
+Delivered-To: feedthebat@sciz.cerv.ovh
+Received: from maillot.cerv.ovh
+	by maillot.cerv.ovh with LMTP id cKpyHUsj9VslFAAAUNOa/A
+	for <feedthebat@sciz.cerv.ovh>; Wed, 21 Nov 2018 09:20:11 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by maillot.cerv.ovh (Postfix) with ESMTP id 6B9B42A60849
+	for <feedthebat@sciz.cerv.ovh>; Wed, 21 Nov 2018 09:20:11 +0000 (UTC)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.171; helo=mail-oi1-f171.google.com; envelope-from=censored@gmail.com; receiver=<UNKNOWN> 
+Authentication-Results: maillot.cerv.ovh; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: maillot.cerv.ovh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="E6szVEMw";
+	dkim-atps=neutral
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	by maillot.cerv.ovh (Postfix) with ESMTPS id 050352A6081F
+	for <feedthebat@sciz.cerv.ovh>; Wed, 21 Nov 2018 09:20:10 +0000 (UTC)
+Received: by mail-oi1-f171.google.com with SMTP id y23so3958310oia.4
+        for <feedthebat@sciz.cerv.ovh>; Wed, 21 Nov 2018 01:20:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=JVYtFAoH4MmdCbdK5eTlUmPtBbgAbBKtGqFwKFwkHlA=;
+        b=E6szVEMwvymu9B7l6WflJAQjNeAWZzVB+3TksT8VNyTAwIpKNZ+0BjcHSMeci9kXP5
+         A+Y+1BLTnc81dPVCtsrsArjDvMTSOPcQbEZAEMbg9rtMV5YHsYMGGU0A7GeROSKxWZXl
+         OiOYywqeAFydJgBwSnXUL2N4rYsAgbnfiDQ7KYNswv/pF0eg7kAigWKomFMrg+jVB9D5
+         piFt6k5gEzUv0MkHDBuZtjJFraB0CqA1AjO3YTy12MD6umxx1Kxq1q4CLcnJYInlkrPf
+         V7E8QNtTp07YADPhlWqUySe13pRPbCA30EAb+qi5eXB7PexwjOaoLjdPOhTCo/xdjHkM
+         S17w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=JVYtFAoH4MmdCbdK5eTlUmPtBbgAbBKtGqFwKFwkHlA=;
+        b=GB+nFRE339+fdQoeM9oC3SVpRLPUFsoQM5IgmEpzoRLJScK3v+fBdPQQh7RFkVCMRC
+         a66j+3NBjGzMPKBK1hyUH8sYibByV27uY+w3nv/01I02RNLSgC72mZR60NfiwZjo63zq
+         1u8kHKScROxAb1LqIg0ujU19DgrHz+nYclV05TOu3YnAUYxwYZSTqmLYLh/Z/BHDwFs6
+         jDcdyeOsq2h74G+UB/qWL1mR87cCRSKRNPdzt47G1lYsruhDQHLLvnWUuNMstqCYizrq
+         vrMxYYMdI3AKo3GEydHeH5O94wsh36lZHr0HsMd+w10OqpIDyHuhLo/kNi5Si4iHvl3j
+         2c2Q==
+X-Gm-Message-State: AGRZ1gI6I+Iy6q6HnmAtjaKTP4v5odc8pbQ0o/0jRJwqvGiuccT9lMUf
+	jMVyIaTAO5FGEMlpdMwp6tXYG1rNsGqlZHz6Of0M4Q==
+X-Google-Smtp-Source: AJdET5d8mlAPM2AZg2ypl4FX1PoLu7YMw7sOO67v5J0MDXdz/38YONXC6P+LRamTsCnRmc5bsVLA+LrX1vRJN+1kQEs=
+X-Received: by 2002:aca:684a:: with SMTP id d71mr2987072oic.264.1542792003027;
+ Wed, 21 Nov 2018 01:20:03 -0800 (PST)
+MIME-Version: 1.0
+References: <ed6e7527438cd9dbb4966839c6123801@smartphone.mountyhall.com>
+In-Reply-To: <ed6e7527438cd9dbb4966839c6123801@smartphone.mountyhall.com>
+From: Censored <censored@gmail.com>
+Date: Wed, 21 Nov 2018 10:19:31 +0100
+Message-ID: <CALtH2Jji0+0AK9uO8bBhBmirh3CpPN=Nc9BgWmCBi4oM8nZEuw@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_=5BMountyHall=5D_Attaquant_=2D_Interposition_critique?=
+	=?UTF-8?Q?_r=C3=A9sist=C3=A9e_=28Projectile_Magique=29_sur_Simurgh_=28109105=29_interp?=
+	=?UTF-8?Q?os=C3=A9e_par_shamp=27_=C3=B4=27_m=C3=AB=C3=AB=27_=28107865=29?=
+To: feedthebat@sciz.cerv.ovh
+Content-Type: multipart/alternative; boundary="0000000000004d8725057b294118"
+
+--0000000000004d8725057b294118
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Forwarded message ---------
+From: MountyHall-Bot <bot@mountyhall.com>
+Date: sam. 22 juil. 2017 =C3=A0 19:45
+Subject: [MountyHall] Attaquant - Interposition critique r=C3=A9sist=C3=A9e
+(Projectile Magique) sur Simurgh (109105) interpos=C3=A9e par shamp' =C3=B4=
+' m=C3=AB=C3=AB'
+(107865)
+To: <censored@gmail.com>
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+MOUNTYHALL - La Terre des Tr=C3=B5lls
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m
+
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.
+Il =C3=A9tait alors aux alentours de : 22/07/2017 19:45:32.
+***********************************************************
+
+Vous avez attaqu=C3=A9 le Tr=C3=B5ll Simurgh (109105) gr=C3=A2ce =C3=A0 un =
+sortil=C3=A8ge.
+N=C3=A9anmoins, le Tr=C3=B5ll shamp' =C3=B4' m=C3=AB=C3=AB' (107865) s'est =
+interpos=C3=A9 avec bravoure.
+
+
+
+Votre Jet d'Attaque est de....................: 126
+Le Jet de r=C3=A9flexe de votre adversaire est de..: 1
+
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique
+
+
+
+Seuil de R=C3=A9sistance de la Cible.....: 65 %
+Jet de R=C3=A9sistance...........................: 12
+
+Le sortil=C3=A8ge a donc un EFFET REDUIT de moiti=C3=A9.
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 1 point.
+
+
+Vous lui avez inflig=C3=A9 1000 points de d=C3=A9g=C3=A2ts.
+Son Armure le prot=C3=A8ge et il ne perdra que 1 points de vie.
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.
+
+Votre Karma a =C3=A9t=C3=A9 influenc=C3=A9 par cette action.
+
+Votre Machette des Cyclopes a =C3=A9t=C3=A9 abim=C3=A9e par ce coup.
+
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.
+
+***********************************************************
+Vous avez configur=C3=A9 votre compte pour recevoir un Email
+ lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nement.
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer
+ cette configuration dans le profil de votre Tr=C3=B5ll.
+
+Le Site        : http://www.mountyhall.com
+Pour Jouer     : http://games.mountyhall.com
+Des Questions  : http://www.mountyhall.com/Forum
+***********************************************************
+
+
+
+--=20
+censored
+
+--0000000000004d8725057b294118
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><br><br><div class=3D"gmail_quote"><div dir=3D"ltr">------=
+---- Forwarded message ---------<br>From: <strong class=3D"gmail_sendername=
+" dir=3D"auto">MountyHall-Bot</strong> <span dir=3D"ltr">&lt;<a href=3D"mai=
+lto:bot@mountyhall.com">bot@mountyhall.com</a>&gt;</span><br>Date: sam. 22 =
+juil. 2017 =C3=A0=C2=A019:45<br>Subject: [MountyHall] Attaquant - Interposi=
+tion critique r=C3=A9sist=C3=A9e (Projectile Magique) sur Simurgh (107865) =
+interpos=C3=A9e par shamp&#39; =C3=B4&#39; m=C3=AB=C3=AB&#39; (107865)<br>T=
+o:  &lt;<a href=3D"mailto:censored@gmail.com">censored@gmail.=
+com</a>&gt;<br></div><br><br>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+MOUNTYHALL - La Terre des Tr=C3=B5lls<br>
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+Tr=C3=B5ll n=C2=B0104126 : P=C3=B5mP=C3=B5mP=C3=B5m<br>
+<br>
+Vous avez =C3=A9t=C3=A9 impliqu=C3=A9 dans un =C3=A9v=C3=A9nement : COMBAT.=
+<br>
+Il =C3=A9tait alors aux alentours de : 22/07/2017 19:45:32.<br>
+***********************************************************<br>
+<br>
+Vous avez attaqu=C3=A9 le Tr=C3=B5ll Simurgh (109105) gr=C3=A2ce =C3=A0 un =
+sortil=C3=A8ge.<br>
+N=C3=A9anmoins, le Tr=C3=B5ll shamp&#39; =C3=B4&#39; m=C3=AB=C3=AB&#39; (10=
+7865) s&#39;est interpos=C3=A9 avec bravoure.<br>
+<br>
+<br>
+<br>
+Votre Jet d&#39;Attaque est de....................: 126<br>
+Le Jet de r=C3=A9flexe de votre adversaire est de..: 1<br>
+<br>
+Vous avez donc TOUCH=C3=89 votre adversaire par un coup critique<br>
+<br>
+<br>
+<br>
+Seuil de R=C3=A9sistance de la Cible.....: 65 %<br>
+Jet de R=C3=A9sistance...........................: 12<br>
+<br>
+Le sortil=C3=A8ge a donc un EFFET REDUIT de moiti=C3=A9.<br>
+Vous avez augment=C3=A9 votre Ma=C3=AEtrise Magique de 1 point.<br>
+<br>
+<br>
+Vous lui avez inflig=C3=A9 1000 points de d=C3=A9g=C3=A2ts.<br>
+Son Armure le prot=C3=A8ge et il ne perdra que 1 points de vie.<br>
+Il sera, de plus, fragilis=C3=A9 lors des prochaines esquives.<br>
+<br>
+Votre Karma a =C3=A9t=C3=A9 influenc=C3=A9 par cette action.<br>
+<br>
+Votre Machette des Cyclopes a =C3=A9t=C3=A9 abim=C3=A9e par ce coup.<br>
+<br>
+Pour cette action, vous avez gagn=C3=A9 un total de 2 PX.<br>
+<br>
+***********************************************************<br>
+Vous avez configur=C3=A9 votre compte pour recevoir un Email<br>
+=C2=A0lorsque votre Tr=C3=B5ll est impliqu=C3=A9 dans un =C3=A9v=C3=A9nemen=
+t.<br>
+Si vous ne d=C3=A9sirez plus recevoir ces Emails, veuillez changer<br>
+=C2=A0cette configuration dans le profil de votre Tr=C3=B5ll.<br>
+<br>
+Le Site=C2=A0 =C2=A0 =C2=A0 =C2=A0 : <a href=3D"http://www.mountyhall.com" =
+rel=3D"noreferrer" target=3D"_blank">http://www.mountyhall.com</a><br>
+Pour Jouer=C2=A0 =C2=A0 =C2=A0: <a href=3D"http://games.mountyhall.com" rel=
+=3D"noreferrer" target=3D"_blank">http://games.mountyhall.com</a><br>
+Des Questions=C2=A0 : <a href=3D"http://www.mountyhall.com/Forum" rel=3D"no=
+referrer" target=3D"_blank">http://www.mountyhall.com/Forum</a><br>
+***********************************************************<br>
+<br>
+</div><br clear=3D"all"><div><br></div>-- <br><div dir=3D"ltr" class=3D"gma=
+il_signature" data-smartmail=3D"gmail_signature">censored</div></div=
+>
+
+--0000000000004d8725057b294118--

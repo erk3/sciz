@@ -1,271 +1,138 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-# Imports
-import sys, ConfigParser, sqlalchemy, json, codecs, datetime, os, unidecode, time, re
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-from sqlalchemy import and_
-from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from modules.mh_caller import MHCaller
+# IMPORTS
 from modules.mail_walker import MailWalker
-from classes.user import USER
-from classes.conf import CONF
-from classes.group import GROUP
-from classes.troll import TROLL
-from classes.hook import HOOK
-from classes.assoc_users_groups import AssocUsersGroups
+from modules.mh_caller import MhCaller
+from classes.user import User
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+import datetime, os, time, re
 import modules.globals as sg
 
-## AdminHelper class for SCIZ
+
+# CLASS DEFINITION 
 class AdminHelper:
 
     # Constructor
     def __init__(self):
-        self.check_conf()
-    
-    # Configuration loader and checker
-    def check_conf(self):
-        try:
-            self.json_users_tag = sg.config.get(sg.CONF_JSON_SECTION, sg.CONF_JSON_USERS_TAG)
-            self.json_users_id = sg.config.get(sg.CONF_JSON_SECTION, sg.CONF_JSON_USERS_ID)
-            self.domain_name = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_DOMAIN_NAME)
-            self.pf_conf_file = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_POSTFIX_CONF_FILE)
-            self.mailDirPath = sg.config.get(sg.CONF_MAIL_SECTION, sg.CONF_MAIL_PATH)
-        except ConfigParser.Error as e:
-            e.sciz_logger_flag = True
-            sg.logger.error('Fail to load config file! (ConfigParser error: %s)' % (str(e), ))
-            raise
+        self.load_conf()
+        sg.wk = MailWalker()
+        sg.mc = MhCaller()
 
-    # Initializer, instanciates the SQL schema
+    # Configuration loader
+    def load_conf(self):
+        self.mailDirPath = sg.conf[sg.CONF_MAIL_SECTION][sg.CONF_MAIL_PATH]
+        self.ftpRefresh = sg.conf[sg.CONF_INSTANCE_SECTION][sg.CONF_INSTANCE_FTP_REFRESH]
+        self.mailRetention = sg.conf[sg.CONF_INSTANCE_SECTION][sg.CONF_INSTANCE_MAIL_RETENTION]
+
+    # Initializer, create the SQL schema
     def init(self):
         sg.db.init()
-        # Populate default conf for the instance
-        for (each_key, each_value) in sg.config.items(sg.CONF_INSTANCE_SECTION):
-            conf = CONF()
-            conf.section = sg.CONF_INSTANCE_SECTION
-            conf.key = each_key
-            conf.value = each_value
-            sg.db.add(conf)
 
-    # Set a working group, create it in database if necessary and load its conf
-    def set_group(self, group_name):
-        # Set the working group
-        sg.group = None
-        if not isinstance(group_name, unicode):
-            group_name = group_name.decode(sg.DEFAULT_CHARSET)
-        flat_name = filter(str.isalnum, unidecode.unidecode(group_name.lower()))
-        sg.logger.info('Group has been set to %s!' % (flat_name, ))
-        try:
-            sg.group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one() 
-            try:
-                # Group exists, push any missing configuration
-                self.__push_group_conf(sg.group, False)
-                # Group exists, load its configuration
-                confs = sg.db.session.query(CONF).filter(CONF.group_id == sg.group.id).all()
-                for conf in confs:
-                    sg.config.set(conf.section, conf.key, conf.value)
-                sg.logger.info('Loaded stored configurations for group %s!' % (sg.group.name, ))
-            except NoResultFound as e:
-                sg.logger.warning('No stored configurations found for group %s!' % (sg.group.name, ))
-        except NoResultFound as e:
-            # Group does not exist, create it
-            sg.logger.info('Creating group %s on the fly...' % (group_name, ))
-            sg.group = GROUP()
-            sg.group.name = group_name
-            sg.group.flat_name = flat_name
-            sg.group.generate_random_mail(self.domain_name)
-            sg.group = sg.db.add(sg.group)
-            # Add an entry to the postfix accounts conf file
-            sg.createDirName(self.pf_conf_file);
-            with codecs.open(self.pf_conf_file, 'a', sg.DEFAULT_CHARSET) as fp:
-                fp.write("%s|%s\n" % (sg.group.mail, sg.group.mail_pwd, ))
-            self.__push_group_conf(sg.group, False)
+    # Mail walker
+    def walk(self):
+        # One time call
+        if sg.user is not None:
+            sg.logger.info('Walking the mails of user %s...' % sg.user.id)
+            sg.wk.walk()
+            return
+        # Watchdog setup
+        global locked
+        # Watchdog definition
+        class MailFileHandler(FileSystemEventHandler):
 
-    def reset_groups_conf(self, group_name=None):
-        if group_name and isinstance(group_name, str) and group_name != '':
-            if not isinstance(group_name, unicode):
-                group_name = group_name.decode(sg.DEFAULT_CHARSET)
-            flat_name = filter(str.isalnum, unidecode.unidecode(group_name.lower()))
-            sg.logger.info('Reseting conf for group %s...' % flat_name)
-            try:
-                group = sg.db.session.query(GROUP).filter(GROUP.flat_name == flat_name).one()
-                self.__push_group_conf(group, True)
-            except NoResultFound as e:
-                sg.logger.warning('No group %s, aborting reset confs...' % (flat_name))
-        else:
-            sg.logger.info('Reseting conf for all groups...')
-            groups = sg.db.session.query(GROUP).all()
-            for group in groups:
-                self.__push_group_conf(group, True)
+            def __init__(self, mailDirPath):
+                super()
+                self.mailDirPath = mailDirPath
 
-    # Routine for pushing conf to a group
-    def __push_group_conf(self, group, force=False):
-        for section in [sg.CONF_GROUP_BATTLE_FORMAT, sg.CONF_GROUP_TROLL_FORMAT, sg.CONF_GROUP_MOB_FORMAT, sg.CONF_GROUP_CDM_FORMAT, sg.CONF_GROUP_AA_FORMAT, sg.CONF_GROUP_PIEGE_FORMAT, sg.CONF_GROUP_PORTAL_FORMAT, sg.CONF_GROUP_IDC_FORMAT, sg.CONF_GROUP_IDT_FORMAT, sg.CONF_GROUP_CAPAS_FORMAT]:
-            if sg.config.has_section(section):
-                for (each_key, each_value) in sg.config.items(section):
-                    conf = CONF()
-                    to_add = False
-                    if not force:
-                        try:
-                            conf = sg.db.session.query(CONF).filter(CONF.group_id == group.id, CONF.section == section, CONF.key == each_key).one()
-                        except NoResultFound as e:
-                            to_add = True
-                    if to_add or force:
-                        conf.section = section
-                        conf.key = each_key
-                        conf.value = each_value
-                        conf.group_id = group.id
-                        conf.touch()
-                        sg.db.add(conf)
-
-    def auto_tasks(self):
-        pid = os.fork()
-        if pid == 0:
-            # Son of the fork. For avoiding long updates from MH (Vue2 in particular) blocking the mails
-            sg.db.connect() # For avoiding concurrent session
-            while True:
-                time.sleep(120)
-                self.__auto_task_per_user_check()
-                self.__auto_task_check(sg.CONF_INSTANCE_FTP_REFRESH, self.__auto_task_mh_ftp_call)
-        else:
-            # Dad of the fork
-            global locked
-            locked = False
-            mailDirPath = self.mailDirPath
-            auto_task_mail_walk = self.__auto_task_mail_walk
-            auto_task_hook_push = self.__auto_task_hook_push
-            # Definition of the watchdog handler
-            class MailFileHandler(FileSystemEventHandler):
-                def on_created(self, event):
-                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
-                        return
+            def on_created(self, event):
+                if not event.is_directory and os.sep + 'new' + os.sep in event.src_path:
                     self.process(event.src_path)
-                def on_moved(self, event):
-                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.dest_path:
-                        return
+
+            def on_moved(self, event):
+                if not event.is_directory and os.sep + 'new' + os.sep in event.dest_path:
                     self.process(event.dest_path)
-                def on_modified(self, event):
-                    if event.is_directory or not (os.sep + 'new' + os.sep) in event.src_path:
-                        return
-                    self.process(event.src_path)
-                def on_deleted(self, event):
-                    pass
-                def process(self, path):
-                    global locked
-                    while locked:
-                        time.sleep(1)
-                    locked = True
-                    if os.path.exists(path): # Mail could have been processed while waiting
-                        try:
-                            m = re.search(mailDirPath + '(' + os.sep + ')?(?P<flatname>[^\.' + os.sep + ']+).*', path)
-                            flatname = m.group('flatname')
-                            auto_task_mail_walk(flatname)
-                            auto_task_hook_push(flatname)
-                        except Exception as e:
-                            sg.db.session.rollback()
-                            sg.logger.error(str(e))
-                    locked = False
-            # Actual logic for the auto tasks
-            eh = MailFileHandler()
-            obs = Observer()
-            obs.schedule(eh, self.mailDirPath, recursive=True)
-            obs.start()
-            try:
-                while True:
-                    time.sleep(120)
-                    while locked:
-                        time.sleep(1)
-                    locked = True
-                    self.__auto_task_check(sg.CONF_INSTANCE_MAIL_RETENTION, self.__auto_task_mail_purge)
-                    self.__auto_task_check(sg.CONF_INSTANCE_MAIL_REFRESH, self.__auto_task_mail_walk)
-                    self.__auto_task_check(sg.CONF_INSTANCE_HOOK_REFRESH, self.__auto_task_hook_push)
-                    locked = False
-            except KeyboardInterrupt:
-                obs.stop()
-            obs.join()
 
-    def __auto_task_per_user_check(self):
-        users = sg.db.session.query(USER).all()
-        users_dyn_sp = []
-        users_static_sp = []
-        sg.logger.info('Checking if an SP refresh is needed for each user...')
-        for user in users:
-            if user.dyn_sp_refresh:
-                if not user.last_dyn_sp_call or ((datetime.datetime.utcnow() - user.last_dyn_sp_call).total_seconds() >= (user.dyn_sp_refresh * 60 * 2)):
-                    user.last_dyn_sp_call = datetime.datetime.utcnow()
-                    users_dyn_sp.append(user)
-            if user.static_sp_refresh:
-                if not user.last_static_sp_call or ((datetime.datetime.utcnow() - user.last_static_sp_call).total_seconds() >= (user.static_sp_refresh * 60 * 2)):
-                    user.last_static_sp_call = datetime.datetime.utcnow()
-                    users_static_sp.append(user)
-            sg.db.add(user)
-        mh = MHCaller()
-        if len(users_dyn_sp) > 0:
-            for user in users_dyn_sp:
-                try:
-                    sg.logger.info('Calling Profil4 MH SP for %s...', (user.id, ))
-                    mh.profil4_sp_call(user, False)
-                    sg.logger.info('Calling Vue2 MH SP for %s...', (user.id, ))
-                    mh.vue2_sp_call(user, False)
-                except Exception as e:
-                    sg.logger.error("Fail to call MH SP! (Error: %s)" % (str(e), ))
-        if len(users_static_sp) > 0:
-            pass
-    
-    def __auto_task_check(self, conf_key, callback):
-        sg.logger.info('Checking if a %s is needed for the instance...' % (conf_key, ))
-        conf = sg.db.session.query(CONF).filter(and_(CONF.key == conf_key, CONF.group_id == None)).one()
-        if not conf.last_fetch or ((datetime.datetime.utcnow() - conf.last_fetch).total_seconds() >= (int(conf.value) * 60)):
-            callback()
-            conf.touch()
-            sg.db.add(conf)
-    
-    def __auto_task_mh_ftp_call(self):
-        mh = MHCaller()
+            def on_modified(self, event):
+                self.on_created(event)
+
+            def on_deleted(self, event):
+                pass
+
+            def process(self, path):
+                global locked
+                while locked:
+                    time.sleep(1)
+                locked = True
+                if os.path.exists(path): # Mail could have been processed while waiting
+                    try:
+                        m = re.search('%s(%s)?(?P<user_id>[^\.%s]+)' % (self.mailDirPath, os.sep, os.sep), path)
+                        user_id = m.group('user_id')
+                        sg.logger.info('New mails for user %s !' % user_id)
+                        sg.user = sg.db.session.query(User).get(user_id)
+                        sg.wk.walk()
+                    except Exception as e:
+                        sg.db.session.rollback()
+                        sg.logger.exception(e)
+                locked = False
+        # Watchdog start
+        locked = False
+        mfh, obs = MailFileHandler(self.mailDirPath), Observer()
+        obs.schedule(mfh, self.mailDirPath, recursive=True)
+        obs.start()
         try:
-            mh.call('trolls2', [])
-            mh.call('monstres', [])
-            mh.call('tresors', [])
-            mh.call('capas', [])
-        except Exception as e:
-            sg.logger.error("Fail to call MH FTPs! (Error: %s)" % (str(e), ))
-    
-    def __auto_task_mail_walk(self, group_name=None):
-        mw = MailWalker()
-        if group_name != None:
-            sg.logger.debug('Walking mails for group %s' % (group_name,))
-            groups = [sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()]
-        else:
-            sg.logger.info('Walking mails for all...',)
-            groups = sg.db.session.query(GROUP).all()
-        for group in groups:
-            self.set_group(group.flat_name)
-            mw.walk(group)
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            obs.stop()
+        obs.join()
 
-    def __auto_task_mail_purge(self, group_name=None):
-        mw = MailWalker()
-        if group_name != None:
-            sg.logger.debug('Purging mails for group %s' % (group_name,))
-            groups = [sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()]
-        else:
-            sg.logger.info('Purging mails for all...',)
-            groups = sg.db.session.query(GROUP).all()
-        for group in groups:
-            self.set_group(group.flat_name)
-            mw.purge(group)
+    # MH Updater
+    def update(self, scripts=None):
+        # One time call for a SP
+        if sg.user is not None:
+            sg.logger.info('Calling MH for user %s...' % sg.user.id)
+            sg.mc.call(sg.user, scripts)
+            return
+        # Infinite refresh of FTP and SP
+        last_ftp_call = None
+        while True:
+            now = datetime.datetime.now()
+            if last_ftp_call is None or (now - last_ftp_call).total_seconds() >= self.ftpRefresh * 60:
+                try:
+                    sg.mc.trolls2_ftp_call()
+                    sg.mc.monstres_ftp_call()
+                    sg.mc.tresors_ftp_call()
+                    sg.mc.capas_ftp_call()
+                    last_ftp_call = now
+                except Exception as e:
+                    sg.logger.warning('Error while calling MH FTP : %s' % e)
+                    sg.logger.exception(e)
+                    sg.db.session.rollback()
+            users = sg.db.session.query(User).filter(User.mh_api_key is not None, User.mh_api_key != '').all()
+            for user in users:
+                try:
+                    if user.should_refresh_dynamic_sp:
+                        called = sg.mc.profil4_sp_call(user)
+                        called &= sg.mc.vue2_sp_call(user)
+                        # This routine is heavy load, we keep it cool for a little while
+                        if called:
+                            time.sleep(1)
+                except Exception as e:
+                    sg.logger.warning('Error while calling MH SP for user %s : %s' % (user.id, e))
+                    sg.logger.exception(e)
+                    sg.db.session.rollback()
+            time.sleep(60)
 
-    def __auto_task_hook_push(self, group_name=None):
-        if group_name != None:
-            sg.logger.debug('Triggering the reverse hooks for %s' % (group_name,))
-            group = sg.db.session.query(GROUP).filter(GROUP.flat_name == group_name).one()
-            rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None, HOOK.group_id==group.id).all()
-        else:
-            sg.logger.info('Triggering the reverse hooks for all...',)
-            rhooks = sg.db.session.query(HOOK).filter(HOOK.revoked == False, HOOK.url != None).all()
-        for rhook in rhooks:
-            rhook.trigger()
-
-    # Destructor
-    def __del__(self):
-        pass
+    # Vacuum cleaner
+    def vacuum(self):
+        # Mail directory purge
+        last_mail_purge = None
+        while True:
+            now = datetime.datetime.now()
+            if last_mail_purge is None or (now - last_mail_purge).total_seconds() >= self.mailRetention * 60:
+                users = sg.db.session.query(User).all()
+                for user in users:
+                    sg.wk.purge(user, 'archive')
+            time.sleep(60)

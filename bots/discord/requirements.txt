@@ -1,0 +1,5 @@
+redis
+discord.py
+requests >= 2.4.2
+aiohttp >= 3.5.4
+
