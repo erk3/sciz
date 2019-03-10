@@ -23,8 +23,8 @@ subjects:
   MailHelper_yahoo: 'Veuillez vérifier votre adresse mail'
   aaEvent: 'Analyse\s+Anatomique\s+sur\s+(?P<troll_nom>.+)\s+\((?P<troll_id>\d+)\)'
   cdmEvent: 'Connaissance\s+des\s+Monstres\s+(?P<cdm_niv>\d)\s+sur\s+(?P<mob_nom>.*)\s+\((?P<mob_id>\d+)\)(?s)'
-  tpEvent: 'Sortilège : Téléportation'
-  cpEvent: 'Compétence Piège'
+  tpEvent: 'Sortilège\s*:\s*Téléportation'
+  cpEvent: 'Compétence\s*:\s*Piège '
   champiEvent_idc: '(?P<type>Identification des (c|C)hampignons)'
   champiEvent_ramasser: '(?P<type>Ramass(er|age)) (d''un )?(c|C)hampignon'
   tresorEvent_idt: '(?P<type>Identification des (t|T)résors)'
@@ -119,7 +119,7 @@ tpEvent:
 
 # Regexps for cpEvent
 cpEvent:
-  re_pose: '(un Piège à (?P<piege_type>.+?)\s+\((?P<piege_id>\d+)\)\s+en X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+) dont la\s+Maîtrise Magique est de (?P<piege_mm>\-?\d+))(?s)'
+  re_pose: '(un\s+Piège\s+à\s+(?P<piege_type>.+?)\s+\((?P<piege_id>\d+)\)\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)\s+dont\s+la\s+Maîtrise\s+Magique\s+est\s+de\s+(?P<piege_mm>\-?\d+))(?s)'
 
 # Regexps for champiEvent
 champiEvent:

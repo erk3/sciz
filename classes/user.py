@@ -69,7 +69,7 @@ class User(sg.sqlalchemybase):
         count = self.mh_calls.filter(MhCall.time > since, MhCall.status == 0, MhCall.type == 'Dynamique').count()
         last = self.mh_calls.filter(MhCall.type == 'Dynamique').order_by(desc(MhCall.time)).first()
         max_mh_sp_dynamic = max(0, min(24, self.max_mh_sp_dynamic if last.status == 0 else 24))
-        return count <= max_mh_sp_dynamic and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_dynamic)
+        return max_mh_sp_dynamic > 0 and count <= max_mh_sp_dynamic and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_dynamic / 2)
 
     @hybrid_property
     def should_refresh_static_sp(self):
@@ -78,7 +78,7 @@ class User(sg.sqlalchemybase):
         count = self.mh_calls.filter(MhCall.time > since, MhCall.status == 0, MhCall.type == 'Statique').count()
         last = self.mh_calls.filter(MhCall.type == 'Statique').order_by(desc(MhCall.time)).first()
         max_mh_sp_static = max(0, min(10, self.max_mh_sp_static if last.status == 0 else 10))
-        return count <= max_mh_sp_static and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_static)
+        return max_mh_sp_static > 0 and count <= max_mh_sp_static and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_static)
 
     @hybrid_property
     def partages_groupe(self):
