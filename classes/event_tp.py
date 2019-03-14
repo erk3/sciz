@@ -60,7 +60,7 @@ def upsert_lieu_portail(mapper, connection, target):
     portail = sg.db.session.query(Portail).get(target.portail_id)
     if portail is None:
         portail = Portail(id=target.portail_id, owner_id=target.owner_id, nom='Portail de Téléportation',
-                          creation_datetime=target.time)
+                          creation_datetime=target.time, last_seen_at=target.time, last_seen_by=target.owner_id)
         # Update it from the tpEvent event
         sg.copy_properties(target, portail,
                            ['pos_x', 'pos_y', 'pos_n', 'pos_x_dst', 'pos_y_dst', 'pos_n_dst', 'pos_x_disp',

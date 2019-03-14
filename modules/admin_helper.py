@@ -5,6 +5,7 @@
 from modules.mail_walker import MailWalker
 from modules.mh_caller import MhCaller
 from classes.user import User
+from classes.user_mh_call import MhCall
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 import datetime, os, time, re
@@ -114,8 +115,11 @@ class AdminHelper:
             for user in users:
                 try:
                     if user.should_refresh_dynamic_sp:
-                        called = sg.mc.profil4_sp_call(user)
-                        called &= sg.mc.vue2_sp_call(user)
+                        last_call = user.mh_calls.filter(MhCall.status == 0, MhCall.type == 'Dynamique').order_by(MhCall.time.desc()).first()
+                        if last_call is None or last_call.nom == 'Vue2':
+                            called = sg.mc.profil4_sp_call(user)
+                        else:
+                            called = sg.mc.vue2_sp_call(user)
                         # This routine is heavy load, we keep it cool for a little while
                         if called:
                             time.sleep(1)

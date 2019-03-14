@@ -52,7 +52,7 @@ def upsert_lieu_piege(mapper, connection, target):
     piege = sg.db.session.query(Piege).get(target.piege_id)
     if piege is None:
         piege = Piege(id=target.piege_id, owner_id=target.owner_id, nom='Piège à ' + target.piege_type,
-                      creation_datetime=target.time)
+                      creation_datetime=target.time, last_seen_at=target.time, last_seen_by=target.owner_id)
         # Update it from the cpEvent event
         sg.copy_properties(target, piege, ['pos_x', 'pos_y', 'pos_n', 'piege_type', 'piege_mm'], False)
         # Upsert it
