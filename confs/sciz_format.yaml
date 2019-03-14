@@ -161,7 +161,7 @@ tpEvent:
       Suffixe: ''
     Dispersion Y:
       Préfixe: '| Y = '
-      Attribut: '{o.pos_y_dst}'
+      Attribut: '{o.pos_y_disp}'
       Suffixe: ''
     Dispersion N:
       Préfixe: '| N = '
