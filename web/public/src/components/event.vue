@@ -101,7 +101,7 @@
 						</v-layout>
 						<v-card v-bind:class="{clickable: item.type && item.event !== eventToDisplay}" class="ml-4" @click.native="onClickInside(item, $event)">
 							<v-card-text v-if="eventToDisplay.id !== item.event.id || !item.type" class="body-1 pb-2 pt-2">
-								{{ item.repr.slice(15) }}
+								{{ item.repr.slice(19) }}
 							</v-card-text>
 							<v-layout v-else row justify-start align-center fill-height>
 								<EventCDM :cdm="item.event" v-if="item.type === 'CDM'"></EventCDM>

@@ -247,5 +247,5 @@ row2dictfull = lambda r: {c.name: getattr(r, c.name) for c in list(itertools.cha
 
 row2dict = lambda r: {c.name: getattr(r, c.name) for c in r.__table__.columns}
 
-row2dictWithoutNone = lambda r: {c.name: getattr(r, c.name) for c in r.__table__.columns if getattr(r, c.name) is not None}
 
+row2dictWithoutNone = lambda r: {c.name: getattr(r, c.name) for c in r.__table__.columns if getattr(r, c.name) is not None}

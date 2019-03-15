@@ -87,7 +87,11 @@
 	      	{{ success_msg }}
 	      	<v-btn dark flat @click="success = false">Fermer</v-btn>
 	    	</v-snackbar>
-        <v-card class="pa-3 ma-3">
+				<v-snackbar v-model="info" color="info" :timeout="6000" top>
+					{{ info_msg }}
+					<v-btn dark flat @click="info = false">Fermer</v-btn>
+				</v-snackbar>
+				<v-card class="pa-3 ma-3">
           <v-layout row wrap align-center justify-center fill-height>
             <v-flex xs5>
 							<v-img v-if="coterie_courante.blason_uri" :src="coterie_courante.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="200px"></v-img>
@@ -163,10 +167,10 @@
 									</v-chip>
 									<v-list>
 										<v-list-tile v-if="hook.type === 'Discord'" :href="'https://discordapp.com/oauth2/authorize?client_id=531898253210550281&scope=bot&permissions=2048'">Inviter le bot sur mon serveur</v-list-tile>
-										<v-list-tile v-if="hook.type === 'Hangouts'" @click="" v-clipboard:copy="'botsciz@gmail.com'">Copier l'adresse du bot à inviter</v-list-tile>
-										<v-list-tile v-if="hook.type === 'Miaou' && hook.jwt" @click="" v-clipboard:copy="'!!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
-										<v-list-tile v-if="hook.type === 'Discord' && hook.jwt" @click="" v-clipboard:copy="'!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
-										<v-list-tile v-if="hook.type === 'Hangouts' && hook.jwt" @click="" v-clipboard:copy="'/sciz register '+ hook.jwt">Copier la commande d'enregistrement</v-list-tile>
+										<v-list-tile v-if="hook.type === 'Hangouts'" @click="info_msg = 'Adresse copiée dans le presse-papier'; info = true;" v-clipboard:copy="'botsciz@gmail.com'">Copier l'adresse du bot à inviter</v-list-tile>
+										<v-list-tile v-if="hook.type === 'Miaou' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
+										<v-list-tile v-if="hook.type === 'Discord' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
+										<v-list-tile v-if="hook.type === 'Hangouts' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'/sciz register '+ hook.jwt">Copier la commande d'enregistrement</v-list-tile>
 										<v-list-tile v-if="hook.jwt" @click="selectedHook = hook; hook_dialog = true;">Configurer</v-list-tile>
 										<v-list-tile v-if="hook.jwt" @click="regenerateHook(hook.id)" class="red--text text-darken1">Régénérer</v-list-tile>
 										<v-list-tile v-else @click="regenerateHook(hook.id)" class="red--text text-darken1">Générer</v-list-tile>
@@ -286,8 +290,10 @@
 				loaded: false,
 				error: false,
 				success: false,
+				info: false,
 				error_msg: '',
 				success_msg: '',
+				info_msg: '',
 				hook_dialog: false,
 				selectedHook: null,
 				group_dialog: false,

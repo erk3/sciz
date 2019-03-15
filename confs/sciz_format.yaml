@@ -2,22 +2,22 @@
 ### Format configuration for SCIZ ###
 
 Abréviations:
-  Identification des trésors: 'IdT'
-  Identification des Champignons: 'IdC'
-  Analyse anatomique: 'AA'
-  Connaissance des monstres: 'CdM'
-  Coup de butoir: 'CdB'
+  Exemple: 'Ex'
 
 Event:
-  Notification: '{Horodatage} {Type d''événement} de {Troll}'
+  Notification: '{Horodatage} {Type d''événement} de {Troll} {Identifiant du Troll}'
   Attributs:
     Horodatage:
       Attribut: '{o.time}'
-      Format temporel: '%d/%m %Hh%M:%S'
+      Format temporel: '%d/%m/%Y %Hh%M:%S'
     Troll:
       Préfixe: ''
       Attribut: '{o.owner.pseudo}'
       Suffixe: ''
+    Identifiant du Troll:
+      Préfixe: '('
+      Attribut: '{o.owner_id}'
+      Suffixe: ')'
     Type d'événement:
       Préfixe: ''
       Attribut: '{o.sciz_type}'
@@ -46,7 +46,7 @@ Event:
       Valeur: '\n'
 
 tresorEvent:
-  Notification: '{Horodatage} {Type d''événement} de {Troll} : {Nom du trésor} {Templates} {Mithril} {Identifiant du trésor} {Effet du trésor} {Position} {PX}'
+  Notification: '{Horodatage} {Type d''événement} de {Troll} {Identifiant du Troll} : {Nom du trésor} {Templates} {Mithril} {Identifiant du trésor} {Effet du trésor} {Position} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
   Attributs:
@@ -87,7 +87,7 @@ tresorEvent:
       Suffixe: ''
 
 champiEvent:
-  Notification: '{Horodatage} {Type d''événement} de {Troll} : {Nom du champignon} {Identifiant du champignon} {Qualité} {Position} {PX}'
+  Notification: '{Horodatage} {Type d''événement} de {Troll} {Identifiant du Troll} : {Nom du champignon} {Identifiant du champignon} {Qualité} {Position} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
   Attributs:
@@ -121,7 +121,7 @@ champiEvent:
       Suffixe: ''
 
 tpEvent:
-  Notification: '{Horodatage} Portail de téléportation {Identifiant du Portail} de {Troll} {Position} {Destination} {Dispersion} {PX}'
+  Notification: '{Horodatage} Portail de téléportation {Identifiant du Portail} de {Troll} {Identifiant du Troll} {Position} {Destination} {Dispersion} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
     Destination: 'vers {Destination X} {Destination Y} {Destination N}'
@@ -169,7 +169,7 @@ tpEvent:
       Suffixe: ''
 
 cpEvent:
-  Notification: '{Horodatage} Piège à {Type de piège} {Identifiant du Piège} de {Troll} {Position} {MM du piège} {PX}'
+  Notification: '{Horodatage} Piège à {Type de piège} {Identifiant du Piège} de {Troll} {Identifiant du Troll} {Position} {MM du piège} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
   Attributs:
@@ -199,7 +199,7 @@ cpEvent:
       Suffixe: ')'
 
 aaEvent:
-  Notification: '{Horodatage} Analyse anatomique de {Troll} sur {Troll cible} : {Blessure} {Caractéristiques} {PX}'
+  Notification: '{Horodatage} Analyse anatomique de {Troll} {Identifiant du Troll} sur {Troll cible} {Identifiant du Troll cible} : {Blessure} {Caractéristiques} {PX}'
   Attributs construits:
     Caractéristiques: '{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARM}{Délimiteur}{VUE}'
   Attributs:
@@ -207,6 +207,10 @@ aaEvent:
       Préfixe: ''
       Attribut: '{o.troll.nom}'
       Suffixe: ''
+    Identifiant du Troll cible:
+      Préfixe: '('
+      Attribut: '{o.troll_id}'
+      Suffixe: ')'
     Blessure:
       Préfixe: ''
       Attribut: '{o.blessure}'
@@ -249,7 +253,7 @@ aaEvent:
       Suffixe: ' cases'
 
 cdmEvent:
-  Notification: '{Horodatage} Connaissance des monstres {Niveau CDM} de {Troll} sur {Monstre cible} : {Blessure} {Caractéristiques} {PX}'
+  Notification: '{Horodatage} Connaissance des monstres {Niveau CDM} de {Troll} {Identifiant du Troll} sur {Monstre cible} : {Blessure} {Caractéristiques} {PX}'
   Attributs construits:
     Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
     Caractéristiques: '{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}'

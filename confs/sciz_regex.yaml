@@ -192,7 +192,7 @@ battleEvent:
   re_pistage_hors_portee: 'semble\s+(?P<flag_pistage_hors>hors de portée)'
   re_pistage_zone: 'se\s+trouve\s+(?P<flag_pistage_zone>Sur votre Zone)'
   re_marquage: '(est\s+marqué\s+avec\s+''(?P<tag>.+)'')(?s)'
-  re_machouillage: 'Le\s+trésor\s+\[(?P<tresor_id>5004068)]\s+(?P<tresor_nom>.+?)\s+a\s+été\s+en\s+partie\s+(?P<type>mangé)(?s)'
+  re_machouillage: 'Le\s+trésor\s+\[(?P<tresor_id>\d+)]\s+(?P<tresor_nom>.+?)\s+a\s+été\s+en\s+partie\s+(?P<type>mangé)(?s)'
   re_ea: '(?P<capa_desc>évènement aléatoire).*?ACTION\s*:\s+(?P<capa_effet>.+?)\s+\(Rare(?s)'
   re_prog: 'a été (?P<prog>programmée?) avec succès'
   re_camou: 'Votre\s+(?P<capa_effet>(c|C)amouflage\s+(est\s+toujours\s+effectif|a\s+été\s+ANNULÉ))(?s)'
