@@ -220,6 +220,9 @@ class battleEvent(Event):
         # Fix treasure eating
         if self.type == 'mangé':
             self.type = 'Machouillage'
+        # Fix smoking by monsters
+        if self.type == 'enfumé':
+            self.type = 'Enfumage'
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
             if hasattr(self, 'flag_insulte_nok') and self.flag_insulte_nok is not None:
