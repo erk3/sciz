@@ -184,7 +184,7 @@ class MailParser:
             obj.mail_subject = subject
             obj.mail_body = body
             # If we did not find the owner of the mail we fix it (followers mail)
-            if hasattr(obj, 'owber_id') and obj.owner_id is None:
+            if hasattr(obj, 'owner_id') and obj.owner_id is None:
                 obj.owner_id = user.id
             # If the user has a personal mail, check the 'from' header for it
             if not isinstance(obj, MailHelper) and user.user_mail is not None and user.user_mail != '' and not any('bot@mountyhall.com' in f for f in froms):
