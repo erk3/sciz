@@ -15,7 +15,7 @@
 		<v-flex xs12 text-xs-center mb-5>
 			<v-layout row align-end justify-center fill-height>
 				<v-flex xs4>
-					<v-img v-if="aa.troll_blason_uri" :src="cdm.owner_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
+					<v-img v-if="aa.troll_blason_uri" :src="aa.troll_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
 					<v-img v-else :src="Image('unknown')" alt="" contain max-height="100px"></v-img>
 					<br/>{{aa.troll_nom}} ({{aa.troll_id}})
 					<v-btn v-bind:href="aa.troll_link" v-bind:class="{'ma-0': true}" icon target="_blank">
