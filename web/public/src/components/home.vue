@@ -43,7 +43,7 @@
 									</v-flex>
 									<v-flex d-flex xs12 class="mt-3">
 										<v-layout row wrap justify-center>
-			          			<v-btn color="primary" depressed @click="authenticate" class="ma-1" :disabled="id === '' || pwd === ''">Connexion</v-btn>
+			          			<v-btn color="primary" depressed @click="authenticate" class="ma-1" :disabled="id === '' || pwd === ''" type="submit">Connexion</v-btn>
 	    		      			<v-btn depressed @click="step++; error=false" class="ma-1">Inscription</v-btn>
 										</v-layout>
 									</v-flex>
