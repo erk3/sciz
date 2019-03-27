@@ -237,7 +237,7 @@ class battleEvent(Event):
         # Fix Charge
         if self.type is not None and 'Charger' in self.type:
             self.type = self.type.replace('Charger', 'Charge')
-        # Fix planned Parade
+        # Fix planned Parade if necessary
         if self.type is not None and 'Parer' in self.type:
             self.type = self.type.replace('Parer', 'Parade')
         # Fix Mouchoo
