@@ -87,11 +87,11 @@ class Requester:
         # MP/PX handle
         if args == {}:
             if '%px' in search:
-                return coterie_or_user.px_link
+                return [coterie_or_user.px_link]
             if '%mp' in search:
-                return coterie_or_user.mp_link
+                return [coterie_or_user.mp_link]
             if 'help' in search:
-                return sg.conf[sg.CONF_SCIZ_HELP]
+                return [sg.conf[sg.CONF_SCIZ_HELP]]
         # Build the query
         res = []
         for k in self.str_keywords:
