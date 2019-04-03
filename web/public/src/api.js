@@ -5,6 +5,16 @@ const API_URL = 'http://127.0.0.1:8080/api'
 // PRODUCTION MODE ONLY
 // const API_URL = '/api'
 
+// INTERCEPTORS
+
+// Ensure a cross-browser no-cache for xhr
+axios.interceptors.request.use(function (config) {
+    config.url += '?t=' + Date.now();
+		return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
+
 // HOME
 export function stats() {
 	return axios.get(API_URL + '/stats');
