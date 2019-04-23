@@ -87,7 +87,7 @@ cdmEvent:
   re_type: 'Le Monstre ciblé fait partie des\s+:\s+(?P<mob_race>.+)'
   re_niv: 'Niveau.*(\(entre (?P<niv_min>\d+) et (?P<niv_max>\d+)\)|supérieure?s? à (?P<niv_sup>\d+)|inférieure?s? à (?P<niv_inf>\d+)|égale?s? à (?P<niv_eq>\d+))'
   re_pv: '.*Points de Vie.*(\(entre (?P<pdv_min>\d+) et (?P<pdv_max>\d+)\)|supérieure?s? à (?P<pdv_sup>\d+)|inférieure?s? à (?P<pdv_inf>\d+)|égale?s? à (?P<pdv_eq>\d+)).*'
-  re_blessure: 'Blessure.*(?P<blessure>\d+)%'
+  re_blessure: '(Blessure.*?±(?P<blessure>\d+)%)(?s)'
   re_att: 'Attaque.*(\(entre (?P<att_min>\d+) et (?P<att_max>\d+)\)|supérieure?s? à (?P<att_sup>\d+)|inférieure?s? à (?P<att_inf>\d+)|égale?s? à (?P<att_eq>\d+))'
   re_esq: 'Esquive.*(\(entre (?P<esq_min>\d+) et (?P<esq_max>\d+)\)|supérieure?s? à (?P<esq_sup>\d+)|inférieure?s? à (?P<esq_inf>\d+)|égale?s? à (?P<esq_eq>\d+))'
   re_deg: 'Dég(â|à)t.*(\(entre (?P<deg_min>\d+) et (?P<deg_max>\d+)\)|supérieure?s? à (?P<deg_sup>\d+)|inférieure?s? à (?P<deg_inf>\d+)|égale?s? à (?P<deg_eq>\d+))'
