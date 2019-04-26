@@ -160,11 +160,11 @@ Griffe du Sorcier:
     Bonus: 'bonus_deg_mag'
   Venin virulent:
     Texte: 'Venin virulent DEG {sg.str_min_max(min, max)}D3 pour {sg.str_phy_mag(bonus, None)} T'
-    Base: '1.5*(1+((base_pdv + bonus_pdv_phy + bonus_pdv_max)/10+base_reg)/3)'
+    Base: '1.5*(1+((base_pdv + bonus_pdv_phy + bonus_pdv_mag)/10+base_reg)/3)'
     Bonus: '1+base_vue/10'
   Venin insidieux:
     Texte: 'Venin insidieux DEG {sg.str_min_max(min, max)}D3 pour {sg.str_phy_mag(bonus, None)} T'
-    Base: '(1+((base_pdv + bonus_pdv_phy + bonus_pdv_max)/10+base_reg)/3)'
+    Base: '(1+((base_pdv + bonus_pdv_phy + bonus_pdv_mag)/10+base_reg)/3)'
     Bonus: '2+base_vue/5'
 
 Hypnotisme:
