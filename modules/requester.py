@@ -44,7 +44,7 @@ class Requester:
     def request(self, coterie_or_user, search):
         search = search.lower()
         # Special coterie handling
-        if '%coterie' in search in search:
+        if '%coterie' in search:
             search = search.replace('%coterie', '%troll')
             members_list = coterie_or_user.members_list_sharing()
             search += ' %id:' + ','.join([str(member) for member in members_list])
