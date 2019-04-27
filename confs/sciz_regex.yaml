@@ -163,7 +163,7 @@ battleEvent:
   re_soin_sacro: '(soigné ((?P<def_nom>.+) \((?P<def_id>\d+)\) )?de\s+(?P<soin>\d+) Points de Vie)(?s)'
   re_blessure: 'Vous avez perdu (?P<blessure>\d+) (P|p)oints? de Vie'
   re_vie: '(reste actuellement|avez maintenant)\s+(?P<vie>\d+)\s+(p|P)oints? de (v|V)ie'
-  re_sort: '(effet\s+(théorique\s+)?suivant\s+(\(hors\s+décumul\)\s+)?:\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?\d+(D\d)?\s*%?)?(\s+\(\-(?P<pdv>\d+)\))?((?P<def_nom>.+?)\s+\((?P<def_id>\d+)\))?)(?s)'
+  re_sort: '(effet\s+(théorique\s+)?suivant\s+(\(hors\s+décumul\)\s+)?:\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?\d+(D\d)?\s*%?)?(\s*\(\-(?P<pdv>\d+)\))?\n?((?P<def_nom>.+?)\s+\((?P<def_id>\d+)\))?)(?s)'
   re_def_sort_resi: 'Vous (n'')?(?P<flag_resist>avez) (?!pas )?réussi à y résister'
   re_piege_pose: '(((?P<flag_att>votre)|(?P<flag_def>un))\s+(?P<type>Piège\s+à\s+.+)\s+situé\s+en\s+X\s*=\s*(?P<pos_x>-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>-?\d+))(?s)'
   re_piege: '(Le\s+(Monstre|Troll)\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)\s+a\s+été\s+victime)(?s)'
