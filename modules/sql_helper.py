@@ -58,6 +58,7 @@ class SqlHelper:
         sg.sqlalchemybase.metadata.create_all(self.engine)
         sg.db.engine.execute('CREATE EXTENSION unaccent;')
 
+
     # Connect to the DB (create it if missing)
     def connect(self):
         db_url = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name)
@@ -65,8 +66,15 @@ class SqlHelper:
         if self.db_name is not None and not database_exists(self.engine.url):
             create_database(self.engine.url)
         # Create the session for main querying
-        self.sessionMaker = orm.sessionmaker(bind=self.engine, expire_on_commit=False, autoflush=False, autocommit=False)
-        self.session = orm.scoped_session(self.sessionMaker)
+        # self.sessionMaker = orm.sessionmaker(bind=self.engine, expire_on_commit=False, autoflush=False, autocommit=False)
+        self.sessionMaker = orm.sessionmaker(bind=self.engine, autoflush=False, autocommit=False)
+        self.__session = orm.scoped_session(self.sessionMaker)
+
+    @property
+    def session(self):
+        if self.__session is not None:
+            self.__session.commit()
+        return self.__session
 
     # Get a fresh new session
     def new_session(self):

@@ -9,7 +9,7 @@ from classes.event_tresor import tresorEvent
 from classes.event_battle import battleEvent
 from classes.user_partage import Partage
 from classes.coterie_hook import Hook
-from sqlalchemy import Column, Integer, Boolean, String, JSON, desc
+from sqlalchemy import event, inspect, Column, Integer, Boolean, String, JSON, desc
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship

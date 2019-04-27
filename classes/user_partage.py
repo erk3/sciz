@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-from sqlalchemy import Column, Integer, Boolean, DateTime, ForeignKey
+from sqlalchemy import event, inspect, Column, Integer, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -38,3 +38,13 @@ class Partage(sg.sqlalchemybase):
 
     # SQL Table Mapping
     __tablename__ = 'user_partage'
+
+
+# SQLALCHEMY LISTENERS (same listener types executed in order)
+@event.listens_for(Partage, 'before_update')
+def do_not_zero_out(mapper, connection, target):
+    state = inspect(target)
+    for attr in state.attrs:
+        hist = state.get_history(attr.key, True)
+        if hist.has_changes() and hist.added[0] is None and len(hist.deleted) > 0:
+            setattr(target, attr.key, hist.deleted[0])
