@@ -66,15 +66,8 @@ class SqlHelper:
         if self.db_name is not None and not database_exists(self.engine.url):
             create_database(self.engine.url)
         # Create the session for main querying
-        # self.sessionMaker = orm.sessionmaker(bind=self.engine, expire_on_commit=False, autoflush=False, autocommit=False)
-        self.sessionMaker = orm.sessionmaker(bind=self.engine, autoflush=False, autocommit=False)
-        self.__session = orm.scoped_session(self.sessionMaker)
-
-    @property
-    def session(self):
-        if self.__session is not None:
-            self.__session.commit()
-        return self.__session
+        self.sessionMaker = orm.sessionmaker(bind=self.engine, expire_on_commit = False, autoflush=False, autocommit=False)
+        self.session = orm.scoped_session(self.sessionMaker)
 
     # Get a fresh new session
     def new_session(self):

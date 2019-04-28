@@ -48,6 +48,7 @@ class MailWalker:
     # Walker routine
     def walk(self):
         try:
+            sg.db.session = sg.db.new_session()
             # Open the mailbox
             mbox = mailbox.Maildir(self.mailDirPath + os.sep + sg.user.mail)
             # Build a sorted list of key-message by 'Date' header #RFC822
@@ -91,3 +92,6 @@ class MailWalker:
                     p.coterie.hook_miaou.trigger(False)
         except (OSError, IOError, mailbox.Error) as e:
             sg.logger.error('Fail to scan mail directory! Error: %s' % e)
+        finally:
+            if sg.db.session is not None:
+                sg.db.session.close()

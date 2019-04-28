@@ -66,6 +66,16 @@ def internal_error(error):
     sg.db.session.rollback()
     return render_template('index.html')
 
+# SESSION RENEWER
+@webapp.before_request
+def start_global_session():
+    sg.db.session = sg.db.new_session()
+
+@webapp.after_request
+def close_global_session(response):
+    sg.db.session.close()
+    return response
+
 # JWT CONFIG
 @jwt.user_identity_loader
 def user_identity_lookup(user):
