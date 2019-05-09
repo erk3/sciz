@@ -257,13 +257,16 @@ class battleEvent(Event):
             self.dir_x = 'sur zone'
         # Fix capa
         if hasattr(self, 'capa_effet') and self.capa_effet is not None:
-            self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
+            self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet).strip()
             if self.type is not None and 'métabolisme' in self.type:
                 self.capa_effet = '-' + self.capa_effet
                 if hasattr(self, 'dla') and self.dla is not None:
                     self.capa_effet += '; DLA ' + self.dla
         if hasattr(self, 'capa_desc') and self.capa_desc is not None:
             self.capa_desc = re.sub('\s+', ' ', self.capa_desc).strip().capitalize()
+            # Fix EA
+            if 'aléatoire' in self.capa_desc:
+                self.capa_effet = self.capa_effet.capitalize()
         # Ultimate attempt to have a type
         if self.type is None and hasattr(self, 'capa_desc') and self.capa_desc is not None:
             self.type = self.capa_desc
@@ -305,9 +308,9 @@ class battleEvent(Event):
             if 'substance visqueuse et corrosive' in self.type: # Delete the prefix for Essaim
                 self.type = 'Explosion visqueuse et corrosive'
         if hasattr(self, 'capa_dead_effet') and self.capa_dead_effet is not None:
-            self.capa_effet = re.sub('\s+', ' ', self.capa_dead_effet).strip()
+            self.capa_effet = re.sub('\s+', ' ', self.capa_dead_effet).strip().capitalize()
         if hasattr(self, 'capa_dead_subdesc') and self.capa_dead_subdesc is not None:
-            self.capa_dead_subdesc = re.sub('\s+', ' ', self.capa_dead_subdesc).strip()
+            self.capa_dead_subdesc = re.sub('\s+', ' ', self.capa_dead_subdesc).strip().capitalize()
             if not hasattr(self, 'capa_dead_effet') or self.capa_dead_effet is None:
                 self.capa_effet = self.capa_dead_subdesc
             else:
@@ -430,7 +433,7 @@ def play(mapper, connection, target):
         if 'métabolisme' in t:
             match = re.search('DLA (.+)', target.capa_effet)
             if match is not None:
-                at.next_dla = datetime.datetime.strptime(match.group(0), '%d/%m/%Y  %H:%M:%S')
+                at.next_dla = datetime.datetime.strptime(match.group(1), '%d/%m/%Y  %H:%M:%S')
         sg.db.upsert(at)
     # Defenser is a troll
     if target.def_id is not None and not Being.is_mob(target.def_id):
