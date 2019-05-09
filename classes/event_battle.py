@@ -15,7 +15,7 @@ from sqlalchemy import event, and_, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
-import re, math
+import re, math, datetime
 import modules.globals as sg
 
 
@@ -260,6 +260,8 @@ class battleEvent(Event):
             self.capa_effet = re.sub(r'\|$', ' ', self.capa_effet)
             if self.type is not None and 'métabolisme' in self.type:
                 self.capa_effet = '-' + self.capa_effet
+                if hasattr(self, 'dla') and self.dla is not None:
+                    self.capa_effet += '; DLA ' + self.dla
         if hasattr(self, 'capa_desc') and self.capa_desc is not None:
             self.capa_desc = re.sub('\s+', ' ', self.capa_desc).strip().capitalize()
         # Ultimate attempt to have a type
@@ -425,6 +427,10 @@ def play(mapper, connection, target):
         if 'rafale' in t and target.capa_effet is not None:
             target.capa_effet = f'REG -{target.capa_effet}'
             target.capa_tour = 1 if target.resist else 2
+        if 'métabolisme' in t:
+            match = re.search('DLA (.+)', target.capa_effet)
+            if match is not None:
+                at.next_dla = datetime.datetime.strptime(match.group(0), '%d/%m/%Y  %H:%M:%S')
         sg.db.upsert(at)
     # Defenser is a troll
     if target.def_id is not None and not Being.is_mob(target.def_id):

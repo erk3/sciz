@@ -160,6 +160,7 @@ battleEvent:
   re_soin_vampi_ra: 'gagn(é|er) (?P<soin>\d+) (p|P)oints? de Vie'
   re_am: 'avez sacrifié (?P<blessure>\d+) PV et il vous en reste (?P<vie>\d+)\.'
   re_am_dla: 'permis de gagner (?P<capa_effet>\d+ minutes)'
+  re_am_dla2: 'votre date limite\s+d''action au (?P<dla>.+)\.'
   re_soin_sacro: '(soigné ((?P<def_nom>.+) \((?P<def_id>\d+)\) )?de\s+(?P<soin>\d+) Points de Vie)(?s)'
   re_blessure: 'Vous avez perdu (?P<blessure>\d+) (P|p)oints? de Vie'
   re_vie: '(reste actuellement|avez maintenant)\s+(?P<vie>\d+)\s+(p|P)oints? de (v|V)ie'
