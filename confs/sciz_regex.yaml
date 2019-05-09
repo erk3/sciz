@@ -198,4 +198,4 @@ battleEvent:
   re_prog: 'a été (?P<prog>programmée?) avec succès'
   re_camou: 'Votre\s+(?P<capa_effet>(c|C)amouflage\s+(est\s+toujours\s+effectif|a\s+été\s+ANNULÉ))(?s)'
   re_pouvoir: 'Le monstre utilise son pouvoir d''(?P<type>Anéantissement Magique)'
-  re_pouvoir_alt: 'Le monstre avec son pouvoir de (?P<type>.+?) vous fait perdre (?P<capa_effet>\d+%) de maitrise de votre (Compétence|Sortilège) (?P<capa_desc>.+?)\.'
+  re_pouvoir_alt: 'Le monstre avec son pouvoir de (?P<type>.+?) vous fait perdre (?P<capa_effet>\d+%) de maitrise de votre (Compétence|Sort) (?P<capa_desc>.+?)\.'
