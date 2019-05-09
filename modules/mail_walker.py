@@ -87,6 +87,9 @@ class MailWalker:
                     sg.logger.exception(e)
                     sg.db.session.rollback()
             # Push reverse hook
+            if sg.db.session is not None:
+                sg.db.session.close()
+            sg.db.session, sg.user = sg.db.rebind(sg.user)
             for p in sg.user.partages_actifs + [sg.user.partage_perso]:
                 if p.coterie is not None and p.coterie.hook_miaou is not None:
                     p.coterie.hook_miaou.trigger(False)

@@ -58,7 +58,6 @@ class SqlHelper:
         sg.sqlalchemybase.metadata.create_all(self.engine)
         sg.db.engine.execute('CREATE EXTENSION unaccent;')
 
-
     # Connect to the DB (create it if missing)
     def connect(self):
         db_url = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name)

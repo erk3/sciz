@@ -59,6 +59,7 @@ def configure():
     webapp.config['JWT_TOKEN_LOCATION'] = 'headers'
     webapp.config['JWT_HEADER_NAME'] = 'Authorization'
     webapp.config['JWT_HEADER_TYPE'] = ''
+    webapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     jwt.init_app(webapp)
 
 @webapp.errorhandler(500)
