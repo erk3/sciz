@@ -144,6 +144,8 @@ class battleEvent(Event):
             return int(self.att) > int(self.esq) * 2
         elif all(attr is not None for attr in [self.att, self.ref]):
             return int(self.att) > int(self.ref)
+        elif all(attr is not None for attr in [self.destab, self.stab]):
+            return int(self.destab) > int(self.stab) * 2
         return False
 
     @hybrid_property
