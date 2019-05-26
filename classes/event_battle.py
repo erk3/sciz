@@ -223,6 +223,9 @@ class battleEvent(Event):
         # Fix smoking by monsters
         if self.type == 'enfumé':
             self.type = 'Enfumage'
+        # Fix attraction from monsters
+        if self.type == 'a attiré' or self.type == 'assomme':
+            self.type = 'Attraction assommante'
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
             if hasattr(self, 'flag_insulte_nok') and self.flag_insulte_nok is not None:
