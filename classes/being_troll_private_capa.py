@@ -69,7 +69,7 @@ class TrollPrivateCapa(sg.sqlalchemybase):
                         min = math.floor(min)
                         bonus = formula[attr][sg.CONF_FORMULA_BONUS]
                         if len(bonus) > 0:
-                            bonus = int(eval('f"{%s}"' % re.sub(r'(?P<attr>bonus_[a-zA-Z_]+)', 'self.troll_private.\g<attr>', bonus)))
+                            bonus = math.floor(float(eval('f"{%s}"' % re.sub(r'(?P<attr>bonus_[a-zA-Z_]+)', 'self.troll_private.\g<attr>', bonus))))
                         else:
                             bonus = None
                         # Build result
@@ -77,6 +77,7 @@ class TrollPrivateCapa(sg.sqlalchemybase):
                         if min is not None or max is not None:
                             res += eval('f"%s ; "' % texte)
                     except Exception as e:
+                        sg.logger.error('Error in formula "%s" attr "%s"' % (formula, attr))
                         sg.logger.exception(e)
                         continue
                 return res[:-3] if len(res) > 3 else res
