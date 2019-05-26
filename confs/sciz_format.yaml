@@ -716,7 +716,7 @@ TrollPrivate:
     Maitrise Magique: '{MM} {BONUS_MM}'
     Résistance Magique: '{RM} {BONUS_RM}'
     Position: 'Position : {Position X} {Position Y} {Position N}'
-    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{PV}{Délimiteur}{PA}{Délimiteur}{DLA}{Délimiteur}{Statut}{Délimiteur}{Actions programmées}{Délimiteur}{Fatigue}{Délimiteur}{Concentration}{Délimiteur}{Position}{Délimiteur}{Vie}{Délimiteur}{Attaque}{Délimiteur}{Esquive}{Délimiteur}{Réflexe/Stabilité}{Délimiteur}{Dégats}{Délimiteur}{Régénération}{Délimiteur}{Armure}{Délimiteur}{Vue}{Délimiteur}{Maitrise Magique}{Délimiteur}{Résistance Magique}{Délimiteur}{Corpulence}{Délimiteur}{Agilité}{Délimiteur}{Points d''investissement}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{PV}{Délimiteur}{PA}{Délimiteur}{DLA}{Délimiteur}{Statut}{Délimiteur}{Actions programmées}{Délimiteur}{Fatigue}{Délimiteur}{Concentration}{Délimiteur}{Position}{Délimiteur}{Vie}{Délimiteur}{Attaque}{Délimiteur}{Esquive}{Délimiteur}{Réflexe/Stabilité}{Délimiteur}{Dégats}{Délimiteur}{Régénération}{Délimiteur}{Armure}{Délimiteur}{Vue}{Délimiteur}{Maitrise Magique}{Délimiteur}{Résistance Magique}{Délimiteur}{Corpulence}{Délimiteur}{Agilité}{Délimiteur}{Points d''investissement}{Délimiteur}{Base du tour}{Délimiteur}{Bonus/Malus du tour}{Délimiteur}{Malus de blessure du tour}{Délimiteur}{Poids}{Délimiteur}{Tour}'
   Attributs:
     Identifiant du troll:
       Préfixe: '('
@@ -875,6 +875,26 @@ TrollPrivate:
       Préfixe: '~'
       Attribut: '{o.estimate_dla}'
       Format temporel: '%Hh%M'
+      Suffixe: ''
+    Base du tour:
+      Préfixe: 'Durée normale du tour : '
+      Attribut: '{sg.minutes_to_time(o.base_tour_min)}'
+      Suffixe: ''
+    Bonus/Malus du tour:
+      Préfixe: 'Bonus/Malus sur la durée : '
+      Attribut: '{sg.minutes_to_time(o.bonus_tour_phy + o.bonus_tour_mag)}'
+      Suffixe: ''
+    Malus de blessure du tour:
+      Préfixe: 'Augmentation due aux blessures : '
+      Attribut: '{sg.minutes_to_time(o.malus_blessure)}'
+      Suffixe: ''
+    Poids:
+      Préfixe: 'Poids de l''équipement : '
+      Attribut: '{sg.minutes_to_time(o.malus_poids_phy + o.malus_poids_mag)}'
+      Suffixe: ''
+    Tour:
+      Préfixe: 'Durée du prochain tour : '
+      Attribut: '{sg.minutes_to_time(o.tour)}'
       Suffixe: ''
     Actions programmées:
       Préfixe: 'Actions programmées : '

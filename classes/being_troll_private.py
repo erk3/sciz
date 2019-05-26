@@ -142,7 +142,7 @@ class TrollPrivate(sg.sqlalchemybase):
     bonus_tour_phy = Column(Integer)
     # Magical bonus for turn duration
     bonus_tour_mag = Column(Integer)
-    # Physical malus for turn duration (inventory wieght)
+    # Physical malus for turn duration (inventory weight)
     malus_poids_phy = Column(Integer)
     # Magical malus for turn duration
     malus_poids_mag = Column(Integer)
@@ -200,6 +200,12 @@ class TrollPrivate(sg.sqlalchemybase):
         return None
 
     @hybrid_property
+    def malus_blessure(self):
+        if self.last_sp4_update_at is not None:
+            return (250 * (self.pdv_max - self.pdv)) // self.pdv_max
+        return None
+
+    @hybrid_property
     def tour(self):
         if self.last_sp4_update_at is not None:
             # Here _min attrs and _max attrs are supposed to be equal, pdv is also supposed to be set
@@ -207,7 +213,7 @@ class TrollPrivate(sg.sqlalchemybase):
             # Add stuff weight
             mins += self.malus_poids_phy + self.malus_poids_mag
             # Add wound malus
-            mins += (250 * (self.pdv_max - self.pdv)) // self.pdv_max
+            mins += self.malus_blessure
             # Add bonuses (templates, flies, etc.)
             mins += self.bonus_tour_phy + self.bonus_tour_mag
             # Keep the result at minimum base tour

@@ -160,6 +160,12 @@ def format_time(val, form=None):
     return None
 
 
+def minutes_to_time(minutes):
+    if minutes:
+        return '{:02d}h{:02d}m'.format(*divmod(minutes, 60))
+    return None
+
+
 def copy_properties(src, dst, names, with_none):
     for n in names:
         if hasattr(src, n):
