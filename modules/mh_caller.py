@@ -45,6 +45,7 @@ class MhCaller:
         self.ftpTresors = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_TRESORS]
         self.ftpSorts = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_SORTS]
         self.ftpComps = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_COMPS]
+        self.ftpEvents = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_EVENTS]
 
     # Main MH caller (should never be a show-stopper, if MH is down for example)
     def call(self, user, scripts, verbose=False):
@@ -452,3 +453,32 @@ class MhCaller:
         if verbose:
             print('Vue du troll n°%s mis à jour' % user.id)
         return True
+
+    # Caller to MH Events FTP
+    # See http://ftp.mountyhall.com/evenements/
+    def events_ftp_call(self):
+        sg.logger.info('Calling Morts MH FTP...')
+        # Get the file
+        sep = ';'
+        yesterday = datetime.date.today() - datetime.timedelta(days=1)
+        mh_r = requests.get('http://%s/%s' % (self.ftpURL, self.ftpEvents.replace('yyyymmdd', yesterday.strftime("%Y%m%d")).replace('yyyy', yesterday.strftime("%Y"))))
+        lines = mh_r.text.split('\n')
+        mobs = []
+        i = 0
+        for line in lines:
+            if line.count(sep) == 6: # Some lines are wrongly formated
+                # Get the data
+                time, att_id, att_nom, def_id, def_nom, type, desc = line.split(sep)
+                mob = Mob(mort=True)
+                mob.id = def_id if (len(def_id) >= 7) else (att_id if (len(att_id) >= 7 and def_id == "0") else None)
+                if mob.id is not None and type == "MORT":
+                    mobs.append(mob)
+        # Separate existing and new objects
+        existing = [str(r.id) for r in sg.db.session.query(Mob.id).filter(Mob.id.in_([mob.id for mob in mobs])).all()]
+        to_update = [mob for mob in mobs if str(mob.id) in existing]
+        # Bulk update old objects
+        if len(to_update) > 0:
+            session = sg.db.new_session()
+            session.bulk_update_mappings(Mob, [sg.row2dictWithoutNone(mob) for mob in to_update])
+            session.commit()
+            session.close()

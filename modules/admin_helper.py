@@ -106,6 +106,7 @@ class AdminHelper:
                     sg.mc.monstres_ftp_call()
                     sg.mc.tresors_ftp_call()
                     sg.mc.capas_ftp_call()
+                    sg.mc.events_ftp_call()
                     last_ftp_call = now
                 except Exception as e:
                     sg.logger.warning('Error while calling MH FTP : %s' % e)

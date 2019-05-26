@@ -64,6 +64,7 @@ mh:
   tresors_path: 'Public_Tresors.txt'
   sorts_path: 'Public_Sortileges.txt'
   comps_path: 'Public_Competences.txt'
+  events_path: 'evenements/yyyy/yyyymmdd_Public_Events_MORT.txt' #yyyy et yyyymmdd are replaced by SCIZ , don't change it
   troll_link: 'https://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ='
   mob_link: 'http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ='
   tresor_link: 'http://games.mountyhall.com/mountyhall/View/TresorHistory.php?ai_IDTresor='
@@ -76,8 +77,8 @@ sciz_help: 'http://mountypedia.mountyhall.com/Outils/SCIZ'
 # Hooks related configuration
 hooks:
   Miaou:
-    URL: 'https://miaou.dystroy.org/sciz-webhook'
-    #URL: 'http://miaou.dev/sciz-webhook'
+    #URL: 'https://miaou.dystroy.org/sciz-webhook'
+    URL: 'http://miaou.dev/sciz-webhook'
   Hangouts:
     URL: ''
   Discord:
