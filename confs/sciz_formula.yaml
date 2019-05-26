@@ -135,13 +135,13 @@ Faiblesse Passagère:
 
 Flash Aveuglant:
   Effet:
-    Texte: 'ATT ESQ VUE -{sg.str_min_max(min, max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Texte: 'ATT ESQ VUE -{sg.str_min_max(min, max)} {sg.str_phy_mag(bonus, None)}'
     Base: '(1 + base_vue)/5'
     Bonus: ''
 
 Glue:
   Portée Horizontale:
-    Texte: 'Portée H {sg.str_min_max(min, max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Texte: 'Portée H {sg.str_min_max(min, max)} {sg.str_phy_mag(bonus, None)}'
     Base: '1 + (base_vue + bonus_vue_phy + bonus_vue_mag)/3'
     Bonus: ''
 
