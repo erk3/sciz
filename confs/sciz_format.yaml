@@ -297,11 +297,11 @@ cdmEvent:
     DEG:
       Préfixe: 'DEG '
       Attribut: '{sg.str_min_max(o.deg_min, o.deg_max)}'
-      Suffixe: 'D6'
+      Suffixe: 'D3'
     REG:
       Préfixe: 'REG '
       Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
-      Suffixe: 'D6'
+      Suffixe: 'D3'
     ARMP:
       Préfixe: 'ARMP '
       Attribut: '{sg.str_min_max(o.arm_phy_min, o.arm_phy_max)}'
@@ -960,11 +960,11 @@ MobPrivate:
     DEG:
       Préfixe: 'Dégâts : '
       Attribut: '{sg.str_min_max(o.deg_min, o.deg_max)}'
-      Suffixe: 'D6'
+      Suffixe: 'D3'
     REG:
       Préfixe: 'Régénération : '
       Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
-      Suffixe: 'D6'
+      Suffixe: 'D3'
     ARMP:
       Préfixe: 'Armure Physique : '
       Attribut: '{sg.str_min_max(o.arm_phy_min, o.arm_phy_max)}'
