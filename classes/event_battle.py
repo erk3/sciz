@@ -428,7 +428,6 @@ def play(mapper, connection, target):
         if 'hypnotisme' in t and at.base_esq_min is not None:
             dim = math.trunc(at.base_esq_min * 1.5) if not target.resist else math.trunc(at.base_esq_min / 3)
             target.capa_effet = f'ESQ -{dim}D6'
-            target.capa_tour = 1
         if 'siphon' in t and target.capa_effet is not None:
             target.capa_effet = f'ATT -{target.capa_effet}'
             target.capa_tour = 1 if target.resist else 2
