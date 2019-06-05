@@ -275,8 +275,12 @@ class battleEvent(Event):
         # Ultimate attempt to have a type
         if self.type is None and hasattr(self, 'capa_desc') and self.capa_desc is not None:
             self.type = self.capa_desc
-        if self.type == self.capa_desc:
-            self.capa_desc = None
+        if self.type is not None and self.capa_desc is not None:
+            if self.type.strip().capitalize() != self.capa_desc.strip().capitalize() and self.type.startswith('Attaque'):
+                self.type = re.sub('Attaque', self.capa_desc, self.type)
+                self.capa_desc = None
+            elif self.type.strip().capitalize() == self.capa_desc.strip().capitalize():
+                self.capa_desc = None
         # Add suffix for planned actions
         if hasattr(self, 'prog') and self.prog is not None:
             self.type += ' ' + self.prog
