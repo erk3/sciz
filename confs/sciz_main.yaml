@@ -9,6 +9,7 @@ app:
 mail:
   domain_name: 'domaine.sciz.a.changer'
   maildirs_base_path: '/var/mail/vhosts/'
+  #maildirs_base_path: '/mail/'
 
 # Outgoing mails configuration
 smtp:
@@ -77,8 +78,8 @@ sciz_help: 'http://mountypedia.mountyhall.com/Outils/SCIZ'
 # Hooks related configuration
 hooks:
   Miaou:
-    #URL: 'https://miaou.dystroy.org/sciz-webhook'
-    URL: 'http://miaou.dev/sciz-webhook'
+    URL: 'https://miaou.dystroy.org/sciz-webhook'
+    #URL: 'http://miaou.dev/sciz-webhook'
   Hangouts:
     URL: ''
   Discord:
