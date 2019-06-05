@@ -84,7 +84,7 @@ aaEvent:
 
 # Regexps for cdmEvent
 cdmEvent:
-  re_type: 'Le Monstre ciblé fait partie des\s+:\s+(?P<mob_race>.+)'
+  re_type: 'Famille du monstre\s+:\s+(?P<mob_race>.+)'
   re_niv: 'Niveau.*(\(entre (?P<niv_min>\d+) et (?P<niv_max>\d+)\)|supérieure?s? à (?P<niv_sup>\d+)|inférieure?s? à (?P<niv_inf>\d+)|égale?s? à (?P<niv_eq>\d+))'
   re_pv: '.*Points de Vie.*(\(entre (?P<pdv_min>\d+) et (?P<pdv_max>\d+)\)|supérieure?s? à (?P<pdv_sup>\d+)|inférieure?s? à (?P<pdv_inf>\d+)|égale?s? à (?P<pdv_eq>\d+)).*'
   re_blessure: '(Blessure.*?±(?P<blessure>\d+)%)(?s)'
@@ -106,7 +106,7 @@ cdmEvent:
   re_att_mag: 'Attaque magique :\s+(?P<att_mag>.+)'
   re_dla: 'DLA :\s+(?P<dla>.+)'
   re_sang_froid: 'Sang froid :\s+(?P<sang_froid>.+)'
-  re_tour: 'Durée tour.*(\(entre (?P<tour_min>\d+) et (?P<tour_max>\d+)\)|supérieure?s? à (?P<tour_sup>\d+)|inférieure?s? à (?P<tour_inf>\d+)|égale?s? à (?P<tour_eq>\d+))'
+  re_tour: 'Durée (t|T)our.*(\(entre (?P<tour_min>\d+) et (?P<tour_max>\d+)\)|supérieure?s? à (?P<tour_sup>\d+)|inférieure?s? à (?P<tour_inf>\d+)|égale?s? à (?P<tour_eq>\d+))'
   re_chargement: 'Chargement :\s+(?P<chargement>.+)'
   re_bonus_malus: 'Bonus Malus :\s+(?P<bonus_malus>.+)'
   re_portee_capa: 'Portée du Pouvoir :\s+(?P<capa_portee>.+)'
