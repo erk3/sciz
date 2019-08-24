@@ -421,9 +421,9 @@
 										item.img = this.Image('blood-drop');
 									} else if (item.repr.includes('Ronflements')) {
 										item.img = this.Image('dreaming');
-									} else if (['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'Pu\'Rin', 'Zet crakdedand'].some((e) => item.repr.includes(e))) {
+									} else if (['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'pu\'rin', 'Zet crakdedand'].some((e) => item.repr.includes(e))) {
 										item.img = this.Image('flask');
-									} else if (['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'Ki\'Pic'].some((e) => item.repr.includes(e))) {
+									} else if (['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'ki\'pic'].some((e) => item.repr.includes(e))) {
 										item.img = this.Image('scroll');
 									} else if (item.repr.includes('Flash')) {
 										item.img = this.Image('light-bulb');
