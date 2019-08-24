@@ -217,6 +217,10 @@ class MhCaller:
             mh_call.status = res.group(1)
             sg.db.upsert(mh_call)
             sg.logger.warning('Error %s while calling profil4 for user %s' % (mh_call.status, user.id))
+            if mh_call.status == '6':
+                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0' % (user.id,))
+                user.max_mh_sp_static = user.max_mh_sp_dynamic = 0
+                sg.db.upsert(user)
             if verbose:
                 print('Erreur lors de la mise à jour du troll n°%s' % user.id)
             return False
@@ -347,6 +351,10 @@ class MhCaller:
             mh_call.status = res.group(1)
             sg.db.upsert(mh_call)
             sg.logger.warning('Error %s while calling Vue2 for user %s' % (mh_call.status, user.id))
+            if mh_call.status == '6':
+                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0' % (user.id,))
+                user.max_mh_sp_static = user.max_mh_sp_dynamic = 0
+                sg.db.upsert(user)
             if verbose:
                 print('Erreur lors de la mise à jour de la vue du troll n°%s' % user.id)
             return False

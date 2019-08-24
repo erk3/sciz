@@ -99,8 +99,8 @@
         				<v-layout align-center justify-center>
 									<v-flex xs8>
 										<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint></v-text-field><br/>
-										<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="24" always-dirty hint="Maximum d'appels aux scripts publiques dynamiques par jour"></v-slider><br/>
-										<v-slider label="Limite d'appel aux scripts statiques" v-model="user.max_sp_sta" :thumb-size="24" thumb-label="always" min="0" max="10" always-dirty hint="Maximum d'appels aux scripts publiques statiques par jour"></v-slider>
+										<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="24" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint></v-slider><br/>
+										<v-slider label="Limite d'appel aux scripts statiques" v-model="user.max_sp_sta" :thumb-size="24" thumb-label="always" min="0" max="10" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques statiques par jour" persistent-hint></v-slider>
 									</v-flex>
 								</v-layout>	
 							</v-card-text>
@@ -120,7 +120,13 @@
 								      <td>{{ props.item.type }}</td>
 								      <td>{{ props.item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
 											<td class="green--text" v-if="props.item.status == 0">Succès</td>
-											<td class="red--text" v-else>Erreur</td>
+											<td class="red--text" v-else-if="props.item.status == 1">Paramètres incorrects</td>
+											<td class="red--text" v-else-if="props.item.status == 2">Troll inexistant</td>
+											<td class="red--text" v-else-if="props.item.status == 3">Mot de passe incorrect</td>
+											<td class="red--text" v-else-if="props.item.status == 4">Entretien MH</td>
+											<td class="red--text" v-else-if="props.item.status == 5">SP temporairement désactivés</td>
+											<td class="red--text" v-else-if="props.item.status == 6">Troll désactivé</td>
+											<td class="red--text" v-else>Erreur inconnue</td>
 								    </template>
 								  </v-data-table>
 									<v-pagination class="mt-5" v-model="page" :length="max_pages" :total-visible="7" @input="getCalls" next-icon="fas fa-angle-right" prev-icon="fas fa-angle-left"></v-pagination>

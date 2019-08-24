@@ -32,9 +32,9 @@ class User(sg.sqlalchemybase):
     # Mountyhall API Key
     mh_api_key = Column(String(50))
     # Maximum number of calls to dynamic section MH SP defined by the user
-    max_mh_sp_dynamic = Column(Integer(), default=12)
+    max_mh_sp_dynamic = Column(Integer(), default=0)
     # Maximum number of calls to static section MH SP defined by the user
-    max_mh_sp_static = Column(Integer(), default=5)
+    max_mh_sp_static = Column(Integer(), default=0)
     # Web session duration
     web_session_duration = Column(Integer(), default=60)
     # Community sharing
