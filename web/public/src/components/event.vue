@@ -369,36 +369,68 @@
 							var events = res.data['events'];
 							events.forEach(item => {
 								if (item.event.sciz_type === 'Connaissance des Monstres') {
-									//item.color = 'orange';
 									item.type = 'CDM';
 									item.img = this.Image('monster-map-icon');
 								} else if (item.event.sciz_type === 'Analyse Anatomique') {
-									//item.color = 'pink';
 									item.type = 'AA';
 									item.img = this.Image('troll-map-icon');
 								} else if (item.event.sciz_type === 'Trésor') {
-									//item.color = 'brown';
 									item.type = 'TRESOR';
 									item.img = this.Image('treasure-map-icon');
 								} else if (item.event.sciz_type === 'Champignon') {
-									//item.color = 'lime';
 									item.type = 'CHAMPIGNON';
 									item.img = this.Image('mushroom-map-icon');
 								} else if (item.event.sciz_type === 'Téléportation') {
-									//item.color = 'grey';
 									item.type = 'TP';
 									item.img = this.Image('portal');
 								} else if (item.event.sciz_type === 'Construire un Piège') {
-									//item.color = 'grey';
 									item.type = 'CP';
 									item.img = this.Image('trap');
 								} else if (item.event.sciz_type === 'Combat') {
 									if (item.repr.includes('MORT')) {
-										//item.color = 'red';
 										item.img = this.Image('deadflag');
+									} else if (item.repr.includes('Hurlement')) {
+										item.img = this.Image('scream');
+									} else if (item.repr.includes('Insulte')) {
+										item.img = this.Image('profanity');
+									} else if (item.repr.includes('Pistage')) {
+										item.img = this.Image('foot-print');
+									} else if (item.repr.includes('Marquage')) {
+										item.img = this.Image('nib');
+									} else if (item.repr.includes('Vue troublée')) {
+										item.img = this.Image('blind');
+									} else if (item.repr.includes('Voir le caché')) {
+										item.img = this.Image('crystal-ball');
+									} else if (item.repr.includes('Hypnotisme')) {
+										item.img = this.Image('hypnosis');
+									} else if (item.repr.includes('Armure ethérée')) {
+										item.img = this.Image('armor');
+									} else if (item.repr.includes('Vision accrue')) {
+										item.img = this.Image('binoculars');
+									} else if ([' programmée', 'Protection '].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('stopwatch');
+									} else if (['Explosion ', 'Piège à feu'].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('explosion');
+									} else if (['Glue de', 'Piège à glue'].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('glue');
+									} else if (['Camouflage de', 'Invisibilité'].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('invisible-man');
+									} else if (item.repr.includes('Vision lointaine')) {
+										item.img = this.Image('telescope');
+									} else if (item.repr.includes('Sacrifice')) {
+										item.img = this.Image('blood-drop');
+									} else if (item.repr.includes('Ronflements')) {
+										item.img = this.Image('dreaming');
+									} else if (['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'Pu\'Rin', 'Zet crakdedand'].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('flask');
+									} else if (['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'Ki\'Pic'].some((e) => item.repr.includes(e))) {
+										item.img = this.Image('scroll');
+									} else if (item.repr.includes('Flash')) {
+										item.img = this.Image('light-bulb');
 									} else if (item.event.def_id === null) {
-										//item.color = 'purple';
 										item.img = this.Image('pickaxe-wand-icon');
+									} else if (item.event.att_id !== null && item.event.att_id.toString().length > 6){
+										item.img = this.Image('shield');
 									} else {
 										item.img = this.Image('fight-icon');
 									}
