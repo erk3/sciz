@@ -84,7 +84,7 @@ Charger:
     Bonus: 'bonus_deg_phy'
   Portée:
     Texte: 'Portée H {sg.str_min_max(min, max)} {sg.str_phy_mag(bonus, None)}'
-    Base: 'min(base_reg + pdv/10 - math.ceil(fatigue/5), bonus_vue_phy + bonus_vue_mag)'
+    Base: 'min(base_reg + self.troll_private.pdv/10 - math.ceil(self.troll_private.fatigue/5), bonus_vue_phy + bonus_vue_mag)'
     Bonus: ''
 
 Connaissance des Monstres:
@@ -126,11 +126,11 @@ Explosion:
 Faiblesse Passagère:
   Dégâts physiques:
     Texte: 'ARMP -{sg.str_min_max(min, max)} {sg.str_phy_mag(bonus, None)}'
-    Base: '1 + ((base_deg - 3) + (pdv - 30)/10)/4'
+    Base: '1 + ((base_deg - 3) + (self.troll_private.pdv - 30)/10)/4'
     Bonus: ''
   Dégâts magiques:
     Texte: 'ARMM -{sg.str_min_max(min, max)} {sg.str_phy_mag(bonus, None)}'
-    Base: '1 + ((base_deg - 3) + (pdv - 30)/10)/4'
+    Base: '1 + ((base_deg - 3) + (self.troll_private.pdv - 30)/10)/4'
     Bonus: ''
 
 Flash Aveuglant:

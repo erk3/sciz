@@ -69,7 +69,9 @@ class TrollPrivateCapa(sg.sqlalchemybase):
                         min = math.floor(min)
                         bonus = formula[attr][sg.CONF_FORMULA_BONUS]
                         if len(bonus) > 0:
-                            bonus = math.floor(float(eval('f"{%s}"' % re.sub(r'(?P<attr>bonus_[a-zA-Z_]+)', 'self.troll_private.\g<attr>', bonus))))
+                            bonus = re.sub(r'(?P<attr>bonus_[a-zA-Z_]+)', 'self.troll_private.\g<attr>', bonus)
+                            bonus = re.sub(r'(?P<attr>base_[a-zA-Z]+)', 'self.troll_private.\g<attr>_min', bonus)
+                            bonus = math.floor(float(eval('f"{%s}"' % bonus)))
                         else:
                             bonus = None
                         # Build result
