@@ -180,7 +180,7 @@ battleEvent:
   re_def_parcho_potion: '((?P<flag_def>été\s+influencé\s+par\s+l'')\s*effet\s+((du\s+Parchemin)|(de\s+la\s+Potion))\s+:\s+(?P<type>.+?)\.)(?s)'
   re_parcho_potion_effet: '(effet\s+(est\s+le\s+suivant\s+):\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?(\d+\s*(min|D\d)?|Effet\s+de\s+Zone)))(?s)'
   re_att_ldp: '(réussi\s+à\s+lancer\s+la\s+potion\s*:\s+(?P<type_potion>.+?)\s*\()(?s)'
-  re_att_ldp_rate: 'Vous avez (?P<flag_ldp_rate>loupé votre cible)'
+  re_att_ldp_rate: 'Vous avez (conplètement )?(?P<flag_ldp_rate>loupé votre cible)'
   re_siphon: '(malus\s+d''attaque\s+d(û|ü|u)\s+à\s+la\s+nécrose\s+de\s+(?P<capa_effet>\d+)\s+points?)(?s)'
   re_rafale: '(malus\s+de\s+(?P<capa_effet>\d+)\s+points?\s+pour\s+.*\s+régénérations)(?s)'
   re_ca: 'programmé une (?P<ca>CONTRE-ATTAQUE)'
