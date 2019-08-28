@@ -212,7 +212,11 @@ class battleEvent(Event):
             return
         # Fix BAM/BUM
         if self.type is not None and 'bulle' in self.type.lower():
-            self.capa_effet = re.sub(r'sera\s+égale\s+à\s+', '', self.capa_effet)
+            self.capa_effet = ''
+            for effet in [self.capa_effet_rm, self.capa_effet_mm]:
+                self.capa_effet += ' ' + re.sub(r'sera\s+égale\s+à\s+', '', effet)
+            if hasattr(self, 'capa_desc') and self.capa_desc is not None:
+                self.capa_desc = 'Portail ' + ('d\'arrivée ' if 'arrivant' in self.capa_desc else 'de départ ') + self.capa_desc.split(' ')[0]
         # Fix Camouflage effect for PM
         if self.type is not None and 'projectile' in self.type.lower() and self.capa_effet is not None and 'camouflage' in self.capa_effet.lower():
             self.capa_effet = re.sub(r'(est|a\s+été)\s+', '', self.capa_effet.capitalize())
