@@ -425,6 +425,8 @@
 										item.img = this.Image('flask');
 									} else if (['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'ki\'pic'].some((e) => item.repr.includes(e))) {
 										item.img = this.Image('scroll');
+									} else if (item.repr.includes('Baroufle')) {
+										item.img = this.Image('trumpet');
 									} else if (item.repr.includes('Flash')) {
 										item.img = this.Image('light-bulb');
 									} else if (item.event.def_id === null) {

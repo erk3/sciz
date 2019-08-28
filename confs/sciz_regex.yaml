@@ -52,6 +52,8 @@ subjects:
   battleEvent_camou: '(?P<type>Camouflage)'
   battleEvent_protection: '(?P<type>Protection)\s+de\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)'
   battleEvent_prog: 'Compétence : (?P<type>Retraite|Parer|Parade|Contre-Attaque|Interposition)'
+  battleEvent_baroufle_att: 'Compétence (?P<type>Baroufle)'
+  battleEvent_baroufle_def: '(?P<type>Baroufle)\s+de\s+(?P<att_nom>.+)'
 
 # Regexps for the forwarding confirmation mails
 MailHelper:
@@ -147,7 +149,7 @@ battleEvent:
   re_capa_desc: '(?P<FLAG_CHECK_EXCLUDES>(capacité\s+spéciale\s+:\s+(?P<capa_desc>[^\n]+)))(?s)'
   re_capa_desc_mythiques: '(?P<FLAG_CHECK_EXCLUDES>(a\s+déclenché\s+:\s+(?P<capa_desc>[^\n]+\n((?!C''est une malédiction)[^\n]+)?)))(?s)'
   re_capa_effet: '(?P<FLAG_CHECK_EXCLUDES>effet (?P<flag_resist>REDUIT\s+)?: (?P<capa_effet>.+))'
-  re_capa_tour: '(?P<FLAG_CHECK_EXCLUDES>(durée de|durant|pour) (?P<capa_tour>\d+) tour)'
+  re_capa_tour: '(?P<FLAG_CHECK_EXCLUDES>(durée de|durant|pour|pendant) (?P<capa_tour>\d+) tour)'
   re_capa_pv: '(?P<FLAG_CHECK_EXCLUDES>Résultat : (?P<pdv>\d+) points?)'
   # The others
   re_att: 'Attaque.*: (?P<att>\d+)'
@@ -202,4 +204,11 @@ battleEvent:
   re_camou: 'Votre\s+(?P<capa_effet>(c|C)amouflage\s+(est\s+toujours\s+effectif|a\s+été\s+ANNULÉ))(?s)'
   re_pouvoir: 'Le monstre utilise son pouvoir d''(?P<type>Anéantissement Magique)'
   re_pouvoir_alt: 'Le monstre avec son pouvoir de (?P<type>.+?) vous fait perdre (?P<capa_effet>\d+%) de maitrise de votre (Compétence|Sort) (?P<capa_desc>.+?)\.'
-  re_attraciton: 'Le\s+monstre\s+vous\s+(?P<type>(a attiré)|(assomme)).+?Vous\s+êtes(?P<flag_resist>\s+un\s+peu)?\s+étourdi'
+  re_attraction: 'Le\s+monstre\s+vous\s+(?P<type>(a attiré)|(assomme)).+?Vous\s+êtes(?P<flag_resist>\s+un\s+peu)?\s+étourdi'
+  #re_baroufle_att: '(Vous\s+jouez\s+la\s+symphonie\s+suivante\s*:\s*"(?P<capa_desc>.+)")(?s)' # Not really useful
+  re_baroufle_att_pos: '(Votre\s+mélodie\s+résonne\s+dans\s+votre\s+caverne\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)(?P<flag_baroufle_portee>\s+mais\s+aussi\s+dans\s+les\s+cavernes\s+voisines)?)(?s)'
+  re_baroufle_effet: '((effet\s+suivant|vous\s+influence)\s*:\s*(?P<capa_effet>(\s*\-(\s*Effet\s+Imm(é|e)diat\s*:)?\s*\w+\s+(\+|\-)\d+\s*)+))(?s)'
+  re_baroufle_aucun_effet: '(Votre\s+tintamarre\s+ne\s+produit\s+(?P<capa_effet>aucun\s+effet))(?s)'
+  re_baroufle_effet_sssrileur: '(?P<flag_baroufle_sssrileur>donne\s+envie\s+de\s+danser)(?s)'
+  re_baroufle_effet_ytseukayndof: '(?P<flag_baroufle_ytseukayndof>quelque\s+chose\s+de\s+magique)(?s)'
+  re_baroufle_def: '(Le\s+troll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+a\s+barouflé)(?s)'

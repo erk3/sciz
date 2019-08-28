@@ -217,6 +217,19 @@ class battleEvent(Event):
                 self.capa_effet += ' ' + re.sub(r'sera\s+égale\s+à\s+', '', effet)
             if hasattr(self, 'capa_desc') and self.capa_desc is not None:
                 self.capa_desc = 'Portail ' + ('d\'arrivée ' if 'arrivant' in self.capa_desc else 'de départ ') + self.capa_desc.split(' ')[0]
+        # Fix Baroufle
+        if self.type is not None and 'baroufle' in self.type.lower():
+            self.capa_effet = re.sub(r'-', '', self.capa_effet, count=1)
+            self.capa_effet = re.sub(r'\n-', ' ;', self.capa_effet)
+            self.capa_effet = re.sub(r'Effet\s+Imm(é|e)diat\s*:', '', self.capa_effet)
+            if 'concentration' in self.capa_effet.lower() and self.capa_effet.count('-') == 0:
+                self.capa_tour = None
+            if hasattr(self, 'flag_baroufle_portee') and self.flag_baroufle_portee is not None:
+                self.capa_effet += ' ; Portée +1'
+            if hasattr(self, 'flag_baroufle_sssrileur') and self.flag_baroufle_sssrileur is not None:
+                self.capa_effet += ' ; Rend visible'
+            if hasattr(self, 'flag_baroufle_ytseukayndof') and self.flag_baroufle_ytseukayndof is not None:
+                self.capa_effet += ' ; BM magiques'
         # Fix Camouflage effect for PM
         if self.type is not None and 'projectile' in self.type.lower() and self.capa_effet is not None and 'camouflage' in self.capa_effet.lower():
             self.capa_effet = re.sub(r'(est|a\s+été)\s+', '', self.capa_effet.capitalize())
