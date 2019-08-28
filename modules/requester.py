@@ -251,6 +251,8 @@ class Requester:
                 if sub_tmp_filter is not None:
                     if tmp_filter is None:
                         tmp_filter = sub_tmp_filter
+                    elif k == 'id':
+                        tmp_filter = or_(sub_tmp_filter, tmp_filter)
                     else:
                         tmp_filter = and_(sub_tmp_filter, tmp_filter)
             if tmp_filter is not None:
