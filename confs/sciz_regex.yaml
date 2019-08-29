@@ -209,6 +209,6 @@ battleEvent:
   re_baroufle_att_pos: '(Votre\s+mélodie\s+résonne\s+dans\s+votre\s+caverne\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)(?P<flag_baroufle_portee>\s+mais\s+aussi\s+dans\s+les\s+cavernes\s+voisines)?)(?s)'
   re_baroufle_effet: '((effet\s+suivant|vous\s+influence)\s*:\s*(?P<capa_effet>(\s*\-(\s*Effet\s+Imm(é|e)diat\s*:)?\s*\w+\s+(\+|\-)\d+\s*)+))(?s)'
   re_baroufle_aucun_effet: '(Votre\s+tintamarre\s+ne\s+produit\s+(?P<capa_effet>aucun\s+effet))(?s)'
-  re_baroufle_effet_sssrileur: '(?P<flag_baroufle_sssrileur>donne\s+envie\s+de\s+danser)(?s)'
+  re_baroufle_effet_sssrileur: '(?P<flag_baroufle_sssrileur>(donne\s+envie\s+de\s+danser|Vous\s+dansez))(?s)'
   re_baroufle_effet_ytseukayndof: '(?P<flag_baroufle_ytseukayndof>quelque\s+chose\s+de\s+magique)(?s)'
   re_baroufle_def: '(Le\s+troll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+a\s+barouflé)(?s)'
