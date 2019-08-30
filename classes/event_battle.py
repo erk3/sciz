@@ -219,11 +219,12 @@ class battleEvent(Event):
                 self.capa_desc = 'Portail ' + ('d\'arrivée ' if 'arrivant' in self.capa_desc else 'de départ ') + self.capa_desc.split(' ')[0]
         # Fix Baroufle
         if self.type is not None and 'baroufle' in self.type.lower():
-            self.capa_effet = re.sub(r'-', '', self.capa_effet, count=1)
-            self.capa_effet = re.sub(r'\n-', ' ;', self.capa_effet)
-            self.capa_effet = re.sub(r'Effet\s+Imm(é|e)diat\s*:', '', self.capa_effet)
-            if 'concentration' in self.capa_effet.lower() and self.capa_effet.count('-') == 0:
+            if 'concentration' in self.capa_effet.lower() and self.capa_effet.count('\n-') == 0:
                 self.capa_tour = None
+            self.capa_effet = re.sub(r'-', '', self.capa_effet, count=1)
+            self.capa_effet = re.sub(r'\n\s*-', ' ;', self.capa_effet)
+            for r,v in [(r'\(\s*effet\s+imm(é|e)diat\s*\)', ''), (r'(\:\s*de)', ''), ('Attaque', 'Att'), ('Esquive', 'Esq'), ('Régénération', 'Reg'), ('Concentration', 'Con'), ('Dégâts', 'Deg')]:
+                self.capa_effet = re.sub(r, v, self.capa_effet)
             if hasattr(self, 'flag_baroufle_portee') and self.flag_baroufle_portee is not None:
                 self.capa_effet += ' ; Portée +1'
             if hasattr(self, 'flag_baroufle_sssrileur') and self.flag_baroufle_sssrileur is not None:
