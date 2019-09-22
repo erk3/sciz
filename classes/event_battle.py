@@ -223,7 +223,9 @@ class battleEvent(Event):
                 self.capa_tour = None
             self.capa_effet = re.sub(r'-', '', self.capa_effet, count=1)
             self.capa_effet = re.sub(r'\n\s*-', ' ;', self.capa_effet)
-            for r,v in [(r'\(\s*effet\s+imm(é|e)diat\s*\)', ''), (r'(\:\s*de)', ''), ('Attaque', 'Att'), ('Esquive', 'Esq'), ('Régénération', 'Reg'), ('Concentration', 'Con'), ('Dégâts', 'Deg')]:
+            for r,v in [(r'\(\s*(E|e)ffet\s+(I|i)mm(é|e)diat\s*\)', ''), (r';?\s*(E|e)ffet\s+(I|i)mm(é|e)diat.*?(;|\n|$)', ''),
+                        (r';?\s*Bonus/Malus.*?(;|\n|$)', ''), (r'(\:\s*de)', '')]:
+                        #, ('Attaque', 'Att'), ('Esquive', 'Esq'), ('Régénération', 'Reg'), ('Concentration', 'Con'), ('Dégâts', 'Deg')]:
                 self.capa_effet = re.sub(r, v, self.capa_effet)
             if hasattr(self, 'flag_baroufle_portee') and self.flag_baroufle_portee is not None:
                 self.capa_effet += ' ; Portée +1'

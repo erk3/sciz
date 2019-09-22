@@ -76,7 +76,8 @@ class SCIZ:
 
     # Test
     def test(self):
-        sg.db.upsert(User(id=104126, pseudo='Põm³', pwd_hash='test'))
+        #sg.db.upsert(User(id=104126, pseudo='Põm³', pwd_hash='test'))
+        pass
 
 
 # MAIN

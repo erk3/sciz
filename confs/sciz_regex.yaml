@@ -39,7 +39,7 @@ subjects:
   battleEvent_potion: 'Résultat de la (?P<type>Potion)$(?s)'
   battleEvent_ldp: '(?P<flag_ldp>(?P<type>Lancer de Potion)) ((sur (?P<def_nom>.*)\s*\((?P<def_id>\d+)\))|(?P<flag_def>de (?P<att_nom>.*)\s*\((?P<att_id>\d+)\)))(?s)'
   battleEvent_inter: 'Attaquant\s*-\s*(Suivant\s*-\s*)?(?P<generic_type>.+?)\s+(\((?P<type>.+)\)\s+)?sur\s+(?P<autre_nom>.+?)\s+\((?P<autre_id>\d+)\)\s+interposée\s+par\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)(?s)'
-  battleEvent_att: 'Attaquant\s*-\s*(Suivant\s*-\s*)?(?P<generic_type>.+?)\s+((\(|:\s)(?P<type>.+)\)?\s+)?sur\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)\s*$(?s)'
+  battleEvent_att: 'Attaquant\s*-\s*(Suivant\s*-\s*)?(?P<generic_type>.+?)\s+((\(|:\s)(?P<type>.+?)\)?\s+)?sur\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)\s*$(?s)'
   battleEvent_def: 'Défenseur\s*-\s*(Suivant\s*-\s*)?(?P<type>.+?)\s+(de|d'')(?P<att_nom>.+?)\s+\((?P<att_id>\d+)\)(?s)'
   battleEvent_balayage_att: '(?P<type>Balayage)\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
   battleEvent_insulte: '(?P<flag_he_insulte>(?P<type>Insulte))\s*(?P<comp_niv>\d)\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'

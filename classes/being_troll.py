@@ -66,8 +66,8 @@ class Troll(Being):
 
     @hybrid_property
     def nom_complet(self):
-        if self.user is not None and self.user.pseudo is not None:
-            return '%s (%d)' % (self.user.pseudo, self.id)
+        #if self.user is not None and self.user.pseudo is not None:
+        #    return '%s (%d)' % (self.user.pseudo, self.id)
         return '%s (%d)' % (self.nom, self.id)
 
     @hybrid_property
