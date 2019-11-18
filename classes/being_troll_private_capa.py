@@ -60,7 +60,7 @@ class TrollPrivateCapa(sg.sqlalchemybase):
                 formula = sg.formulas[self.metacapa.nom]
                 for attr in formula:
                     try:
-                        _min, _max, _bonus = None, None, None
+                        _min, _max, bonus = None, None, None
                         base = formula[attr][sg.CONF_FORMULA_BASE]
                         base = re.sub(r'(?P<attr>bonus_[a-zA-Z_]+)', 'self.troll_private.\g<attr>', base)
                         _min = float(eval('f"{%s}"' % re.sub(r'(?P<attr>base_\w+)', 'self.troll_private.\g<attr>_min', base)))

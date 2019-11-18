@@ -243,6 +243,9 @@ class battleEvent(Event):
         # Fix treasure eating
         if self.type == 'mangé':
             self.type = 'Machouillage'
+        # Fix ejection
+        if self.type == 'éjecté':
+            self.type = 'Ejection'
         # Fix smoking by monsters
         if self.type == 'enfumé':
             self.type = 'Enfumage'
