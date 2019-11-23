@@ -244,7 +244,7 @@ class battleEvent(Event):
         if self.type == 'mangé':
             self.type = 'Machouillage'
         # Fix ejection
-        if self.type == 'éjecté':
+        if self.type == 'a éjecté':
             self.type = 'Ejection'
         # Fix smoking by monsters
         if self.type == 'enfumé':
@@ -318,7 +318,10 @@ class battleEvent(Event):
         if hasattr(self, 'flag_ldp_rate') and self.flag_ldp_rate is not None:
             self.type += ' raté'
         # Handle the flags
-        if hasattr(self, 'flag_resist'): self.flag_resist = self.flag_resist is not None
+        if hasattr(self, 'flag_resist_att_mag'):
+            self.flag_resist = self.flag_resist_att_mag is not None and (not hasattr(self, 'capa_effet') or self.capa_effet is None)
+        if hasattr(self, 'flag_resist'):
+            self.flag_resist = self.flag_resist is not None and self.flag_resist != False
         if hasattr(self, 'flag_dead') and self.flag_dead is not None: self.vie = 0
         if hasattr(self, 'flag_dead_mult') and self.flag_dead_mult is not None: self.vie = 0
 
