@@ -115,6 +115,9 @@ class MailParser:
         regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(regexps, subject)
         if key is None:
+            if '[MountyHall]' in subject:
+                sg.logger.warning('No regexp matching mail subject \'%s\', archiving...' % subject)
+                return 'UNHANDLED'
             sg.logger.warning('No regexp matching mail subject \'%s\', aborting...' % subject)
             return None
         sg.logger.info('Found \'%s\', processing...' % (key))

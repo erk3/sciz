@@ -64,6 +64,9 @@ class tresorEvent(Event):
     # Additional build logics
     def build(self):
         super().build()
+        # Fix Bidouille
+        if self.type == 'Bidouille':
+            self.tresor_type = self.type
         # Fix TELEK
         if self.type == 'Télékinésie':
             if any(hasattr(self, attr) and getattr(self, attr) is not None for attr in ['pos_x', 'pos_y']):

@@ -12,6 +12,8 @@ ignored_subjects:
   pass: 'Passe'
   roulotte: 'roulotte'
   hibernation: 'Hibernation'
+  dla: 'DLA'
+  don: 'Don de \d+PX'
 
 # Known mail subjects to parse (first to match)
 # Keys must be 'CLASS_routine' formatted
@@ -29,7 +31,7 @@ subjects:
   champiEvent_ramasser: '(?P<type>Ramass(er|age)) (d''un )?(c|C)hampignon'
   tresorEvent_idt: '(?P<type>Identification des (t|T)résors)'
   tresorEvent_telek: '(?P<type>Télékinésie)'
-  tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+\[(?P<tresor_type>Bidouille)\]\s+(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
+  tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
   battleEvent_piege: '(?P<type>Déclenchement de Piège)(?s)'
   battleEvent_sort: 'Sortilège : (?P<type>.+?)(\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+))?($|\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)|\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
   battleEvent_pouvoir: 'pouvoir \"(?P<type>.+)\"\s+d''(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
@@ -176,7 +178,7 @@ battleEvent:
   re_glue: '(?P<capa_effet>(immobilisé|englué))e? (pendant|pour) (?P<capa_tour>\d+) tours?'
   re_gds: '(malus\s+de\s+(?P<capa_desc>Poison (Insidieux|Virulent))\s+de\s+(?P<capa_effet>\d+ PV)\s+pour\s+ses\s+(?P<capa_tour>\d+)\s+prochains\s+tours)(?s)'
   re_ronfle: '\(\d+\)\s+(?P<type>ronfle)\.'
-  re_enfume: 'Le monstre .+ vous a (?P<type>enfumé)'
+  re_enfume: 'vous a (?P<type>enfumé)'
   re_fatigue: 'fatigue (est|a) augmentée? de (?P<fatigue>\d+)'
   re_bam_bum: 'votre\s+(?P<capa_effet>(R|M)M\s+sera\s+égale\s+à\s+\-?\d+\s+\(\+?\-?\d+\))\s+pendant\s+(?P<capa_tour>\d+)\s+tour(?s)'
   re_bam_portail: 'spatio-magicielle\s+qui\s+a\s+(?P<capa_desc>(altéré|détruit)\s+le\s+portail\s+de\s+téléportation\s+(arrivant|situé))(?s)'

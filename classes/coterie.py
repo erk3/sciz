@@ -41,6 +41,7 @@ class Coterie(sg.sqlalchemybase):
     hook_miaou = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Miaou")', uselist=False)
     hook_hangouts = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Hangouts")', uselist=False)
     hook_discord = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Discord")', uselist=False)
+    hook_mountyzilla = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Mountyzilla")', uselist=False)
 
     # SQL Table Mapping
     __tablename__ = 'coterie'

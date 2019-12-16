@@ -3,10 +3,12 @@
 
 # IMPORTS
 from classes.event import Event
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc
+from classes.event_battle import battleEvent
+from classes.event_cdm import cdmEvent
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
-import copy, requests, json
+import copy, requests, json, datetime
 import modules.globals as sg
 
 
@@ -79,6 +81,42 @@ class Hook(sg.sqlalchemybase):
             return sg.db.upsert(self)
         except Exception:
             return None
+
+    # Use the hook to get specific events
+    def get_events_for(self, being_id, start_time, end_time):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(None, None, True)
+        # Find the events
+        try:
+            events = sg.db.session.query(Event).filter(Event.owner_id.in_(users_id),
+                                                       Event.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
+                                                       Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0),
+                                                       or_(
+                                                           Event.mail_subject.ilike('%' + str(being_id) + '%'),
+                                                           Event.mail_body.ilike('%' + str(being_id) + '%')
+                                                           )
+                                                       ).order_by(asc(Event.time)).limit(50).all()
+        except NoResultFound as e:
+            events = []
+        # Stringify the events
+        res = []
+        for event in events:
+            r = {'time': sg.format_time(event.time),
+                 'message': sg.no.stringify(event, self.format),
+                 'owner_id': event.owner_id,
+                 'owner_nom': event.owner_nom,
+                 }
+            if isinstance(event, battleEvent):
+                r['att_id'] = event.att_id
+                r['att_nom'] = event.att_nom
+                r['def_id'] = event.def_id
+                r['def_nom'] = event.def_nom
+            elif isinstance(event, cdmEvent):
+                r['mob_id'] = event.mob_id
+                r['mob_nom'] = event.mob_nom
+            res.append(r)
+        return res
 
     # Trigger the hook
     def trigger(self, force=False):

@@ -66,7 +66,9 @@ class MailWalker:
             for file_path, subject, body, froms, time, vie in sorted_mails:
                 try:
                     objs = self.mp.parse(subject, body, froms, sg.user)
-                    if objs is not None:
+                    if objs == 'UNHANDLED':
+                        self.archive(sg.user, file_path, 'unhandled')
+                    elif objs is not None:
                         if not type(objs) is list: objs = [objs]
                         for obj in objs:
                             if not isinstance(obj, MailHelper):
@@ -78,7 +80,7 @@ class MailWalker:
                         # Archive the mail
                         self.archive(sg.user, file_path, 'archive')
                     else:
-                        # Unrecognized mail, delete it immediatly
+                        # Unrecognized or ignored mail, delete it immediatly
                         os.remove(file_path)
                 # If anything goes wrong parsing a mail, it will land here (hopefully)
                 except Exception as e:

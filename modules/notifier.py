@@ -110,7 +110,7 @@ class Notifier:
             notification = re.sub(r'\s+', ' ', notification).strip() # Delete unecessary whitespaces
             notification = re.sub(r'\s+(\W)+?\s+', r' \1 ', notification) # Delete multiple separators like ;; or ::
             notification = re.sub(r'([^\w\)\s\]\[\+\-\'\!\%])\s*\((.+?)\)', r'\1 \2', notification)  # Delete parenthesis after a separator
-            notification = re.sub(r'(\\n)+', os.linesep, notification) # Transform lineseparator and delete unecessary ones
+            notification = re.sub(r'(\\n\s*(\\n)*)+', os.linesep, notification) # Transform lineseparator and delete unecessary ones
             notification = re.sub(r'\n$', '', notification) # Delete last lineseparator
             # Apply abbreviations
             abreviations = json[sg.CONF_FORMAT_ABREVIATIONS]

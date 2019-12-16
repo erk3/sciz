@@ -400,8 +400,6 @@ class Requester:
                         list_attr_max.append(_max)
             if len(list_attr_min) > 0:
                 setattr(pm, attr_min, min(list_attr_min))
-                # setattr(pm, attr_min, round(mean(list_attr_min)))
             if len(list_attr_max) > 0:
                 setattr(pm, attr_max, max(list_attr_max))
-                # setattr(pm, attr_max, round(mean(list_attr_max)))
         return pm

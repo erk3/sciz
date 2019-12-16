@@ -155,7 +155,7 @@ def parseFrenchBoolean(boolean):
 
 
 def format_time(val, form=None):
-    form = form if form else '%d/%m %H:%M:%S'
+    form = form if form else '%d/%m/%Y %H:%M:%S'
     if val:
         return val.strftime(form)
     return None
