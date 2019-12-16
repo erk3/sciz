@@ -7,7 +7,6 @@
 
         <v-card-text primary-title>
 						<h3 class="headline mb-2"><u>S</u>ystème de <u>C</u>hauve-souris <u>I</u>nterdimensionnel pour <u>Z</u>humain</h3>
-						<p>Déjà {{user_count}} utilisateurs inscrits et {{event_count_last_month}} événements traités le mois dernier !</p>
         </v-card-text>
 
         <v-card-actions>
@@ -21,9 +20,9 @@
 				<v-slide-y-transition>
           <v-card-text v-show="show_desc">
 						<p class="caption">
-							SCIZ est une interface tactique tournée vers <a href="http://www.mountyhall.com/">MountyHall</a> et destinée aux groupes de chasse.<br/>
+							SCIZ est un outil tourné vers <a href="http://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse.<br/>
 							Sa fonction première est d'aggréger, consolider, conserver et partager automagiquement les notifications mail envoyées par le jeu à chaque trõll.<br/>
-							Il permet en particulier de retrouver ces informations sur Miaou, Hangouts ou Discord.
+							Il permet en particulier de retrouver ces informations sur Mountyzilla, Miaou, Hangouts ou Discord.
 						</p>
           </v-card-text>
         </v-slide-y-transition>
@@ -90,7 +89,6 @@
 <!-- SCRIPT -->
 <script>
 	import { EventBus } from '~/src/store.js'
-	import { stats } from '~/src/api.js'
 
 	export default {
     name: 'HomeView',
@@ -99,8 +97,6 @@
 			pwd: '',
 			pwd2: '',
 			pwd_mh: '',
-			user_count: 0,
-			event_count_last_month: 0,
 			error: false,
 			error_msg: '',
       show_desc: false,
@@ -129,7 +125,7 @@
 							} else {
 								this.$router.push('/event');
 							}
-						});
+						})
 				}
 			},
 	    register () {
@@ -137,15 +133,6 @@
 	        .then(() => this.$router.push('/profil'))
 	    }
 	  },
-		beforeMount () {
-			stats()
-				.then(res => {
-					if (res.status === 200) {
-						this.user_count = res.data['user_count'];
-						this.event_count_last_month = res.data['event_count_last_month'];
-					}
-				})
- 		},
 		mounted () {
 			EventBus.$on('failedRegistering', err => {this.error = true; this.error_msg = err})
 			EventBus.$on('failedAuthentication', () => this.error = true)

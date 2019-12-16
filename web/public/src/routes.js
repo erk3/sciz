@@ -3,9 +3,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import HomeView from '~/src/components/home.vue';
 import EventView from '~/src/components/event.vue';
-import MapView from '~/src/components/map.vue';
 import BestiaryView from '~/src/components/bestiary.vue';
-import OfficeView from '~/src/components/office.vue';
 import PadView from '~/src/components/pad.vue';
 import ProfilView from '~/src/components/profil.vue';
 import ShareView from '~/src/components/share.vue';
@@ -31,22 +29,6 @@ var router = new Router({
 			path: '/event',
 			name: 'EventView',
 			component: EventView,
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/map',
-			name: 'MapView',
-			component: MapView,
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/office',
-			name: 'OfficeView',
-			component: OfficeView,
 			meta: {
 				requiresAuth: true
 			}

@@ -34,7 +34,7 @@
     	// Loadt the fonts
 			WebFontLoader.load({
 	      google: {
-	        families: ['Roboto:100,300,400,500,700,900', 'Montserrat:100,300,400,500,700,900']
+	        families: ['Roboto:400']
 	      },
 	      active: this.setFontLoaded
 	    });
@@ -50,7 +50,7 @@
 <!-- STYLE -->
 <style>
 .application, [class^="display-"],	[class^="body-"], .headline, .subheading, .title, .caption {
-	font-family: Montserrat !important;
+	font-family: Roboto !important;
 }
 .v-parallax {
 	height: 100%;

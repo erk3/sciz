@@ -11,7 +11,7 @@
     		</v-flex>
 				<v-flex text-xs-center align-center>
 					<v-layout fill-height align-center justify-center caption>
-						2019 © SCIZ
+						2019-2020 © SCIZ
 					</v-layout>
 				</v-flex>
 				<v-flex text-xs-right pr-5>
@@ -38,8 +38,7 @@
 				{ img: 'logo-104126', href: 'http://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ=104126'},
 				{ img: 'logo-mh', href: 'http://www.mountyhall.com/Forum/display_topic_threads.php?ForumID=21&TopicID=173262' },
 				{ img: 'logo-miaou', href: 'https://miaou.dystroy.org/2603?SCIZ' },
-				{ img: 'logo-github', href: 'https://github.com/erk3/sciz' },
-				{ img: 'logo-spreadshirt', href: 'https://shop.spreadshirt.fr/sciz'},
+				{ img: 'logo-github', href: 'https://github.com/erk3/sciz' }
 			]
 		}),
 		computed: {

@@ -32,38 +32,38 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-		<!-- SIDE BUTTONS -->
-		<v-speed-dial v-model="fab" v-if="events.length > 0" top left direction="bottom" transition="slide-y-transition" fixed class="pt-3 mt-5">
-			<v-tooltip right slot="activator">
-      	<v-btn slot="activator" fab small v-model="fab">
-          <v-icon size="16px">keyboard_arrow_down</v-icon>
-          <v-icon size="16px">keyboard_arrow_up</v-icon>
-      	</v-btn>
-				<span>{{this.coterie_courante.nom}}</span>
-			</v-tooltip>
-			<v-tooltip right>
-      	<v-btn fab small slot="activator" @click="sheet = true;">
-        	<v-icon size="16px">fas fa-filter</v-icon>
-      	</v-btn>
-				<span>Filtrer</span>
-			</v-tooltip>
-			<v-tooltip right>
-     		<v-btn fab small slot="activator" @click="loadEvents(limit, offset, true, false);">
-        	<v-icon size="17px">fas fa-search-plus</v-icon>
-      	</v-btn> 
-				<span>Charger plus de chauve-souris</span>
-			</v-tooltip>
-			<v-tooltip right>
-     		<v-btn fab small slot="activator" @click="filters=''; date = null; time = null; loadEvents(limit, 0, true, true);">
-        	<v-icon size="17px">fas fa-search-minus</v-icon>
-      	</v-btn> 
-				<span>Supprimer les filtres et recharger</span>
-			</v-tooltip>
-    </v-speed-dial>
+		<!-- DRAWER -->
+		<v-navigation-drawer permanent app clipped value="true">
+			<v-toolbar flat pa-0 ma-0>
+				<v-layout row wrap align-center justify-center fill-height>
+					<v-flex xs11> Mes coteries </v-flex>
+				</v-layout>
+			</v-toolbar>
+      <!-- GROUPS LIST -->
+    	<v-divider></v-divider>
+			<v-subheader>Coterie personnelle</v-subheader>
+      <v-list v-for="(coterie, index) in [coterie_perso]">
+				<v-list-tile :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
+					<v-layout row wrap align-center justify-start fill-height>
+						<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						<v-flex xs10 ml-1>{{ coterie.nom }}</v-flex>
+					</v-layout>
+				</v-list-tile>	
+			</v-list>
+      <v-divider></v-divider>
+			<v-subheader v-if="coteries.length > 0">Coterie(s) de groupe</v-subheader>
+			<v-list v-for="(coterie, index) in coteries">
+				<v-list-tile :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
+					<v-layout row wrap align-center justify-start fill-height>
+						<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						<v-flex xs10 ml-1>{{ coterie.nom }}</v-flex>
+					</v-layout>
+				</v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
 		<!-- TIMELINE -->
-		<v-flex xs6 text-xs-center>
-				<v-text-field label="Mots clés" v-model="filters" prepend-icon="fas fa-filter" v-on:blur="apply_search" @keyup.native.enter="apply_search"></v-text-field>
-		</v-flex>
 		<v-flex xs11 text-xs-center>
 			<v-timeline v-scroll="onScroll" v-for="(item, index) in events" v-if="!item.hidden" :key="item.event.id" dense>
 				<!-- DAY -->
@@ -131,63 +131,6 @@
 				<h2 class="title"> Aucune chauve-souris pour le moment. </h2><br/>
       </v-card>
     </v-flex>
-		<!-- BOTOM BAR -->
-		<v-bottom-sheet v-model="sheet" persistent>
-			<v-card>
-				<v-layout row justify-center align-center fill-height wrap pa-5>
-					<v-flex xs4 text-xs-center>
-						<v-card tile flat class="pa-5">
-							<span class="title">Filtrer sur la coterie :</span><br/><br/>
-							<v-select :items="[coterie_perso].concat(coteries)" item-value="id" item-text="nom" item-avatar="blason_uri" v-model="selectedCoterieID" v-on:input="should_refresh = true">
-							  <template slot="selection" slot-scope="data">
-    							<v-list-tile-avatar>
-										<v-img v-if="data.item.blason_uri" :lazy-src="Image('unknown')" :src="data.item.blason_uri" contain></v-img>
-										<v-img v-else :src="Image('unknown')" contain></v-img>
-	    						</v-list-tile-avatar>
-	    						<v-list-tile-content>
-	      						<v-list-tile-title v-html="data.item.nom"></v-list-tile-title>
-	    						</v-list-tile-content>
-							  </template>
-  							<template slot="item" slot-scope="data">
-    							<v-list-tile-avatar>
-										<v-img v-if="data.item.blason_uri" :lazy-src="Image('unknown')" :src="data.item.blason_uri" contain></v-img>
-										<v-img v-else :src="Image('unknown')" contain></v-img>
-	    						</v-list-tile-avatar>
-	    						<v-list-tile-content>
-	      						<v-list-tile-title v-html="data.item.nom"></v-list-tile-title>
-	    						</v-list-tile-content>
-	  						</template>
-							</v-select>
-						</v-card>
-					</v-flex>
-					<v-flex xs4 text-xs-center>
-						<v-card tile flat class="pa-5">
-							<span class="title">Evénéments antérieurs au :</span><br/><br/>
-							<v-menu :close-on-content-click="false" v-model="date_menu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
-        			<v-text-field slot="activator" v-model="date" label="Date" prepend-icon="event" readonly></v-text-field>
-        				<v-date-picker v-model="date" @input="date_menu = false; should_refresh = true;" :max="max_date" locale="fr"></v-date-picker>
-      				</v-menu>
-							<v-menu ref="time_menu" :close-on-content-click="false" v-model="time_menu" :nudge-right="40" :return-value.sync="time" lazy transition="scale-transition" offset-y full-width min-width="290px">
-        			<v-text-field slot="activator" v-model="time" label="Horaire" prepend-icon="access_time" readonly></v-text-field>
-        				<v-time-picker v-model="time" full-width format="24hr" locale="fr" @change="$refs.time_menu.save(time); should_refresh = true;"></v-time-picker>	
-      				</v-menu>
-						</v-card>
-					</v-flex>
-					<v-flex xs4 text-xs-center>
-						<v-card tile flat class="pa-5">
-							<span class="title">Rechercher les mots :</span><br/><br/>
-        			<v-text-field v-model="filters" label="Mots clés" v-on:blur="apply_search"></v-text-field>
-						</v-card>
-					</v-flex>
-					<v-flex xs6 text-xs-center>
-						<v-slider label="Nombre de résultats maximum" single-line always-dirty thumb-label="always" :min="1" :max="100" v-model="limit" @change="should_refresh = true"></v-slider>
-					</v-flex>
-					<v-flex xs12 text-xs-center>
-						<v-btn @click="sheet = !sheet; apply_filter();" @keyup.native.enter="sheet = !sheet; apply_filter();">Fermer</v-btn>
-					</v-flex>
-				</v-layout>
-			</v-card>
-		</v-bottom-sheet>
 	</v-layout>
 </template>
 
@@ -215,26 +158,18 @@
 				error_msg: '',
 				success_msg: '',
 				info_msg: '',
-				sheet: false,
-				fab: true,
 				show_mail: false,
 				last_time: 0,
 				delete_dialog: false,
 				selectedIndex: -1,
 				selectedEvent: {},
 				eventToDisplay: {},
-				selectedCoterieID: -1,
 				events: [],
 				offset: 0,
 				coterie_perso: {},
 				coterie_courante: {},
 				coteries: [],
-				date_menu: false,
-				time_menu: false,
 				max_date: new Date().toISOString().substr(0, 10),
-				date: null,
-				time: null,
-				filters: '',
 				limit: 25,
 				should_refresh: false,
 			}
@@ -283,7 +218,6 @@
 									this.coterie_courante = coterie;
 								}
 							}); 	
-							this.selectedCoterieID = this.coterie_courante.id;
 							this.loadEvents(this.limit, 0, true, true);
 							if (this.tick === null || this.tick === undefined) {
 								this.tick = window.setInterval(this.loadEvents, 10000, this.limit, 0, false, false);
@@ -305,33 +239,13 @@
 						this.error_msg = err.message;
 					});
 			},
-			apply_search() {
-				if (this.filters) {
-					var filters = this.filters.toLowerCase().split(' ');
-					this.events.forEach(item => {
-						item.hidden = !filters.some(filter => {
-							return item.repr.toLowerCase().includes(filter);
-						});
-					});
-				} else {
-					this.events.forEach(item => {
-						item.hidden = false;
-					});
-				}
-			},
-			apply_filter() {
-				if (this.should_refresh) {
-					this.should_refresh = false;
-					this.switchCoterie();
-				}
-			},
-			switchCoterie() {
-				if (this.coterie_perso.id === this.selectedCoterieID) {
+			switchCoterie(coterie) {
+				if (this.coterie_perso.id === coterie.id) {
 					this.coterie_courante = this.coterie_perso;
 				} else {
-					this.coteries.forEach(coterie => {
-						if (coterie.id === this.selectedCoterieID) {
-							this.coterie_courante = coterie;
+					this.coteries.forEach(c => {
+						if (c.id === coterie.id) {
+							this.coterie_courante = c;
 						}
 					}); 
 				}
@@ -441,13 +355,6 @@
 								var last = item.repr.indexOf('\n');
 								if (last > 0) {
 									item.repr = item.repr.substring(0, last - 1); // First line break
-								}
-								// Search
-								if (this.filters) {
-									var filters = this.filters.toLowerCase().split(' ');
-									item.hidden = !filters.some(filter => {
-										return item.repr.toLowerCase().includes(filter);
-									});
 								}
 								// Notification
 								if (!old) {

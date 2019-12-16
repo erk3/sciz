@@ -10,14 +10,11 @@
 				<v-btn :to="{name: 'HomeView'}" v-if="!isAuthenticated()" flat>Accueil</v-btn>
 				<v-btn :to="{name: 'EventView'}" v-if="isAuthenticated()" flat>Volière</v-btn>
 				<v-btn :to="{name: 'BestiaryView'}" v-if="isAuthenticated()" flat>Bestiaire</v-btn>
-				<v-btn :to="{name: 'MapView'}" v-if="isAuthenticated()" flat>Carte</v-btn>
 				<v-btn :to="{name: 'PadView'}" v-if="isAuthenticated()" flat>Calepin</v-btn>
-				<v-btn :to="{name: 'OfficeView'}" v-if="isAuthenticated()" flat>Guichet</v-btn>
 			</v-toolbar-items>
 			<!-- RIGHT SIDE -->
 			<v-spacer></v-spacer>
 			<v-toolbar-items v-if="isAuthenticated()">
-				<v-btn flat class="disable-events">{{$store.getters.coterieName}}</v-btn>
 				<v-menu offset-y>
 					<v-btn slot="activator" flat>
 						<v-toolbar-side-icon class="ma-0">
@@ -27,10 +24,10 @@
 						<v-toolbar-title class="ma-1"><span class="text-capitalize subheading">{{userData().nom}}</span><v-icon>arrow_drop_down</v-icon></v-toolbar-title>
 					</v-btn>
         	<v-list>
-						<v-list-tile :to="{name: 'ProfilView'}">Mon profil</v-list-tile>
-						<v-list-tile :to="{name: 'ShareView'}">Mes coteries</v-list-tile>
+						<v-list-tile :to="{name: 'ProfilView'}">Gérer mon profil</v-list-tile>
+						<v-list-tile :to="{name: 'ShareView'}">Gérer mes coteries</v-list-tile>
 						<v-divider></v-divider>
-          	<v-list-tile @click="logout()">Déconnexion</v-list-tile>
+          	<v-list-tile @click="logout()" class="red--text text-darken1">Déconnexion</v-list-tile>
         	</v-list>
       	</v-menu>
 			</v-toolbar-items>	
@@ -45,14 +42,12 @@
 					<v-list-tile :to="{name: 'HomeView'}" v-if="!isAuthenticated()">Accueil</v-list-tile>
 					<v-list-tile :to="{name: 'EventView'}" v-if="isAuthenticated()">Volière</v-list-tile>
 					<v-list-tile :to="{name: 'BestiaryView'}" v-if="isAuthenticated()">Bestiaire</v-list-tile>
-					<v-list-tile :to="{name: 'MapView'}" v-if="isAuthenticated()">Carte</v-list-tile>
 					<v-list-tile :to="{name: 'PadView'}" v-if="isAuthenticated()">Calepins</v-list-tile>
-					<v-list-tile :to="{name: 'OfficeView'}" v-if="isAuthenticated()">Guichet</v-list-tile>
 					<v-divider v-if="isAuthenticated()"></v-divider>
-					<v-list-tile v-if="isAuthenticated()" :to="{name: 'ProfilView'}">Mon profil</v-list-tile>
-					<v-list-tile v-if="isAuthenticated()" :to="{name: 'ShareView'}">Mes coteries</v-list-tile>
+					<v-list-tile v-if="isAuthenticated()" :to="{name: 'ProfilView'}">Gérer mon profil</v-list-tile>
+					<v-list-tile v-if="isAuthenticated()" :to="{name: 'ShareView'}">Gérer mes coteries</v-list-tile>
 					<v-divider v-if="isAuthenticated()"></v-divider>
-          <v-list-tile v-if="isAuthenticated()" @click="logout()">Déconnexion</v-list-tile>
+          <v-list-tile v-if="isAuthenticated()" @click="logout()" class="red--text text-darken1">Déconnexion</v-list-tile>
 				</v-list>
 			</v-menu>	
 		</v-layout>

@@ -100,7 +100,6 @@
 									<v-flex xs8>
 										<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint></v-text-field><br/>
 										<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="24" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint></v-slider><br/>
-										<v-slider label="Limite d'appel aux scripts statiques" v-model="user.max_sp_sta" :thumb-size="24" thumb-label="always" min="0" max="10" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques statiques par jour" persistent-hint></v-slider>
 									</v-flex>
 								</v-layout>	
 							</v-card-text>
@@ -189,7 +188,6 @@
 				session: 1,
 				pwd_mh: '',
 				max_sp_dyn: 1,
-				max_sp_sta: 1,
 				community_sharing: true,
 			},
 			valid_pwd: true,
@@ -213,7 +211,6 @@
 						this.user.session = res.data['session'] || '';
 						this.user.pwd_mh = res.data['pwd_mh'] || '';
 						this.user.max_sp_dyn = res.data['max_sp_dyn'] || '';
-						this.user.max_sp_sta = res.data['max_sp_sta'] || '';
 						this.user.community_sharing = res.data['community_sharing'];
 					}
 				});

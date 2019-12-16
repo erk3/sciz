@@ -106,17 +106,6 @@
   							</v-layout>
 							</v-card-title>
             </v-flex>
-            <v-flex v-if="coterie_courante.grouped" xs12>
-							<v-tooltip left>
-								<v-btn v-bind:href="coterie_courante.mp_link" fab small slot="activator" target="_blank">MP</v-btn>
-								<span>Envoyer un MP à la coterie</span>
-							</v-tooltip>
-							<v-tooltip right>
-								<v-btn v-bind:href="coterie_courante.px_link" fab small slot="activator" target="_blank">PX</v-btn>
-								<span>Envoyer des PX à la coterie</span>
-							</v-tooltip>
-							<br/><br/>
-            </v-flex>
           </v-layout>
 					<!-- USER SHARE STATE -->
 					<v-divider v-if="loaded && coterie_courante.grouped" class="mb-3"></v-divider>
@@ -155,8 +144,8 @@
 						</v-flex>
 					</v-layout>
 					<!-- HOOKS -->
-					<v-divider v-if="loaded && partage_courant.admin && coterie_courante.hooks" class="mb-3"></v-divider>
-					<v-layout v-if="loaded && partage_courant.admin && coterie_courante.hooks" row wrap align-center justify-center fill-height>
+					<v-divider v-if="loaded && coterie_courante.hooks" class="mb-3"></v-divider>
+					<v-layout v-if="loaded && coterie_courante.hooks" row wrap align-center justify-center fill-height>
 						<v-flex xs11>
 						Hooks
           		<v-layout row wrap align-center justify-center fill-height>
@@ -171,9 +160,10 @@
 										<v-list-tile v-if="hook.type === 'Miaou' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
 										<v-list-tile v-if="hook.type === 'Discord' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-tile>
 										<v-list-tile v-if="hook.type === 'Hangouts' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'/sciz register '+ hook.jwt">Copier la commande d'enregistrement</v-list-tile>
-										<v-list-tile v-if="hook.jwt" @click="selectedHook = hook; hook_dialog = true;">Configurer</v-list-tile>
-										<v-list-tile v-if="hook.jwt" @click="regenerateHook(hook.id)" class="red--text text-darken1">Régénérer</v-list-tile>
-										<v-list-tile v-else @click="regenerateHook(hook.id)" class="red--text text-darken1">Générer</v-list-tile>
+										<v-list-tile v-if="hook.type === 'Mountyzilla' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="hook.jwt">Copier le JWT</v-list-tile>
+										<v-list-tile v-if="hook.jwt && partage_courant.admin" @click="selectedHook = hook; hook_dialog = true;">Configurer</v-list-tile>
+										<v-list-tile v-if="hook.jwt && partage_courant.admin" @click="regenerateHook(hook.id)" class="red--text text-darken1">Régénérer</v-list-tile>
+										<v-list-tile v-if="!hook.jwt" @click="regenerateHook(hook.id)" class="red--text text-darken1">Générer</v-list-tile>
 									</v-list>
 								</v-menu>
       				</v-layout>

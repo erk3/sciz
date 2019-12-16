@@ -1,25 +1,23 @@
 import axios from 'axios'
 
 // DEBUG MODE ONLY
-const API_URL = 'http://127.0.0.1:8080/api'
+// const API_URL = 'http://127.0.0.1:8080/api'
 // PRODUCTION MODE ONLY
-// const API_URL = '/api'
+const API_URL = '/api'
 
 // INTERCEPTORS
 
 // Ensure a cross-browser no-cache for xhr
+/*
 axios.interceptors.request.use(function (config) {
     config.url += '?t=' + Date.now();
 		return config;
   }, function (error) {
     return Promise.reject(error);
   });
+*/
 
 // HOME
-export function stats() {
-	return axios.get(API_URL + '/stats');
-}
-
 export function authenticate(userData) {
 	return axios.post(API_URL + '/login', userData);
 }
@@ -113,28 +111,6 @@ export function getPartages(id) {
 	return axios.get(API_URL + '/shares/' + id);
 }
 
-// MAP
-export function getMapUser() {
-	var path = API_URL + '/map/user';
-	return axios.get(path);
-}
-
-export function getMapData(type, days, portee, pos_x, pos_y, pos_n) {
-	var path = API_URL + '/map/data/' + type + '/' + days + '/' + portee + '/' + pos_x + '/' + pos_y;
-	if (pos_n !== undefined) {
-		path += '/' + pos_n
-	}
-	return axios.get(path);
-}
-
-export function getMapCount(type, days, portee, pos_x, pos_y, pos_n) {
-	var path = API_URL + '/map/count/' + type + '/' + days + '/' + portee + '/' + pos_x + '/' + pos_y;
-	if (pos_n !== undefined) {
-		path += '/' + pos_n
-	}
-	return axios.get(path);
-}
-
 // HOOKS
 export function renewHook(hook_id) {
 	return axios.post(API_URL + '/hook/renew/' + hook_id);
@@ -155,7 +131,6 @@ export function request(req) {
 export function resetFormat(hook_id) {
 	return axios.delete(API_URL + '/hook/format/' + hook_id)
 }
-
 
 // EVENTS
 export function getEvents(coterie_id, limit, offset, lastID, revert) {

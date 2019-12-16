@@ -122,15 +122,6 @@ def hook_jwt_check(view_function):
 
 # ROUTES DEFINITION
 
-# STATS
-@webapp.route('/api/stats', methods=('GET',))
-def stats():
-    now = datetime.datetime.now()
-    user_count = sg.db.session.query(User).count()
-    event_count_last_month = sg.db.session.query(Event).filter(Event.time > now + dateutil.relativedelta.relativedelta(months=-1)).count()
-    res = jsonify(user_count=user_count, event_count_last_month=event_count_last_month)
-    return res, 200
-
 # LOGIN & REGISTER
 @webapp.route('/api/login', methods=('POST',))
 @webapp.route('/api/register', methods=('POST',))
@@ -249,7 +240,7 @@ def get_coteries(path):
     for p, c in zip([partage_perso] + partages_actifs + partages_invitations, [coterie_perso] + coteries + invitations):
         c['mp_link'] = p.coterie.mp_link
         c['px_link'] = p.coterie.px_link
-        if 'withhooks' in path and p.admin:
+        if 'withhooks' in path:
             c['hooks'] = [sg.row2dict(h) for h in p.coterie.hooks]
     # Result
     return jsonify(coterie_perso=coterie_perso, coteries=coteries, invitations=invitations), 200
@@ -338,109 +329,6 @@ def delete_partage(id):
         return jsonify(message='Partage supprimé'), 200
     return jsonify(message='Partage non supprimé'), 400
 
-# MAPS
-def map_query_builder(type, viewer_id, days, pos_x, pos_y, pos_n, portee, count):
-    # Time
-    then = datetime.datetime.now() + dateutil.relativedelta.relativedelta(days=-int(days))
-    # Get the type we request
-    cls_mapper = {'user': TrollPrivate, 'trolls': TrollPrivate,
-                  'followers': MobPrivate, 'monsters': MobPrivate,
-                  'treasures': TresorPrivate, 'mushrooms': ChampiPrivate,
-                  'places': Lieu}
-    cls = None if not type in cls_mapper else cls_mapper[type]
-    if cls is None:
-        return None
-    # Special USER case
-    if type == 'user':
-        user = sg.db.session.query(User).get(viewer_id)
-        if count:
-            users_id = []
-            for partage in user.partages_actifs + [user.partage_perso]:
-                for partage in partage.coterie.partages_actifs:
-                    if not partage.user_id in users_id:
-                        users_id.append(partage.user_id)
-            return sg.db.session.query(cls).filter(cls.viewer_id == viewer_id, cls.troll_id.in_(users_id))
-        return sg.db.session.query(cls).filter(cls.viewer_id == viewer_id, cls.troll_id == viewer_id)
-    # Check for parameters and compute some thing
-    if pos_x is None or pos_y is None or portee is None:
-        return None
-    try:
-        pos_x, pos_y, portee = int(pos_x), int(pos_y), int(portee)
-        pos_n = int(pos_n) if pos_n is not None else None
-    except (TypeError, ValueError) as e:
-        return None
-    pos_x_min = pos_x - portee
-    pos_x_max = pos_x + portee
-    pos_y_min = pos_y - portee
-    pos_y_max = pos_y + portee
-    pos_n_min = math.floor(pos_n - round(portee / 2)) if pos_n is not None else None
-    pos_n_max = math.ceil(pos_n + round(portee / 2)) if pos_n is not None else None
-    default_filter = and_(cls.pos_x >= pos_x_min, cls.pos_x <= pos_x_max,
-                          cls.pos_y >= pos_y_min, cls.pos_y <= pos_y_max,
-                          cls.last_seen_at > then)
-    default_filter = and_(default_filter, cls.pos_n >= pos_n_min, cls.pos_n <= pos_n_max) if pos_n is not None else default_filter
-    default_filter = and_(default_filter, cls.viewer_id == viewer_id) if type != 'places' else default_filter
-    # Filters
-    filter = default_filter
-    if type == 'trolls':
-        filter = and_(filter, cls.troll_id != viewer_id)
-    if type =='followers':
-        filter = and_(filter, Mob.mort == False,
-                      or_(Mob.nom.contains('Apprivoisé') == True, Mob.nom.contains('Familier') == True,
-                          Mob.nom.contains('Nâ-Hàniym-Hééé') == True, Mob.nom.contains('Golem de Cuir') == True,
-                          Mob.nom.contains('Golem de Métal') == True, Mob.nom.contains('Golem de Mithril') == True,
-                          Mob.nom.contains('Golem de Papier') == True))
-    if type == 'monsters':
-        filter = and_(filter, Mob.mort == False,
-                      and_(Mob.nom.contains('Apprivoisé') == False, Mob.nom.contains('Familier') == False,
-                           Mob.nom.contains('Nâ-Hàniym-Hééé') == False, Mob.nom.contains('Golem de Cuir') == False,
-                           Mob.nom.contains('Golem de Métal') == False, Mob.nom.contains('Golem de Mithril') == False,
-                           Mob.nom.contains('Golem de Papier') == False))
-    # Query
-    if count:
-        query = sg.db.session.query(func.count(cls.pos_x), cls.pos_x, cls.pos_y)
-    else:
-        query = sg.db.session.query(cls)
-    if type == 'followers' or type == 'monsters':
-        query = query.join(Mob, cls.mob_id == Mob.id)
-    query = query.filter(filter)
-    if count:
-        return query.group_by(cls.pos_x, cls.pos_y)
-    else:
-        return query.order_by(cls.pos_n.desc(), cls.last_seen_at.desc())
-
-@webapp.route('/api/map/user', methods=('GET',))
-@user_jwt_check
-def get_map_user():
-    query = map_query_builder('user', get_jwt_identity(), 0, None, None, None, None, True)
-    if query is None:
-        return jsonify(message='Jeu de paramètre inconnu !'), 400
-    res = query.all()
-    res = list(map(lambda x: {'id': x.troll_id, 'nom': x.troll.nom, 'blason_uri': x.troll.blason_uri, 'pos_x': x.pos_x, 'pos_y': x.pos_y, 'pos_n': x.pos_n, 'portee': x.portee, 'last_seen_at': sg.format_time(x.last_seen_at, 'Le %d/%m à %H:%M'), 'tooltip': x.tooltip}, res))
-    return jsonify(res), 200
-
-@webapp.route('/api/map/count/<string:type>/<string:days>/<string:portee>/<string:pos_x>/<string:pos_y>', defaults={'pos_n': None}, methods=('GET',))
-@webapp.route('/api/map/count/<string:type>/<string:days>/<string:portee>/<string:pos_x>/<string:pos_y>/<string:pos_n>', methods=('GET',))
-@user_jwt_check
-def get_map_count(type, days, pos_x, pos_y, pos_n, portee):
-    query = map_query_builder(type, get_jwt_identity(), days, pos_x, pos_y, pos_n, portee, True)
-    if query is None:
-        return jsonify(message='Jeu de paramètre inconnu !'), 400
-    res = query.all()
-    res = list(map(lambda x: {'count': x[0], 'pos_x': x[1], 'pos_y': x[2]}, res))
-    return jsonify(res), 200
-
-@webapp.route('/api/map/data/<string:type>/<string:days>/<string:portee>/<string:pos_x>/<string:pos_y>', defaults={'pos_n': None}, methods=('GET',))
-@webapp.route('/api/map/data/<string:type>/<string:days>/<string:portee>/<string:pos_x>/<string:pos_y>/<string:pos_n>', methods=('GET',))
-@user_jwt_check
-def get_map_data(type, days, pos_x, pos_y, pos_n, portee):
-    query = map_query_builder(type, get_jwt_identity(), days, pos_x, pos_y, pos_n, portee, False)
-    if query is None:
-        return jsonify(message='Jeu de paramètre inconnu !'), 400
-    res = query.all()
-    res = list(map(lambda x: {'pos_n': x.pos_n, 'last_seen_at': sg.format_time(x.last_seen_at, 'Le %d/%m à %H:%M'), 'tooltip': x.tooltip}, res))
-    return jsonify(res), 200
-
 # EVENTS
 @webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>', methods=('GET',))
 @webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>/revert', methods=('GET',))
@@ -471,7 +359,7 @@ def delete_user_event(event_id):
 @user_jwt_check
 def renew(id):
     hook = sg.db.session.query(Hook).get(id)
-    if hook.coterie.has_partage(get_jwt_identity(), True):
+    if hook.coterie.has_partage(get_jwt_identity(), True) or hook.jwt is None:
         hook.jwt = create_access_token(identity=hook, expires_delta=False)
         sg.db.upsert(hook)
         return jsonify(message='Hook renouvelé'), 200
@@ -505,6 +393,14 @@ def get_hook_events():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
     if hook is not None:
         return jsonify(events=hook.trigger()), 200
+    return jsonify(message='Autorisation requise'), 401
+
+@webapp.route('/api/hook/events/<int:being_id>/<int:startTime>/<int:endTime>', methods=('GET',))
+@hook_jwt_check
+def get_hook_events_for(being_id, startTime, endTime):
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        return jsonify(events=hook.get_events_for(being_id, startTime, endTime)), 200
     return jsonify(message='Autorisation requise'), 401
 
 @webapp.route('/api/hook/format/<int:hook_id>', methods=('GET',))
