@@ -17,7 +17,7 @@ SCIZ_URL_BASE = 'https://www.sciz.fr/api/hook'
 #SCIZ_URL_BASE = 'http://127.0.0.1:8080/api/hook'
 SCIZ_URL_EVENTS = SCIZ_URL_BASE + '/events'
 SCIZ_URL_REQUEST = SCIZ_URL_BASE + '/request'
-SCIZ_INTERVAL = 1
+SCIZ_INTERVAL = 5
 
 # MAIN
 if __name__ == '__main__':
