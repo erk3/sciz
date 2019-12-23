@@ -395,12 +395,13 @@ def get_hook_events():
         return jsonify(events=hook.trigger()), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/events/<int:being_id>/<int:startTime>/<int:endTime>', methods=('GET',))
+@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>/<string:event_type>', methods=('GET',))
+@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>', methods=('GET',))
 @hook_jwt_check
-def get_hook_events_for(being_id, startTime, endTime):
+def get_hook_events_for(being_id, start_time, end_time, event_type = None):
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
     if hook is not None:
-        return jsonify(events=hook.get_events_for(being_id, startTime, endTime)), 200
+        return jsonify(events=hook.get_events_for(being_id, start_time, end_time, event_type)), 200
     return jsonify(message='Autorisation requise'), 401
 
 @webapp.route('/api/hook/format/<int:hook_id>', methods=('GET',))

@@ -5,12 +5,21 @@
 from classes.event import Event
 from classes.event_battle import battleEvent
 from classes.event_cdm import cdmEvent
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_
+from classes.event_aa import aaEvent
+from classes.event_tp import tpEvent
+from classes.event_cp import cpEvent
+from classes.event_tresor import tresorEvent
+from classes.event_champi import champiEvent
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.functions import ReturnTypeFromArgs
+
 import copy, requests, json, datetime
 import modules.globals as sg
 
+class unaccent(ReturnTypeFromArgs):
+    pass
 
 # CLASS DEFINITION
 class Hook(sg.sqlalchemybase):
@@ -83,20 +92,26 @@ class Hook(sg.sqlalchemybase):
             return None
 
     # Use the hook to get specific events
-    def get_events_for(self, being_id, start_time, end_time):
+    def get_events_for(self, being_id, start_time, end_time, event_type = None):
         if self.jwt is None: return
         # Build the list of active users
         users_id = self.coterie.members_list_sharing(None, None, True)
         # Find the events
         try:
-            events = sg.db.session.query(Event).filter(Event.owner_id.in_(users_id),
-                                                       Event.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
-                                                       Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0),
-                                                       or_(
-                                                           Event.mail_subject.ilike('%' + str(being_id) + '%'),
-                                                           Event.mail_body.ilike('%' + str(being_id) + '%')
-                                                           )
-                                                       ).order_by(asc(Event.time)).limit(50).all()
+            filter = and_(Event.owner_id.in_(users_id),
+                      Event.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
+                      Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0),
+                      or_(
+                          Event.mail_subject.ilike('%' + str(being_id) + '%'),
+                          Event.mail_body.ilike('%' + str(being_id) + '%')
+                      ))
+            if event_type is not None:
+                filter = and_(filter,
+                              or_(
+                                  unaccent(Event.mail_subject).ilike('%' + event_type + '%'),
+                                  unaccent(Event.mail_body).ilike('%' + event_type + '%')
+                              ))
+            events = sg.db.session.query(Event).filter(filter).order_by(asc(Event.time)).limit(50).all()
         except NoResultFound as e:
             events = []
         # Stringify the events
@@ -115,6 +130,20 @@ class Hook(sg.sqlalchemybase):
             elif isinstance(event, cdmEvent):
                 r['mob_id'] = event.mob_id
                 r['mob_nom'] = event.mob_nom
+            elif isinstance(event, tresorEvent):
+                r['tresor_id'] = event.tresor_id
+                r['tresor_nom'] = event.nom
+            elif isinstance(event, champiEvent):
+                r['champi_id'] = event.champi_id
+                r['champi_nom'] = event.nom
+            elif isinstance(event, aaEvent):
+                r['troll_id'] = event.troll_id
+                r['troll_nom'] = event.troll_nom
+            elif isinstance(event, cpEvent):
+                r['piege_id'] = event.piege_id
+                r['piege_type'] = event.piege_type
+            elif isinstance(event, tpEvent):
+                r['portail_id'] = event.portail_id
             res.append(r)
         return res
 

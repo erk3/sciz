@@ -13,7 +13,10 @@ ignored_subjects:
   roulotte: 'roulotte'
   hibernation: 'Hibernation'
   dla: 'DLA'
-  don: 'Don de \d+PX'
+  don_px: 'Don de \d+PX'
+  don_gg: 'Don de GG'
+  suivant_de: 'est arrivé'
+  achat: 'Achat de Trésor'
 
 # Known mail subjects to parse (first to match)
 # Keys must be 'CLASS_routine' formatted
@@ -34,6 +37,7 @@ subjects:
   tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
   battleEvent_piege: '(?P<type>Déclenchement de Piège)(?s)'
   battleEvent_sort: 'Sortilège : (?P<type>.+?)(\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+))?($|\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)|\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
+  battleEvent_sort_suivant: 'Sortilège\s+sur\s+Suivant\s*:\s*(?P<type>.+?)\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
   battleEvent_pouvoir: 'pouvoir \"(?P<type>.+)\"\s+d''(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
   battleEvent_pouvoir_alt: 'pouvoir du monstre n°(?P<att_id>\d+)\s+\((?P<att_nom>.+)\)(?s)'
   battleEvent_pouvoir_ter: 'pouvoir\s+d''(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
@@ -54,9 +58,10 @@ subjects:
   battleEvent_am: '(?P<type>Accélération du métabolisme)'
   battleEvent_camou: '(?P<type>Camouflage)'
   battleEvent_protection: '(?P<type>Protection)\s+de\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)'
-  battleEvent_prog: 'Compétence : (?P<type>Retraite|Parer|Parade|Contre-Attaque|Interposition)'
+  battleEvent_prog: 'Compétence (: )?(?P<type>Retraite|Parer|Parade|Contre-Attaque|Interposition|S''Interposer)(\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))?'
   battleEvent_baroufle_att: 'Compétence (?P<type>Baroufle)'
   battleEvent_baroufle_def: '(?P<type>Baroufle)\s+de\s+(?P<att_nom>.+)'
+  battleEvent_neige: '((?P<type>Lancer\s+de\s+Boule\s+de\s+Neige)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
 
 # Regexps for the forwarding confirmation mails
 MailHelper:
@@ -170,13 +175,13 @@ battleEvent:
   re_soin_sacro: '(soigné ((?P<def_nom>.+) \((?P<def_id>\d+)\) )?de\s+(?P<soin>\d+) Points de Vie)(?s)'
   re_blessure: 'Vous avez perdu (?P<blessure>\d+) (P|p)oints? de Vie'
   re_vie: '(reste actuellement|avez maintenant)\s+(?P<vie>\d+)\s+(p|P)oints? de (v|V)ie'
-  re_sort: '(effet\s+(théorique\s+)?suivant\s+(\(hors\s+décumul\)\s+)?:\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?\d+(D\d)?\s*%?)?(\s*\(\-(?P<pdv>\d+)\))?\n?((?P<def_nom>.+?)\s+\((?P<def_id>\d+)\))?)(?s)'
+  re_sort: '(effet\s+(théorique\s+)?suivant\s+(\(hors\s+décumul\)\s+)?:\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?\d+(D\d)?\s*%?)??(\s*\(\-(?P<pdv>\d+)\))?\n?((?P<def_nom>.+?)\s+\((?P<def_id>\d+)\))?)(?s)'
   re_def_sort_resi: 'Vous (n'')?(?P<flag_resist>avez) (?!pas )?réussi à y résister'
   re_piege_pose: '(((?P<flag_att>votre)|(?P<flag_def>un))\s+(?P<type>Piège\s+à\s+.+)\s+situé\s+en\s+X\s*=\s*(?P<pos_x>-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>-?\d+))(?s)'
   re_piege: '(Le\s+(Monstre|Troll)\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)\s+a\s+été\s+victime)(?s)'
   re_inter_def: '(a\s+attaqué\s+(?P<autre_nom>.+?)\s+\((?P<autre_id>\d+)\))(?s)'
   re_glue: '(?P<capa_effet>(immobilisé|englué))e? (pendant|pour) (?P<capa_tour>\d+) tours?'
-  re_gds: '(malus\s+de\s+(?P<capa_desc>Poison (Insidieux|Virulent))\s+de\s+(?P<capa_effet>\d+ PV)\s+pour\s+ses\s+(?P<capa_tour>\d+)\s+prochains\s+tours)(?s)'
+  re_gds: '(malus\s+de\s+(?P<capa_desc>Poison (Insidieux|Virulent))\s+de\s+(?P<capa_effet>\d+ PV)\s+pour\s+(ses|son)(\s+(?P<capa_tour>\d+))?\s+prochains?\s+tours?)(?s)'
   re_ronfle: '\(\d+\)\s+(?P<type>ronfle)\.'
   re_enfume: 'vous a (?P<type>enfumé)'
   re_fatigue: 'fatigue (est|a) augmentée? de (?P<fatigue>\d+)'
@@ -185,7 +190,7 @@ battleEvent:
   re_def_parcho_potion: '((?P<flag_def>été\s+influencé\s+par\s+l'')\s*effet\s+((du\s+Parchemin)|(de\s+la\s+Potion))\s+:\s+(?P<type>.+?)\.)(?s)'
   re_parcho_potion_effet: '(effet\s+(est\s+le\s+suivant\s+):\s+(?P<capa_effet>([^\n]+\n?[^\n]+\|)*[^\(]+?(\d+\s*(min|D\d)?|Effet\s+de\s+Zone)))(?s)'
   re_att_ldp: '(réussi\s+à\s+lancer\s+la\s+potion\s*:\s+(?P<type_potion>.+?)\s*\()(?s)'
-  re_att_ldp_rate: 'Vous avez (conplètement )?(?P<flag_ldp_rate>loupé votre cible)'
+  re_att_ldp_rate: 'Vous avez (complètement )?(?P<flag_ldp_rate>loupé votre cible)'
   re_siphon: '(malus\s+d''attaque\s+d(û|ü|u)\s+à\s+la\s+nécrose\s+de\s+(?P<capa_effet>\d+)\s+points?)(?s)'
   re_rafale: '(malus\s+de\s+(?P<capa_effet>\d+)\s+points?\s+pour\s+.*\s+régénérations)(?s)'
   re_ca: 'programmé une (?P<ca>CONTRE-ATTAQUE)'
@@ -217,3 +222,4 @@ battleEvent:
   re_baroufle_effet_ytseukayndof: '(?P<flag_baroufle_ytseukayndof>quelque\s+chose\s+de\s+magique)(?s)'
   re_baroufle_effet_ghimighimighimi: '(?P<flag_baroufle_ghimighimighimi>Quel\s+son\s+du\s+tonnerre)(?s)'
   re_baroufle_def: '(Le\s+troll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+a\s+barouflé)(?s)'
+  re_boule_def: '((?P<att_nom>[^\n]+)\s+\((?P<att_id>\d+)\)\s+vous\s+a\s+lancé\s+une\s+boule\s+de\s+neige)(?s)'

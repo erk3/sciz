@@ -177,8 +177,7 @@ class User(sg.sqlalchemybase):
             if not (1 * 60 <= self.web_session_duration <= 24 * 60):
                 return None
             self.mh_api_key = kwargs.get('pwd_mh')
-            self.max_mh_sp_dynamic = int(kwargs.get('max_sp_dyn'))
-            self.max_mh_sp_static = int(kwargs.get('max_sp_sta'))
+            self.max_mh_sp_dynamic = max(min(16, int(kwargs.get('max_sp_dyn'))), 0)
             self.community_sharing = kwargs.get('community_sharing')
             if not (0 <= self.max_mh_sp_dynamic <= 24 and 0 <= self.max_mh_sp_static <= 10):
                 return None
