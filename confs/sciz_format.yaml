@@ -169,7 +169,7 @@ tpEvent:
       Suffixe: ''
 
 cpEvent:
-  Notification: '{Horodatage} Piège à {Type de piège} {Identifiant du Piège} de {Troll} {Identifiant du Troll} {Position} {MM du piège} {PX}'
+  Notification: '{Horodatage} Piège à {Type de piège} {Identifiant du Piège} de {Troll} {Identifiant du Troll} {Position} {Dégâts du piège}{MM du piège} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
   Attributs:
@@ -197,6 +197,10 @@ cpEvent:
       Préfixe: '(MM '
       Attribut: '{o.piege_mm}'
       Suffixe: ')'
+    Dégâts du piège:
+      Préfixe: '(DEG '
+      Attribut: '{sg.str_min_max(o.deg_min, o.deg_max)}'
+      Suffixe: 'D3)'
 
 aaEvent:
   Notification: '{Horodatage} Analyse anatomique de {Troll} {Identifiant du Troll} sur {Troll cible} {Identifiant du Troll cible} : {Blessure} {Caractéristiques} {PX}'

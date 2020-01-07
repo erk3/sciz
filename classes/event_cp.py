@@ -7,6 +7,7 @@ from classes.lieu_piege import Piege
 from classes.being_troll_private import TrollPrivate
 from sqlalchemy import Column, Integer, String, ForeignKey, event, func, and_
 from sqlalchemy.orm import relationship
+import math
 import modules.globals as sg
 
 
@@ -29,6 +30,10 @@ class cpEvent(Event):
     pos_n = Column(Integer)
     # MM
     piege_mm = Column(Integer)
+    # Number of minimum dices for DEG (D3)
+    deg_min = Column(Integer)
+    # Number of maximum dices for DEG (D3)
+    deg_max = Column(Integer)
 
     # Associations
     piege = relationship('Piege', primaryjoin='cpEvent.piege_id==Piege.id')
@@ -46,6 +51,15 @@ class cpEvent(Event):
 
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
+@event.listens_for(cpEvent, 'before_insert')
+def play(mapper, connection, target):
+    if target.owner_id is not None:
+        troll = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+        if troll.base_esq_min is not None and troll.base_vue_min is not None:
+            target.deg_min = math.trunc((troll.base_vue_min + troll.base_esq_min) / 2)
+            target.deg_max = math.trunc((troll.base_vue_max + troll.base_esq_max) / 2)
+
+
 @event.listens_for(cpEvent, 'before_insert')
 def upsert_lieu_piege(mapper, connection, target):
     # Get or create the Trap
