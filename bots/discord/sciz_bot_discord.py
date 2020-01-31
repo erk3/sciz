@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # Define bot events
     @bot.event
     async def on_ready():
-        await bot.change_presence(game=Game(name='Mountyhall'))
+        await bot.change_presence(activity=Game(name='Mountyhall'))
         print('Logged in as ' + bot.user.name)
 
     # Define bot commands
@@ -43,24 +43,24 @@ if __name__ == '__main__':
         jwt = r.get(channel_id)
         # Handle ping
         if args == 'ping':
-            await bot.say('pong')
+            await ctx.send('pong')
             return
         # Handle unregister
         if args == 'unregister':
             r.delete(channel_id)
             r.save()
-            await bot.say('Hook supprimé pour ce canal')
+            await ctx.send('Hook supprimé pour ce canal')
             return
         # Handle register
         m = re.search('register (.*)', args)
         if m is not None:
             r.set(channel_id, m.group(1))
             r.save()
-            await bot.say('Hook enregistré pour ce canal')
+            await ctx.send('Hook enregistré pour ce canal')
             return
         # Handle no JWT
         if jwt is None:
-            await bot.say('Pas de hook enregistré pour ce canal')
+            await ctx.send('Pas de hook enregistré pour ce canal')
             return
         # Handle request
         try:
@@ -74,7 +74,15 @@ if __name__ == '__main__':
                         for m in response['message']:
                             if i < l - 1:
                                 m += "\n-\n"
-                            await bot.say(m)
+                            message = ''
+                            for part in m.split('\n'):
+                                if len(message) + len(part) > 2000:
+                                    await ctx.send(message)
+                                    message = part
+                                else:
+                                    message += '\n' + part
+                            if message != '':
+                                await ctx.send(message)
                             i += 1
                 raw_response.release()
         except Exception as e:
@@ -109,4 +117,3 @@ if __name__ == '__main__':
         bot.run(DISCORD_BOT_TOKEN)
     except Exception as e:
         task.cancel()
-

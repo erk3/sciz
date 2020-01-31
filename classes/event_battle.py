@@ -441,6 +441,10 @@ def upsert_privates(mapper, connection, target):
 @event.listens_for(battleEvent, 'before_insert')
 def play(mapper, connection, target):
     t = target.type.lower()
+    # Generic
+    if 'neige' in t:
+        target.capa_effet = 'DLA : +1 minute'
+        target.capa_tour = 1
     # Attacker is a troll
     if target.att_id is not None and not Being.is_mob(target.att_id):
         at = sg.db.session.query(TrollPrivate).get((target.att_id, target.owner_id))
