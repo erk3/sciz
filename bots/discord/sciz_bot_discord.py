@@ -92,7 +92,7 @@ if __name__ == '__main__':
     # Define bot routine (SCIZ events)
     async def _sciz_fetch_events(url, interval):
         await bot.wait_until_ready()
-        while not bot.is_closed:
+        while True:
             await asyncio.sleep(interval)
             try:
                 for channel_id in r.keys('*'):
@@ -105,7 +105,7 @@ if __name__ == '__main__':
                             if 'events' in response:
                                 for e in response['events']:
                                     if 'message' in e:
-                                        await bot.send_message(bot.get_channel(channel_id.decode()), e['message'])
+                                        await bot.get_channel(int(channel_id)).send(e['message'])
                         raw_response.release()
             except Exception as e:
                 print(e, file=sys.stderr)
@@ -116,4 +116,5 @@ if __name__ == '__main__':
     try:
         bot.run(DISCORD_BOT_TOKEN)
     except Exception as e:
+        print(e)
         task.cancel()
