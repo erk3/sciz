@@ -10,6 +10,7 @@ from classes.event_tp import tpEvent
 from classes.event_cp import cpEvent
 from classes.event_tresor import tresorEvent
 from classes.event_champi import champiEvent
+from classes.tresor_private import TresorPrivate
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
@@ -90,6 +91,34 @@ class Hook(sg.sqlalchemybase):
             return sg.db.upsert(self)
         except Exception:
             return None
+
+    # Use the hook to get specific treasures
+    def get_treasures_for(self, treasures_id):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(True, None, True)
+        # Find the treasures
+        del treasures_id[100:]
+        treasures = []
+        for _id in treasures_id:
+            try:
+                treasure = sg.db.session.query(TresorPrivate).join(TresorPrivate.tresor_meta) \
+                    .filter(and_(TresorPrivate.viewer_id.in_(users_id), TresorPrivate.tresor_id == _id)) \
+                    .order_by(TresorPrivate.last_event_update_at.desc().nullslast(),
+                              TresorPrivate.last_seen_at.desc().nullslast())\
+                    .limit(1).all()
+                for t in treasure:
+                    treasures.append({
+                        'id': t.tresor_id,
+                        'type': t.type,
+                        'nom': t.nom,
+                        'templates': t.templates,
+                        'mithril': t.mithril,
+                        'effet': t.effet,
+                    });
+            except NoResultFound:
+                pass
+        return treasures
 
     # Use the hook to get specific events
     def get_events_for(self, being_id, start_time, end_time, event_type = None):

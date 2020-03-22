@@ -404,6 +404,17 @@ def get_hook_events_for(being_id, start_time, end_time, event_type = None):
         return jsonify(events=hook.get_events_for(being_id, start_time, end_time, event_type)), 200
     return jsonify(message='Autorisation requise'), 401
 
+@webapp.route('/api/hook/treasures', methods=('POST',))
+@hook_jwt_check
+def get_hook_treasures_for():
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        data = request.get_json()
+        if 'ids' not in data:
+            return jsonify(message='Une erreur est survenue...'), 400
+        return jsonify(treasures=hook.get_treasures_for(data.get('ids'))), 200
+    return jsonify(message='Autorisation requise'), 401
+
 @webapp.route('/api/hook/format/<int:hook_id>', methods=('GET',))
 @user_jwt_check
 def get_hook_format(hook_id):
