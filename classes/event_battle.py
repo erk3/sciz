@@ -206,6 +206,9 @@ class battleEvent(Event):
             self.att_id, self.att_nom = fix_id, fix_nom
         if self.autre_id is not None and self.type is not None and 'interposition' in self.type.lower():
             self.type = 'Attaque'
+        # Add tag in the mob name if Marquage
+        if self.type is not None and 'marquage' in self.type.lower() and hasattr(self, 'tag') and self.tag is not None:
+            self.def_nom += ' ' + self.tag
         # If the event is a duplicata for capabilities of monsters triggered at death, reverse it instead of doing the following
         if hasattr(self, 'capa_dead') and self.capa_dead is not None:
             self.build_reverse()
@@ -234,6 +237,20 @@ class battleEvent(Event):
                 self.capa_effet += ('' if self.capa_effet == '' else ' ;') + ' BM magiques'
             if hasattr(self, 'flag_baroufle_ghimighimighimi') and self.flag_baroufle_ghimighimighimi is not None:
                 self.capa_effet += ('' if self.capa_effet == '' else ' ;') + ' Autobaroufle'
+        # Fix Dressage
+        if self.type is not None and 'dressage' in self.type.lower():
+            if hasattr(self, 'flag_dressage_nok_hit') and self.flag_dressage_nok_hit is not None:
+                self.type += ' impossible (effrayé)'
+            if hasattr(self, 'flag_dressage_nok_sr') and self.flag_dressage_nok_sr is not None:
+                self.type += ' raté'
+            if hasattr(self, 'flag_dressage_nok_mouchoo') and self.flag_dressage_nok_mouchoo is not None:
+                self.type += ' impossible (non mouché)'
+            if hasattr(self, 'flag_dressage_start') and self.flag_dressage_start is not None:
+                self.type += ' démarré'
+            if hasattr(self, 'flag_dressage_almost_ok') and self.flag_dressage_almost_ok is not None:
+                self.type += ' bientôt terminé'
+            if hasattr(self, 'flag_dressage_ok') and self.flag_dressage_ok is not None:
+                self.type += ' terminé'
         # Fix Camouflage effect for PM
         if self.type is not None and 'projectile' in self.type.lower() and self.capa_effet is not None and 'camouflage' in self.capa_effet.lower():
             self.capa_effet = re.sub(r'(est|a\s+été)\s+', '', self.capa_effet.capitalize())

@@ -63,6 +63,8 @@ subjects:
   battleEvent_baroufle_att: 'Compétence (?P<type>Baroufle)'
   battleEvent_baroufle_def: '(?P<type>Baroufle)\s+de\s+(?P<att_nom>.+)'
   battleEvent_neige: '((?P<type>Lancer\s+de\s+Boule\s+de\s+Neige)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
+  battleEvent_painthure: '(?P<type>Painthure de Guerre)'
+  battleEvent_dressage: '(Compétence\s*:\s*(?P<type>Dressage)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
 
 # Regexps for the forwarding confirmation mails
 MailHelper:
@@ -73,8 +75,8 @@ MailHelper:
 # Regexps common to all MH mails
 common:
   # Note : we could (should?) retrieve the owner_id from the mail directory tree parsing
-  re_troll: 'Tr(õ|o)ll n°(?P<owner_id>\d+)\s+:\s+(?P<owner_nom>.+)'
-  re_suivant: 'Suivant n°(?P<suivant_id>\d+)\s+:\s+(?P<suivant_nom>.+)'
+  re_troll: 'Tr(õ|o)ll n°(?P<owner_id>\d+)\s*:\s*(?P<owner_nom>.+)'
+  re_suivant: 'Suivant n°(?P<suivant_id>\d+)\s*:\s*(?P<suivant_nom>.+)'
   re_type: '(Vous avez|Le Suivant n°\d+ a) été impliqué dans un événement : (?P<mh_type>.*)\.'
   re_time: 'Il était alors (aux alentours de )?: (?P<time>.*)\.'
   re_px: 'gagné (un total de )?(?P<px>\d+) PX'
@@ -226,3 +228,12 @@ battleEvent:
   re_baroufle_effet_ghimighimighimi: '(?P<flag_baroufle_ghimighimighimi>Quel\s+son\s+du\s+tonnerre)(?s)'
   re_baroufle_def: '(Le\s+troll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+a\s+barouflé)(?s)'
   re_boule_def: '((?P<att_nom>[^\n]+)\s+\((?P<att_id>\d+)\)\s+vous\s+a\s+lancé\s+une\s+boule\s+de\s+neige)(?s)'
+  re_painthure: '(Le\s+troll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+a\s+réalisé\s+une\s+painthure\s+de\s+guerre\s+sur\s+le\s+visage\s+de\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
+  re_painthure_face: 'Il\s+a\s+painthuré\s*:\s*(?P<capa_desc>.+)'
+  re_painthure_effet: '(Cette\s+painthure\s+de\s+guerre\s+a\s+pour\s+effet\s*:\s*\[(?P<capa_effet>.+)\]\s+pendant\s+(?P<capa_tour>\d+)\s+DLA)(?s)'
+  re_dressage_nok_hit: '(?P<flag_dressage_nok_hit>semble\s+effrayé\s+par\s+vos\s+paroles)(?s)'
+  re_dressage_nok_sr: '(?P<flag_dressage_nok_sr>tourne\s+sa\s+tête\s+visiblement\s+inquiet\s+de\s+quelque\s+chose)(?s)'
+  re_dressage_nok_mouchoo: '(?P<flag_dressage_nok_mouchoo>avait\s+quelques\s+mouches\s+à\s+vous\s+peut\s+être\s+que)(?s)'
+  re_dressage_start: '(?P<flag_dressage_start>vous\s+a\s+remarqué\s*,\s*il\s+vous\s+regarde)(?s)'
+  re_dressage_almost_ok: '(?P<flag_dressage_almost_ok>boit\s+littéralement\s+vos\s+paroles)(?s)'
+  re_dressage_ok: '(?P<flag_dressage_ok>Bravo\s*,\s*vous\s+êtes\s+parvenu\s+à\s+dresser)(?s)'
