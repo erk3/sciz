@@ -100,6 +100,10 @@ class AdminHelper:
         last_ftp_call = None
         while True:
             now = datetime.datetime.now()
+            if sg.time_in_between(now.time(), datetime.time(4), datetime.time(5)):
+                # MH is down between 4am and 5am
+                time.sleep(60)
+                continue
             if last_ftp_call is None or (now - last_ftp_call).total_seconds() >= self.ftpRefresh * 60:
                 try:
                     sg.mc.trolls2_ftp_call()

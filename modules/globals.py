@@ -167,6 +167,13 @@ def minutes_to_time(minutes):
     return None
 
 
+def time_in_between(now, start, end):
+    if start <= end:
+        return start <= now < end
+    else:
+        return start <= now or now < end
+
+
 def copy_properties(src, dst, names, with_none):
     for n in names:
         if hasattr(src, n):

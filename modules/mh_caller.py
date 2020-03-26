@@ -212,6 +212,11 @@ class MhCaller:
         mh_r = requests.get('http://%s/%s?%s=%s&%s=%s' % (self.spURL, self.spProfil4, self.spParamID, user.id, self.spParamAPIKEY, user.mh_api_key))
         mh_call = MhCall(user_id=user.id, nom='Profil4', type='Dynamique', time=now, status=0)
         # Check for error
+        if mh_r.status_code != 200:
+            sg.logger.warning('Could not request profil4 for user %s, got HTTP code %d' % (user.id, mh_r.status_code,))
+            mh_call.status = 4
+            sg.db.upsert(mh_call)
+            return False
         res = re.search(r'Erreur\s+(\d)', mh_r.text)
         if res is not None:
             mh_call.status = res.group(1)
@@ -346,6 +351,11 @@ class MhCaller:
         mh_r = requests.get('http://%s/%s?%s=%s&%s=%s&%s=1&%s=1&%s=1' % (self.spURL, self.spVue2, self.spParamID, user.id, self.spParamAPIKEY, user.mh_api_key, self.spParamLieux, self.spParamTresors, self.spParamChampis))
         mh_call = MhCall(user_id=user.id, nom='Vue2', type='Dynamique', time=now, status=0)
         # Check for error
+        if mh_r.status_code != 200:
+            sg.logger.warning('Could not request Vue2 for user %s, got HTTP code %d' % (user.id, mh_r.status_code,))
+            mh_call.status = 4
+            sg.db.upsert(mh_call)
+            return False
         res = re.search(r'Erreur\s+(\d)', mh_r.text)
         if res is not None:
             mh_call.status = res.group(1)
