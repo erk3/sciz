@@ -136,6 +136,7 @@
 												<td><v-icon size="16px" :color="props.item.partage.sharingEvents ? 'green' : 'red'">{{ props.item.partage.sharingEvents ? 'fas fa-check-circle' : 'fas fa-times-circle'}}</v-icon></td>
 												<td><v-icon size="16px" :color="props.item.partage.sharingProfile ? 'green' : 'red'">{{ props.item.partage.sharingProfile ? 'fas fa-check-circle' : 'fas fa-times-circle'}}</v-icon></td>
 												<td><v-icon size="16px" :color="props.item.partage.sharingView ? 'green' : 'red'">{{ props.item.partage.sharingView ? 'fas fa-check-circle' : 'fas fa-times-circle'}}</v-icon></td>
+												<td class="fill-height"><v-layout row wrap align-center justify-center fill-height><v-flex xs12 d-flex><v-spacer></v-spacer><v-switch :disabled="props.item.partage.user_id !== userData().id && !partage_courant.admin " v-model="props.item.partage.hookPropagation"></v-switch></v-flex></v-layout></td>
 								    	</template>
 								  	</v-data-table>
           				</v-card-text>
@@ -305,7 +306,8 @@
           { text: 'Nom', align: 'center', value: 'nom' },
           { text: 'Evénéments', align: 'center', value: 'partage.sharingEvents' },
           { text: 'Profil', align: 'center', value: 'partage.sharingProfile' },
-          { text: 'Vue', align: 'center', value: 'partage.sharingView' }
+          { text: 'Vue', align: 'center', value: 'partage.sharingView' },
+          { text: 'Propagation', align: 'center', value: 'partage.hookPropagation' }
         ],
 	
 			}
@@ -455,3 +457,13 @@
 	}
 </script>
 
+<!-- STYLE -->
+<style>
+.v-input__control {
+	height:100% !important;
+}
+.v-input__slot {
+	height: 100%;
+	margin: 0 !important;
+}
+</style>

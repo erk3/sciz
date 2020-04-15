@@ -120,6 +120,31 @@ class Hook(sg.sqlalchemybase):
                 pass
         return treasures
 
+    # Use the hook to get specific mushrooms
+    #def get_mushrooms_for(self, mushrooms_id):
+    #    if self.jwt is None: return
+    #    # Build the list of active users
+    #    users_id = self.coterie.members_list_sharing(True, None, True)
+    #    # Find the mushrooms
+    #    del mushrooms_id[100:]
+    #    mushrooms = []
+    #    for _id in mushrooms_id:
+    #        try:
+    #            mushroom = sg.db.session.query(ChampiPrivate) \
+    #                .filter(and_(ChampiPrivate.viewer_id.in_(users_id), ChampiPrivate.champi_id == _id)) \
+    #                .order_by(ChampiPrivate.last_event_update_at.desc().nullslast(),
+    #                          ChampiPrivate.last_seen_at.desc().nullslast()) \
+    #                .limit(1).all()
+    #            for m in mushroom:
+    #                mushrooms.append({
+    #                    'id': m.tresor_id,
+    #                    'nom': m.nom,
+    #                    'qualite': m.qualite,
+    #                });
+    #        except NoResultFound:
+    #            pass
+    #    return mushrooms
+
     # Use the hook to get specific events
     def get_events_for(self, being_id, start_time, end_time, event_type = None):
         if self.jwt is None: return
@@ -181,7 +206,8 @@ class Hook(sg.sqlalchemybase):
         if self.jwt is None and not force: return
         if self.last_event_id is None: self.last_event_id = 0
         # Build the list of active users
-        users_id = self.coterie.members_list_sharing(None, None, True)
+        users_id = self.coterie.members_list_sharing(None, None, True, None)
+        users_id_withHookPropagation = self.coterie.members_list_sharing(None, None, True, True)
         # Find the events
         try:
             events = sg.db.session.query(Event).filter(Event.owner_id.in_(users_id), Event.id > self.last_event_id).order_by(asc(Event.time)).all()
@@ -191,9 +217,10 @@ class Hook(sg.sqlalchemybase):
         max_id, res = 0, []
         for event in events:
             max_id = max(event.id, max_id)
-            res.append({'id': event.id, 'message': sg.no.stringify(event, self.format)})
+            if event.owner_id in users_id_withHookPropagation:
+                res.append({'id': event.id, 'message': sg.no.stringify(event, self.format)})
         # Update the hook
-        if len(res) > 0:
+        if max_id > 0 and self.last_event_id is not None and max_id > self.last_event_id:
             self.last_event_id = max_id
             sg.db.upsert(self)
         # If it's a reverse hook, push it

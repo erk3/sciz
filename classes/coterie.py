@@ -60,13 +60,13 @@ class Coterie(sg.sqlalchemybase):
             users_id += str(partage.user_id) if users_id == '' else ',' + str(partage.user_id)
         return sg.conf[sg.CONF_MH_SECTION][sg.CONF_LINK_PX] + users_id
 
-    def members_list_sharing(self, view=None, profil=None, events=None):
+    def members_list_sharing(self, view=None, profil=None, events=None, checkProp=None):
         users_id = []
         for partage in self.partages_actifs:
             if partage.user_id not in users_id:
                 if (view is None or view == partage.sharingView)\
                         and (profil is None or profil == partage.sharingProfile)\
-                        and (events is None or partage.sharingEvents):
+                        and (events is None or (partage.sharingEvents and (checkProp is None or partage.hookPropagation))):
                     users_id.append(partage.user_id)
         return users_id
 
@@ -146,10 +146,13 @@ class Coterie(sg.sqlalchemybase):
                 if is_admin:
                     if not (partage.admin and len(self.partages_admins) <= 1):
                         partage.admin = user['partage']['admin']
+                    partage.hookPropagation = user['partage']['hookPropagation']
                 if partage.user_id == updater_id:
                     partage.sharingEvents = user['partage']['sharingEvents']
                     partage.sharingProfile = user['partage']['sharingProfile']
                     partage.sharingView = user['partage']['sharingView']
+                    partage.hookPropagation = user['partage']['hookPropagation']
+
         return sg.db.upsert(self)
 
     @classmethod

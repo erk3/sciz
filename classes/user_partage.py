@@ -31,6 +31,8 @@ class Partage(sg.sqlalchemybase):
     sharingProfile = Column(Boolean, default=True)
     # Is sharing its vue?
     sharingView = Column(Boolean, default=True)
+    # Are events pushed to hooks?
+    hookPropagation = Column(Boolean, default=True)
 
     # Associations
     user = relationship('User', back_populates='partages', primaryjoin='Partage.user_id == User.id')
