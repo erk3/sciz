@@ -32,6 +32,7 @@ subjects:
   cpEvent: 'Compétence\s*:\s*Piège '
   champiEvent_idc: '(?P<type>Identification des (c|C)hampignons)'
   champiEvent_ramasser: '(?P<type>Ramass(er|age)) (d''un )?(c|C)hampignon'
+  champiEvent_planter: '(?P<type>Planter) un champignon (?P<nom>.+)\s+(?P<qualite>.+?)\s+\((?P<champi_id>\d+)\)\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+Y\s*=\s*(?P<pos_y>\-?\d+)\s+N\s*=\s*(?P<pos_n>\-?\d+)'
   tresorEvent_idt: '(?P<type>Identification des (t|T)résors)'
   tresorEvent_telek: '(?P<type>Télékinésie)'
   tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
@@ -139,6 +140,7 @@ champiEvent:
   re_idc_ramassage: '(reconnu le|cueillir? un) (c|C)hampignon( :)? (?P<nom>.+)\s+(?P<qualite>.+?)\s+\((?P<champi_id>\d+)\)'
   re_inconnu: 'cueillir? un (c|C)hampignon (i|I)nconnu \((?P<champi_id>\d+)\)'
   re_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
+  re_planter_nok: '(?P<flag_planter_nok>Le champignon est détruit)'
 
 # Regexps for tresorEvent
 tresorEvent:

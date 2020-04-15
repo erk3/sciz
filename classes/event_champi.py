@@ -47,6 +47,12 @@ class champiEvent(Event):
         super().build()
         if self.type is not None and 'ramassage' in self.type.lower():
             self.type = 'Cueillette'
+        if self.type is not None and 'planter' in self.type.lower():
+            self.type = 'Jardinage'
+            if hasattr(self, 'flag_planter_nok') and self.flag_planter_nok is not None:
+                self.type += ' raté (champignon détruit)'
+            else:
+                self.type += ' réussi'
         if self.nom is None:
             self.nom = 'Champignon Inconnu'
 
