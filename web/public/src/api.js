@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // DEBUG MODE ONLY
-// const API_URL = 'http://127.0.0.1:8080/api'
+//const API_URL = 'http://127.0.0.1:8080/api'
 // PRODUCTION MODE ONLY
 const API_URL = '/api'
 
@@ -33,6 +33,11 @@ export function getMobs() {
 
 export function getnbCDM() {
 	return axios.get(API_URL + '/nbCDM');
+}
+
+// MH_CALL
+export function doMHCall(script) {
+	return axios.post(API_URL + '/mh_sp_call/' + script);
 }
 
 // PROFIL
