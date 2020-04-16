@@ -48,17 +48,19 @@ class MhCaller:
         self.ftpEvents = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_EVENTS]
 
     # Main MH caller (should never be a show-stopper, if MH is down for example)
-    def call(self, user, scripts, verbose=False):
+    def call(self, user, scripts, verbose=False, manual=False):
         if scripts is None:
             scripts = ['profil4', 'vue2']
+        res = True
         for script in scripts:
             try:
                 mh_callable = getattr(self, script + '_sp_call')
-                mh_callable(user, verbose)
+                res &= mh_callable(user, verbose, manual)
             except Exception as e:
                 sg.logger.warning('Error while calling script %s: %s' % (script, e))
                 sg.logger.exception(e)
                 sg.db.session.rollback()
+        return res
 
     # Caller to MH Trolls2 FTP
     # See http://ftp.mountyhall.com/help.txt
@@ -205,12 +207,12 @@ class MhCaller:
         session.close()
 
     # Caller to the Profil4 SP
-    def profil4_sp_call(self, user, verbose=False):
+    def profil4_sp_call(self, user, verbose=False, manual=False):
         sg.logger.info('Calling profil4 for user %s' % user.id)
         now = datetime.datetime.now()
         # Fetch the data from MH
         mh_r = requests.get('http://%s/%s?%s=%s&%s=%s' % (self.spURL, self.spProfil4, self.spParamID, user.id, self.spParamAPIKEY, user.mh_api_key))
-        mh_call = MhCall(user_id=user.id, nom='Profil4', type='Dynamique', time=now, status=0)
+        mh_call = MhCall(user_id=user.id, nom='Profil4', type='Dynamique', time=now, status=0, manual=manual)
         # Check for error
         if mh_r.status_code != 200:
             sg.logger.warning('Could not request profil4 for user %s, got HTTP code %d' % (user.id, mh_r.status_code,))
@@ -343,13 +345,13 @@ class MhCaller:
         return True
 
     # Caller to the Vue2 SP
-    def vue2_sp_call(self, user, verbose=False):
+    def vue2_sp_call(self, user, verbose=False, manual=False):
         sg.logger.info('Calling vue2 for user %s' % user.id)
         now = datetime.datetime.now()
         sep = ';'
         # Fetch the data from MH
         mh_r = requests.get('http://%s/%s?%s=%s&%s=%s&%s=1&%s=1&%s=1' % (self.spURL, self.spVue2, self.spParamID, user.id, self.spParamAPIKEY, user.mh_api_key, self.spParamLieux, self.spParamTresors, self.spParamChampis))
-        mh_call = MhCall(user_id=user.id, nom='Vue2', type='Dynamique', time=now, status=0)
+        mh_call = MhCall(user_id=user.id, nom='Vue2', type='Dynamique', time=now, status=0, manual=manual)
         # Check for error
         if mh_r.status_code != 200:
             sg.logger.warning('Could not request Vue2 for user %s, got HTTP code %d' % (user.id, mh_r.status_code,))

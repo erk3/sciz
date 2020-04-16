@@ -158,6 +158,13 @@ class User(sg.sqlalchemybase):
                 user = sg.db.upsert(user)
         return user, ''
 
+    def nb_calls_today(self, type):
+        if type not in ['Dynamique', 'Statique']:
+            return -1
+        now = datetime.datetime.now()
+        since = now - datetime.timedelta(hours=24)
+        return self.mh_calls.filter(MhCall.time > since, MhCall.status == 0, MhCall.type == type).count()
+
     def members_list_sharing(self, view=None, profil=None, events=None):
         users_id = []
         for my_partage in self.partages_actifs:

@@ -172,7 +172,8 @@ def get_profil():
     res = jsonify(pseudo=user.nom, sciz_mail=user.mail, user_mail=user.user_mail,
                   session=user.web_session_duration // 60, pwd_mh=user.mh_api_key,
                   max_sp_dyn=user.max_mh_sp_dynamic, max_sp_sta=user.max_mh_sp_static,
-                  community_sharing=user.community_sharing)
+                  community_sharing=user.community_sharing, count_sp_dyn=user.nb_calls_today('Dynamique'),
+                  count_sp_sta=user.nb_calls_today('Statique'))
     return res, 200
 
 @webapp.route('/api/profil', methods=('POST',))
@@ -415,6 +416,17 @@ def get_hook_treasures_for():
         return jsonify(treasures=hook.get_treasures_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
+#@webapp.route('/api/hook/mushrooms', methods=('POST',))
+#@hook_jwt_check
+#def get_hook_mushrooms_for():
+#    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+#    if hook is not None:
+#        data = request.get_json()
+#        if 'ids' not in data:
+#            return jsonify(message='Une erreur est survenue...'), 400
+#        return jsonify(treasures=hook.get_mushrooms_for(data.get('ids'))), 200
+#    return jsonify(message='Autorisation requise'), 401
+
 @webapp.route('/api/hook/format/<int:hook_id>', methods=('GET',))
 @user_jwt_check
 def get_hook_format(hook_id):
@@ -445,6 +457,27 @@ def reset_hook_format(hook_id):
         sg.db.upsert(hook)
         return jsonify(message='Configuration réinitialisée'), 200
     return jsonify(message='Autorisation requise'), 401
+
+# MH CALL
+@webapp.route('/api/mh_sp_call/<string:script>', methods=('POST',))
+@user_jwt_check
+def mh_sp_call(script):
+    # Sanity check
+    user = sg.db.session.query(User).get(get_jwt_identity())
+    type = 'Dynamique' if script in ['profil4', 'vue2'] else None
+    #type = 'Statique' if script in [''] else type
+    if user is None or type is None:
+        return jsonify(message='Une erreur est survenue...'), 400
+    # Limits check
+    if type == 'Dynamique' and user.nb_calls_today('Dynamique') >= 24:
+        return jsonify(message='Maximum de 24 appels aux scripts dynamiques par jour atteint...'), 401
+    if type == 'Statique' and user.nb_calls_today('Statique') >= 12:
+        return jsonify(message='Maximum de 12 appels aux scripts statiques par jour atteint...'), 401
+    # Actual call
+    if sg.mc.call(user, [script], False, True):
+        return jsonify(message='Appel a %s effectué !' % (script,)), 200
+    return jsonify(message='Une erreur est survenue...'), 400
+
 
 # DEFAULT ROUTE (redirect to VueJS client)
 @webapp.route('/', defaults={'path': ''})

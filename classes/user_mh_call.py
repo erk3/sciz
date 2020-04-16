@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, PrimaryKeyConstraint
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
@@ -22,6 +22,8 @@ class MhCall(sg.sqlalchemybase):
     time = Column(DateTime)
     # Status of the call (0 for success, 1-6 for error as defined by MH)
     status = Column(Integer())
+    # Is it a manual call?
+    manual = Column(Boolean, default=False)
 
     # Associations
     user = relationship('User', back_populates='mh_calls')

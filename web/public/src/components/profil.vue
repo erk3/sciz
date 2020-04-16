@@ -98,8 +98,21 @@
         			<v-card-text class="text-xs-center">
         				<v-layout align-center justify-center>
 									<v-flex xs8>
-										<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint></v-text-field><br/>
-										<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="16" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint></v-slider><br/>
+									<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint></v-text-field><br/>
+									<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="16" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint></v-slider><br/><br/>
+									<v-tooltip left>
+										<v-progress-circular slot="activator" rotate="90" size="100" width="15" :value="user.count_sp_dyn/24*100" :color="user.count_sp_dyn <= user.max_sp_dyn ? 'green' : (user.count_sp_dyn <= 18 ? 'orange' : 'red')">{{ user.count_sp_dyn }}</v-progress-circular> 
+										<span>Maximum 24</span>
+									</v-tooltip> <span class="ml-4 body-1">appels aux scripts dynamiques ces dernières 24 heures</span><br/>
+									<br/><br/>
+									<v-tooltip top>
+										<v-btn slot="activator" small color="warning" dark @click="mh_call('profil4')" :disabled="sp_call_disabled">Rafraichir mon profil</v-btn>
+										<span>1 appel au script dynamique Profil4</span>
+									</v-tooltip>
+									<v-tooltip top>
+										<v-btn slot="activator" small color="warning" dark @click="mh_call('vue2')" :disabled="sp_call_disabled">Rafraichir ma vue</v-btn>
+										<span>1 appel au script dynamique Vue2</span>
+									</v-tooltip>
 									</v-flex>
 								</v-layout>	
 							</v-card-text>
@@ -115,6 +128,8 @@
           			<v-card-text v-show="show_calls" class="text-xs-center">
 									<v-data-table :headers="headers" :items="calls" class="elevation-1" hide-actions disable-initial-sort>
     								<template slot="items" slot-scope="props">
+								      <td v-if="props.item.manual">Manuel</td>
+								      <td v-else>Automatique</td>
 								      <td>{{ props.item.nom }}</td>
 								      <td>{{ props.item.type }}</td>
 								      <td>{{ props.item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
@@ -157,7 +172,7 @@
 <!-- SCRIPT -->
 <script>
 	import { EventBus } from '~/src/store.js'
-	import { getProfil, deleteProfil, getMhCalls, resetPassword } from '~/src/api.js'
+	import { getProfil, deleteProfil, getMhCalls, resetPassword, doMHCall } from '~/src/api.js'
 	
 	export default {
     name: 'ProfilView',
@@ -168,6 +183,7 @@
 			error_msg: '',
 			success: false,
 			success_msg: '',
+			sp_call_disabled: false,
 			info: false,
 			info_msg: '',
 			show_calls: false,
@@ -175,6 +191,7 @@
 			page: 1,
 			max_pages: 1,
 			headers: [
+          { text: 'Origine', align: 'center', value: 'manual' },
           { text: 'Nom', align: 'center', value: 'nom' },
           { text: 'Type', align: 'center', value: 'type' },
           { text: 'Horodatage', align: 'center', value: 'time' },
@@ -211,12 +228,37 @@
 						this.user.session = res.data['session'] || '';
 						this.user.pwd_mh = res.data['pwd_mh'] || '';
 						this.user.max_sp_dyn = res.data['max_sp_dyn'] || '';
+						this.user.max_sp_sta = res.data['max_sp_sta'] || '';
 						this.user.community_sharing = res.data['community_sharing'];
+						this.user.count_sp_dyn = res.data['count_sp_dyn'] || '';
+						this.user.count_sp_sta = res.data['count_sp_sta'] || '';
 					}
 				});
 			this.getCalls();
 		},
 		methods: {
+			mh_call (script) {
+				this.sp_call_disabled = true;
+				doMHCall(script)
+					.then(res => { 
+						this.success = true;
+						this.success_msg = res.data.message;
+						if (['profil4', 'vue2'].indexOf(script) > -1) {
+							this.user.count_sp_dyn += 1;
+						}
+						this.getCalls();
+						this.sp_call_disabled = false;
+					})
+					.catch(err => {
+						this.error = true;
+						if (err.response && err.response.data && err.response.data.message) {
+							this.error_msg = err.response.data.message;
+						} else {
+							this.error_msg = 'Une erreur est survenue...';
+						}
+						this.sp_call_disabled = false;
+					});
+			},
 			switchMode (mode) {
 				this.$store.commit('setMode', mode);
 			},
