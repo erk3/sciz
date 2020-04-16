@@ -302,7 +302,7 @@
 									item.img = this.Image('trap');
 								} else if (item.event.sciz_type === 'Combat') {
 									if (item.repr.includes('MORT')) {
-										item.img = this.Image('deadflag');
+										item.img = this.Image('skull');
 									} else if (item.repr.includes('Hurlement')) {
 										item.img = this.Image('scream');
 									} else if (item.repr.includes('Insulte')) {
@@ -343,6 +343,10 @@
 										item.img = this.Image('trumpet');
 									} else if (item.repr.includes('Flash')) {
 										item.img = this.Image('light-bulb');
+									} else if (item.repr.includes('Painthure')) {
+										item.img = this.Image('paintbrush');
+									} else if (item.repr.includes('Dressage')) {
+										item.img = this.Image('medal');
 									} else if (item.event.def_id === null) {
 										item.img = this.Image('pickaxe-wand-icon');
 									} else if (item.event.att_id !== null && item.event.att_id.toString().length > 6){
