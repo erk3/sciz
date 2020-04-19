@@ -56,6 +56,9 @@ class champiEvent(Event):
         if self.nom is None:
             self.nom = 'Champignon Inconnu'
 
+    def icon(self):
+        return 'mushroom-map-icon.svg'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(champiEvent, 'before_insert')

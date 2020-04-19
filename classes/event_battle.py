@@ -384,6 +384,59 @@ class battleEvent(Event):
         if hasattr(self, 'capa_dead_resist'):
             self.flag_resist = self.capa_dead_resist is not None
 
+    def icon(self):
+        if self.mort:
+            return 'skull.svg'
+        if 'Hurlement' in self.type:
+            return 'scream.svg'
+        if 'Insulte' in self.type:
+            return 'profanity.svg'
+        if 'Pistage' in self.type:
+            return 'foot-print.svg'
+        if 'Marquage' in self.type:
+            return 'nib.svg'
+        if 'Vue troublée' in self.type:
+            return 'blind.svg'
+        if 'Voir le caché' in self.type:
+            return 'crystal-ball.svg'
+        if 'Hypnotisme' in self.type:
+            return 'hypnosis.svg'
+        if 'Armure ethérée' in self.type:
+            return 'armor.svg'
+        if 'Vision accrue' in self.type:
+            return 'binoculars.svg'
+        if any(w in self.type for w in [' programmée', 'Protection ']):
+            return 'stopwatch.svg'
+        if any(w in self.type for w in ['Explosion ', 'Piège à feu']):
+            return 'explosion.svg'
+        if any(w in self.type for w in ['Glue de', 'Piège à glue']):
+            return 'glue.svg'
+        if any(w in self.type for w in ['Camouflage de', ' invisibilité']):
+            return ' invisible-man.svg'
+        if 'Vision lointaine' in self.type:
+            return 'telescope.svg'
+        if 'Sacrifice' in self.type:
+            return 'blood-drop.svg'
+        if 'Ronflements' in self.type:
+            return 'dreaming.svg'
+        if any(w in self.type for w in ['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'pu\'rin', 'Zet crakdedand']):
+            return 'flask.svg'
+        if any(w in self.type for w in ['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'ki\'pic']):
+            return 'scroll.svg'
+        if 'Baroufle' in self.type:
+            return 'trumpet.svg'
+        if 'Flash' in self.type:
+            return 'light-bulb.svg'
+        if 'Painthure' in self.type:
+            return 'paintbrush.svg'
+        if 'Dressage' in self.type:
+            return 'medal.svg'
+        if self.def_id is None:
+            return 'pickaxe-wand-icon.svg'
+        if self.att_id is not None and len(str(self.att_id)) > 6:
+            return 'shield.svg'
+        return 'fight-icon.svg'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(battleEvent, 'before_insert')

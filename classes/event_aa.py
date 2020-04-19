@@ -87,6 +87,9 @@ class aaEvent(Event):
             setattr(self, 'base_' + attr + '_min', getattr(self, attr + '_min') or getattr(self, attr + '_sup') or getattr(self, attr + '_eq'))
             setattr(self, 'base_' + attr + '_max', getattr(self, attr + '_max') or getattr(self, attr + '_inf') or getattr(self, attr + '_eq'))
 
+    def icon(self):
+        return 'troll-map-icon.svg'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(aaEvent, 'before_insert')

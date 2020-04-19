@@ -203,6 +203,6 @@ class Coterie(sg.sqlalchemybase):
                 e['arm'] = event.arm
             e['owner_blason_uri'] = event.owner.blason_uri
             e['owner_link'] = event.owner.link
-            obj = {'event': e, 'repr': sg.no.stringify(event)}
+            obj = {'event': e, 'repr': sg.no.stringify(event), 'icon': event.icon()}
             res.append(obj)
         return res

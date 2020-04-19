@@ -54,6 +54,9 @@ class Event(sg.sqlalchemybase):
     def build(self):
         self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
 
+    def icon(self):
+        return 'sciz-logo-quarter.png'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(Event, 'before_insert', propagate=True)

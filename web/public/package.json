@@ -10,7 +10,7 @@
     "dev": "parcel serve index.html -d dist",
     "pre-build": "mkdir -p ../dist-public/template && mkdir -p ../dist-public/static",
     "build": "yarn clean && yarn pre-build && parcel build index.html -d ../dist-public/ --public-url /static && yarn post-build",
-    "post-build": "mv ../dist-public/index.html ../dist-public/template/ && mv ../dist-public/*.* ../dist-public/static/",
+    "post-build": "mv ../dist-public/index.html ../dist-public/template/ && mv ../dist-public/*.* ../dist-public/static/ && cp src/assets/images/*.* ../dist-public/static/",
     "clean": "rm -rf dist ../dist-public",
     "dist-clean": "yarn clean && rm -rf node_modules .cache"
   },

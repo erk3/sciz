@@ -95,6 +95,9 @@ class tresorEvent(Event):
         # Update from a metatresor if any matching
         empty_metatresor_id, self.nom, self.templates, self.tresor_type = MetaTresor.link_metatresor(self)
 
+    def icon(self):
+        return 'treasure-map-icon.svg'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(tresorEvent, 'before_insert')

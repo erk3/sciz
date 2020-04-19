@@ -158,6 +158,9 @@ class cdmEvent(Event):
             setattr(self, attr + '_min', getattr(self, attr + '_min') or getattr(self, attr + '_sup') or getattr(self, attr + '_eq'))
             setattr(self, attr + '_max', getattr(self, attr + '_max') or getattr(self, attr + '_inf') or getattr(self, attr + '_eq'))
 
+    def icon(self):
+        return 'monster-map-icon.svg'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(cdmEvent, 'before_insert')

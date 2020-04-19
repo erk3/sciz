@@ -175,6 +175,7 @@ class Hook(sg.sqlalchemybase):
                  'message': sg.no.stringify(event, self.format),
                  'owner_id': event.owner_id,
                  'owner_nom': event.owner_nom,
+                 'icon': event.icon(),
                  }
             if isinstance(event, battleEvent):
                 r['att_id'] = event.att_id

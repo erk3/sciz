@@ -49,6 +49,9 @@ class cpEvent(Event):
     def build(self):
         super().build()
 
+    def icon(self):
+        return 'trap.png'
+
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(cpEvent, 'before_insert')

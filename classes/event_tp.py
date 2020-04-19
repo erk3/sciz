@@ -52,6 +52,8 @@ class tpEvent(Event):
     def build(self):
         super().build()
 
+    def icon(self):
+        return 'portal.png'
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(tpEvent, 'before_insert')
