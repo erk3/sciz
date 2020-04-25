@@ -387,6 +387,8 @@ class battleEvent(Event):
     def icon(self):
         if self.mort:
             return 'skull.svg'
+        if 'Accélération' in self.type:
+            return 'heart.svg'
         if 'Hurlement' in self.type:
             return 'scream.svg'
         if 'Insulte' in self.type:
@@ -415,8 +417,12 @@ class battleEvent(Event):
             return ' invisible-man.svg'
         if 'Vision lointaine' in self.type:
             return 'telescope.svg'
+        if 'Vampirisme' in self.type:
+            return 'vampire.svg'
         if 'Sacrifice' in self.type:
             return 'blood-drop.svg'
+        if 'Lévitation' in self.type:
+            return 'levitation.svg'
         if 'Ronflements' in self.type:
             return 'dreaming.svg'
         if any(w in self.type for w in ['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'pu\'rin', 'Zet crakdedand']):
@@ -424,13 +430,23 @@ class battleEvent(Event):
         if any(w in self.type for w in ['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'ki\'pic']):
             return 'scroll.svg'
         if 'Baroufle' in self.type:
-            return 'trumpet.svg'
+            return 'mandolin.svg'
+        if 'Régénération accrue' in self.type:
+            return 'pills.svg'
         if 'Flash' in self.type:
             return 'light-bulb.svg'
         if 'Painthure' in self.type:
             return 'paintbrush.svg'
+        if 'butoir' in self.type:
+            return 'mace.svg'
         if 'Dressage' in self.type:
             return 'medal.svg'
+        if 'Mélange' in self.type:
+            return 'cauldron.svg'
+        if 'Botte' in self.type:
+            return 'fencing.svg'
+        if 'Projectile' in self.type:
+            return 'fireball.svg'
         if self.def_id is None:
             return 'pickaxe-wand-icon.svg'
         if self.att_id is not None and len(str(self.att_id)) > 6:
