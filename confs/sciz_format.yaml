@@ -87,7 +87,7 @@ tresorEvent:
       Suffixe: ''
 
 champiEvent:
-  Notification: '{Horodatage} {Type d''événement} de {Troll} {Identifiant du Troll} : {Nom du champignon} {Identifiant du champignon} {Qualité} {Position} {PX}'
+  Notification: '{Horodatage} {Type d''événement} de {Troll} {Identifiant du Troll} : {Nom du champignon} {Qualité} {Identifiant du champignon} {Position} {PX}'
   Attributs construits:
     Position: 'en {Position X} {Position Y} {Position N}'
   Attributs:
