@@ -239,3 +239,5 @@ battleEvent:
   re_dressage_start: '(?P<flag_dressage_start>vous\s+a\s+remarqué\s*,\s*il\s+vous\s+regarde)(?s)'
   re_dressage_almost_ok: '(?P<flag_dressage_almost_ok>boit\s+littéralement\s+vos\s+paroles)(?s)'
   re_dressage_ok: '(?P<flag_dressage_ok>Bravo\s*,\s*vous\s+êtes\s+parvenu\s+à\s+dresser)(?s)'
+  re_vlc_vl_zone: 'Zone\s*centrale\s*ciblée\s*:\s*X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)'
+  re_vlc_self: 'voir\s+les\s+éléments\s+cachés\s+situés\s+jusqu''à\s+(?P<capa_effet>\d+\s+cases\s+horizontalement)'
