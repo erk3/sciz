@@ -50,7 +50,7 @@ subjects:
   battleEvent_att: 'Attaquant\s*-\s*(Suivant\s*-\s*)?(?P<generic_type>.+?)\s+((\(|:\s)(?P<type>.+?)\)?\s+)?sur\s+(?P<def_nom>.+?)\s+\((?P<def_id>\d+)\)\s*$(?s)'
   battleEvent_ca: 'Attaquant - (?P<type>Contre-Attaque)'
   battleEvent_def: 'Défenseur\s*-\s*(Suivant\s*-\s*)?(?P<type>.+?)\s+(de|d'')(?P<att_nom>.+?)\s+\((?P<att_id>\d+)\)(?s)'
-  battleEvent_balayage_att: '(?P<type>Balayage)\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
+  battleEvent_balayage_att: '(?P<type>Balayage)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
   battleEvent_insulte: '(?P<flag_he_insulte>(?P<type>Insulte))\s*(?P<comp_niv>\d)\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
   battleEvent_he: '(?P<flag_he_insulte>(?P<type>Hurlement Effrayant))\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
   battleEvent_pistage: '(?P<flag_pistage>(?P<type>Pistage))\s*sur\s*(?P<def_nom>.+)\s+\((?P<def_id>\d+)\)(?s)'
@@ -66,6 +66,7 @@ subjects:
   battleEvent_neige: '((?P<type>Lancer\s+de\s+Boule\s+de\s+Neige)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
   battleEvent_painthure: '(?P<type>Painthure de Guerre)'
   battleEvent_dressage: '(Compétence\s*:\s*(?P<type>Dressage)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
+  battleEvent_objet_mort: '((?P<type>(Potion|Parchemin))\s+(?P<flag_dead>mortel(le)?)\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
 
 # Regexps for the forwarding confirmation mails
 MailHelper:

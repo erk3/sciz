@@ -334,7 +334,7 @@ class battleEvent(Event):
             self.type += ' ' + self.prog
         # Fix the type
         self.type = self.type.replace('\r', '').replace('\n', ' ').strip().capitalize()
-        self.type = re.sub(r'critique|résistée?|mortelle|esquivée?|parfaitement', '', self.type)
+        self.type = re.sub(r'critique|résistée?|mortel(le)?|esquivée?|parfaitement', '', self.type)
         # Fix LDP
         if hasattr(self, 'flag_ldp') and self.flag_ldp is not None:
             if hasattr(self, 'type_potion') and self.type_potion is not None:
