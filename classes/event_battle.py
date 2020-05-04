@@ -252,8 +252,9 @@ class battleEvent(Event):
             if hasattr(self, 'flag_dressage_ok') and self.flag_dressage_ok is not None:
                 self.type += ' terminé'
         # Fix Camouflage effect for PM
-        if self.type is not None and 'projectile' in self.type.lower() and self.capa_effet is not None and 'camouflage' in self.capa_effet.lower():
-            self.capa_effet = re.sub(r'(est|a\s+été)\s+', '', self.capa_effet.capitalize())
+        if hasattr(self, 'flag_camou') and self.flag_camou is not None:
+            camou = re.sub(r'(est|a\s+été)\s+', '', self.flag_camou.capitalize())
+            self.capa_effet = camou if self.capa_effet is None else self.capa_effet + ' ; ' + camou
         # Fix snoring of monsters
         if self.type == 'ronfle':
             self.type = 'Ronflements'
