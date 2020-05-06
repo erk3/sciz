@@ -316,39 +316,35 @@ class TrollPrivate(sg.sqlalchemybase):
         user = sg.db.session.query(User).get(self.viewer_id)
         if user is not None:
             now = datetime.datetime.now()
-            session = sg.db.new_session()
             for my_partage in user.partages_actifs:
-                if my_partage.user_id != user.id:
-                    # Sharing view
-                    if my_partage.sharingView:
-                        for partage in my_partage.coterie.partages_actifs:
-                            troll_private = TrollPrivate(troll_id=self.troll_id, viewer_id=partage.user_id,
-                                                         last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, troll_private, ['pos_x', 'pos_y', 'pos_n'], False)
-                            sg.db.upsert(troll_private, session, False)
-                    # Sharing Event or Profile
-                    if (my_partage.sharingEvents and self.viewer_id != user.id) or (my_partage.sharingProfile and self.viewer_id == user.id):
-                        for partage in my_partage.coterie.partages_actifs:
-                            troll_private = TrollPrivate(troll_id=self.troll_id, viewer_id=partage.user_id,
-                                                         last_reconciliation_at=now,
-                                                         last_reconciliation_by=self.viewer_id)
+                # Sharing view
+                if my_partage.sharingView:
+                    for partage in my_partage.coterie.partages_actifs:
+                        troll_private = TrollPrivate(troll_id=self.troll_id, viewer_id=partage.user_id,
+                                                     last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, troll_private, ['pos_x', 'pos_y', 'pos_n'], False)
+                        sg.db.upsert(troll_private, propagate=False)
+                # Sharing Event or Profile
+                if (my_partage.sharingEvents and self.viewer_id != user.id) or (my_partage.sharingProfile and self.viewer_id == user.id):
+                    for partage in my_partage.coterie.partages_actifs:
+                        troll_private = TrollPrivate(troll_id=self.troll_id, viewer_id=partage.user_id,
+                                                     last_reconciliation_at=now,
+                                                     last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, troll_private,
+                                           ['pos_x', 'pos_y', 'pos_n', 'blessure', 'pdv', 'malus_arm', 'fatigue',
+                                            'camouflage', 'invisible', 'immobile', 'terre', 'course', 'levite',
+                                            'nb_att_sub', 'nb_parade_prog', 'nb_ctr_att_prog', 'nb_retraite_prog',
+                                            'dir_retraite_prog', 'base_concentration', 'bonus_concentration_phy',
+                                            'bonus_concentration_mag'], False)
+                        if my_partage.sharingProfile:
                             sg.copy_properties(self, troll_private,
-                                               ['pos_x', 'pos_y', 'pos_n', 'blessure', 'pdv', 'malus_arm', 'fatigue',
-                                                'camouflage', 'invisible', 'immobile', 'terre', 'course', 'levite',
-                                                'nb_att_sub', 'nb_parade_prog', 'nb_ctr_att_prog', 'nb_retraite_prog',
-                                                'dir_retraite_prog', 'base_concentration', 'bonus_concentration_phy',
-                                                'bonus_concentration_mag'], False)
+                                               ['pi', 'pi_disp', 'pa', 'next_dla', 'malus_poids_phy', 'malus_poids_mag'],
+                                               False)
+                        for attr in ['pdv', 'att', 'esq', 'deg', 'reg', 'arm', 'vue', 'tour']:
+                            attr_min = 'base_' + attr + '_min'
+                            attr_max = 'base_' + attr + '_max'
+                            setattr(troll_private, attr_min, sg.do_unless_none(max, (getattr(troll_private, attr_min), getattr(self, attr_min))))
+                            setattr(troll_private, attr_max, sg.do_unless_none(min, (getattr(troll_private, attr_max), getattr(self, attr_max))))
                             if my_partage.sharingProfile:
-                                sg.copy_properties(self, troll_private,
-                                                   ['pi', 'pi_disp', 'pa', 'next_dla', 'malus_poids_phy', 'malus_poids_mag'],
-                                                   False)
-                            for attr in ['pdv', 'att', 'esq', 'deg', 'reg', 'arm', 'vue', 'tour']:
-                                attr_min = 'base_' + attr + '_min'
-                                attr_max = 'base_' + attr + '_max'
-                                setattr(troll_private, attr_min, sg.do_unless_none(max, (getattr(troll_private, attr_min), getattr(self, attr_min))))
-                                setattr(troll_private, attr_max, sg.do_unless_none(min, (getattr(troll_private, attr_max), getattr(self, attr_max))))
-                                if my_partage.sharingProfile:
-                                    sg.copy_properties(self, troll_private, ['bonus_' + attr + '_phy', 'bonus_' + attr + '_mag'], False)
-                            sg.db.upsert(troll_private, session, False)
-            session.commit()
-            session.close()
+                                sg.copy_properties(self, troll_private, ['bonus_' + attr + '_phy', 'bonus_' + attr + '_mag'], False)
+                        sg.db.upsert(troll_private, propagate=False)

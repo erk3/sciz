@@ -274,7 +274,7 @@ class battleEvent(Event):
         if self.type == 'a attiré' or self.type == 'assomme':
             self.type = 'Attraction assommante'
         # Fix GDS
-        if 'Griffe' in self.type and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
+        if 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
             self.capa_tour = 1
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
@@ -539,7 +539,7 @@ def play(mapper, connection, target):
             at.pdv = max(0, at.pdv - int(target.blessure))
         if target.fatigue is not None and int(target.fatigue) > 0:
             fatigue = at.fatigue if at.fatigue is not None else 0
-            at.fatigue = max(127, fatigue + int(target.fatigue))
+            at.fatigue = min(127, fatigue + int(target.fatigue))
         if target.mm is not None and int(target.mm) > 0:
             at.base_mm_min = (at.base_mm_min if at.base_mm_min is not None else 0) + int(target.mm)
             at.base_mm_max = (at.base_mm_max if at.base_mm_max is not None else 0) + int(target.mm)
@@ -572,16 +572,15 @@ def play(mapper, connection, target):
         dt = sg.db.session.query(TrollPrivate).get((target.def_id, target.owner_id))
         if target.soin is not None and dt.pdv is not None and dt.base_pdv_max is not None and int(target.soin) > 0:
             dt.pdv = min(dt.pdv + int(target.soin), dt.base_pdv_max + dt.bonus_pdv_phy + dt.bonus_pdv_mag)
-            dt.vie = target.vie
         if target.pdv is not None and dt.pdv is not None and int(target.pdv) > 0:
             dt.pdv = max(0, dt.pdv - int(target.pdv))
             dt.nb_att_sub = (dt.nb_att_sub if dt.nb_att_sub is not None else 0) + 1
             dt.course = False
         if target.vie is not None:
-            dt.vie = target.vie
+            dt.pdv = target.vie
         if target.fatigue is not None and int(target.fatigue) > 0 and Being.is_mob(target.att_id):
             fatigue = dt.fatigue if dt.fatigue is not None else 0
-            dt.fatigue = max(127, fatigue + int(target.fatigue))
+            dt.fatigue = min(127, fatigue + int(target.fatigue))
         if target.rm is not None and int(target.rm) > 0:
             dt.base_rm_min = (dt.base_rm_min if dt.base_rm_min is not None else 0) + int(target.rm)
             dt.base_rm_max = (dt.base_rm_max if dt.base_rm_max is not None else 0) + int(target.rm)

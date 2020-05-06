@@ -11,6 +11,7 @@ from classes.event_cp import cpEvent
 from classes.event_tresor import tresorEvent
 from classes.event_champi import champiEvent
 from classes.tresor_private import TresorPrivate
+from classes.being_troll_private import TrollPrivate
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import relationship
@@ -104,8 +105,7 @@ class Hook(sg.sqlalchemybase):
             try:
                 treasure = sg.db.session.query(TresorPrivate).join(TresorPrivate.tresor_meta) \
                     .filter(and_(TresorPrivate.viewer_id.in_(users_id), TresorPrivate.tresor_id == _id)) \
-                    .order_by(TresorPrivate.last_event_update_at.desc().nullslast(),
-                              TresorPrivate.last_seen_at.desc().nullslast())\
+                    .order_by(TresorPrivate.last_reconciliation_at.desc().nullslast())\
                     .limit(1).all()
                 for t in treasure:
                     treasures.append({
@@ -119,6 +119,30 @@ class Hook(sg.sqlalchemybase):
             except NoResultFound:
                 pass
         return treasures
+
+    # Use the hook to get specific trolls
+    def get_trolls_for(self, trolls_id):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(None, True, True)
+        # Find the trolls
+        trolls = []
+        for _id in trolls_id:
+            try:
+                troll = sg.db.session.query(TrollPrivate) \
+                    .filter(and_(TrollPrivate.viewer_id.in_(users_id), TrollPrivate.troll_id == _id)) \
+                    .order_by(TrollPrivate.last_reconciliation_at.desc().nullslast())\
+                    .limit(1).all()
+                for t in troll:
+                    trolls.append({
+                        'id': t.troll_id,
+                        'pa': t.pa,
+                        'pdv': t.pdv,
+                        'fatigue': t.fatigue,
+                    });
+            except NoResultFound:
+                pass
+        return trolls
 
     # Use the hook to get specific mushrooms
     #def get_mushrooms_for(self, mushrooms_id):

@@ -27,6 +27,16 @@ class TresorPrivate(sg.sqlalchemybase):
     nom = Column(String(250))
     # Templates
     templates = Column(String(250))
+    # Quality (ore)
+    # qualite = Column(String(50))
+    # Material
+    # materiau = Column(String(50))
+    # Solidity
+    # solidite = Column(String(50))
+    # Weight (min)
+    # poids = Column(Integer)
+    # State
+    # etat = Column(String(50))
     # Mithril ?
     mithril = Column(Boolean, default=False)
     # Effect
@@ -83,29 +93,25 @@ class TresorPrivate(sg.sqlalchemybase):
         user = sg.db.session.query(User).get(self.viewer_id)
         if user is not None:
             now = datetime.datetime.now()
-            session = sg.db.new_session()
             for my_partage in user.partages_actifs:
-                if my_partage.user_id != user.id:
-                    # Sharing view
-                    if my_partage.sharingView:
-                        for partage in my_partage.coterie.partages_actifs:
-                            tresor_private = TresorPrivate(tresor_id=self.tresor_id, viewer_id=partage.user_id,
-                                                           last_reconciliation_at=now,
-                                                           last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, tresor_private, ['pos_x', 'pos_y', 'pos_n'], False)
-                            sg.db.upsert(tresor_private, session, False)
-                    # Sharing Event
-                    if my_partage.sharingEvents:
-                        for partage in my_partage.coterie.partages_actifs:
-                            tresor_private = TresorPrivate(tresor_id=self.tresor_id, viewer_id=partage.user_id,
-                                                           last_reconciliation_at=now,
-                                                           last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, tresor_private, ['owner_id', 'metatresor_id', 'nom', 'templates',
-                                                                      'mithril', 'effet', 'pos_x', 'pos_y', 'pos_n'],
-                                               False)
-                            sg.db.upsert(tresor_private, session, False)
-            session.commit()
-            session.close()
+                # Sharing view
+                if my_partage.sharingView:
+                    for partage in my_partage.coterie.partages_actifs:
+                        tresor_private = TresorPrivate(tresor_id=self.tresor_id, viewer_id=partage.user_id,
+                                                       last_reconciliation_at=now,
+                                                       last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, tresor_private, ['pos_x', 'pos_y', 'pos_n'], False)
+                        sg.db.upsert(tresor_private, propagate=False)
+                # Sharing Event
+                if my_partage.sharingEvents:
+                    for partage in my_partage.coterie.partages_actifs:
+                        tresor_private = TresorPrivate(tresor_id=self.tresor_id, viewer_id=partage.user_id,
+                                                       last_reconciliation_at=now,
+                                                       last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, tresor_private, ['owner_id', 'metatresor_id', 'nom', 'templates',
+                                                                  'mithril', 'effet', 'pos_x', 'pos_y', 'pos_n'],
+                                           False)
+                        sg.db.upsert(tresor_private, propagate=False)
 
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)

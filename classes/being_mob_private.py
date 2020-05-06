@@ -167,36 +167,32 @@ class MobPrivate(sg.sqlalchemybase):
         user = sg.db.session.query(User).get(self.viewer_id)
         if user is not None:
             now = datetime.datetime.now()
-            session = sg.db.new_session()
             for my_partage in user.partages_actifs:
-                if my_partage.user_id != user.id:
-                    # Sharing view
-                    if my_partage.sharingView:
-                        for partage in my_partage.coterie.partages_actifs:
-                            mob_private = MobPrivate(mob_id=self.mob_id, viewer_id=partage.user_id,
-                                                     last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, mob_private, ['pos_x', 'pos_y', 'pos_n'], False)
-                            sg.db.upsert(mob_private, session, False)
-                    # Sharing Event
-                    if my_partage.sharingEvents:
-                        for partage in my_partage.coterie.partages_actifs:
-                            mob_private = MobPrivate(mob_id=self.mob_id, viewer_id=partage.user_id,
-                                                     last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, mob_private,
-                                               ['owner_id', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour',
-                                                'capa_portee',
-                                                'nb_att_tour', 'vit_dep', 'vlc',
-                                                'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
-                                                'bonus_malus', 'pos_x', 'pos_y', 'pos_n'], False)
-                            for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm',
-                                         'rm',
-                                         'tour']:
-                                attr_min = attr + '_min'
-                                attr_max = attr + '_max'
-                                setattr(mob_private, attr_min, sg.do_unless_none(max, (
-                                getattr(mob_private, attr_min), getattr(self, attr_min))))
-                                setattr(mob_private, attr_max, sg.do_unless_none(min, (
-                                getattr(mob_private, attr_max), getattr(self, attr_max))))
-                            sg.db.upsert(mob_private, session, False)
-            session.commit()
-            session.close()
+                # Sharing view
+                if my_partage.sharingView:
+                    for partage in my_partage.coterie.partages_actifs:
+                        mob_private = MobPrivate(mob_id=self.mob_id, viewer_id=partage.user_id,
+                                                 last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, mob_private, ['pos_x', 'pos_y', 'pos_n'], False)
+                        sg.db.upsert(mob_private, propagate=False)
+                # Sharing Event
+                if my_partage.sharingEvents:
+                    for partage in my_partage.coterie.partages_actifs:
+                        mob_private = MobPrivate(mob_id=self.mob_id, viewer_id=partage.user_id,
+                                                 last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, mob_private,
+                                           ['owner_id', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour',
+                                            'capa_portee',
+                                            'nb_att_tour', 'vit_dep', 'vlc',
+                                            'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
+                                            'bonus_malus', 'pos_x', 'pos_y', 'pos_n'], False)
+                        for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm',
+                                     'rm',
+                                     'tour']:
+                            attr_min = attr + '_min'
+                            attr_max = attr + '_max'
+                            setattr(mob_private, attr_min, sg.do_unless_none(max, (
+                            getattr(mob_private, attr_min), getattr(self, attr_min))))
+                            setattr(mob_private, attr_max, sg.do_unless_none(min, (
+                            getattr(mob_private, attr_max), getattr(self, attr_max))))
+                        sg.db.upsert(mob_private, propagate=False)

@@ -12,28 +12,48 @@ Analyse Anatomique:
     Bonus: ''
 
 Armure Ethérée:
-  ARM:
+  Armure:
     Texte: 'ARM +{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
     Base: 'base_reg'
     Bonus: ''
 
-Augmentation de l'Attaque:
-  ATT:
-    Texte: 'ATT +{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
-    Base: '1 + (base_att - 3)/2'
+Attaque Précise:
+  Attaque:
+    Texte: 'ATT {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_att + min(self.niv * 3, (base_att/2)*3 - base_att)'
+    Bonus: 'bonus_att_phy + bonus_att_mag'
+  Dégâts:
+    Texte: 'DEG {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_deg'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
+  Dégâts critique:
+    Texte: 'CRIT {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_deg + base_deg/2'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
+
+Augmentation de l´Attaque:
+  Attaque:
+    Texte: 'ATT +1D3 + 20% des dés d''attaque utilisés'
+    Base: '1'
     Bonus: ''
 
-Augmentation des Dégâts:
-  DEG:
-    Texte: 'DEG +{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
-    Base: '1 + (base_deg - 3)/2'
+Augmentation des Dégats:
+  Dégâts:
+    Texte: 'DEG +1D3 + 20% des dés de dégâts utilisés'
+    Base: '1'
     Bonus: ''
 
-Augmentation de l'Esquive:
-  ESQ:
+Augmentation de l´Esquive:
+  Esquive:
     Texte: 'ESQ +{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
     Base: '1 + (base_esq - 3)/2'
     Bonus: ''
+
+Balayage:
+  Déstabilisation:
+    Texte: 'Déstabilisation {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_att'
+    Bonus: 'bonus_att_phy + bonus_att_mag'
 
 Botte Secrète:
   Attaque:
@@ -103,19 +123,29 @@ Construire un Piège:
     Base: '(base_vue + base_esq)/2'
     Bonus: ''
 
+Contre-Attaquer:
+  Attaque:
+    Texte: 'ATT {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_att/2'
+    Bonus: '(bonus_att_phy + bonus_att_mag)/2'
+  Dégâts:
+    Texte: 'DEG {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_deg'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
+
 Coup de Butoir:
   Attaque:
     Texte: 'ATT {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
     Base: 'base_att'
-    Bonus: 'bonus_att_phy'
+    Bonus: 'bonus_att_phy + bonus_att_mag'
   Dégâts:
     Texte: 'DEG {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
-    Base: 'base_deg + min(self.niv * 3, base_deg - (base_deg/2)*3)'
-    Bonus: 'bonus_deg_phy'
+    Base: 'base_deg + min(self.niv * 3, (base_deg/2)*3 - base_deg)'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
   Dégâts critique:
     Texte: 'CRIT {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
-    Base: 'base_deg + min(self.niv * 3, base_deg - (base_deg/2)*3) + base_deg/2'
-    Bonus: 'bonus_deg_phy'
+    Base: 'base_deg + min(self.niv * 3, (base_deg/2)*3 - base_deg) + base_deg/2'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
 
 Explosion:
   Dégâts:
@@ -137,6 +167,24 @@ Flash Aveuglant:
   Effet:
     Texte: 'ATT ESQ VUE -{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
     Base: '(1 + base_vue)/5'
+    Bonus: ''
+
+Frénésie:
+  Attaque:
+    Texte: 'ATT {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_att'
+    Bonus: 'bonus_att_phy + bonus_att_mag'
+  Dégâts:
+    Texte: 'DEG {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_deg'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
+  Dégâts critique:
+    Texte: 'CRIT {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_deg + base_deg/2'
+    Bonus: 'bonus_deg_phy + bonus_deg_mag'
+  Esquive:
+    Texte: 'ESQ=0'
+    Base: '0'
     Bonus: ''
 
 Glue:
@@ -193,6 +241,12 @@ Lancer de Potions:
     Base: '2 + (base_vue + bonus_vue_phy + bonus_vue_mag)/5'
     Bonus: ''
 
+Parer:
+  Esquive:
+    Texte: 'ESQ +{sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_esq/2'
+    Bonus: '(bonus_esq_phy + bonus_esq_mag)/2'
+
 Pistage:
   Portée Horizontale:
     Texte: 'Portée H {sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
@@ -227,8 +281,34 @@ Rafale Psychique:
     Base: 'base_deg'
     Bonus: 'bonus_deg_mag'
   Régénération:
-    Texte: 'REG -{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Texte: 'Malus REG -{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
     Base: 'base_deg'
+    Bonus: ''
+
+S'interposer:
+  Réflexe:
+    Texte: 'Réflexe {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: '((base_esq + base_reg)/3)*2'
+    Bonus: 'bonus_esq_phy + bonus_esq_mag'
+
+Siphon des âmes:
+  Attaque:
+    Texte: 'ATT {sg.str_min_max(_min, _max)}D6 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_att'
+    Bonus: 'bonus_att_mag'
+  Dégâts:
+    Texte: 'DEG {sg.str_min_max(_min, _max)}D3 {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_reg'
+    Bonus: 'bonus_reg_mag'
+  Nécrose:
+    Texte: 'Malus ATT -{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Base: 'base_reg'
+    Bonus: ''
+
+Télékinésie:
+  Portée Horizontale:
+    Texte: 'Portée H {sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Base: '(base_vue + bonus_vue_phy + bonus_vue_mag)/2'
     Bonus: ''
 
 Vampirisme:
@@ -249,6 +329,22 @@ Vision Accrue:
   Vue:
     Texte: 'VUE +{sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
     Base: 'base_vue/2'
+    Bonus: ''
+
+Vision lointaine:
+  Portée Horizontale:
+    Texte: 'Zone ciblée H {sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Base: '(base_vue + bonus_vue_phy + bonus_vue_mag)'
+    Bonus: ''
+  Portée Verticale:
+    Texte: 'Zone ciblée V {sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Base: '(base_vue + bonus_vue_phy + bonus_vue_mag)/2'
+    Bonus: ''
+
+Voir le Caché:
+  Portée Horizontale:
+    Texte: 'Portée H {sg.str_min_max(_min, _max)} {sg.str_phy_mag(bonus, None)}'
+    Base: '(base_vue + bonus_vue_phy + bonus_vue_mag)'
     Bonus: ''
 
 Vue Troublée:

@@ -69,23 +69,19 @@ class ChampiPrivate(sg.sqlalchemybase):
         user = sg.db.session.query(User).get(self.viewer_id)
         if user is not None:
             now = datetime.datetime.now()
-            session = sg.db.new_session()
             for my_partage in user.partages_actifs:
-                if my_partage.user_id != user.id:
-                    # Sharing view
-                    if my_partage.sharingView:
-                        for partage in my_partage.coterie.partages_actifs:
-                            champi_private = ChampiPrivate(champi_id=self.champi_id, viewer_id=partage.user_id,
-                                                           last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, champi_private, ['pos_x', 'pos_y', 'pos_n'], False)
-                            sg.db.upsert(champi_private, session, False)
-                    # Sharing Event
-                    if my_partage.sharingEvents:
-                        for partage in my_partage.coterie.partages_actifs:
-                            champi_private = ChampiPrivate(champi_id=self.champi_id, viewer_id=partage.user_id,
-                                                           last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
-                            sg.copy_properties(self, champi_private, ['owner_id', 'picker_id', 'fraicheur', 'nom', 'qualite',
-                                                                        'pos_x', 'pos_y', 'pos_n'], False)
-                            sg.db.upsert(champi_private, session, False)
-            session.commit()
-            session.close()
+                # Sharing view
+                if my_partage.sharingView:
+                    for partage in my_partage.coterie.partages_actifs:
+                        champi_private = ChampiPrivate(champi_id=self.champi_id, viewer_id=partage.user_id,
+                                                       last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, champi_private, ['pos_x', 'pos_y', 'pos_n'], False)
+                        sg.db.upsert(champi_private, propagate=False)
+                # Sharing Event
+                if my_partage.sharingEvents:
+                    for partage in my_partage.coterie.partages_actifs:
+                        champi_private = ChampiPrivate(champi_id=self.champi_id, viewer_id=partage.user_id,
+                                                       last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
+                        sg.copy_properties(self, champi_private, ['owner_id', 'picker_id', 'fraicheur', 'nom', 'qualite',
+                                                                    'pos_x', 'pos_y', 'pos_n'], False)
+                        sg.db.upsert(champi_private, propagate=False)

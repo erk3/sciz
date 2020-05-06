@@ -99,7 +99,7 @@ class SqlHelper:
 
     # Upsert any Private
     def reconciliate(self, obj):
-        if obj in [TrollPrivate, MobPrivate, ChampiPrivate, TresorPrivate]:
+        if any(isinstance(obj, c) for c  in [TrollPrivate, MobPrivate, ChampiPrivate, TresorPrivate]):
             sg.logger.debug('Reconciliating %s...' % obj)
             obj.reconciliate()
         return obj
