@@ -335,7 +335,8 @@ class TrollPrivate(sg.sqlalchemybase):
                                             'camouflage', 'invisible', 'immobile', 'terre', 'course', 'levite',
                                             'nb_att_sub', 'nb_parade_prog', 'nb_ctr_att_prog', 'nb_retraite_prog',
                                             'dir_retraite_prog', 'base_concentration', 'bonus_concentration_phy',
-                                            'bonus_concentration_mag'], False)
+                                            'bonus_concentration_mag', 'last_sp4_update_at',
+                                            'last_seen_at', 'last_event_at'], False)
                         if my_partage.sharingProfile:
                             sg.copy_properties(self, troll_private,
                                                ['pi', 'pi_disp', 'pa', 'next_dla', 'malus_poids_phy', 'malus_poids_mag'],

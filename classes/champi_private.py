@@ -83,5 +83,6 @@ class ChampiPrivate(sg.sqlalchemybase):
                         champi_private = ChampiPrivate(champi_id=self.champi_id, viewer_id=partage.user_id,
                                                        last_reconciliation_at=now, last_reconciliation_by=self.viewer_id)
                         sg.copy_properties(self, champi_private, ['owner_id', 'picker_id', 'fraicheur', 'nom', 'qualite',
-                                                                    'pos_x', 'pos_y', 'pos_n'], False)
+                                                                    'pos_x', 'pos_y', 'pos_n', 'last_seen_at',
+                                                                  'last_event_at'], False)
                         sg.db.upsert(champi_private, propagate=False)

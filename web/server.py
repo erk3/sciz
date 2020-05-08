@@ -424,7 +424,7 @@ def get_hook_trolls_for():
         data = request.get_json()
         if 'ids' not in data:
             return jsonify(message='Une erreur est survenue...'), 400
-        return jsonify(treasures=hook.get_trolls_for(data.get('ids'))), 200
+        return jsonify(trolls=hook.get_trolls_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
 #@webapp.route('/api/hook/mushrooms', methods=('POST',))

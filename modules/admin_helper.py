@@ -64,7 +64,7 @@ class AdminHelper:
             def process(self, path):
                 global locked
                 while locked:
-                    time.sleep(1)
+                    time.sleep(3)
                 locked = True
                 if os.path.exists(path): # Mail could have been processed while waiting
                     try:
@@ -84,7 +84,7 @@ class AdminHelper:
         obs.start()
         try:
             while True:
-                time.sleep(1)
+                time.sleep(3)
         except KeyboardInterrupt:
             obs.stop()
         obs.join()

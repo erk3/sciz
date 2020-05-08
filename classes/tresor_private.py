@@ -109,7 +109,8 @@ class TresorPrivate(sg.sqlalchemybase):
                                                        last_reconciliation_at=now,
                                                        last_reconciliation_by=self.viewer_id)
                         sg.copy_properties(self, tresor_private, ['owner_id', 'metatresor_id', 'nom', 'templates',
-                                                                  'mithril', 'effet', 'pos_x', 'pos_y', 'pos_n'],
+                                                                  'mithril', 'effet', 'pos_x', 'pos_y', 'pos_n',
+                                                                  'last_seen_at', 'last_event_at'],
                                            False)
                         sg.db.upsert(tresor_private, propagate=False)
 

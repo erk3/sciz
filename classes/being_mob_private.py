@@ -185,7 +185,8 @@ class MobPrivate(sg.sqlalchemybase):
                                             'capa_portee',
                                             'nb_att_tour', 'vit_dep', 'vlc',
                                             'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
-                                            'bonus_malus', 'pos_x', 'pos_y', 'pos_n'], False)
+                                            'bonus_malus', 'pos_x', 'pos_y', 'pos_n', 'last_seen_at',
+                                            'last_event_at'], False)
                         for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm',
                                      'rm',
                                      'tour']:

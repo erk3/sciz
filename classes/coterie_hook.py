@@ -128,20 +128,22 @@ class Hook(sg.sqlalchemybase):
         # Find the trolls
         trolls = []
         for _id in trolls_id:
-            try:
-                troll = sg.db.session.query(TrollPrivate) \
-                    .filter(and_(TrollPrivate.viewer_id.in_(users_id), TrollPrivate.troll_id == _id)) \
-                    .order_by(TrollPrivate.last_reconciliation_at.desc().nullslast())\
-                    .limit(1).all()
-                for t in troll:
-                    trolls.append({
-                        'id': t.troll_id,
-                        'pa': t.pa,
-                        'pdv': t.pdv,
-                        'fatigue': t.fatigue,
-                    });
-            except NoResultFound:
-                pass
+            if int(_id) in users_id:
+                try:
+                    troll = sg.db.session.query(TrollPrivate) \
+                        .filter(and_(TrollPrivate.viewer_id.in_(users_id), TrollPrivate.troll_id == _id)) \
+                        .order_by(TrollPrivate.last_reconciliation_at.desc().nullslast())\
+                        .limit(1).all()
+                    for t in troll:
+                        trolls.append({
+                            'id': t.troll_id,
+                            'pa': t.pa,
+                            'pdv': t.pdv,
+                            'pdv_max': t.pdv_max,
+                            'fatigue': t.fatigue,
+                        });
+                except NoResultFound:
+                    pass
         return trolls
 
     # Use the hook to get specific mushrooms

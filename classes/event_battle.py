@@ -220,7 +220,7 @@ class battleEvent(Event):
                 self.capa_desc = 'Portail ' + ('d\'arrivée ' if 'arrivant' in self.capa_desc else 'de départ ') + self.capa_desc.split(' ')[0]
         # Fix Baroufle
         if self.type is not None and 'baroufle' in self.type.lower():
-            if 'concentration' in self.capa_effet.lower() and self.capa_effet.count('\n-') == 0:
+            if self.capa_effet is not None and 'concentration' in self.capa_effet.lower() and self.capa_effet.count('\n-') == 0:
                 self.capa_tour = None
             for r,v in [(r'(E|e)ffet\s+(I|i)mm(é|e)diat\s*\:(.*?)(;|\n|$)', r'\4'),
                         (r'-.*?quelque\s+chose\s+de\s+magique.*?(;|\n|$)', ''),
@@ -410,7 +410,7 @@ class battleEvent(Event):
             return 'binoculars.svg'
         if any(w in self.type for w in [' programmée', 'Protection ']):
             return 'stopwatch.svg'
-        if any(w in self.type for w in ['Explosion ', 'Piège à feu']):
+        if any(w in self.type for w in ['Explosion', 'Piège à feu']):
             return 'explosion.svg'
         if any(w in self.type for w in ['Glue de', 'Piège à glue']):
             return 'glue.svg'
@@ -537,6 +537,10 @@ def play(mapper, connection, target):
         at = sg.db.session.query(TrollPrivate).get((target.att_id, target.owner_id))
         if target.blessure is not None and at.pdv is not None and int(target.blessure) > 0:
             at.pdv = max(0, at.pdv - int(target.blessure))
+        if target.soin is not None and 'sacrifice' not in t and at.pdv is not None and int(target.soin) > 0:
+            at.pdv += int(target.soin)
+        if target.vie is not None and int(target.vie) > 0 and (target.blessure is not None or target.def_id is None or Being.is_mob(target.def_id)):
+            at.pdv = int(target.vie)
         if target.fatigue is not None and int(target.fatigue) > 0:
             fatigue = at.fatigue if at.fatigue is not None else 0
             at.fatigue = min(127, fatigue + int(target.fatigue))
@@ -570,15 +574,15 @@ def play(mapper, connection, target):
     # Defenser is a troll
     if target.def_id is not None and not Being.is_mob(target.def_id):
         dt = sg.db.session.query(TrollPrivate).get((target.def_id, target.owner_id))
-        if target.soin is not None and dt.pdv is not None and dt.base_pdv_max is not None and int(target.soin) > 0:
-            dt.pdv = min(dt.pdv + int(target.soin), dt.base_pdv_max + dt.bonus_pdv_phy + dt.bonus_pdv_mag)
+        if target.soin is not None and dt.pdv is not None and 'sacrifice' not in t and int(target.soin) > 0:
+            dt.pdv = dt.pdv + int(target.soin)
         if target.pdv is not None and dt.pdv is not None and int(target.pdv) > 0:
             dt.pdv = max(0, dt.pdv - int(target.pdv))
             dt.nb_att_sub = (dt.nb_att_sub if dt.nb_att_sub is not None else 0) + 1
             dt.course = False
-        if target.vie is not None:
-            dt.pdv = target.vie
-        if target.fatigue is not None and int(target.fatigue) > 0 and Being.is_mob(target.att_id):
+        if target.vie is not None and int(target.vie) > 0 and (target.blessure is None or target.att_id is None or Being.is_mob(target.att_id)):
+            dt.pdv = int(target.vie)
+        if target.fatigue is not None and int(target.fatigue) > 0 and (target.att_id is None or Being.is_mob(target.att_id)):
             fatigue = dt.fatigue if dt.fatigue is not None else 0
             dt.fatigue = min(127, fatigue + int(target.fatigue))
         if target.rm is not None and int(target.rm) > 0:
