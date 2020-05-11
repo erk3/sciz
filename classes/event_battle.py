@@ -106,7 +106,6 @@ class battleEvent(Event):
     @hybrid_property
     def str_vie(self):
         return None if self.vie is None or int(self.vie) < 1 else self.vie
-        return arm
 
     @hybrid_property
     def arm(self):

@@ -1124,3 +1124,15 @@ TrollPrivateCapa:
       Préfixe: '('
       Attribut: '{o.values}'
       Suffixe: ')'
+
+userEvent:
+  Notification: '{Horodatage} {Type d''événement} pour {Troll} {Identifiant du Troll} {Description}'
+  Attributs:
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Description:
+      Préfixe: ': '
+      Attribut: '{o.desc}'
+      Suffixe: ''

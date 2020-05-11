@@ -12,7 +12,6 @@ ignored_subjects:
   pass: 'Passe'
   roulotte: 'roulotte'
   hibernation: 'Hibernation'
-  dla: 'DLA'
   don_px: 'Don de \d+PX'
   don_gg: 'Don de GG'
   suivant_de: 'est arrivé'
@@ -26,6 +25,7 @@ ignored_subjects:
 subjects:
   MailHelper_gmail: '(Confirmation\s+du\s+transfert\s+par( Gmail)?)|((Gmail )?Forwarding\s+Confirmation)(?s)'
   MailHelper_yahoo: 'Veuillez vérifier votre adresse mail'
+  userEvent_dla: 'Votre (?P<type>DLA est depassée)'
   aaEvent: 'Analyse\s+Anatomique\s+sur\s+(?P<troll_nom>.+)\s+\((?P<troll_id>\d+)\)'
   cdmEvent: 'Connaissance\s+des\s+Monstres\s+(?P<cdm_niv>\d)\s+sur\s+(?P<mob_nom>.*)\s+\((?P<mob_id>\d+)\)(?s)'
   tpEvent: 'Sortilège\s*:\s*Téléportation'
@@ -84,6 +84,10 @@ common:
   re_px: 'gagné (un total de )?(?P<px>\d+) PX'
   re_mm: '(augmenté votre Ma(i|î)trise Magique de (?P<mm>\d+) points?)(?s)'
   re_rm: '(augmenté votre Résistance Magique de (?P<rm>\d+) points?)(?s)'
+
+# Regexps for userEvent
+userEvent:
+  re_time: 'précédente\s+Date\s+Limite\s+d''Action\s+est\s+dépassée\s+\((?P<time>.+?)\)'
 
 # Regexps for aaEvent
 aaEvent:
