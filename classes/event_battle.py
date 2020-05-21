@@ -96,6 +96,8 @@ class battleEvent(Event):
     dir_y = Column(String(25))
     # N axis direction (Retreat, tracking, etc.)
     dir_n = Column(String(25))
+    # Massacre
+    massacre = Column(Boolean)
 
     @hybrid_property
     def pv(self):
@@ -158,6 +160,12 @@ class battleEvent(Event):
     @hybrid_property
     def mort(self):
         return self.vie is not None and int(self.vie) <= 0
+
+    @hybrid_property
+    def str_mort(self):
+        if not self.mort:
+            return ''
+        return 'MORT (Massacre)' if self.massacre else 'MORT'
 
     @hybrid_property
     def tresor_private(self):
@@ -347,6 +355,7 @@ class battleEvent(Event):
             self.flag_resist = self.flag_resist is not None and self.flag_resist != False
         if hasattr(self, 'flag_dead') and self.flag_dead is not None: self.vie = 0
         if hasattr(self, 'flag_dead_mult') and self.flag_dead_mult is not None: self.vie = 0
+        if hasattr(self, 'massacre') and self.massacre is not None: self.massacre = True
 
     def build_reverse(self):
         # Zero out everything not needed

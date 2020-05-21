@@ -434,8 +434,7 @@ battleEvent:
       Valeur: 'résisté(e)'
     Mort:
       Préfixe: ''
-      Attribut: '{o.mort}'
-      Valeur: 'MORT'
+      Attribut: '{o.str_mort}'
       Suffixe: ' - '
     PV:
       Préfixe: '-'

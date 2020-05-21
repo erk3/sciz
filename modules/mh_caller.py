@@ -237,6 +237,7 @@ class MhCaller:
         # Troll
         troll = Troll()
         troll.id = data['troll']['id']
+        troll.nom = data['troll']['nom']
         troll.niv = data['troll']['niveau']
         troll.race = data['troll']['race']
         troll.guilde_id = data['troll']['guilde']

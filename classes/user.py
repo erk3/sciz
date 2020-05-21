@@ -121,8 +121,8 @@ class User(sg.sqlalchemybase):
 
     @classmethod
     def authenticate(cls, **kwargs):
-        id = kwargs.get('id')
-        pwd = kwargs.get('pwd')
+        id = kwargs.get('id').strip()
+        pwd = kwargs.get('pwd').strip()
         if id is None or not id.isdigit() or pwd is None:
             return None, 'Données de formulaire invalides'
         user = sg.db.session.query(User).filter(User.id == int(id)).first()
@@ -132,10 +132,10 @@ class User(sg.sqlalchemybase):
 
     @classmethod
     def register(cls, **kwargs):
-        id = kwargs.get('id')
-        pwd = kwargs.get('pwd')
-        pwd2 = kwargs.get('pwd2')
-        pwd_mh = kwargs.get('pwd_mh')
+        id = kwargs.get('id').strip()
+        pwd = kwargs.get('pwd').strip()
+        pwd2 = kwargs.get('pwd2').strip()
+        pwd_mh = kwargs.get('pwd_mh').strip()
         if any(a is None for a in [id, pwd, pwd2, pwd_mh]) or not id.isdigit() or pwd != pwd2 or len(pwd) < 8:
             return None, 'Données de formulaire invalides'
         user = sg.db.session.query(User).get(id)
@@ -178,8 +178,8 @@ class User(sg.sqlalchemybase):
 
     def update(self, **kwargs):
         try:
-            self.pseudo = kwargs.get('pseudo')[:50]
-            self.user_mail = kwargs.get('user_mail')
+            self.pseudo = kwargs.get('pseudo')[:50].strip()
+            self.user_mail = kwargs.get('user_mail').strip()
             self.web_session_duration = int(kwargs.get('session')) * 60
             if not (1 * 60 <= self.web_session_duration <= 24 * 60):
                 return None
@@ -193,9 +193,9 @@ class User(sg.sqlalchemybase):
             return None
 
     def resetPassword(self, **kwargs):
-        pwd = kwargs.get('pwd')
-        new_pwd = kwargs.get('new_pwd')
-        new_pwd2 = kwargs.get('new_pwd2')
+        pwd = kwargs.get('pwd').strip()
+        new_pwd = kwargs.get('new_pwd').strip()
+        new_pwd2 = kwargs.get('new_pwd2').strip()
         if any(a is None for a in [pwd, new_pwd, new_pwd2]) or new_pwd != new_pwd2 or len(new_pwd) < 8 or not bcrypt.checkpw(pwd.encode(sg.DEFAULT_CHARSET), self.pwd_hash.encode(sg.DEFAULT_CHARSET)):
             return None, 'Données invalides...'
         self.pwd_hash = new_pwd

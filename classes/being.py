@@ -38,7 +38,7 @@ class Being(sg.sqlalchemybase):
     @staticmethod
     def parse_name(oid, nom):
         if oid is None or nom is None:
-            return ''
+            return '', '', ''
         if int(oid) > 300000:
             res = re.search('(((?P<mob_det>une?)\s+)?(?P<mob_nom>.+)\s+\[(?P<mob_age>.+)\]\s*(?P<mob_tag>.+)?)(?s)', nom)
             if res is not None:

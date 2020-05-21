@@ -24,7 +24,6 @@ class userEvent(Event):
     # SQL Table Mapping
     __tablename__ = 'event_user'
     __mapper_args__ = {
-
         'polymorphic_identity': 'Utilisateur',
         'inherit_condition': id == Event.id
     }
@@ -46,11 +45,11 @@ def upsert_troll_private(mapper, connection, target):
     troll_private = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
     if troll_private is None: troll_private = TrollPrivate(troll_id=target.owner_id, viewer_id=target.owner_id)
     # Update it from the userEvent
-    if 'dépassée' in target.type.lower():
-        troll_private.pa = 6;
+    if 'depassée' in target.type.lower():
+        troll_private.pa = 6
         troll_private.next_dla = target.time
-        if troll_private.estimate_next_dla is not None:
-            troll_private.next_dla = troll_private.estimate_next_dla
+        if troll_private.estimate_dla is not None:
+            troll_private.next_dla = troll_private.estimate_dla
     troll_private.last_event_update_at = target.time
     troll_private.last_event_update_by = target.owner_id
     # Upsert it

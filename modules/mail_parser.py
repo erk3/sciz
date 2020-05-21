@@ -96,7 +96,7 @@ class MailParser:
                 return k, match.groupdict()
         return None, None
     
-    # Main regexp dispatcher and CLASS.populate dispatcher
+    # Main regexp dispatcher and CLASS.build dispatcher
     def parse(self, subject, body, froms, user):
         if subject is None or body is None:
             return None
@@ -139,6 +139,8 @@ class MailParser:
         # And a list of events with the regexps that matched several time in the following entries of res dictionnary
         FLAG_EXCLUDE = 'FLAG_EXCLUDE'
         FLAG_CHECK_EXCLUDES = 'FLAG_CHECK_EXCLUDES'
+        ATTRS_MATCH_ONCE = ['flag_resist_att_mag']
+        ATTRS_MATCH_SUM = ['rm', 'mm', 'px']
         excludes = []
         for (key, matchall) in matchs:
             # Filter out any excluded match for this regexp and count the number of resulting items to process (in a new set)
@@ -152,11 +154,21 @@ class MailParser:
                         matchall_filtered.append(match)
                         c += 1
             # Populate the entries
-            i = 1 if c > 1 else 0
+            b = 1 if c > 1 else 0
+            i = b
             for match in matchall_filtered:
-                if i not in res:
-                    res[i] = {}
-                res[i].update(match.groupdict())
+                for k in match.groupdict():
+                    if b not in res:
+                        res[b] = {}
+                    if k in ATTRS_MATCH_SUM and k in res[b]:
+                        res[b][k] = int(res[b][k]) + int(match[k])
+                    else:
+                        if i not in res:
+                            res[i] = {}
+                        res[i][k] = match[k]
+                # res[i].update(match.groupdict())
+                if any(o in match.groupdict() for o in ATTRS_MATCH_ONCE):
+                    break
                 i += 1
         n = len(res)
         # Look for any DUPLICATE flag (parent object will lose its flag but child object will keep it and should be specialy processed in build methods)

@@ -33,11 +33,14 @@
 						<v-form v-model="valid_form_login" @keyup.native.enter="authenticate" v-on:submit.prevent>
 			        <v-card-actions>
 								<v-layout row wrap>
-									<v-flex d-flex>
+									<v-flex xs12>
 										<v-layout row wrap justify-center>
-											<v-text-field label="Identifiant" prepend-icon="fas fa-user" v-model="id" hint="Votre numéro de trõll" :error="id !== '' && error" :rules="[emptyRule, idRule]" required browser-autocomplete="username" name="username"></v-text-field>
-											<v-spacer></v-spacer>
-											<v-text-field label="Mot de passe" prepend-icon="fas fa-lock" v-model="pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error" :rules="[emptyRule]" required hint="Perdu votre mot de passe ? <a href='https://games.mountyhall.com/mountyhall/Messagerie/MH_Messagerie.php?cat=3&dest=104126' target='_blank'>Contactez moi !</a>" browser-autocomplete="current-password" name="password"></v-text-field>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Identifiant" prepend-icon="fas fa-user" v-model="id" hint="Votre numéro de trõll" :error="id !== '' && error" :rules="[emptyRule, idRule]" required browser-autocomplete="username" name="username"></v-text-field>
+											</v-flex>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Mot de passe" prepend-icon="fas fa-lock" v-model="pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error" :rules="[emptyRule]" required hint="Perdu votre mot de passe ? <a href='https://games.mountyhall.com/mountyhall/Messagerie/MH_Messagerie.php?cat=3&dest=104126' target='_blank'>Contactez moi !</a>" browser-autocomplete="current-password" name="password"></v-text-field>
+											</v-flex>
 										</v-layout>
 									</v-flex>
 									<v-flex d-flex xs12 class="mt-3">
@@ -58,16 +61,22 @@
 								<v-layout row wrap>
 									<v-flex d-flex>
 										<v-layout row wrap justify-center>
-											<v-text-field label="Identifiant" prepend-icon="fas fa-user" v-model="id" hint="Votre numéro de trõll" :error="id !== '' && error" :rules="[emptyRule, idRule]" required></v-text-field>
-											<v-spacer></v-spacer>
-											<v-text-field label="Code d'accès à MountyHall" prepend-icon="fas fa-key" v-model="pwd_mh" :error="pwd_mh !== '' && error" hint="<a href='http://sp.mountyhall.com/hashing.php' target='_blank'>Qu'est ce que c'est ?</a>" :rules="[emptyRule]" required></v-text-field>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Identifiant" prepend-icon="fas fa-user" v-model="id" hint="Votre numéro de trõll" :error="id !== '' && error" :rules="[emptyRule, idRule]" required></v-text-field>
+											</v-flex>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Code d'accès à MountyHall" prepend-icon="fas fa-key" v-model="pwd_mh" :error="pwd_mh !== '' && error" hint="<a href='http://sp.mountyhall.com/hashing.php' target='_blank'>Qu'est ce que c'est ?</a>" :rules="[emptyRule]" required></v-text-field>
+											</v-flex>
 										</v-layout>
 									</v-flex>
 									<v-flex d-flex>
 										<v-layout row wrap justify-center>
-											<v-text-field label="Mot de passe" prepend-icon="fas fa-lock" v-model="pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error" counter :rules="[emptyRule, pwdRule]" :success="pwdMatch(false)" required browser-autocomplete="new-password"></v-text-field>
-											<v-spacer></v-spacer>
-											<v-text-field label="Confirmation" prepend-icon="fas fa-lock" v-model="pwd2" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd2 !== '' && error" counter :rules="[emptyRule]" :error-messages="pwdMatch(true)" :success="pwdMatch(false)" required browser-autocomplete="new-password"></v-text-field>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Mot de passe" prepend-icon="fas fa-lock" v-model="pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error" counter :rules="[emptyRule, pwdRule]" :success="pwdMatch(false)" required browser-autocomplete="new-password"></v-text-field>
+											</v-flex>
+											<v-flex xs6 class="pa-3">
+												<v-text-field label="Confirmation" prepend-icon="fas fa-lock" v-model="pwd2" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd2 !== '' && error" counter :rules="[emptyRule]" :error-messages="pwdMatch(true)" :success="pwdMatch(false)" required browser-autocomplete="new-password"></v-text-field>
+											</v-flex>
 										</v-layout>
 									</v-flex>
 									<v-flex d-flex xs12 class="mt-3">

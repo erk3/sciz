@@ -164,6 +164,7 @@ battleEvent:
   re_dead: '(Il\s+vous\s+a|Vous\s+l''avez|Votre poison a)\s+(?P<flag_dead>(TUÉ|tué))(.+?(?P<FLAG_EXCLUDE>(?P<capa_dead>A sa mort),\s+il\s+déclenche\s+:\s+(?P<capa_dead_desc>.+?)(\s*:\s*(?P<capa_dead_subdesc>[^\n\(]*\n?[^\n]+?))?((\s+.*?Elle a pour effet (?P<capa_dead_resist>REDUIT\s+)?: (?P<capa_dead_effet>.+?)\s+Pour une durée de (?P<capa_dead_tour>\d+) tour.*?\s+Seuil de Résistance.*?(?P<capa_dead_sr>\d+).*?\s+Jet de Résistance.*?(?P<capa_dead_resi>\d+).*?\s+.*?((EFFET REDUIT)|(AUCUN EFFET)|(subit donc pleinement)))|\n)))?(?s)'
   re_sr: '(?P<FLAG_CHECK_EXCLUDES>Résistance de la Cible.*:\s*?(?P<sr>\d+))'
   re_resi: '(?P<FLAG_CHECK_EXCLUDES>Jet de Résistance.*:\s*?(?P<resi>\d+))'
+  re_resi: '(?P<FLAG_CHECK_EXCLUDES>Jet de Résistance.*:\s*?(?P<resi>\d+))'
   re_capa_desc: '(?P<FLAG_CHECK_EXCLUDES>(capacité\s+spéciale\s+:\s+(?P<capa_desc>[^\n]+)))(?s)'
   re_capa_desc_mythiques: '(?P<FLAG_CHECK_EXCLUDES>(a\s+déclenché\s+:\s+(?P<capa_desc>[^\n]+\n((?!C''est une malédiction)[^\n]+)?)))(?s)'
   re_capa_effet: '(?P<FLAG_CHECK_EXCLUDES>effet (?P<flag_resist>REDUIT\s+)?: (?P<capa_effet>.+))'
@@ -246,3 +247,4 @@ battleEvent:
   re_dressage_ok: '(?P<flag_dressage_ok>Bravo\s*,\s*vous\s+êtes\s+parvenu\s+à\s+dresser)(?s)'
   re_vlc_vl_zone: 'Zone\s*centrale\s*ciblée\s*:\s*X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)'
   re_vlc_self: 'voir\s+les\s+éléments\s+cachés\s+situés\s+jusqu''à\s+(?P<capa_effet>\d+\s+cases\s+horizontalement)'
+  re_massacre: '(Vous\s+avez\s+(?P<massacre>massacré)\s+le\s+monstre)(?s)'
