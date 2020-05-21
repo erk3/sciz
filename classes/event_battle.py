@@ -540,6 +540,11 @@ def play(mapper, connection, target):
     if 'neige' in t:
         target.capa_effet = 'DLA : +1 minute'
         target.capa_tour = 1
+    # Dressage finished
+    if 'dressage terminé' in t:
+        dm = sg.db.session.query(MobPrivate).get((target.def_id, target.owner_id))
+        dm.owner_id = target.owner_id
+        sg.db.upsert(dm)
     # Attacker is a troll
     if target.att_id is not None and not Being.is_mob(target.att_id):
         at = sg.db.session.query(TrollPrivate).get((target.att_id, target.owner_id))

@@ -14,7 +14,6 @@ ignored_subjects:
   hibernation: 'Hibernation'
   don_px: 'Don de \d+PX'
   don_gg: 'Don de GG'
-  suivant_de: 'est arrivé'
   achat: 'Achat de Trésor'
 
 # Known mail subjects to parse (first to match)
@@ -26,6 +25,7 @@ subjects:
   MailHelper_gmail: '(Confirmation\s+du\s+transfert\s+par( Gmail)?)|((Gmail )?Forwarding\s+Confirmation)(?s)'
   MailHelper_yahoo: 'Veuillez vérifier votre adresse mail'
   userEvent_dla: 'Votre (?P<type>DLA est depassée)'
+  followerEvent: '(?P<follower_nom>.+)\s+\((?P<follower_id>\d+)\)\s+est\s+arrivé(\s+pour\s+s''ébrouer)?\s*$'
   aaEvent: 'Analyse\s+Anatomique\s+sur\s+(?P<troll_nom>.+)\s+\((?P<troll_id>\d+)\)'
   cdmEvent: 'Connaissance\s+des\s+Monstres\s+(?P<cdm_niv>\d)\s+sur\s+(?P<mob_nom>.*)\s+\((?P<mob_id>\d+)\)(?s)'
   tpEvent: 'Sortilège\s*:\s*Téléportation'
@@ -88,6 +88,10 @@ common:
 # Regexps for userEvent
 userEvent:
   re_time: 'précédente\s+Date\s+Limite\s+d''Action\s+est\s+dépassée\s+\((?P<time>.+?)\)'
+
+# Regexps for followerEvent
+followerEvent:
+  re_deplacement: 'est\s+arrivé\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+Y\s*=\s*(?P<pos_y>\-?\d+)\s+N\s*=\s*(?P<pos_n>\-?\d+)(?P<type>\s+et\s+s.ébroue)?'
 
 # Regexps for aaEvent
 aaEvent:
@@ -163,7 +167,6 @@ battleEvent:
   re_deg_dead: '((infligé|subi)\s+(?P<deg>\d+) points? de dégâts|Son effet est le suivant[^\n]+\n[^\n]+)([^\n]*\n[^\n]*(?P<flag_dead_mult>a été tué))?([^\n]*?\n+?(?P<FLAG_EXCLUDE>(?P<capa_dead>A sa mort),\s+il\s+déclenche\s+:\s+(?P<capa_dead_desc>.+?)(\s*:\s*(?P<capa_dead_subdesc>[^\n\(]*\n?[^\n]+?))?((\s+.*?Elle a pour effet (?P<capa_dead_resist>REDUIT\s+)?: (?P<capa_dead_effet>.+?)\s+Pour une durée de (?P<capa_dead_tour>\d+) tour.*?\s+Seuil de Résistance.*?(?P<capa_dead_sr>\d+).*?\s+Jet de Résistance.*?(?P<capa_dead_resi>\d+).*?\s+.*?((EFFET REDUIT)|(AUCUN EFFET)|(subit donc pleinement)))|\n)))?(?s)'
   re_dead: '(Il\s+vous\s+a|Vous\s+l''avez|Votre poison a)\s+(?P<flag_dead>(TUÉ|tué))(.+?(?P<FLAG_EXCLUDE>(?P<capa_dead>A sa mort),\s+il\s+déclenche\s+:\s+(?P<capa_dead_desc>.+?)(\s*:\s*(?P<capa_dead_subdesc>[^\n\(]*\n?[^\n]+?))?((\s+.*?Elle a pour effet (?P<capa_dead_resist>REDUIT\s+)?: (?P<capa_dead_effet>.+?)\s+Pour une durée de (?P<capa_dead_tour>\d+) tour.*?\s+Seuil de Résistance.*?(?P<capa_dead_sr>\d+).*?\s+Jet de Résistance.*?(?P<capa_dead_resi>\d+).*?\s+.*?((EFFET REDUIT)|(AUCUN EFFET)|(subit donc pleinement)))|\n)))?(?s)'
   re_sr: '(?P<FLAG_CHECK_EXCLUDES>Résistance de la Cible.*:\s*?(?P<sr>\d+))'
-  re_resi: '(?P<FLAG_CHECK_EXCLUDES>Jet de Résistance.*:\s*?(?P<resi>\d+))'
   re_resi: '(?P<FLAG_CHECK_EXCLUDES>Jet de Résistance.*:\s*?(?P<resi>\d+))'
   re_capa_desc: '(?P<FLAG_CHECK_EXCLUDES>(capacité\s+spéciale\s+:\s+(?P<capa_desc>[^\n]+)))(?s)'
   re_capa_desc_mythiques: '(?P<FLAG_CHECK_EXCLUDES>(a\s+déclenché\s+:\s+(?P<capa_desc>[^\n]+\n((?!C''est une malédiction)[^\n]+)?)))(?s)'

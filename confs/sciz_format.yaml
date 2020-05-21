@@ -1135,3 +1135,37 @@ userEvent:
       Préfixe: ': '
       Attribut: '{o.desc}'
       Suffixe: ''
+
+followerEvent:
+  Notification: '{Horodatage} {Type d''événement} de {Suivant} appartenant à {Propriétaire} {Position}'
+  Attributs construits:
+    Position: 'en {Position X} {Position Y} {Position N}'
+  Attributs:
+    Type d'événement:
+      Préfixe: ''
+      Attribut: '{o.type}'
+      Suffixe: ''
+    Suivant:
+      Préfixe: ''
+      Attribut: '{o.follower.nom_complet}'
+      Suffixe: ''
+    Propriétaire:
+      Préfixe: ''
+      Attribut: '{o.owner.nom_complet}'
+      Suffixe: ''
+    Description:
+      Préfixe: ': '
+      Attribut: '{o.desc}'
+      Suffixe: ''
+    Position X:
+      Préfixe: 'X = '
+      Attribut: '{o.pos_x}'
+      Suffixe: ''
+    Position Y:
+      Préfixe: '| Y = '
+      Attribut: '{o.pos_y}'
+      Suffixe: ''
+    Position N:
+      Préfixe: '| N = '
+      Attribut: '{o.pos_n}'
+      Suffixe: ''

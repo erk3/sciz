@@ -3,6 +3,7 @@
 
 # IMPORTS
 from classes.event_user import userEvent
+from classes.event_follower import followerEvent
 from classes.event_aa import aaEvent
 from classes.event_cdm import cdmEvent
 from classes.event_tp import tpEvent
