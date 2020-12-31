@@ -260,7 +260,7 @@ cdmEvent:
   Notification: '{Horodatage} Connaissance des monstres {Niveau CDM} de {Troll} {Identifiant du Troll} sur {Monstre cible} : {Blessure} {Caractéristiques} {PX}'
   Attributs construits:
     Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
-    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Durée du tour}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Durée du tour}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
   Attributs:
     Monstre cible:
       Préfixe: ''
@@ -385,6 +385,10 @@ cdmEvent:
     Bonus/Malus:
       Préfixe: 'Bonus/Malus : '
       Attribut: '{o.bonus_malus}'
+      Suffixe: ''
+    Blason:
+      Préfixe: 'Blason : '
+      Attribut: '{o.mob.mob_meta.blason_uri}'
       Suffixe: ''
 
 battleEvent:
@@ -934,7 +938,7 @@ MobPrivate:
   Attributs construits:
     Position: 'Position : {Position X} {Position Y} {Position N}'
     Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
-    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{Points de vie}{Délimiteur}{Vie restante}{Délimiteur}{Position}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{Points de vie}{Délimiteur}{Vie restante}{Délimiteur}{Position}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Voleur}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
   Attributs:
     Identifiant du monstre:
       Préfixe: '('
@@ -1099,6 +1103,10 @@ MobPrivate:
     Délimiteur:
       Attribut: 'True'
       Valeur: '\n'
+    Blason:
+      Préfixe: 'Blason : '
+      Attribut: '{o.mob.mob_meta.blason_uri}'
+      Suffixe: ''
 
 TrollPrivateCapa:
   Notification: '{Nom} {Type} {Pourcentage} {Niveau} {Valeurs}'

@@ -26,6 +26,10 @@ export function register(userData) {
   return axios.post(API_URL + '/register', userData);
 }
 
+export function reset(userData) {
+	return axios.post(API_URL + '/reset', userData);
+}
+
 // MOBS
 export function getMobs() {
 	return axios.get(API_URL + '/mobs');

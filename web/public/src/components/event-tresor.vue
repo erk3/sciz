@@ -1,8 +1,8 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row wrap justify-center align-center fill-height pa-4>
+	<v-row justify="center" align="center" class="fill-height ma-4">
 		<!-- HEADER -->
-		<v-flex xs12 mb-5>
+		<v-col class="col-12 mb-5 text-center">
 			<h4 class="display-1">{{te.type}}</h4>
 			<span>de</span>
 			<v-avatar>
@@ -10,18 +10,18 @@
 				<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 			</v-avatar>
 			<span>{{te.owner_nom}} ({{te.owner_id}})</span><br/>
-		</v-flex>
+		</v-col>
 		<!-- MOB -->
-		<v-flex xs12 text-xs-center mb-5>
-			<v-layout row align-center justify-center fill-height>
-				<v-flex xs4>
+		<v-col class="col-12 text-center">
+			<v-row justify="center" align="center" class="fill-height">
+				<v-col class="col-4">
 					<v-img :src="Image('treasure')" alt="" contain max-height="100px"></v-img>
 					<br/>{{te.tresor_nom}} ({{te.tresor_id}})
 					<v-btn v-bind:href="te.tresor_link" v-bind:class="{'ma-0': true}" icon target="_blank">
 						<v-icon size="14px">fas fa-link</v-icon>
 					</v-btn>
-				</v-flex>
-				<v-flex offset-xs1 xs4 v-if="te.effet || te.pos_x">
+				</v-col>
+				<v-col class="col-4 offset-1" v-if="te.effet || te.pos_x">
 					<div v-if="te.effet">
 						<h5 class="title" v-if="te.tresor_nom === 'Mission'">Numéro</h5>
 						<h5 class="title" v-else-if="te.tresor_nom === 'Tête Réduite'">Monstre</h5>
@@ -37,28 +37,30 @@
 						<span v-if="te.pos_n"> X = {{te.pos_x}} | Y = {{te.pos_y}} | N = {{te.pos_n}}</span>
 						<span v-else> X = {{te.pos_x}} | Y = {{te.pos_y}}</span>
 					</div>
-				</v-flex>
-			</v-layout>
-		</v-flex>
+				</v-col>
+			</v-row>
+		</v-col>
 		<!-- DATA -->
-		<v-flex xs12 text-xs-center v-if="!te.type.startsWith('Télékinésie')">
-			<v-layout row align-start justify-center fill-height>
-				<v-flex xs4 text-xs-center>
+		<v-col class="col-12 text-center" v-if="!te.type.startsWith('Télékinésie')">
+			<v-row justify="center" align="center" class="fill-height">
+				<v-col class="col-4 text-center">
 					<v-card flat>
-		      	<v-divider></v-divider>
-						<v-list v-for="carac in cnum" dense class="pa-0">
-							<v-list-tile>
-								<v-list-tile-content>{{carac.k}}</v-list-tile-content>
-								<v-list-tile-content class="align-end">
+		      			<v-divider></v-divider>
+						<v-list v-for="(carac, index) in cnum" dense class="pa-0" :key="index">
+							<v-list-item>
+								<v-list-item-content>{{carac.k}}</v-list-item-content>
+								<v-list-item-content class="align-end">
 									<v-tooltip v-if="carac.t" right>
-										<div slot="activator" class="text-capitalize">{{carac.v}}</div>
+										<template v-slot:activator="{ on, attrs }">
+											<div v-bind="attrs" v-on="on" class="text-capitalize">{{carac.v}}</div>
+										</template>
 										<span>{{carac.t}}</span>
 									</v-tooltip>
 									<span v-else class="text-capitalize">{{carac.v}}</span>
-								</v-list-tile-content>
-							</v-list-tile>
+								</v-list-item-content>
+							</v-list-item>
 						</v-list>
-		    	</v-card>
+		    		</v-card>
 				</v-flex>
 			</v-layout>
 		</v-flex>

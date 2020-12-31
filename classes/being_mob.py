@@ -64,6 +64,22 @@ class Mob(Being):
     def link(self):
         return sg.conf[sg.CONF_MH_SECTION][sg.CONF_LINK_MOB] + str(self.id)
 
+    @staticmethod
+    def link_metamob(mob):
+        # Loop over every metamobs to find the longest one matching the mob name
+        metamobs = sg.db.session.query(MetaMob).all()
+        len_found_metamob_nom = 0
+        for metamob in metamobs:
+            len_metamob_nom = len(metamob.nom)
+            if metamob.nom in mob.nom and len_metamob_nom > len_found_metamob_nom:
+                len_found_metamob_nom = len_metamob_nom
+                mob.metamob_id = metamob.id
+                mob.mob_meta = metamob
+                # Get the race if we have a similar mob
+                similar_mob = sg.db.session.query(Mob).filter(Mob.metamob_id == mob.metamob_id).first()
+                if similar_mob is not None and similar_mob:
+                    mob.race = similar_mob.race
+        return mob
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(Mob, 'before_insert')
@@ -72,15 +88,5 @@ def link_metamob(mapper, connection, target):
     state = inspect(target)
     hist = state.get_history('metamob_id', True)
     if hist.deleted is not None and target.metamob_id is None:
-        #  Loop over every metamobs to find the longest one matching the mob name
-        metamobs = sg.db.session.query(MetaMob).all()
-        len_found_metamob_nom = 0
-        for metamob in metamobs:
-            len_metamob_nom = len(metamob.nom)
-            if metamob.nom in target.nom and len_metamob_nom > len_found_metamob_nom:
-                len_found_metamob_nom = len_metamob_nom
-                target.metamob_id = metamob.id
-                # Get the race if we have a similar mob
-                similar_mob = sg.db.session.query(Mob).filter(Mob.metamob_id == target.metamob_id).first()
-                if similar_mob is not None and similar_mob:
-                    target.race = similar_mob.race
+      target = Mob.link_metamob(target)
+

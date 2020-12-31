@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
+#from classes.coterie_hook import Hook
 from web.server import webapp as application
 from modules.admin_helper import AdminHelper
 from modules.requester import Requester
@@ -76,7 +77,19 @@ class SCIZ:
 
     # Test
     def test(self):
-        #sg.db.upsert(User(id=104126, pseudo='Põm³', pwd_hash='test'))
+        ### Reset formats
+        #hooks = sg.db.session.query(Hook).all()
+        #for hook in hooks:
+        #    hook.format = sg.format
+        #    sg.db.upsert(hook)
+        ### Fix mh_api_keys with whitespaces
+        #users = sg.db.session.query(User).all()
+        #for user in users:
+        #    user.mh_api_key = user.mh_api_key.strip() if user.mh_api_key is not None else user.mh_api_key
+        #    sg.db.upsert(user)
+        ### Create a test user
+        user = User(id=1, pseudo='Test', pwd_hash='test', mh_api_key='TEST')
+        sg.db.upsert(user)
         pass
 
 

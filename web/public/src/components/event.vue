@@ -1,109 +1,118 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row wrap justify-center align-start fill-height id="event-view" pa-3>
-		<!-- SNACKBAR -->
+	<v-row wrap justify="start" align="start" class="fill-height pa-3" id="event-view">
+		<!-- NOTIFICATIONS -->
 		<v-snackbar v-model="error" color="error" :timeout="6000" top>
-			{{ error_msg }}
-	    <v-btn dark flat @click="error = false">Fermer</v-btn>
-	  </v-snackbar>
+   			{{ error_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="error = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
 		<v-snackbar v-model="success" color="success" :timeout="6000" top>
-	    {{ success_msg }}
-	    <v-btn dark flat @click="success = false">Fermer</v-btn>
-	  </v-snackbar>
+   			{{ success_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
 		<v-snackbar v-model="info" color="info" :timeout="6000" top>
-	    {{ info_msg }}
-	    <v-btn dark flat @click="info = false">Fermer</v-btn>
-	  </v-snackbar>
-		<!-- DIALOGS -->
+			{{ info_msg }}
+			<template v-slot:action="{ attrs }">
+    			<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+  		</v-snackbar>
+		<!-- DIALOG SHOW MAIL -->
 		<v-dialog v-model="show_mail" max-width="50%" scrollable hide-overlay>
 			<v-card>
 				<v-card-title class="title elevation-3">{{ selectedEvent.mail_subject }}</v-card-title>
 				<v-card-text><pre>{{selectedEvent.mail_body}}</pre></v-card-text>
 			</v-card>
 		</v-dialog>
+		<!-- DIALOG DELETE NOTIFICATION -->
 		<v-dialog v-model="delete_dialog" max-width="50%">
-      <v-card>
-        <v-card-title class="headline">Supprimer cette chauve-souris ?</v-card-title>
+     		<v-card>
+        		<v-card-title class="headline">Supprimer cette chauve-souris ?</v-card-title>
 				<v-card-text>Cette action est définitive et irréversible.<br/>L'événement ne sera plus visible de vous-même et des membres de vos coteries.</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="delete_dialog = !delete_dialog">Annuler</v-btn>
-          <v-btn class="error" @click="delete_dialog = !delete_dialog; deleteOneEvent(selectedEvent.id, selectedIndex)">Supprimer</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-		<!-- DRAWER -->
-		<v-navigation-drawer permanent app clipped value="true">
-			<v-toolbar flat pa-0 ma-0>
-				<v-layout row wrap align-center justify-center fill-height>
-					<v-flex xs11> Mes coteries </v-flex>
-				</v-layout>
-			</v-toolbar>
-      <!-- GROUPS LIST -->
-    	<v-divider></v-divider>
+        		<v-card-actions>
+          			<v-spacer></v-spacer>
+          			<v-btn @click="delete_dialog = !delete_dialog">Annuler</v-btn>
+          			<v-btn class="error" @click="delete_dialog = !delete_dialog; deleteOneEvent(selectedEvent.id, selectedIndex)">Supprimer</v-btn>
+        		</v-card-actions>
+      		</v-card>
+    	</v-dialog>
+		<!-- SIDEBAR -->
+		<v-navigation-drawer app clipped fixed>
+			<v-app-bar flat class="pa-0 ma-0">
+				<span>Mes coteries</span>
+			</v-app-bar>
+    		<v-divider></v-divider>
 			<v-subheader>Coterie personnelle</v-subheader>
-      <v-list v-for="(coterie, index) in [coterie_perso]">
-				<v-list-tile :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
-					<v-layout row wrap align-center justify-start fill-height>
-						<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
-						<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
-						<v-flex xs10 ml-1>{{ coterie.nom }}</v-flex>
-					</v-layout>
-				</v-list-tile>	
-			</v-list>
-      <v-divider></v-divider>
+			<v-list>
+				<template v-for="(coterie, index) in [coterie_perso]">
+        			<v-list-item :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
+						<v-list-item-avatar>
+							<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+							<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						</v-list-item-avatar>
+						<v-list-item-content>{{ coterie.nom }}</v-list-item-content>
+					</v-list-item>
+				</template>
+		    </v-list>
+			<v-divider></v-divider>
 			<v-subheader v-if="coteries.length > 0">Coterie(s) de groupe</v-subheader>
-			<v-list v-for="(coterie, index) in coteries">
-				<v-list-tile :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
-					<v-layout row wrap align-center justify-start fill-height>
-						<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
-						<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
-						<v-flex xs10 ml-1>{{ coterie.nom }}</v-flex>
-					</v-layout>
-				</v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
+			<v-list>
+				<template v-for="(coterie, index) in coteries">
+        			<v-list-item :key="index" @click="switchCoterie(coterie);" v-model="coterie_courante.id === coterie.id">
+						<v-list-item-avatar>
+							<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+							<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
+						</v-list-item-avatar>
+						<v-list-item-content>{{ coterie.nom }}</v-list-item-content>
+					</v-list-item>
+				</template>
+		    </v-list>
+   		</v-navigation-drawer>
 		<!-- TIMELINE -->
-		<v-flex xs11 text-xs-center>
+		<v-col class="col-11">
 			<v-timeline v-scroll="onScroll" v-for="(item, index) in events" v-if="!item.hidden" :key="item.event.id" dense>
 				<!-- DAY -->
 				<v-timeline-item hide-dot v-if="index === 0">
-					<v-layout row justify-space-between align-center fill-height>
+					<v-row wrap justify="start" align="center" class="fill-height" no-gutters>
 						<b v-if="new Date().setHours(0,0,0,0) === new Date(item.event.time).setHours(0,0,0,0)">Aujourd'hui</b>
 						<b v-else class="mr-3">{{ item.event.time | moment('utc', 'DD/MM/YY')}}</b>
-					</v-layout>
+						<v-divider></v-divider>
+					</v-row>
 				</v-timeline-item>
 				<v-timeline-item hide-dot v-if="index > 0 && (new Date(item.event.time).setHours(0,0,0,0) !== new Date(events[index-1].event.time).setHours(0,0,0,0))">
-					<v-layout row wrap justify-space-between align-center fill-height>
+					<v-row wrap justify="start" align="center" class="fill-height" no-gutters>
 						<b class="mr-3">{{ item.event.time | moment('utc', 'DD/MM/YY')}}</b>
 						<v-divider></v-divider>
-					</v-layout>
+					</v-row>
 				</v-timeline-item>
 				<!-- EVENT -->
 				<div v-click-outside="onClickOutside">
-      	<v-timeline-item right fill-dot color="transparent" class="pa-0">
-					<v-avatar size="30px" slot="icon">
-        		<v-img :src="item.img">
-      		</v-avatar>
-					<v-layout row justify-start align-center fill-height>
-						<v-layout row justify-start align-center fill-height shrink>
-							<v-flex xs12>
-								<span>{{ item.event.time | moment('utc', 'HH:mm:ss') }}</span><br/>
-								<v-layout row justify-start align-center fill-height shrink>
-									<v-flex xs6>
-										<v-btn class="ma-0" icon @click="info_msg = 'Événement copié dans le presse-papier'; info = true;" v-clipboard:copy="item.repr"><v-icon size="12px">fas fa-copy</v-icon></v-btn>
-									</v-flex>
-									<v-flex xs6>
-										<v-btn class="ma-0" icon @click="show_mail = !show_mail; selectedEvent = item.event"><v-icon size="12px">fas fa-envelope</v-icon></v-btn>
-									</v-flex>
-								</v-layout>
-							</v-flex>
-						</v-layout>
-						<v-card v-bind:class="{clickable: item.type && item.event !== eventToDisplay}" class="ml-4" @click.native="onClickInside(item, $event)">
+      				<v-timeline-item right fill-dot color="transparent" class="pa-0">
+						<template v-slot:icon>
+							<v-avatar size="30px"><v-img :src="item.img"></v-avatar>
+						</template>
+						<v-row wrap justify="start" align="center" class="fill-height flex-nowrap">
+							<v-row wrap justify="start" align="center" class="fill-height shrink">
+								<v-col class="col-12 text-center">
+									<span>{{ item.event.time | moment('utc', 'HH:mm:ss') }}</span><br/>
+									<v-row wrap justify="center" align="center" class="fill-height shrink no-gutters">
+										<v-col class="col-6">
+											<v-btn class="ma-0" icon @click="info_msg = 'Événement copié dans le presse-papier'; info = true;" v-clipboard:copy="item.repr"><v-icon size="12px">fas fa-copy</v-icon></v-btn>
+										</v-col>
+										<v-col class="col-6">
+											<v-btn class="ma-0" icon @click="show_mail = !show_mail; selectedEvent = item.event"><v-icon size="12px">fas fa-envelope</v-icon></v-btn>
+										</v-col>
+									</v-row>
+								</v-col>
+						</v-row>
+						<v-card class="card-timeline ml-5" v-bind:class="{clickable: item.type && item.event !== eventToDisplay}" @click.native="onClickInside(item, $event)">
 							<v-card-text v-if="eventToDisplay.id !== item.event.id || !item.type" class="body-1 pb-2 pt-2">
-								{{ item.repr.slice(19) }}
+								<span class="caption">{{ item.repr.slice(19) }}</span>
 							</v-card-text>
-							<v-layout v-else row justify-start align-center fill-height>
+							<v-row v-else justify="start" align="center" class="fill-height">
 								<EventCDM :cdm="item.event" v-if="item.type === 'CDM'"></EventCDM>
 								<EventAA :aa="item.event" v-if="item.type === 'AA'"></EventAA>
 								<EventTresor :te="item.event" v-if="item.type === 'TRESOR'"></EventTresor>
@@ -111,27 +120,26 @@
 								<EventTP :tp="item.event" v-if="item.type === 'TP'"></EventTP>
 								<EventCP :cp="item.event" v-if="item.type === 'CP'"></EventCP>
 								<EventBattle :ba="item.event" v-if="item.type === 'BATTLE'"></EventBattle>
-							</v-layout>
-      			</v-card>
+							</v-row>
+      					</v-card>
 						<v-btn class="ma-0" icon @click="delete_dialog = !delete_dialog; selectedEvent = item.event; selectedIndex = index" v-if="item.event.owner_id === userData().id"><v-icon size="12px">fas fa-trash-alt</v-icon></v-btn>
-					</v-layout>
-	      </v-timeline-item>
+	      			</v-timeline-item>
 				</div>
 			</v-timeline>
-		</v-flex>
+		</v-col>
 		<!-- LOADING -->
-		<v-flex xs6 v-if="!loaded" v-on:remove="sheet = True;" class="text-xs-center">
+		<v-col v-if="!loaded" v-on:remove="sheet = True;" class="col-12 text-center">
 			<v-progress-circular :size="150" :width="15" indeterminate></v-progress-circular>
-		</v-flex>
+		</v-col>
 		<!-- NO EVENT -->
-     <v-flex xs6 text-xs-center v-if="loaded && events.length < 1">
-      <v-card flat tile class="transparent">
-        <v-img :src="Image('confused')" contain max-height="300px"></v-img>
+     	<v-col class="col-12 text-center" v-if="loaded && events.length < 1">
+      		<v-card flat tile class="transparent">
+        		<v-img :src="Image('confused')" contain max-height="300px"></v-img>
 				<h1 class="display-2 text-uppercase"> Oups ! </h1><br/>
 				<h2 class="title"> Aucune chauve-souris pour le moment. </h2><br/>
-      </v-card>
-    </v-flex>
-	</v-layout>
+      		</v-card>
+    	</v-col>
+	</v-row>
 </template>
 
 <!-- SCRIPT -->
@@ -179,16 +187,18 @@
 		},
 		beforeDestroy() {
 			window.clearInterval(this.tick);
-	  },
+		},
 		methods: {
 			onClickInside(item, event) {
 				event.stopPropagation();
 				if (this.eventToDisplay !== item.event) {
 					this.eventToDisplay = item.event;
+					/*
 					this.$nextTick(() => {
 						this.$vuetify.goTo(event.target);
 					});
 					this.$forceUpdate();
+					*/
 				}
 			},
 			onClickOutside(event, el) {
@@ -341,16 +351,38 @@
 </script>
 
 <style>
-.clickable {
-	cursor:pointer;
-}
-pre {
-    white-space: pre-wrap;
-}
-.v-timeline-item__dot, .v-timeline-item__inner-dot, .v-image, .v-avatar {
-	background: unset !important;
-	box-shadow: unset !important;
-	border-radius: unset !important;
-}
-
+	.clickable {
+		cursor:pointer;
+	}
+	pre {
+	    white-space: pre-wrap;
+	}
+	.v-timeline-item__dot, .v-timeline-item__inner-dot, .v-image, .v-avatar {
+		background: unset !important;
+		box-shadow: unset !important;
+		border-radius: unset !important;
+	}
+	.card-timeline::before {
+		content: "";
+		position: absolute;
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		border-right: 10px solid;
+		border-right-color: inherit !important;	
+		top: calc(50% - 8px);
+		left: -10px;
+		right: 100%;
+		z-index: 1;
+	}
+	.card-timeline::after {
+		content: "";
+		position: absolute;
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+		border-right: 10px solid;
+		border-right-color: rgba(0,0,0,.12) !important;	
+		top: calc(50% - 6px);
+		left: -10px;
+		right: 100%
+	}
 </style>

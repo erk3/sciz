@@ -1,15 +1,15 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row wrap justify-center align-center fill-height pa-4>
+	<v-row justify="center" align="center" class="fill-height ma-4">
 		<!-- HEADER -->
-		<v-flex xs12 mb-5>
+		<v-col class="col-12 mb-5 text-center">
 			<h4 class="display-1">{{ba.type}}</h4>
 			<p v-if="ba.subtype !== ''">{{ba.subtype}}</p>
-		</v-flex>
+		</v-col>
 		<!-- BEINGS-->
-		<v-flex xs12 text-xs-center>
-			<v-layout row wrap align-start justify-center fill-height>
-				<v-flex xs5>
+		<v-col class="col-12 text-center pa-0">
+			<v-row wrap justify="center" align="end" class="fill-height pa-4">
+				<v-col class="col-5">
 					<div v-if="!def_event">
 						<v-img v-if="ba.att_blason_uri" :src="ba.att_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
 						<v-img v-else :src="Image('unknown')" alt="" contain max-height="100px"></v-img>
@@ -18,15 +18,15 @@
 							<v-icon size="14px">fas fa-link</v-icon>
 						</v-btn>
 					</div>
-				</v-flex>
-				<v-flex xs2>
+				</v-col>
+				<v-col class="col-2">
 					<span v-if="!att_event" class="display-1">VS <br/></span>
 					<span v-if="ba.pdv" class="title text--"><br/>-{{ba.pdv}} PV<br/></span>
 					<span v-else-if="ba.deg" class="title">-{{ba.deg}} PV<br/></span>
 					<span v-if="ba.vie">(reste {{ba.vie}})<br/></span><br/>
 					<v-img v-if="ba.vie !== null && ba.vie === 0" :src="Image('deadflag')" alt="" contain max-height="70px"></v-img>
-				</v-flex>
-				<v-flex xs5>
+				</v-col>
+				<v-col class="col-5">
 					<div v-if="!att_event">
 						<div class="container-overlay">
 							<v-img v-if="ba.def_blason_uri" :src="ba.def_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
@@ -40,8 +40,8 @@
 							<v-icon size="14px">fas fa-link</v-icon>
 						</v-btn>
 					</div>
-				</v-flex>
-				<v-flex xs5>
+				</v-col>
+				<v-col class="col-5">
 					<div v-if="follower_event && ba.att_id !== ba.owner_id && ba.att_id >= 300000">
 						<span>appartenant à </span>
 						<v-avatar>
@@ -53,10 +53,10 @@
 							<v-icon size="14px">fas fa-link</v-icon>
 						</v-btn>
 					</div>
-				</v-flex>
-				<v-flex xs2>
-				</v-flex>
-				<v-flex xs5>
+				</v-col>
+				<v-col class="col-2">
+				</v-col>
+				<v-col class="col-5">
 					<div v-if="ba.autre_id">
 						<span>s'interposant pour </span>
 						<v-avatar>
@@ -79,55 +79,59 @@
 							<v-icon size="14px">fas fa-link</v-icon>
 						</v-btn>
 					</div>
-				</v-flex>
-			</v-layout>
-		</v-flex>
+				</v-col>
+			</v-row>
+		</v-col>
 		<!-- CAPA -->
-		<v-flex xs12 text-xs-center v-if="ba.capa_desc || ba.capa_effet" mt-5>
+		<v-col class="col-12 text-center pt-0" v-if="ba.capa_desc || ba.capa_effet">
 			<h5 class="title" v-if="ba.type !== ba.capa_desc && ba.capa_desc">{{ba.capa_desc}}</h5>
 			<h5 class="title" v-else>Effet</h5>
 			<span>{{ba.capa_effet}}</span><span v-if="ba.capa_tour"> pour {{ba.capa_tour}}T</span>
-		</v-flex>
+		</v-col>
 		<!-- DATA -->
-		<v-flex xs12 text-xs-center v-if="catt.some((e) => { return e.v}) || cdef.some((e) => { return e.v})" mt-5>
-			<v-layout row wrap align-start justify-center fill-height>
-				<v-flex xs5 text-xs-center>
+		<v-col class="col-12 text-center" v-if="catt.some((e) => { return e.v}) || cdef.some((e) => { return e.v})">
+			<v-row wrap justify="center" align="start" class="fill-height">
+				<v-col class="col-5">
 					<v-card flat v-if="catt.some((e) => { return e.v})">
-		      	<v-divider></v-divider>
-						<v-list v-for="carac in catt" dense class="pa-0">
-							<v-list-tile v-if="carac.v">
-								<v-list-tile-content>{{carac.k}}</v-list-tile-content>
-								<v-list-tile-content class="align-end">
+		      			<v-divider></v-divider>
+						<v-list v-for="(carac, index) in catt" dense class="pa-0" :key="index">
+							<v-list-item v-if="carac.v">
+								<v-list-item-content>{{carac.k}}</v-list-item-content>
+								<v-list-item-content class="align-end">
 									<v-tooltip v-if="carac.t" right>
-										<span slot="activator"><u>{{carac.v}}</u></span>
+										<template v-slot:activator="{ on, attrs }">
+											<u v-bind="attrs" v-on="on">{{carac.v}}</u>
+										</template>
 										<span>{{carac.t}}</span>
 									</v-tooltip>
 									<span v-else>{{carac.v}}</span>
-								</v-list-tile-content>
-							</v-list-tile>
+								</v-list-item-content>
+							</v-list-item>
 						</v-list>
-		    	</v-card>
-				</v-flex>
-				<v-flex offset-xs2 xs5 text-xs-center>
+		    		</v-card>
+				</v-col>
+				<v-col class="col-5 offset-2 text-center">
 					<v-card flat v-if="cdef.some((e) => { return e.v})">
-		      	<v-divider></v-divider>
-						<v-list v-for="carac in cdef" dense class="pa-0">
-							<v-list-tile v-if="carac.v">
-								<v-list-tile-content>{{carac.k}}</v-list-tile-content>
-								<v-list-tile-content class="align-end">
+		      			<v-divider></v-divider>
+						<v-list v-for="(carac, index) in cdef" dense class="pa-0" :key="index">
+							<v-list-item v-if="carac.v">
+								<v-list-item-content>{{carac.k}}</v-list-item-content>
+								<v-list-item-content class="align-end">
 									<v-tooltip v-if="carac.t" right>
-										<div slot="activator"><u>{{carac.v}}</u></div>
+										<template v-slot:activator="{ on, attrs }">
+											<u v-bind="attrs" v-on="on">{{carac.v}}</u>
+										</template>
 										<span>{{carac.t}}</span>
 									</v-tooltip>
 									<span v-else>{{carac.v}}</span>
-								</v-list-tile-content>
-							</v-list-tile>
+								</v-list-item-content>
+							</v-list-item>
 						</v-list>
-		    	</v-card>
-				</v-flex>
-			</v-layout>
-		</v-flex>
-	</v-layout>
+		    		</v-card>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
 </template>
 
 <!-- SCRIPT -->
@@ -199,16 +203,16 @@
 
 <!-- STYLE -->
 <style>
-.container-overlay {
-  position: relative;  
-}
+	.container-overlay {
+	  	position: relative;  
+	}
 
-.overlay {
-  background: none repeat scroll 0 0;
-  opacity: 0.8;
-	top:0;
-  left:0;
-  position: absolute;
-	width: 100%;
-}
+	.overlay {
+	  	background: none repeat scroll 0 0;
+	  	opacity: 0.8;
+		top:0;
+	  	left:0;
+	  	position: absolute;
+		width: 100%;
+	}
 </style>

@@ -102,7 +102,7 @@ def add_claims_to_access_token(identity):
 def user_jwt_check(view_function):
     @wraps(view_function)
     def wrapper(*args, **kwargs):
-        jwt_data = _decode_jwt_from_request(request_type='access')
+        jwt_data = _decode_jwt_from_request(request_type='access')[0]
         authorized = jwt_data['user_claims']['hook_type'] == 'USER'
         if not authorized: raise NoAuthorizationError('Non autorisé')
         return view_function(*args, **kwargs)
@@ -111,7 +111,7 @@ def user_jwt_check(view_function):
 def hook_jwt_check(view_function):
     @wraps(view_function)
     def wrapper(*args, **kwargs):
-        jwt_data = _decode_jwt_from_request(request_type='access')
+        jwt_data = _decode_jwt_from_request(request_type='access')[0]
         authorized = jwt_data['user_claims']['hook_type'] == 'HOOK'
         if not authorized:
             raise NoAuthorizationError('Non autorisé')
@@ -125,9 +125,16 @@ def hook_jwt_check(view_function):
 # LOGIN & REGISTER
 @webapp.route('/api/login', methods=('POST',))
 @webapp.route('/api/register', methods=('POST',))
+@webapp.route('/api/reset', methods=('POST',))
 def login_register():
     data = request.get_json()
-    user, error = User.register(**data) if 'register' in request.url_rule.rule else User.authenticate(**data)
+    user, error = None, None
+    if 'register' in request.url_rule.rule:
+        user, error = User.register(**data)
+    elif 'reset' in request.url_rule.rule:
+        user, error = User.reset(**data)
+    else:
+        user, error = User.authenticate(**data)
     if user is None:
         return jsonify(message=error), 400
     user = sg.db.session.query(User).get(user.id)

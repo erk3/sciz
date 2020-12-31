@@ -1,8 +1,8 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row wrap justify-center align-center fill-height pa-4>
+	<v-row justify="center" align="center" class="fill-height ma-4">
 		<!-- HEADER -->
-		<v-flex xs12 mb-5>
+		<v-col class="col-12 mb-5 text-center">
 			<h4 class="display-1">Connaissance des Monstres</h4>
 			<h6 class="title">(Niveau {{cdm.cdm_niv}})</h6><br/>
 			<span>de</span>
@@ -11,77 +11,85 @@
 				<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 			</v-avatar>
 			<span>{{cdm.owner_nom}} ({{cdm.owner_id}})</span><br/>
-		</v-flex>
+		</v-col>
 		<!-- MOB -->
-		<v-flex xs12 text-xs-center mb-5>
-			<v-layout row align-end justify-center fill-height>
-				<v-flex xs4>
-					<v-img v-if="cdm.mob_blason_uri" :src="cdm.owner_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
+		<v-col class="col-12 text-center">
+			<v-row wrap justify="center" align="end" class="fill-height pa-4">
+				<v-col class="col-4">
+					<v-img v-if="cdm.mob_blason_uri" :src="cdm.mob_blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="100px"></v-img>
 					<v-img v-else :src="Image('unknown')" alt="" contain max-height="100px"></v-img>
 					<br/>{{cdm.mob_nom}} [{{cdm.mob_age}}] ({{cdm.mob_id}})
 					<v-btn v-bind:href="cdm.mob_link" v-bind:class="{'ma-0': true}" icon target="_blank">
 						<v-icon size="14px">fas fa-link</v-icon>
 					</v-btn>
-				</v-flex>
-				<v-flex offset-xs1 xs4>
+				</v-col>
+				<v-col class="col-4 offset-1">
 					<h3 class="display-2">{{cdm.blessure}} %</h3>
 					<span>
 						Reste entre
 						<v-tooltip bottom>
-							<span slot="activator"><u>{{pdv_min}}</u></span>
+							<template v-slot:activator="{ on, attrs }">
+								<u v-bind="attrs" v-on="on">{{pdv_min}}</u>
+							</template>
 							<span>~{{(100 - Math.min(100, cdm.blessure + 5))}}% de {{cdm.pdv_min}}</span>
 						</v-tooltip>
-						et 
+						et
 						<v-tooltip bottom>
-							<span slot="activator"><u>{{pdv_max}}</u></span>
+							<template v-slot:activator="{ on, attrs }">
+								<u v-bind="attrs" v-on="on">{{pdv_max}}</u>
+							</template>
 							<span>~{{(100 - Math.max(1, cdm.blessure - 4))}}% de {{cdm.pdv_max}}</span>
 						</v-tooltip>
 						points de vie
-					</span>
+					</span><br/><br/>
 					<v-progress-linear class="mb-2" :color="cdm.blessure > 75 ? 'error' : (cdm.blessure > 25 ? 'warning' : 'success')" height="15" :value="100 - cdm.blessure" buffer-value="100"></v-progress-linear>
-				</v-flex>
-			</v-layout>
-		</v-flex>
+				</v-col>
+			</v-row>
+		</v-col>
 		<!-- DATA -->
-		<v-flex xs12 text-xs-center>
-			<v-layout row align-start justify-center fill-height>
-				<v-flex xs4 text-xs-center>
+		<v-col class="col-12 text-center">
+			<v-row wrap justify="center" align="start" class="fill-height">
+				<v-col class="col-4 text-center">
 					<v-card flat>
-		      	<v-divider></v-divider>
-						<v-list v-for="carac in ctxt" dense class="pa-0">
-							<v-list-tile>
-								<v-list-tile-content>{{carac.k}}</v-list-tile-content>
-								<v-list-tile-content class="align-end">
+		      			<v-divider></v-divider>
+						<v-list v-for="(carac, index) in ctxt" dense class="pa-0" :key="index">
+							<v-list-item>
+								<v-list-item-content>{{carac.k}}</v-list-item-content>
+								<v-list-item-content class="align-end">
 									<v-tooltip v-if="carac.t" right>
-										<span slot="activator"><u>{{carac.v}}</u></span>
+										<template v-slot:activator="{ on, attrs }">
+											<u v-bind="attrs" v-on="on">{{carac.v}}</u>
+										</template>
 										<span>{{carac.t}}</span>
 									</v-tooltip>
 									<span v-else>{{carac.v}}</span>
-								</v-list-tile-content>
-							</v-list-tile>
+								</v-list-item-content>
+							</v-list-item>
 						</v-list>
-		    	</v-card>
-				</v-flex>
-				<v-flex offset-xs1 xs4 text-xs-center>
+		    		</v-card>
+				</v-col>
+				<v-col class="col-4 offset-1 text-center">
 					<v-card flat>
-		      	<v-divider></v-divider>
-						<v-list v-for="carac in cnum" dense class="pa-0">
-							<v-list-tile>
-								<v-list-tile-content>{{carac.k}}</v-list-tile-content>
-								<v-list-tile-content class="align-end">
+		      			<v-divider></v-divider>
+						<v-list v-for="(carac, index) in cnum" dense class="pa-0" :key="index">
+							<v-list-item>
+								<v-list-item-content>{{carac.k}}</v-list-item-content>
+								<v-list-item-content class="align-end">
 									<v-tooltip v-if="carac.t" right>
-										<div slot="activator"><u>{{carac.v}}</u></div>
+										<template v-slot:activator="{ on, attrs }">
+											<u v-bind="attrs" v-on="on">{{carac.v}}</u>
+										</template>
 										<span>{{carac.t}}</span>
 									</v-tooltip>
 									<span v-else>{{carac.v}}</span>
-								</v-list-tile-content>
-							</v-list-tile>
+								</v-list-item-content>
+							</v-list-item>
 						</v-list>
-		    	</v-card>
-				</v-flex>
-			</v-layout>
-		</v-flex>
-	</v-layout>
+		    		</v-card>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
 </template>
 
 <!-- SCRIPT -->
@@ -117,9 +125,9 @@
 		beforeMount() {
 			// Caractéristiques textuelles
 			var capa_tooltip = '';
-    	capa_tooltip += (this.cdm.capa_effet) ? 'Affecte : ' + this.cdm.capa_effet : '';
-    	capa_tooltip += (this.cdm.capa_tour) ? ' pour ' + this.cdm.capa_tour + 'T' : '';
-    	capa_tooltip += (this.cdm.capa_portee) ? ' (' + this.cdm.capa_portee + ')' : '';
+    		capa_tooltip += (this.cdm.capa_effet) ? 'Affecte : ' + this.cdm.capa_effet : '';
+    		capa_tooltip += (this.cdm.capa_tour) ? ' pour ' + this.cdm.capa_tour + 'T' : '';
+    		capa_tooltip += (this.cdm.capa_portee) ? ' (' + this.cdm.capa_portee + ')' : '';
 			capa_tooltip = (capa_tooltip === '') ? null : capa_tooltip;
 			this.ctxt.push({k: 'Race', v: this.cdm.mob_race})
 			this.ctxt.push({k: 'Capacité spéciale', v: this.cdm.capa_desc ? this.cdm.capa_desc : '-', t: capa_tooltip})

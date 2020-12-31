@@ -1,8 +1,8 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row wrap justify-center align-center fill-height pa-4>
+	<v-row justify="center" align="center" class="fill-height ma-4">
 		<!-- HEADER -->
-		<v-flex xs12 mb-5>
+		<v-col class="col-12 mb-5 text-center">
 			<h4 class="display-1">{{ce.type}}</h4>
 			<span>de</span>
 			<v-avatar>
@@ -10,18 +10,18 @@
 				<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 			</v-avatar>
 			<span>{{ce.owner_nom}} ({{ce.owner_id}})</span><br/>
-		</v-flex>
+		</v-col>
 		<!-- MOB -->
-		<v-flex xs12 text-xs-center mb-5>
-			<v-layout row align-center justify-center fill-height>
-				<v-flex xs4>
+		<v-col class="col-12 text-center">
+			<v-row justify="center" align="center" class="fill-height">
+				<v-col class="col-4">
 					<v-img :src="Image('mushroom')" alt="" contain max-height="100px"></v-img>
 					<br/>{{ce.nom}} ({{ce.champi_id}})
 					<v-btn v-bind:href="ce.champi_link" v-bind:class="{'ma-0': true}" icon target="_blank">
 						<v-icon size="14px">fas fa-link</v-icon>
 					</v-btn>
-				</v-flex>
-				<v-flex offset-xs1 xs4 v-if="ce.qualite || ce.pos_x">
+				</v-col>
+				<v-col class="col-4 offset-1" v-if="ce.qualite || ce.pos_x">
 					<div v-if="ce.qualite">
 						<h5 class="title">Qualité</h5>
 						<span>{{ce.qualite}}</span>
@@ -32,10 +32,10 @@
 						<span v-if="ce.pos_n"> X = {{ce.pos_x}} | Y = {{ce.pos_y}} | N = {{ce.pos_n}}</span>
 						<span v-else> X = {{ce.pos_x}} | Y = {{ce.pos_y}}</span>
 					</div>
-				</v-flex>
-			</v-layout>
-		</v-flex>
-	</v-layout>
+				</v-col>
+			</v-row>
+		</v-col>
+	</v-row>
 </template>
 
 <!-- SCRIPT -->
@@ -47,6 +47,6 @@
 				type: Object,
 				default: null
 			}
-		},
+		}
 	}
 </script>

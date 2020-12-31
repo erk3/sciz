@@ -1,172 +1,206 @@
 <!-- TEMPLATE -->
 <template>
-	<v-layout row justify-center align-center ill-height id="profil-view" ma-5>
+	<v-container justify="center" align="center" class="fill-height" id="profil-view" ma-5>
+		<!-- NOTIFICATIONS -->
+		<v-snackbar v-model="error" color="error" :timeout="6000" top>
+   			{{ error_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="error = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
+		<v-snackbar v-model="success" color="success" :timeout="6000" top>
+   			{{ success_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
+		<v-snackbar v-model="info" color="info" :timeout="6000" top>
+			{{ info_msg }}
+			<template v-slot:action="{ attrs }">
+    			<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+  		</v-snackbar>
+		<v-snackbar v-model="error_pwd" color="error" :timeout="6000" top>
+      		{{ error_pwd_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="error_pwd = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+  		</v-snackbar>
 		<!-- SIDEBAR -->
-		<v-card flat tile floating class="transparent d-inline-block text-xs-center hidden-sm-and-down">
-			<v-navigation-drawer app floating value="true">
-				<v-layout align-center justify-end fill-height>
-					<v-flex xs12 pl-5>
-						<v-img v-if="userData().blason_uri" :src="userData().blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="300px"></v-img>
-						<v-img v-else :src="Image('unknown')" alt="" contain max-height="300px"></v-img>
-						<br/><h3 class="text-capitalize subheading">{{userData().nom}}</h3>
-						<h5 class="text-capitalize caption">({{userData().id}})</h5>
-					</v-flex>
-				<v-layout>
-			</v-navigation-drawer>
-		</v-card>
-		<v-flex xs12 md10 text-xs-center>
-			<v-snackbar v-model="error" color="error" :timeout="6000" top>
-      	{{ error_msg }}
-      	<v-btn dark flat @click="error = false">Fermer</v-btn>
-    	</v-snackbar>
-			<v-snackbar v-model="success" color="success" :timeout="6000" top>
-      	{{ success_msg }}
-      	<v-btn dark flat @click="success = false">Fermer</v-btn>
-    	</v-snackbar>
-			<v-snackbar v-model="info" color="info" :timeout="6000" top>
-	  		{{ info_msg }}
-		    <v-btn dark flat @click="info = false">Fermer</v-btn>
-		  </v-snackbar>
-			<v-card flat tile class="transparent">
+		<v-navigation-drawer app floating>
+			<v-row align="center" justify="center" class="fill-height pl-15">
+				<v-col align="center" justify="center">
+					<v-img v-if="userData().blason_uri" :src="userData().blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="300px"></v-img>
+					<v-img v-else :src="Image('unknown')" alt="" contain max-height="300px"></v-img>
+					<br/><h3 class="text-capitalize subheading">{{userData().nom}}</h3>
+					<h5 class="text-capitalize caption">({{userData().id}})</h5>
+				</v-col>
+			</v-row>
+		</v-navigation-drawer>
+		<!-- MAIN -->
+		<v-row align="center" justify="center" class="fill-height">
+			<v-col class="col-9">
 				<v-form v-model="valid">
-				<!-- SCIZ PREFS -->
-				<v-expansion-panel expand inset :value="[true]">
-      		<v-expansion-panel-content hide-actions readonly>
-        		<div slot="header" class="title">Mon profil SCIZ</div>
-        		<v-card>
-        			<v-card-text>
-								<v-layout row wrap align-center justify-center fill-height>
-									<v-flex xs8 class="text-xs-center">
-										Votre adresse SCIZ<br/>
+					<v-expansion-panels multiple :value="[0,1]">
+						<!-- SCIZ PREFS -->
+						<v-expansion-panel>
+							<v-expansion-panel-header class="title">Profil SCIZ</v-expansion-panel-header>
+	      					<v-expansion-panel-content>
+								<v-row align="center" justify="center" class="fill-height">
+									<v-col class="col-8 text-center">
+										<span class=>Votre adresse SCIZ</span><br/></br>
 										<v-tooltip bottom>
-											<v-chip slot="activator" v-clipboard:copy="user.sciz_mail" @click="info_msg = 'Adresse copiée dans le presse-papier'; info = true;">
+											<template v-slot:activator="{ on, attrs }">
+												<v-chip v-clipboard:copy="user.sciz_mail" @click="info_msg = 'Adresse copiée dans le presse-papier'; info = true;" v-bind="attrs" v-on="on">
 													<v-avatar><v-img :src="Image('logo')" contain></v-img></v-avatar>
 													{{user.sciz_mail}}
-											</v-chip>
+												</v-chip>
+											</template>
 											<span>Cliquer pour copier</span>
 										</v-tooltip>
 										<br/><br/>
 										<v-text-field label="Pseudonyme" v-model="user.pseudo" hint="Lorsque possible, votre pseudonyme remplacera votre nom dans SCIZ"></v-text-field><br/>
-										<v-text-field label="Courriel" v-model="user.user_mail" hint="Votre courriel est uniquement utilisé pour vous retourner vos codes de transfert et contrôler l'expéditeur des notifications envoyées à votre boite aux lettres SCIZ" :rules="[mailRule]"></v-text-field><br/>
+										<v-text-field label="Courriel" v-model="user.user_mail" hint="Votre courriel est uniquement utilisé pour vous retourner vos codes de transfert et contrôler l'expéditeur des notifications envoyées à votre boite aux lettres SCIZ" :rules="[mailRule]"></v-text-field><br/><br/>
 										<v-tooltip top>
-											<v-slider label="Durée de session" v-model="user.session" :thumb-size="24" thumb-label="always" min="1" max="24" always-dirty hint="Durée maximum en heures avant déconnexion de votre session SCIZ" persistent-hint slot="activator"></v-slider>
+											<template v-slot:activator="{ on, attrs }">
+												<v-slider label="Durée de session" v-model="user.session" :thumb-size="24" thumb-label="always" min="1" max="24" always-dirty hint="Durée maximum en heures avant déconnexion de votre session SCIZ" persistent-hint v-bind="attrs" v-on="on"></v-slider>
+											</template>
 											<span>Reconnexion nécessaire avant application de la modification</span>
 										</v-tooltip><br/>
+										<v-switch label="Contribuer au partage communautaire" v-model="user.community_sharing" persistent-hint hint="Partage anonyme et sans identifiant des CdM et de votre vue (trõlls exclus)"></v-switch>
 										<v-switch label="Utiliser le mode sombre" v-model="mode" :input-value="mode" true-value="dark" false-value="light" @change="switchMode(mode)"></v-switch><br/>
-										<v-tooltip top>
-											<v-switch slot="activator" label="Contribuer au partage communautaire" v-model="user.community_sharing"></v-switch>
-											<span>Partage anonyme et sans identifiant des CdM et de votre vue (trõlls exclus)</span>
-										</v-tooltip><br/>
+										<br/>
 										<!-- RESET PWD DIALOG -->
 										<v-dialog v-model="pwd_dialog" max-width="50%">
-											<v-btn slot="activator">Modifier mon mot de passe</v-btn>
+											<template v-slot:activator="{ on, attrs }">
+												<v-btn v-bind="attrs" v-on="on">Modifier mon mot de passe</v-btn>
+											</template>
 											<v-form v-model="valid_pwd">
-							      	<v-card>
-							        	<v-card-title class="headline">Modifier mon mot de passe</v-card-title>
-												<v-snackbar v-model="error_pwd" color="error" :timeout="6000" top>
-      										{{ error_pwd_msg }}
-      										<v-btn dark flat @click="error_pwd = false">Fermer</v-btn>
-    										</v-snackbar>
-												<v-layout column ma-5>
-													<v-flex xs6>
-														<v-text-field label="Ancien mot de passe" prepend-icon="fas fa-unlock" v-model="pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error_pwd" required></v-text-field>
-														<br/>
-														<v-text-field label="Nouveau mot de passe" prepend-icon="fas fa-lock" v-model="new_pwd" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd !== '' && error_pwd" counter :rules="[pwdRule]" :success="pwdMatch(false)" required></v-text-field>
-														<v-text-field label="Confirmation" prepend-icon="fas fa-lock" v-model="new_pwd2" :append-icon="show_pwd ? 'visibility_off' : 'visibility'" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd2 !== '' && error_pwd" counter :error-messages="pwdMatch(true)" :success="pwdMatch(false)" required></v-text-field>
-													</v-flex>
-												</v-layout>
-							        	<v-card-actions>
-							          	<v-spacer></v-spacer>
-							          	<v-btn @click="pwd_dialog = false">Annuler</v-btn>
-							          	<v-btn class="primary" @click="resetPwd()" :disabled="!valid_pwd || pwd === '' || new_pwd === '' || new_pwd2 === ''">Modifier</v-btn>
-							        	</v-card-actions>
-							      	</v-card>
+								      			<v-card class="pa-5">
+							        				<v-card-title class="headline">Modifier mon mot de passe</v-card-title>
+													<v-row align="center" justify="center">
+														<v-col class="col-6">
+															<v-text-field label="Ancien mot de passe" v-model="pwd" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error_pwd" required>
+																<template v-slot:prepend><v-icon size="20px">fas fa-unlock</v-icon></template>
+																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
+															</v-text-field>
+															<br/>
+															<v-text-field label="Nouveau mot de passe" v-model="new_pwd" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd !== '' && error_pwd" counter :rules="[pwdRule]" :success="pwdMatch(false)" required>
+																<template v-slot:prepend><v-icon size="20px">fas fa-lock</v-icon></template>
+																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
+															</v-text-field>
+															<v-text-field label="Confirmation" v-model="new_pwd2" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd2 !== '' && error_pwd" counter :error-messages="pwdMatch(true)" :success="pwdMatch(false)" required>
+																<template v-slot:prepend><v-icon size="20px">fas fa-lock</v-icon></template>
+																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
+															</v-text-field>
+														</v-col>
+													</v-row>
+							        				<v-card-actions>
+								          				<v-spacer></v-spacer>
+							          					<v-btn @click="pwd_dialog = false">Annuler</v-btn>
+								          				<v-btn class="primary" @click="resetPwd()" :disabled="!valid_pwd || pwd === '' || new_pwd === '' || new_pwd2 === ''">Modifier</v-btn>
+							        				</v-card-actions>
+							      				</v-card>
 											</v-form>
-							    	</v-dialog>
-									</v-flex>
-								</v-layout>
-        			</v-card-text>
-        		</v-card>
-      		</v-expansion-panel-content>
-    		</v-expansion-panel>
-				<!-- MH PREFS -->
-     		<v-expansion-panel expand inset :value="[true]">
-      		<v-expansion-panel-content hide-actions readonly>
-        		<div slot="header" class="title">Mon profil MountyHall</div>
-						<br/>
-        		<v-card>
-        			<v-card-text class="text-xs-center">
-        				<v-layout align-center justify-center>
-									<v-flex xs8>
-									<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint></v-text-field><br/>
-									<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="16" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint></v-slider><br/><br/>
-									<v-tooltip left>
-										<v-progress-circular slot="activator" rotate="90" size="100" width="15" :value="user.count_sp_dyn/24*100" :color="user.count_sp_dyn <= user.max_sp_dyn ? 'green' : (user.count_sp_dyn <= 18 ? 'orange' : 'red')">{{ user.count_sp_dyn }}</v-progress-circular> 
-										<span>Maximum 24</span>
-									</v-tooltip> <span class="ml-4 body-1">appels aux scripts dynamiques ces dernières 24 heures</span><br/>
-									<br/><br/>
-									<v-tooltip top>
-										<v-btn slot="activator" small color="warning" dark @click="mh_call('profil4')" :disabled="sp_call_disabled">Rafraichir mon profil</v-btn>
-										<span>1 appel au script dynamique Profil4</span>
-									</v-tooltip>
-									<v-tooltip top>
-										<v-btn slot="activator" small color="warning" dark @click="mh_call('vue2')" :disabled="sp_call_disabled">Rafraichir ma vue</v-btn>
-										<span>1 appel au script dynamique Vue2</span>
-									</v-tooltip>
-									</v-flex>
-								</v-layout>	
-							</v-card-text>
-							<!-- MH calls -->
-							<v-card-actions v-if="max_pages > 0">
-								<v-spacer></v-spacer>
-								<v-btn icon @click="show_calls = !show_calls">
-            			<v-icon>{{ show_calls ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-          			</v-btn>
-								<v-spacer></v-spacer>
-        			</v-card-actions>
-							<v-slide-y-transition>
-          			<v-card-text v-show="show_calls" class="text-xs-center">
-									<v-data-table :headers="headers" :items="calls" class="elevation-1" hide-actions disable-initial-sort>
-    								<template slot="items" slot-scope="props">
-								      <td v-if="props.item.manual">Manuel</td>
-								      <td v-else>Automatique</td>
-								      <td>{{ props.item.nom }}</td>
-								      <td>{{ props.item.type }}</td>
-								      <td>{{ props.item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
-											<td class="green--text" v-if="props.item.status == 0">Succès</td>
-											<td class="red--text" v-else-if="props.item.status == 1">Paramètres incorrects</td>
-											<td class="red--text" v-else-if="props.item.status == 2">Troll inexistant</td>
-											<td class="red--text" v-else-if="props.item.status == 3">Mot de passe incorrect</td>
-											<td class="red--text" v-else-if="props.item.status == 4">Entretien MH</td>
-											<td class="red--text" v-else-if="props.item.status == 5">SP temporairement désactivés</td>
-											<td class="red--text" v-else-if="props.item.status == 6">Troll désactivé</td>
-											<td class="red--text" v-else>Erreur inconnue</td>
-								    </template>
-								  </v-data-table>
-									<v-pagination class="mt-5" v-model="page" :length="max_pages" :total-visible="7" @input="getCalls" next-icon="fas fa-angle-right" prev-icon="fas fa-angle-left"></v-pagination>
-          			</v-card-text>
-        			</v-slide-y-transition>
-        		</v-card>
-      		</v-expansion-panel-content>
-    		</v-expansion-panel>
-			</v-form>
-			</v-card>
-			<!-- BOTTOM BUTTONS -->
-			<v-btn class="info" @click="saveProfil()" @keyup.native.enter="saveProfil()" :disabled="!valid">Sauvegarder</v-btn>
-			<v-dialog v-model="delete_dialog" max-width="50%">
-				<v-btn slot="activator" class="error">Supprimer mon compte</v-btn>
-      	<v-card>
-        	<v-card-title class="headline">Supprimer votre compte SCIZ ?</v-card-title>
-					<v-card-text>Cette action est définitive et irréversible.<br/>Les informations que vous avez déjà partagées avec d'autres utilisateurs leurs seront toujours accessibles.</v-card-text>
-        	<v-card-actions>
-          	<v-spacer></v-spacer>
-          	<v-btn @click="delete_dialog = false">Annuler</v-btn>
-          	<v-btn class="error" @click="deleteAccount()">Supprimer</v-btn>
-        	</v-card-actions>
-      	</v-card>
-    	</v-dialog>
-    </v-flex>
-	</v-layout>
+							    		</v-dialog>
+									</v-col>
+								</v-row>
+      						</v-expansion-panel-content>
+    					</v-expansion-panel>
+						<!-- MH PREFS -->
+						<v-expansion-panel>
+							<v-expansion-panel-header class="title">Profil MountyHall</v-expansion-panel-header>
+	      					<v-expansion-panel-content>
+								<v-row align="center" justify="center">
+									<v-col class="col-8 text-center">
+										<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint>
+											<template v-slot:message='{ message }'><span v-html="message"></span></template>
+										</v-text-field><br/><br/>
+										<v-slider label="Limite d'appel aux scripts dynamiques" v-model="user.max_sp_dyn" :thumb-size="24" thumb-label="always" min="0" max="16" always-dirty hint="Maximum d'appels <b class='red--text'>automatiques</b> aux scripts publiques dynamiques par jour" persistent-hint>
+											<template v-slot:message='{ message }'><span v-html="message"></span></template>
+										</v-slider><br/><br/>
+										<v-tooltip left>
+											<template v-slot:activator="{ on, attrs }">
+												<v-progress-circular rotate="90" size="100" width="15" :value="user.count_sp_dyn/24*100" :color="user.count_sp_dyn <= user.max_sp_dyn ? 'green' : (user.count_sp_dyn <= 18 ? 'orange' : 'red')" v-bind="attrs" v-on="on">{{ user.count_sp_dyn }}</v-progress-circular> 
+											</template>
+											<span>Maximum 24</span>
+										</v-tooltip> <span class="ml-4 body-1">appels aux scripts dynamiques ces dernières 24 heures</span><br/>
+										<br/><br/>
+										<v-tooltip top>
+											<template v-slot:activator="{ on, attrs }">
+												<v-btn small color="warning" dark @click="mh_call('profil4')" :disabled="sp_call_disabled" v-bind="attrs" v-on="on">Rafraichir mon profil</v-btn>
+											</template>
+											<span>1 appel au script dynamique Profil4</span>
+										</v-tooltip>
+										<v-tooltip top>
+											<template v-slot:activator="{ on, attrs }">
+												<v-btn small color="warning" dark @click="mh_call('vue2')" :disabled="sp_call_disabled" v-bind="attrs" v-on="on">Rafraichir ma vue</v-btn>
+											</template>
+											<span>1 appel au script dynamique Vue2</span>
+										</v-tooltip>
+									</v-col>
+								</v-row>	
+								<!-- MH CALLS -->
+								<v-row align="center" justify="center" v-if="max_pages > 0">
+									<v-col>
+										<v-card-text class="text-center">
+											<v-spacer></v-spacer>
+											<v-btn icon @click="show_calls = !show_calls">
+												<v-icon size="16px">fas {{ show_desc ? 'fa-chevron-down' : 'fa-chevron-up' }}</v-icon>
+											</v-btn>
+											<v-spacer></v-spacer>
+        									<v-slide-y-transition>
+												<v-data-table v-show="show_calls" :headers="headers" :items="calls" class="elevation-1" hide-default-footer sort-by="">
+													<template v-slot:item.manual="{ item }">
+														<td class="text-center" v-if="item.manual === true">Manuel</td>
+								      					<td class="text-center" v-else>Automatique</td>				
+													</template>
+													<template v-slot:item.time="{ item }">
+								      					<td class="text-center" >{{ item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
+													</template>
+													<template v-slot:item.status="{ item }">
+														<td class="text-center green--text" v-if="item.status === 0">Succès</td>
+														<td class="text-center red--text" v-else-if="item.status === 1">Paramètres incorrects</td>
+														<td class="text-center red--text" v-else-if="item.status === 2">Troll inexistant</td>
+														<td class="text-center red--text" v-else-if="item.status === 3">Mot de passe incorrect</td>
+														<td class="text-center red--text" v-else-if="item.status === 4">Entretien MH</td>
+														<td class="text-center red--text" v-else-if="item.status === 5">SP temporairement désactivés</td>
+														<td class="text-center red--text" v-else-if="item.status === 6">Troll désactivé</td>
+														<td class="text-center red--text" v-else>Erreur inconnue</td>
+													</template>
+								  				</v-data-table>
+												<v-pagination class="mt-5" v-model="page" :length="max_pages" :total-visible="7" @input="getCalls" next-icon="fas fa-angle-right" prev-icon="fas fa-angle-left"></v-pagination>
+        									</v-slide-y-transition>
+										</v-card-text>
+					        		</v-col>
+								</v-row>
+      						</v-expansion-panel-content>
+    					</v-expansion-panel>
+					</v-expansion-panels>
+				</v-form>
+				<!-- BOTTOM BUTTONS -->
+				<v-row align="center" justify="center" class="ma-5">
+					<v-col align="center" justify="center">
+						<v-btn class="info" @click="saveProfil()" @keyup.native.enter="saveProfil()" :disabled="!valid">Sauvegarder</v-btn>
+						<v-dialog v-model="delete_dialog" max-width="50%">
+							<template v-slot:activator="{ on, attrs }">
+								<v-btn v-bind="attrs" v-on="on" class="error">Supprimer mon compte</v-btn>
+							</template>
+      						<v-card>
+        						<v-card-title class="headline">Supprimer votre compte SCIZ ?</v-card-title>
+								<v-card-text>Cette action est définitive et irréversible.<br/>Les informations que vous avez déjà partagées avec d'autres utilisateurs leurs seront toujours accessibles.</v-card-text>
+        						<v-card-actions>
+          							<v-spacer></v-spacer>
+          							<v-btn @click="delete_dialog = false">Annuler</v-btn>
+          							<v-btn class="error" @click="deleteAccount()">Supprimer</v-btn>
+	        					</v-card-actions>
+      						</v-card>
+    					</v-dialog>
+					</v-col>
+				</v-row>
+			</v-col>
+    	</v-row>
+	</v-container>
 </template>
 
 <!-- SCRIPT -->
@@ -261,6 +295,7 @@
 			},
 			switchMode (mode) {
 				this.$store.commit('setMode', mode);
+				this.$vuetify.theme.dark = mode === 'dark';
 			},
 			saveProfil () {
 				this.$store.dispatch('saveProfil', this.user)

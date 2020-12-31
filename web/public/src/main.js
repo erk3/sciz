@@ -1,5 +1,4 @@
 // VUEJS IMPORT
-import 'babel-polyfill';
 import Vue from 'vue';
 
 // VUE RESOURCE IMPORT
@@ -7,9 +6,8 @@ import VueResource from 'vue-resource';
 Vue.use(VueResource);
 Vue.http.options.root = '/api/';
 
-// VUETIFY IMPORT
+// VUETIFY + FONTAWESOME IMPORT
 import Vuetify from 'vuetify';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import 'vuetify/dist/vuetify.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 Vue.use(Vuetify, {iconfont: 'fa'});
@@ -31,8 +29,9 @@ import VueMoment from 'vue-moment';
 Vue.use(VueMoment);
 
 // LODASH
-import VueLodash from 'vue-lodash';
-Vue.use(VueLodash);
+import VueLodash from 'vue-lodash'
+import lodash from 'lodash'
+Vue.use(VueLodash, {lodash: lodash })
 
 // COOKIES
 import VueCookies from 'vue-cookies';
@@ -86,22 +85,26 @@ Vue.mixin({
 				return '-';
 			}
 			return (bool) ? 'Oui' : 'Non';
-  	},
+  		},
 	},
 	data() {
 		Image: {
 			return {
-      	Image(name) {
+				Image(name) {
 					return Object.values(Images[name])[0];
-      	}
-	    }
-	  }
+				}
+			}
+		}
 	}
 })
 
+/* eslint-disable no-new */
 var vm = new Vue({
 	el: '#main',
 	router,
 	store,
-	render: h => h(AppMain)
+	components: { AppMain },
+	render: h => h(AppMain),
+	template: '<AppMain/>',
+	vuetify: new Vuetify()
 });

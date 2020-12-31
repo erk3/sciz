@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -17,6 +17,8 @@ class Tresor(sg.sqlalchemybase):
     id = Column(Integer, primary_key=True)
     # Type
     type = Column(String(50))
+    # Destroyed ?
+    destroyed = Column(Boolean, default=False)
 
     # Associations
     tresor_privates = relationship('TresorPrivate', back_populates='tresor', primaryjoin='Tresor.id == TresorPrivate.tresor_id')

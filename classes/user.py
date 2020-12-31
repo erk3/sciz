@@ -158,6 +158,34 @@ class User(sg.sqlalchemybase):
                 user = sg.db.upsert(user)
         return user, ''
 
+    @classmethod
+    def reset(cls, **kwargs):
+        id = kwargs.get('id').strip()
+        pwd = kwargs.get('pwd').strip()
+        pwd2 = kwargs.get('pwd2').strip()
+        pwd_mh = kwargs.get('pwd_mh').strip()
+        if any(a is None for a in [id, pwd, pwd2, pwd_mh]) or not id.isdigit() or pwd != pwd2 or len(pwd) < 8:
+            return None, 'Données de formulaire invalides'
+        user = sg.db.session.query(User).get(id)
+        if user is None:
+            return None, 'Cet utilisateur n\'existe pas...'
+        old_mh_api_key = user.mh_api_key
+        user.mh_api_key = pwd_mh
+        user = sg.db.upsert(user)
+        mh_call = True
+        try:
+            mh_call = sg.mc.profil4_sp_call(user)
+        except Exception as e:
+            mh_call = False
+        if not mh_call:
+            user.mh_api_key = old_mh_api_key
+            user = sg.db.upsert(user)
+            return None, 'Impossible de vérifier le mot de passe d\'application MH'
+        else:
+            user.pwd_hash = pwd.strip()
+            user = sg.db.upsert(user)
+        return user, ''
+
     def nb_calls_today(self, type):
         if type not in ['Dynamique', 'Statique']:
             return -1

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-from sqlalchemy import Column, Integer
+from sqlalchemy import Column, Integer, Boolean
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -15,6 +15,8 @@ class Champi(sg.sqlalchemybase):
 
     # Unique identifier
     id = Column(Integer, primary_key=True)
+    # Destroyed ?
+    destroyed = Column(Boolean, default=False)
 
     # Associations
     champi_privates = relationship('ChampiPrivate', back_populates='champi', primaryjoin='Champi.id == ChampiPrivate.champi_id')

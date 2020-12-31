@@ -160,7 +160,7 @@ class Requester:
             filters = and_(User.community_sharing == True)
         elif cls is Lieu:
             query = query.outerjoin(Piege)
-            filters = and_(cls.destroyed != True, or_(cls.owner_id == None, cls.owner_id.in_(users_id)))
+            filters = and_(cls.destroyed != True, or_(cls.owner_id is None, cls.owner_id.in_(users_id)))
         else:
             # Privates
             query = query.distinct(getattr(cls, attr_id))
@@ -173,7 +173,7 @@ class Requester:
             elif cls is MobPrivate:
                 query = query.join(cls.mob)
             if key == 'recherche':
-                filters = and_(User.community_sharing == True, getattr(cls, attr_pos_x) != None, getattr(cls, attr_pos_y) != None, getattr(cls, attr_pos_n) != None)
+                filters = and_(User.community_sharing == True, getattr(cls.mob.property.mapper.class_, 'mort') == False, getattr(cls, attr_pos_x) is not None, getattr(cls, attr_pos_y) is not None, getattr(cls, attr_pos_n) is not None)
             if key == 'troll':
                 # Exclude personnal private for those not sharing it
                 filters = case([(cls.viewer_id.in_(users_id), and_(cls.viewer_id.in_(users_id), cls.troll_id != cls.viewer_id))], else_= cls.viewer_id.in_(sp4_users_id))
@@ -357,6 +357,7 @@ class Requester:
         # Create a mob private
         pm = MobPrivate()
         pm.mob = Mob(nom=cdm.mob_nom, age=cdm.mob_age)
+        pm.mob = Mob.link_metamob(pm.mob)
         # Copy the fixed properties and compute a set of cdms regrouped by mob id
         list_of_cdm_by_mob_id = {}
         for p in res:

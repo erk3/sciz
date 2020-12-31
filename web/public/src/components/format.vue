@@ -1,15 +1,19 @@
 <!-- TEMPLATE -->
 <template>
-	<v-card class="pa-5 text-xs-center">
-		<!-- SNACKBAR -->
+	<v-card class="pa-5 text-center">
+		<!-- NOTIFICATIONS -->
 		<v-snackbar v-model="error" color="error" :timeout="6000" top>
-			{{ error_msg }}
-	    <v-btn dark flat @click="error = false">Fermer</v-btn>
-	  </v-snackbar>
+   			{{ error_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="error = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
 		<v-snackbar v-model="success" color="success" :timeout="6000" top>
-	    {{ success_msg }}
-	    <v-btn dark flat @click="success = false">Fermer</v-btn>
-	  </v-snackbar>
+   			{{ success_msg }}
+			<template v-slot:action="{ attrs }">
+				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
+			</template>
+		</v-snackbar>
 		<!-- HEADER & BUTTONS -->
 		<span class="display-1">{{c.nom}}</span><br/><br/>
 		<span class="title">Configuration du hook {{h.type}}</span><br/><br/>
@@ -18,146 +22,142 @@
 		<br/><br/>
 		<v-divider></v-divider>
 		<!-- LOADING -->
-		<v-flex v-if="!loaded" class="text-xs-center">
+		<v-row align="center" justify="center" class="fill-height" v-if="!loaded">
 			<v-progress-circular :size="150" :width="15" indeterminate></v-progress-circular>
-		</v-flex>
+		</v-row>
 		<!-- TAB BAR -->
-		<v-tabs fixed-tabs v-if="loaded">
+		<v-tabs fixed-tabs center-active prev-icon="fas fa-chevron-left" next-icon="fas fa-chevron-right" v-if="loaded" class="pa-5">
 			<v-tab>FILTRES</v-tab>
 			<v-tab>ABRÉVIATIONS</v-tab>
-    	<v-tab v-for="(item, key, index) in format" v-if="key !== consts.ABREVIATIONS && key !== consts.FILTRES">
+    		<v-tab v-for="(item, key, index) in format" v-if="key !== consts.ABREVIATIONS && key !== consts.FILTRES" :key="index">
 				<span v-html="consts[key]"></span>
-    	</v-tab>
-			<!-- FILTRES -->
-    	<v-tab-item class="mt-4">
-				<v-layout row wrap align-center justify-center fill-height>
-					<v-flex xs12>
-						<v-layout row wrap align-center justify-center fill-height>
-							<v-flex xs8>
-								<v-alert :value="true" type="warning" class="mb-4" outline> Les événements filtrés ne seront pas transmis. Les filtres sont appliqués APRÈS les abréviations.</v-alert>
-							</v-flex>
-						</v-layout>
-					</v-flex>
-					<v-flex xs4>
+    		</v-tab>
+			<!-- FILTERS -->
+    		<v-tab-item class="mt-5 pt-5">
+				<v-row align="center" justify="center" class="fill-height">
+					<v-col class="col-12">
+						<v-row align="center" justify="center" class="fill-height" wrap>
+							<v-col class="col-8">
+								<v-alert :value="true" type="warning" class="mb-4" outlined> Les événements filtrés ne seront pas transmis. Les filtres sont appliqués APRÈS les abréviations.</v-alert>
+							</v-col>
+						</v-row>
+					</v-col>
+					<v-col class="col-4">
 						<v-text-field v-model="new_filter" placeholder="Suite de mots à filtrer" label="Ajouter un filtre sur :" hint="Sensible à la casse" prepend-icon="fas fa-plus fa-md" @click:prepend="addFilter()"><v-text-field>
-					</v-flex>
-					<v-flex offset-xs1 xs4>
-						<v-layout v-for="(subitem, subindex) in format[consts.FILTRES]" row wrap align-center justify-center fill-height>
-							<v-flex xs12>
+					</v-col>
+					<v-col class="col-4 offset-1">
+						<v-row v-for="(subitem, subindex) in format[consts.FILTRES]" align="center" justify="center" class="fill-height" wrap :key="subindex">
+							<v-col>
 								<v-text-field :value="subitem" v-model="format[consts.FILTRES][subindex]" append-outer-icon="fas fa-trash-alt fa-xs" @click:append-outer="delFilter(subindex, false)" v-on:blur="delFilter(subindex, true)"><v-text-field>
-							</v-flex>
-						</v-layout>
-					</v-flex>
-				</v-layout>
+							</v-col>
+						</v-row>
+					</v-col>
+				</v-row>
 			</v-tab-item>
 			<!-- ABREVIATIONS -->
-    	<v-tab-item class="mt-4">
-				<v-layout row wrap align-center justify-center fill-height>
-					<v-flex xs12>
-						<v-layout row wrap align-center justify-center fill-height>
-							<v-flex xs8>
-								<v-alert :value="true" type="warning" class="mb-4" outline> Les abréviations sont appliquées AVANT les filtres.</v-alert>
-							</v-flex>
-						</v-layout>
-					</v-flex>
-					<v-flex xs4>
+    		<v-tab-item class="mt-5 pt-5">
+				<v-row align="center" justify="center" class="fill-height">
+					<v-col class="col-12">
+						<v-row align="center" justify="center" class="fill-height" wrap>
+							<v-col class="col-8">
+								<v-alert :value="true" type="warning" class="mb-4" outlined> Les abréviations sont appliquées AVANT les filtres.</v-alert>
+							</v-col>
+						</v-row>
+					</v-col>
+					<v-col class="col-4">
 						<v-text-field v-model="new_abr" placeholder="Suite de mots à remplacer" label="Ajouter une abréviation pour :" hint="Sensible à la casse" prepend-icon="fas fa-plus fa-md" @click:prepend="addAbr()"><v-text-field>
-					</v-flex>
-					<v-flex offset-xs1 xs4>
-						<v-layout v-for="(item, subkey, subindex) in format[consts.ABREVIATIONS]" row wrap align-center justify-center fill-height>
-							<v-flex xs12>
+					</v-col>
+					<v-col class="col-4 offset-1">
+						<v-row v-for="(item, subkey, subindex) in format[consts.ABREVIATIONS]" align="center" justify="center" class="fill-height" wrap :key="subindex">
+							<v-col>
 								<v-text-field :placeholder="subkey" :label="subkey" :value="item" v-model="format[consts.ABREVIATIONS][subkey]" append-outer-icon="fas fa-trash-alt fa-xs" @click:append-outer="delAbr(subkey, false)" v-on:blur="delAbr(subkey, true)"><v-text-field>
-							</v-flex>
-						</v-layout>
-					</v-flex>
-				</v-layout>
+							</v-col>
+						</v-row>
+					</v-col>
+				</v-row>
 			</v-tab-item>
 			<!-- FORMATS -->
-    	<v-tab-item v-for="(item, key, index) in format" v-if="key !== consts.ABREVIATIONS && key !== consts.FILTRES" class="mt-4" :key="key">
-				<v-layout row wrap align-center justify-center fill-height>
+    		<v-tab-item v-for="(item, key, index) in format" v-if="key !== consts.ABREVIATIONS && key !== consts.FILTRES" class="mt-5 pt-5" :key="index">
+				<v-row align="center" justify="center" class="fill-height">
 					<!-- NOTIFICATION -->
-					<v-flex xs8 class="mt-4" v-if="consts.NOTIF in format[key]"> 
+					<v-col class="col-8 mt-4" v-if="consts.NOTIF in format[key]"> 
 						<v-card>
 							<v-card-title>{{consts.NOTIF}}</v-card-title>
 							<v-combobox v-model="format[key][consts.NOTIF]" :items="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR])" multiple small-chips deletable-chips hide-selected class="ml-5 mr-5" :menu-props="{'closeOnClick': true, 'closeOnContentClick': true, 'maxHeight': '200px'}" :key="key + consts.NOTIF">
 								<template slot="selection" slot-scope="{ item, parent, selected }">
-	      					<v-chip :color="getChipColor(key, item)" label small closable v-if="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR]).includes(item)">
+	      							<v-chip :color="getChipColor(key, item)" label small close close-icon="far fa-times-circle" @click:close="parent.selectItem(item)" v-if="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR]).includes(item)">
 										<span class="pr-2">{{ item.substring(1, item.length - 1) }}</span>
-	        					<v-icon small @click="parent.selectItem(item)">close</v-icon>
-	      					</v-chip>
-	      					<v-chip label small closable outline v-else>
+	      							</v-chip>
+	      							<v-chip label small close close-icon="far fa-times-circle" @click:close="parent.selectItem(item)" outlined v-else>
 										<span class="pr-1 pl-1">{{ item }}</span>
-	        					<v-icon small @click="parent.selectItem(item)">close</v-icon>
-	      					</v-chip>
-	    					</template>
+	      							</v-chip>
+	    						</template>
 								<template slot="item" slot-scope="{ item, parent, selected }">
-	      					<v-chip :color="getChipColor(key, item)" label small closable>
+	      							<v-chip :color="getChipColor(key, item)" label small close close-icon="far fa-times-circle">
 										<span>{{ item.substring(1, item.length - 1) }}</span>
-	      					</v-chip>
-	    					</template>
+	      							</v-chip>
+	    						</template>
 							</v-combobox>
 						</v-card>
-					</v-flex>
+					</v-col>
 					<!-- ATTRIBUTS CONSTRUITS -->
-					<v-flex xs8 class="mt-4" v-if="consts.ATTR_C in format[key]"> 
+					<v-col class="col-8 mt-4" v-if="consts.ATTR_C in format[key]"> 
 						<v-card>
 							<v-card-title>{{consts.ATTR_C}}</v-card-title>
-							<v-layout row wrap align-center justify-center fill-height>
-								<v-flex xs12 v-for="(subitem, subkey, subindex) in format[key][consts.ATTR_C]" :key="key+subkey+consts.ATTR_C">
-									<v-layout row wrap align-center justify-end fill-height ma-2>
-										<v-flex xs3> 
-	      							<v-chip color="teal" label small closable> {{subkey}} </v-chip>
-										</v-flex>
-										<v-flex xs9>
+							<v-row wrap align="center" justify="center" class="fill-height">
+								<v-col class="col-12" v-for="(subitem, subkey, subindex) in format[key][consts.ATTR_C]" :key="key+subkey+consts.ATTR_C">
+									<v-row align="center" justify="center" class="fill-height ma-2">
+										<v-col class="col-3"> 
+	      									<v-chip color="teal" label small> {{subkey}} </v-chip>
+										</v-col>
+										<v-col class="col-9"> 
 											<v-combobox v-model="format[key][consts.ATTR_C][subkey]" :items="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR], [subkey])" :label="subkey" multiple small-chips deletable-chips hide-selected class="ml-5 mr-5" :menu-props="{'closeOnClick': true, 'closeOnContentClick': true, 'maxHeight': '200px'}">
 												<template slot="selection" slot-scope="{ item, parent, selected }">
-					      					<v-chip :color="getChipColor(key, item)" label small closable v-if="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR]).includes(item)">
+					      							<v-chip :color="getChipColor(key, item)" label small close close-icon="far fa-times-circle" @click:close="parent.selectItem(item)" v-if="getSubKeys(format[key], [consts.ATTR_C, consts.ATTR]).includes(item)">
 														<span class="pr-2">{{ item.substring(1, item.length - 1) }}</span>
-					        					<v-icon small @click="parent.selectItem(item)">close</v-icon>
-					      					</v-chip>
-					      					<v-chip label small closable outline v-else>
+					      							</v-chip>
+							      					<v-chip label small close close-icon="far fa-times-circle" @click:close="parent.selectItem(item)" outlined v-else>
 														<span class="pr-1 pl-1">{{ item }}</span>
-					        					<v-icon small @click="parent.selectItem(item)">close</v-icon>
-					      					</v-chip>
-					    					</template>
+							      					</v-chip>
+						    					</template>
 												<template slot="item" slot-scope="{ item, parent, selected }">
-					      					<v-chip :color="getChipColor(key, item)" label small closable>
+							      					<v-chip :color="getChipColor(key, item)" label small close close-icon="far fa-times-circle">
 														<span>{{ item.substring(1, item.length - 1) }}</span>
-					      					</v-chip>
+					      							</v-chip>
 												</template>
 											</v-combobox>
-										</v-flex>
-									</v-layout>
-								</v-flex>
-							</v-layout>
+										</v-col>
+									</v-row>
+								</v-col>
+							</v-row>
 						</v-card>
-					</v-flex>
+					</v-col>
 					<!-- ATTRIBUTS -->
-					<v-flex xs8 class="mt-4" v-if="consts.ATTR in format[key]"> 
+					<v-col class="col-8 mt-4" v-if="consts.ATTR in format[key]"> 
 						<v-card>
 							<v-card-title>{{consts.ATTR}}</v-card-title>
-							<v-layout row wrap align-center justify-center fill-height>
-								<v-flex xs12 v-for="(subitem, subkey, subindex) in format[key][consts.ATTR]" :key="key+subkey+consts.ATTR">
-									<v-layout row wrap align-center justify-end fill-height ma-2>
-										<v-flex xs3> 
-	      							<v-chip :color="key !== 'Event' ? 'brown' : 'blue-grey'" label small closable> {{subkey}} </v-chip>
-										</v-flex>
-										<v-flex xs9>
-											<v-layout row wrap align-center justify-start fill-height>
-												<v-flex xs4 v-for="(subsubitem, subsubkey, subsubindex) in format[key][consts.ATTR][subkey]" v-if="subsubkey !== 'Attribut'">
+							<v-row wrap align="center" justify="center" class="fill-height">
+								<v-col class="col-12" v-for="(subitem, subkey, subindex) in format[key][consts.ATTR]" :key="key+subkey+consts.ATTR">
+									<v-row align="center" justify="center" class="fill-height ma-2">
+										<v-col class="col-3"> 
+	      									<v-chip :color="key !== 'Event' ? 'brown' : 'blue-grey'" label small closable> {{subkey}} </v-chip>
+										</v-col>
+										<v-col class="col-9"> 
+											<v-row wrap align="center" justify="center" class="fill-height">
+												<v-col class="col-4" v-for="(subsubitem, subsubkey, subsubindex) in format[key][consts.ATTR][subkey]" v-if="subsubkey !== 'Attribut'" :key="subsubindex">
 													<v-text-field v-model="format[key][consts.ATTR][subkey][subsubkey]" :label="subsubkey" class="ml-5 mr-5" :key="key+subkey+consts.ATTR+subsubkey" hide-details placeholder=' '>
 													</v-text-field>
-												</v-flex>
-											</v-layout>
-										</v-flex>
-									</v-layout>
-								</v-flex>
-							</v-layout>
+												</v-col>
+											</v-row>
+										</v-col>
+									</v-row>
+								</v-col>
+							</v-row>
 						</v-card>
-					</v-flex>
-				</v-layout>
-    	</v-tab>
-  	</v-tabs>
+					</v-col>
+				</v-row>
+    		</v-tab-item>
+  		</v-tabs>
 	</v-card>
 </template>
 
@@ -172,9 +172,9 @@
 			c: { type: Object, default: null },
 		},
 		watch: {
-      h: function(newHook, oldHook) {
+			h: function(newHook, oldHook) {
 				this.loadHook(newHook);
-    	}
+    		}
 		},
 		beforeMount() {
 			this.loadHook(this.h);
@@ -192,7 +192,7 @@
 				consts: {
 					ABREVIATIONS: 'Abréviations',
 					FILTRES: 'Filtres',
-					Event: 'Événement<br/>Commun',
+					Event: 'Événement<br/>commun',
 					battleEvent: 'Événements<br/>Combat',
 					tresorEvent: 'Événements<br/>Trésor',
 					champiEvent: 'Événements<br/>Champignon',
@@ -200,15 +200,17 @@
 					cpEvent: 'Événements<br/>Piège',
 					aaEvent: 'Événements<br/>AA',
 					cdmEvent: 'Événements<br/>CdM',
-					TrollPrivate: 'Trõll',
+					userEvent: 'Événements<br/>Utilisateur',
+					followerEvent: 'Événements<br/>Suivant',
+					TrollPrivate: 'Trõlls',
 					TrollPrivateCapa: 'Compétence<br/>Sort',
-					MobPrivate: 'Monstre',
-					TresorPrivate: 'Trésor',
-					ChampiPrivate: 'Champignon',
-					Lieu: 'Lieu<br/>Commun',
-					Portail: 'Portail',
-					Piege: 'Piège',
-					NOTIF: 'Notification',
+					MobPrivate: 'Monstres',
+					TresorPrivate: 'Trésors',
+					ChampiPrivate: 'Champignons',
+					Lieu: 'Lieux<br/>communs',
+					Portail: 'Portails',
+					Piege: 'Pièges',
+					NOTIF: 'Notifications',
 					ATTR_C: 'Attributs construits',
 					ATTR: 'Attributs',
 				}	

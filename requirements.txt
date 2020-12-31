@@ -12,4 +12,5 @@ flask-jwt-extended
 bcrypt
 python-dateutil
 unidecode
-uwsgi
+psycopg2
+discord
