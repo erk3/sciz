@@ -17,9 +17,9 @@ var router = new Router({
 	mode: 'history',
 	routes: [
 		{
-      path: '/',
-      redirect: '/home'
-    },
+			path: '/',
+			redirect: '/home'
+		},
 		{
 			path: '/home',
 			name: 'HomeView',
@@ -79,17 +79,17 @@ router.beforeEach((to, from, next) => {
 		var cookie = window.$cookies.get('sciz');
 		if (cookie) {
 			store.commit('setCookie', cookie);
-	  }
+		}
 	}
 	// Guard for non-authenticated user
 	if (to.meta.requiresAuth && !store.getters.isAuthenticated()) {
 		next({
-      path: '/',
-      params: { nextUrl: to.fullPath }
-    });
-  } else {
-  	next();
-  }
+			path: '/',
+			params: { nextUrl: to.fullPath }
+		});
+	} else {
+		next();
+	}
 });
 
 // Must be done after router.beforeEach definition

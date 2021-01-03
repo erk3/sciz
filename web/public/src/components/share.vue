@@ -3,25 +3,25 @@
 	<v-container justify="center" align="center" class="fill-height pa-0 ma-0" id="share-view">
 		<!-- NOTIFICATIONS -->
 		<v-snackbar v-model="error_group" color="error" :timeout="6000" top>
-   			{{ error_group }}
+			{{ error_group }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
 			</template>
 		</v-snackbar>
 		<v-snackbar v-model="error" color="error" :timeout="6000" top>
-   			{{ error_msg }}
+			{{ error_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="error = false" v-bind="attrs">Fermer</v-btn>
 			</template>
 		</v-snackbar>
 		<v-snackbar v-model="success" color="success" :timeout="6000" top>
-   			{{ success_msg }}
+			{{ success_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
 			</template>
 		</v-snackbar>
 		<v-snackbar v-model="info" color="info" :timeout="6000" top>
-   			{{ info_msg }}
+			{{ info_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
 			</template>
@@ -31,7 +31,7 @@
 			<v-app-bar flat class="pa-0 ma-0">
 				<v-row align="center" justify="start" class="fill-height" no-gutters>
 					<v-col class="col-10"> Mes coteries </v-col>
-    			    <!-- CREATE COTERIE DIALOG -->
+					<!-- CREATE COTERIE DIALOG -->
 					<v-col class="col-2">
 						<v-dialog v-model="group_dialog" max-width="50%">
 							<template v-slot:activator="{ on, attrs }">
@@ -63,15 +63,15 @@
 								</v-card-actions>
 							</v-card>
 						</v-dialog>
-        			</v-col>
+					</v-col>
 				</v-row>
 			</v-app-bar>
-     	 	<!-- GROUPS LIST -->
-    		<v-divider></v-divider>
+			<!-- GROUPS LIST -->
+			<v-divider></v-divider>
 			<v-subheader>Coterie personnelle</v-subheader>
 			<v-list>
 				<template v-for="(coterie, index) in [coterie_perso]">
-        			<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
+					<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
 						<v-list-item-avatar>
 							<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 							<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
@@ -79,12 +79,12 @@
 						<v-list-item-content>{{ coterie.nom }}</v-list-item-content>
 					</v-list-item>
 				</template>
-		    </v-list>
+			</v-list>
 			<v-divider v-if="invitations.length > 0"></v-divider>
-		  	<v-subheader v-if="invitations.length > 0">Invitation(s)</v-subheader>
+			<v-subheader v-if="invitations.length > 0">Invitation(s)</v-subheader>
 			<v-list>
 				<template v-for="(coterie, index) in invitations">
-        			<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
+					<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
 						<v-list-item-avatar>
 							<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 							<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
@@ -92,12 +92,12 @@
 						<v-list-item-content>{{ coterie.nom }}</v-list-item-content>
 					</v-list-item>
 				</template>
-		    </v-list>
+			</v-list>
 			<v-divider v-if="coteries.length > 0"></v-divider>
 			<v-subheader v-if="coteries.length > 0">Coterie(s) de groupe</v-subheader>
 			<v-list>
 				<template v-for="(coterie, index) in coteries">
-        			<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
+					<v-list-item :key="index" @click="switchCoterie(coterie); refreshPartages()" v-model="coterie_courante.id === coterie.id">
 						<v-list-item-avatar>
 							<v-img v-if="coterie.blason_uri" :src="coterie.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="30px"></v-img>
 							<v-img v-else :src="Image('unknown')" alt="" contain max-height="30px"></v-img>
@@ -105,8 +105,8 @@
 						<v-list-item-content>{{ coterie.nom }}</v-list-item-content>
 					</v-list-item>
 				</template>
-		    </v-list>
-    	</v-navigation-drawer>
+			</v-list>
+		</v-navigation-drawer>
 		<!-- COTERIE -->
 		<v-row wrap align="center" justify="center" class="fill-height">
 			<v-col class="col-8 text-center">
@@ -116,7 +116,7 @@
 						<v-col class="col-5">
 							<v-img v-if="coterie_courante.blason_uri" :src="coterie_courante.blason_uri" :lazy-src="Image('unknown')" alt="" contain max-height="200px"></v-img>
 							<v-img v-else :src="Image('unknown')" alt="" contain max-height="200px"></v-img>
-            			</v-col>
+						</v-col>
 						<v-col class="col-7">
 							<v-text-field label="Nom de la coterie" v-model="coterie_courante.nom" :disabled="!partage_courant.admin"></v-text-field>
 							<v-text-field label="URI du blason" v-model="coterie_courante.blason_uri" :disabled="!partage_courant.admin"></v-text-field>
@@ -129,8 +129,8 @@
 						<v-col class="col-12" v-if="!partage_courant.pending">Vous partagez</v-col>
 						<v-col class="col-12" v-else>Vous avez été invité dans cette coterie, si vous acceptez vous partagerez :</v-col>
 						<v-col class="col-4"><v-spacer></v-spacer><v-switch label="Vos événements" class="centered-switch" v-model="partage_courant.sharingEvents"></v-switch></v-col>
-      					<v-col class="col-4"><v-spacer></v-spacer><v-switch label="Votre profil" class="centered-switch" v-model="partage_courant.sharingProfile"></v-switch></v-col>
-      					<v-col class="col-4"><v-spacer></v-spacer><v-switch label="Votre vue" class="centered-switch" v-model="partage_courant.sharingView"></v-switch></v-col>
+						<v-col class="col-4"><v-spacer></v-spacer><v-switch label="Votre profil" class="centered-switch" v-model="partage_courant.sharingProfile"></v-switch></v-col>
+						<v-col class="col-4"><v-spacer></v-spacer><v-switch label="Votre vue" class="centered-switch" v-model="partage_courant.sharingView"></v-switch></v-col>
 						<!-- COTERIE SHARES STATE -->
 						<v-col class="col-12">
 							<v-card flat tile>
@@ -145,11 +145,11 @@
 										<span>Partages de la coterie</span>
 									</v-tooltip>
 									<v-spacer></v-spacer>
-        						</v-card-actions>
+								</v-card-actions>
 								<v-slide-y-transition>
-          							<v-card-text v-show="show_shares" class="text-center">
-										<v-data-table :headers="headers" :items="partages.admins.concat(partages.users)" class="elevation-1" hide-default-footer>
-    										<template v-slot:item.nom="{ item }">
+									<v-card-text v-show="show_shares" class="text-center">
+										<v-data-table :headers="headers" :items="partages.admins.concat(partages.users)" class="elevation-1" hide-default-footer :items-per-page="-1">
+											<template v-slot:item.nom="{ item }">
 												{{ item.nom }} ({{item.partage.user_id}})
 											</template>
 											<template v-slot:item.partage.sharingEvents="{ item }">
@@ -163,10 +163,10 @@
 											</template>
 											<template v-slot:item.partage.hookPropagation="{ item }">
 												<v-switch class="centered-switch" :disabled="item.partage.user_id !== userData().id && !partage_courant.admin " v-model="item.partage.hookPropagation"></v-switch>
-									    	</template>
+											</template>
 										</v-data-table>
-          							</v-card-text>
-        						</v-slide-y-transition>
+									</v-card-text>
+								</v-slide-y-transition>
 							</v-card>
 						</v-col>
 					</v-row>
@@ -195,9 +195,9 @@
 										<v-list-item v-if="!hook.jwt" @click="regenerateHook(hook.id)"><span class="red--text text-darken1">Générer</span></v-list-item>
 									</v-list>
 								</v-menu>
-		      				</v-row>
+							</v-row>
 						</v-col>
-      				</v-row>
+					</v-row>
 					<!-- SHARES -->
 					<v-divider v-if="loaded && coterie_courante.grouped && !partage_courant.pending" class="mb-5 mt-5"></v-divider>
 					<v-row v-if="loaded && coterie_courante.grouped && !partage_courant.pending" wrap align="center" justify="center" class="fill-height">
@@ -271,7 +271,7 @@
 								</v-autocomplete>
 							</v-row>
 						</v-col>
-				   </v-row>
+					</v-row>
 				</v-card>
 				<!-- BOTTOM BUTTONS -->
 				<v-row align="center" justify="center" class="ma-5">
@@ -281,22 +281,22 @@
 							<template v-slot:activator="{ on, attrs }">
 								<v-btn v-bind="attrs" v-on="on" class="error">Supprimer la coterie</v-btn>
 							</template>
-      						<v-card>
-        						<v-card-title class="headline">Supprimer cette coterie ?</v-card-title>
+							<v-card>
+								<v-card-title class="headline">Supprimer cette coterie ?</v-card-title>
 								<v-card-text>Cette action est définitive et irréversible.<br/>Les informations déjà partagées avec d'autres utilisateurs leurs seront toujours accessibles.</v-card-text>
-        						<v-card-actions>
-        							<v-spacer></v-spacer>
-        							<v-btn @click="delete_dialog = false">Annuler</v-btn>
-        							<v-btn class="error" @click="deleteCoterie()">Supprimer</v-btn>
-	    						</v-card-actions>
-      						</v-card>
-    					</v-dialog>
+								<v-card-actions>
+									<v-spacer></v-spacer>
+									<v-btn @click="delete_dialog = false">Annuler</v-btn>
+									<v-btn class="error" @click="deleteCoterie()">Supprimer</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
 						<v-btn v-if="partage_courant.pending" class="info" @click="acceptInvitation()">Accepter l'invitation</v-btn>
 						<v-btn v-if="partage_courant.pending" class="error" @click="declineInvitation()">Décliner l'invitation</v-btn>
 					</v-col>
 				</v-row>
-            </v-col>
-        </v-row>
+			</v-col>
+		</v-row>
 		<!-- HOOK DIALOG -->
 		<v-dialog v-if="selectedHook" v-model="hook_dialog">
 			<Format :h="selectedHook" :c="coterie_courante"></Format>
@@ -306,200 +306,200 @@
 
 <!-- SCRIPT -->
 <script>
-	import { renewHook, deleteGroup, deleteShare, acceptInvite, declineInvite, createGroup, getUsersList, setGroup, getPartages, getGroups } from '~/src/api.js';
-	import Format from '~/src/components/format.vue';
+import { renewHook, deleteGroup, deleteShare, acceptInvite, declineInvite, createGroup, getUsersList, setGroup, getPartages, getGroups } from '~/src/api.js';
+import Format from '~/src/components/format.vue';
 
-	export default {
-    name: 'ShareView',
-		components: { Format },
-	  data() {
-			return {
-				loaded: false,
-				error: false,
-				success: false,
-				info: false,
-				error_msg: '',
-				success_msg: '',
-				info_msg: '',
-				hook_dialog: false,
-				selectedHook: null,
-				group_dialog: false,
-				delete_dialog: false,
-				valid_group: false,
-				error_group: false,
-				error_group_msg: '',
-				partages: {admins: [], users: [], pending: [], toExpire: []},
-				pending: [], // Because v-autocomplete can't take a complex object as an input right now
-				usersList: [],
-				coterie_perso: {},
-				coterie_nouvelle: {nom: null, blason_uri: null, desc: null},
-				coterie_courante: {},
-				partage_courant: {},
-				coteries: [],
-				invitations: [],
-				show_shares: false,
-				headers: [
-          			{ text: 'Nom', align: 'center', value: 'nom' },
-          			{ text: 'Evénéments', align: 'center', value: 'partage.sharingEvents' },
-          			{ text: 'Profil', align: 'center', value: 'partage.sharingProfile' },
-          			{ text: 'Vue', align: 'center', value: 'partage.sharingView' },
-					{ text: 'Propagation', align: 'center', value: 'partage.hookPropagation' }
-				],
-			}
+export default {
+	name: 'ShareView',
+	components: { Format },
+	data() {
+		return {
+			loaded: false,
+			error: false,
+			success: false,
+			info: false,
+			error_msg: '',
+			success_msg: '',
+			info_msg: '',
+			hook_dialog: false,
+			selectedHook: null,
+			group_dialog: false,
+			delete_dialog: false,
+			valid_group: false,
+			error_group: false,
+			error_group_msg: '',
+			partages: {admins: [], users: [], pending: [], toExpire: []},
+			pending: [], // Because v-autocomplete can't take a complex object as an input right now
+			usersList: [],
+			coterie_perso: {},
+			coterie_nouvelle: {nom: null, blason_uri: null, desc: null},
+			coterie_courante: {},
+			partage_courant: {},
+			coteries: [],
+			invitations: [],
+			show_shares: false,
+			headers: [
+				{ text: 'Nom', align: 'center', value: 'nom' },
+				{ text: 'Evénéments', align: 'center', value: 'partage.sharingEvents' },
+				{ text: 'Profil', align: 'center', value: 'partage.sharingProfile' },
+				{ text: 'Vue', align: 'center', value: 'partage.sharingView' },
+				{ text: 'Propagation', align: 'center', value: 'partage.hookPropagation' }
+			],
+		}
+	},
+	beforeMount() {
+		this.refreshGroups();
+	},
+	methods: {
+		switchCoterie(coterie) {
+			this.coterie_courante = coterie;
+			this.$store.commit('setCoterieID', coterie.id);
+			this.$store.commit('setCoterieName', coterie.nom);
 		},
-		beforeMount() {
-			this.refreshGroups();
+		trollFilter (item, queryText, itemText) {
+			const textOne = item.nom.toLowerCase();
+			const textTwo = item.id.toString().toLowerCase();
+			const searchText = queryText.toLowerCase();
+			return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
 		},
-		methods: {
-			switchCoterie(coterie) {
-				this.coterie_courante = coterie;
-				this.$store.commit('setCoterieID', coterie.id);
-				this.$store.commit('setCoterieName', coterie.nom);
-			},
-			trollFilter (item, queryText, itemText) {
-        		const textOne = item.nom.toLowerCase();
-        		const textTwo = item.id.toString().toLowerCase();
-        		const searchText = queryText.toLowerCase();
-				return textOne.indexOf(searchText) > -1 || textTwo.indexOf(searchText) > -1;
-     		},
-			refreshGroups() {
-				var coterie_courante = this.coterie_courante;
-				getGroups(false, true, true)
-					.then(res => {
-						if (res.status === 200) {
-							this.coterie_perso = res.data['coterie_perso'];
-							this.coteries = res.data['coteries'];
-							this.invitations = res.data['invitations'];
-							this.coterie_courante = this.coterie_perso;
-							// Try to set the current coterie to the last one stored in local storage
-							var lastCoterieID = this.$store.getters.coterieID;
-							this.coteries.forEach(coterie => {
-								if (coterie.id === lastCoterieID) {
-									this.coterie_courante = coterie;
-								}
-							}); 
-							this.refreshPartages();
-						}
-					});
-			},
-			refreshPartages() {
-				this.loaded = false;
-				this.pending = [];
-				getPartages(this.coterie_courante.id)
-					.then(res => {
-						if (res.status === 200) {
-							this.partages = res.data;
-							this.partages.toExpire = [];
-							this.partages.pending.forEach((item) => {
-								this.pending.push(item.partage.user_id);
-							});
-							this.partages.admins.concat(this.partages.users).concat(this.partages.pending).forEach(item => {
-								if (item.partage.user_id === this.userData().id) {
-									this.partage_courant = item.partage;
-								}
-							});
-							this.loaded = true;
-						}
-					});
-				getUsersList(this.coterie_courante.id)
-					.then(res => {
-						if (res.status === 200) {
-							this.usersList = res.data;
-						}
-					});
-			},
-			createCoterie() {
-				this.group_dialog = false;
-				createGroup(this.coterie_nouvelle)
-					.then(res => {
-						this.refreshGroups();
-					});
-			},
-			acceptInvitation() {
-				acceptInvite(this.coterie_courante.id, this.partage_courant)
-					.then(res => {
-						this.refreshGroups();
-					});
-			},
-			declineInvitation() {
-				declineInvite(this.coterie_courante.id)
-					.then(res => {
-						this.refreshGroups();
-					});
-			},
-			deleteCoterie() {
-				deleteGroup(this.coterie_courante.id)
-					.then(res => {
-						this.refreshGroups();
-						this.delete_dialog = false;
-					});
-			},
-			deleteOwnShare() {
-				deleteShare(this.coterie_courante.id)
-					.then(res => {
-						this.refreshGroups();
-					})
-					.catch(err => {
-							this.error = true;
-							this.error_msg = err.message;
-					});
-			},
-			saveCoterie() {
-				this.partages.pendingToAdd = this.pending;
-				this.coterie_courante.partages = this.partages;
-				setGroup(this.coterie_courante.id, this.coterie_courante)
-					.then(res => {
-							this.success = true;
-							this.success_msg = res.data.message;
-							this.refreshPartages();
-					})
-					.catch(err => {
-							this.error = true;
-							this.error_msg = err.message;
-					});
-			},
-			removePending(item) {
-				this.pending = this._.reject(this.pending, function(i) { return i === item.id; });
-				this.partages.toExpire.push(item.id)
-			},
-			exclude(item) {
-				if (item.partage.admin && this.partages.admins.length > 1) {
-					this.partages.admins = this._.reject(this.partages.admins, function(i) { return i.partage.user_id === item.partage.user_id; });
-				} else {
-					this.partages.users = this._.reject(this.partages.users, function(i) { return i.partage.user_id === item.partage.user_id; });
-				}
-				this.partages.toExpire.push(item.partage.user_id);
-			},
-			upgrade(item) {
-				item.partage.admin = true;
+		refreshGroups() {
+			var coterie_courante = this.coterie_courante;
+			getGroups(false, true, true)
+				.then(res => {
+					if (res.status === 200) {
+						this.coterie_perso = res.data['coterie_perso'];
+						this.coteries = res.data['coteries'];
+						this.invitations = res.data['invitations'];
+						this.coterie_courante = this.coterie_perso;
+						// Try to set the current coterie to the last one stored in local storage
+						var lastCoterieID = this.$store.getters.coterieID;
+						this.coteries.forEach(coterie => {
+							if (coterie.id === lastCoterieID) {
+								this.coterie_courante = coterie;
+							}
+						}); 
+						this.refreshPartages();
+					}
+				});
+		},
+		refreshPartages() {
+			this.loaded = false;
+			this.pending = [];
+			getPartages(this.coterie_courante.id)
+				.then(res => {
+					if (res.status === 200) {
+						this.partages = res.data;
+						this.partages.toExpire = [];
+						this.partages.pending.forEach((item) => {
+							this.pending.push(item.partage.user_id);
+						});
+						this.partages.admins.concat(this.partages.users).concat(this.partages.pending).forEach(item => {
+							if (item.partage.user_id === this.userData().id) {
+								this.partage_courant = item.partage;
+							}
+						});
+						this.loaded = true;
+					}
+				});
+			getUsersList(this.coterie_courante.id)
+				.then(res => {
+					if (res.status === 200) {
+						this.usersList = res.data;
+					}
+				});
+		},
+		createCoterie() {
+			this.group_dialog = false;
+			createGroup(this.coterie_nouvelle)
+				.then(res => {
+					this.refreshGroups();
+				});
+		},
+		acceptInvitation() {
+			acceptInvite(this.coterie_courante.id, this.partage_courant)
+				.then(res => {
+					this.refreshGroups();
+				});
+		},
+		declineInvitation() {
+			declineInvite(this.coterie_courante.id)
+				.then(res => {
+					this.refreshGroups();
+				});
+		},
+		deleteCoterie() {
+			deleteGroup(this.coterie_courante.id)
+				.then(res => {
+					this.refreshGroups();
+					this.delete_dialog = false;
+				});
+		},
+		deleteOwnShare() {
+			deleteShare(this.coterie_courante.id)
+				.then(res => {
+					this.refreshGroups();
+				})
+				.catch(err => {
+					this.error = true;
+					this.error_msg = err.message;
+				});
+		},
+		saveCoterie() {
+			this.partages.pendingToAdd = this.pending;
+			this.coterie_courante.partages = this.partages;
+			setGroup(this.coterie_courante.id, this.coterie_courante)
+				.then(res => {
+					this.success = true;
+					this.success_msg = res.data.message;
+					this.refreshPartages();
+				})
+				.catch(err => {
+					this.error = true;
+					this.error_msg = err.message;
+				});
+		},
+		removePending(item) {
+			this.pending = this._.reject(this.pending, function(i) { return i === item.id; });
+			this.partages.toExpire.push(item.id)
+		},
+		exclude(item) {
+			if (item.partage.admin && this.partages.admins.length > 1) {
+				this.partages.admins = this._.reject(this.partages.admins, function(i) { return i.partage.user_id === item.partage.user_id; });
+			} else {
 				this.partages.users = this._.reject(this.partages.users, function(i) { return i.partage.user_id === item.partage.user_id; });
-				this.partages.admins.push(item);
-			},
-			retrograde(item) {
-				if (item.partage.admin && this.partages.admins.length > 1) {
-					item.partage.admin = false;
-					this.partages.admins = this._.reject(this.partages.admins, function(i) { return i.partage.user_id === item.partage.user_id; });
-					this.partages.users.push(item);
-				}
-			},
-			regenerateHook(hook_id) {
-				renewHook(hook_id)
-					.then(res => {
-						this.refreshGroups();
-					});
 			}
+			this.partages.toExpire.push(item.partage.user_id);
+		},
+		upgrade(item) {
+			item.partage.admin = true;
+			this.partages.users = this._.reject(this.partages.users, function(i) { return i.partage.user_id === item.partage.user_id; });
+			this.partages.admins.push(item);
+		},
+		retrograde(item) {
+			if (item.partage.admin && this.partages.admins.length > 1) {
+				item.partage.admin = false;
+				this.partages.admins = this._.reject(this.partages.admins, function(i) { return i.partage.user_id === item.partage.user_id; });
+				this.partages.users.push(item);
+			}
+		},
+		regenerateHook(hook_id) {
+			renewHook(hook_id)
+				.then(res => {
+					this.refreshGroups();
+				});
 		}
 	}
+}
 </script>
 
 <!-- STYLE -->
 <style>
-	/* For v-switch centering */
-	.centered-switch > .v-input__control > .v-input__slot > .v-label {
-		flex-grow: 0 !important;
-		flex-shrink: 1 !important;
-	}
-	.centered-switch > .v-input__control > .v-input__slot {
-		justify-content: center !important;
-	}
+/* For v-switch centering */
+.centered-switch > .v-input__control > .v-input__slot > .v-label {
+	flex-grow: 0 !important;
+	flex-shrink: 1 !important;
+}
+.centered-switch > .v-input__control > .v-input__slot {
+	justify-content: center !important;
+}
 </style>

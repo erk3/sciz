@@ -30,13 +30,13 @@
 
 <!-- SCRIPT -->
 <script>
-	export default {
-    name: 'HeaderView',
-		methods: {
-    	logout () {
-	  		this.$store.commit('logout');
-				this.$router.push('/');
-			}
+export default {
+	name: 'HeaderView',
+	methods: {
+		logout () {
+			this.$store.commit('logout');
+			this.$router.push('/');
 		}
 	}
+}
 </script>

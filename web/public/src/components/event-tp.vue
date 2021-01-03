@@ -41,13 +41,13 @@
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventTP',
-		props: {
-			tp: {
-				type: Object,
-				default: null
-			}
-		},
-	}
+export default {
+	name: 'EventTP',
+	props: {
+		tp: {
+			type: Object,
+			default: null
+		}
+	},
+}
 </script>

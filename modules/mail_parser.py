@@ -37,6 +37,7 @@ class MailParser:
                 if isinstance(_from, bytes):
                     if charset is not None:
                         charset = 'mac-roman' if (charset == 'macintosh') else charset  # Dirty hack for really old Apple mail clients (< OS X)
+                        charset = 'utf-8' if (charset == '8bit') or (charset == '7bit') else charset  # Dirty hack for really old mail clients using 7/8bits
                         _from = _from.decode(charset)
                     # Else use any global charset for the mail
                     elif msg.get_content_charset() is not None:
@@ -52,6 +53,7 @@ class MailParser:
             if isinstance(subject, bytes):
                 if charset is not None:
                     charset = 'mac-roman' if (charset == 'macintosh') else charset # Dirty hack for really old Apple mail clients (< OS X)
+                    charset = 'utf-8' if (charset == '8bit') or (charset == '7bit') else charset  # Dirty hack for really old mail clients using 7/8bits
                     subject = subject.decode(charset)
                 # Else use any global charset for the mail
                 elif msg.get_content_charset() is not None:
@@ -80,8 +82,10 @@ class MailParser:
             sg.logger.error('Failed to parse a mail: %s' % e)
         # Just in case some htmlentities were put in the mail...
         mail_body = html.unescape(mail_body) if mail_body is not None else mail_body
+        # Extract mail headers also for later user (see parse)
+        mail_headers = email.parser.HeaderParser().parsestr(msg.as_string())
         # Result
-        return mail_subject, mail_body, mail_froms
+        return mail_subject, mail_body, mail_froms, mail_headers
 
     # Utility regexps loader
     def __load_regexps_section(self, sections):
@@ -89,16 +93,16 @@ class MailParser:
         for section in sections:
             res = sum([res, [(k, re.compile(v)) for (k, v) in sg.regex[section].items()]], [])
         return res
-    
+
     def __match_first_regexp(self, regexps, payload):
         for (k, r) in regexps:
             match = r.search(payload)
             if match is not None:
                 return k, match.groupdict()
         return None, None
-    
+
     # Main regexp dispatcher and CLASS.build dispatcher
-    def parse(self, subject, body, froms, user):
+    def parse(self, subject, body, froms, headers, user):
         if subject is None or body is None:
             return None
         subject = str(subject).replace('\\r', '').replace('\\n', ' ')
@@ -110,7 +114,7 @@ class MailParser:
         # Loop over the regexp for ignored subject matching
         ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
         (key, res[0]) = self.__match_first_regexp(ignored_regexps, subject)
-        if key is not None: 
+        if key is not None:
             sg.logger.warning('Ignored mail \'%s\', aborting...' % subject)
             return None
         # Loop over the regexp for subject matching
@@ -203,6 +207,9 @@ class MailParser:
             # If we did not find the owner of the mail we fix it (followers mail)
             if hasattr(obj, 'owner_id') and obj.owner_id is None:
                 obj.owner_id = user.id
+            # If we did not find a time for the mail (no MH header in the mail body?), we fix it using the 'Date' mail header
+            if not hasattr(obj, 'time') or obj.time is None:
+                obj.time = email.utils.parsedate_to_datetime(headers['Date'])
             # If the user has a personal mail, check the 'from' header for it
             if not isinstance(obj, MailHelper) and user.user_mail is not None and user.user_mail != '' and not any('bot@mountyhall.com' in f for f in froms):
                 if not any(user.user_mail in f for f in froms):

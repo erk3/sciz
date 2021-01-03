@@ -1133,16 +1133,28 @@ TrollPrivateCapa:
       Suffixe: ')'
 
 userEvent:
-  Notification: '{Horodatage} {Type d''événement} pour {Troll} {Identifiant du Troll} {Description}'
+  Notification: '{Horodatage} {Type d''événement} pour {Troll} {Identifiant du Troll} {Nouvelle DLA} {Caractéristiques}'
+  Attributs construits:
+    Caractéristiques: '({PA} {Points de vie})'
   Attributs:
     Type d'événement:
       Préfixe: ''
       Attribut: '{o.type}'
       Suffixe: ''
-    Description:
-      Préfixe: ': '
-      Attribut: '{o.desc}'
+    PA:
+      Préfixe: ''
+      Attribut: '{o.pa}'
+      Suffixe: ' PA'
+    Nouvelle DLA:
+      Préfixe: ': prochaine DLA à '
+      Attribut: '{o.next_dla}'
+      Format temporel: '%Hh%M'
       Suffixe: ''
+    Points de vie:
+      Préfixe: ''
+      Attribut: '{o.str_pdv}'
+      Suffixe: ' PV'
+
 
 followerEvent:
   Notification: '{Horodatage} {Type d''événement} de {Suivant} appartenant à {Propriétaire} {Position}'

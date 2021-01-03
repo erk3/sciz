@@ -14,9 +14,9 @@
 			<v-spacer></v-spacer>
 			<v-slide-y-transition>
 				<p class="caption" v-show="show_desc">
-					SCIZ est un outil tourné vers <a href="https://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse.<br/>
-					Sa fonction première est d'aggréger, consolider, conserver et partager automagiquement les notifications mail envoyées par le jeu à chaque trõll.<br/>
-					Il permet en particulier de retrouver ces informations sur Mountyzilla, Miaou, Hangouts ou Discord.
+				SCIZ est un outil tourné vers <a href="https://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse.<br/>
+				Sa fonction première est d'aggréger, consolider, conserver et partager automagiquement les notifications mail envoyées par le jeu à chaque trõll.<br/>
+				Il permet en particulier de retrouver ces informations sur Mountyzilla, Miaou, Hangouts ou Discord.
 				</p>
 			</v-slide-y-transition>
 		</v-card-text>
@@ -102,71 +102,71 @@
 
 <!-- SCRIPT -->
 <script>
-	import { EventBus } from '~/src/store.js'
+import { EventBus } from '~/src/store.js'
 
-	export default {
-		name: 'HomeView',
-		data: () => ({
-			id: '',
-			pwd: '',
-			pwd2: '',
-			pwd_mh: '',
-			error: false,
-			error_msg: '',
-			show_desc: false,
-			show_pwd: false,
-			step: 1,
-			reset: false,
-			valid_form_login: false,
-			valid_form_register: false,
-			emptyRule: v => !!v || "",
-			idRule: v => /^\d+$/.test(v) || "Numéro de trõll invalide",
-			pwdRule: v => v.length >= 8 || "Au moins 8 caractères"
-		}),
-		methods: {
-			pwdMatch (error) {
-				if (this.pwd === '' || this.pwd2 === '') {
-					return error ? '' : false
-				} else {
-					return (this.pwd === this.pwd2) ? (error ? '' : true) : (error ? 'Le mot de passe ne correspond pas' : false)
-				}
-			},
-			authenticate () {
-				if (this.id !== '' && this.pwd !== '') {
-				this.$store.dispatch('login', {id: this.id, pwd: this.pwd })
-						.then(() => {
-							if(this.$route.params.nextUrl !== undefined && this.$route.params.nextUrl !== null) {
-								this.$router.push(this.$route.params.nextUrl);
-							} else {
-								this.$router.push('/event');
-							}
-						})
-				}
-			},
-			register () {
-				if (this.reset) {
-					this.$store.dispatch('reset', {id: this.id, pwd: this.pwd, pwd2: this.pwd2, pwd_mh: this.pwd_mh })
-						.then(() => this.$router.push('/profil'))
-				} else {
-					this.$store.dispatch('register', {id: this.id, pwd: this.pwd, pwd2: this.pwd2, pwd_mh: this.pwd_mh })
-						.then(() => this.$router.push('/profil'))
-				}
+export default {
+	name: 'HomeView',
+	data: () => ({
+		id: '',
+		pwd: '',
+		pwd2: '',
+		pwd_mh: '',
+		error: false,
+		error_msg: '',
+		show_desc: false,
+		show_pwd: false,
+		step: 1,
+		reset: false,
+		valid_form_login: false,
+		valid_form_register: false,
+		emptyRule: v => !!v || "",
+		idRule: v => /^\d+$/.test(v) || "Numéro de trõll invalide",
+		pwdRule: v => v.length >= 8 || "Au moins 8 caractères"
+	}),
+	methods: {
+		pwdMatch (error) {
+			if (this.pwd === '' || this.pwd2 === '') {
+				return error ? '' : false
+			} else {
+				return (this.pwd === this.pwd2) ? (error ? '' : true) : (error ? 'Le mot de passe ne correspond pas' : false)
 			}
 		},
-		mounted () {
-			EventBus.$on('failedRegistering', err => {this.error = true; this.error_msg = err})
-			EventBus.$on('failedReset', err => {this.error = true; this.error_msg = err})
-			EventBus.$on('failedAuthentication', () => this.error = true)
+		authenticate () {
+			if (this.id !== '' && this.pwd !== '') {
+				this.$store.dispatch('login', {id: this.id, pwd: this.pwd })
+					.then(() => {
+						if(this.$route.params.nextUrl !== undefined && this.$route.params.nextUrl !== null) {
+							this.$router.push(this.$route.params.nextUrl);
+						} else {
+							this.$router.push('/event');
+						}
+					})
+			}
 		},
-		beforeDestroy () {
-			EventBus.$off('failedRegistering')
-	    	EventBus.$off('failedReset')
-	    	EventBus.$off('failedAuthentication')
-	  	}
+		register () {
+			if (this.reset) {
+				this.$store.dispatch('reset', {id: this.id, pwd: this.pwd, pwd2: this.pwd2, pwd_mh: this.pwd_mh })
+					.then(() => this.$router.push('/profil'))
+			} else {
+				this.$store.dispatch('register', {id: this.id, pwd: this.pwd, pwd2: this.pwd2, pwd_mh: this.pwd_mh })
+					.then(() => this.$router.push('/profil'))
+			}
+		}
+	},
+	mounted () {
+		EventBus.$on('failedRegistering', err => {this.error = true; this.error_msg = err})
+		EventBus.$on('failedReset', err => {this.error = true; this.error_msg = err})
+		EventBus.$on('failedAuthentication', () => this.error = true)
+	},
+	beforeDestroy () {
+		EventBus.$off('failedRegistering')
+		EventBus.$off('failedReset')
+		EventBus.$off('failedAuthentication')
 	}
+}
 </script>
 
 <!-- STYLE -->
 <style>
-	.v-text-field__details {padding-top: 10px}
+.v-text-field__details {padding-top: 10px}
 </style>

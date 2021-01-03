@@ -52,7 +52,8 @@ class Event(sg.sqlalchemybase):
 
     # Additional build logic
     def build(self):
-        self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
+        if type(self.time) is str:
+            self.time = datetime.datetime.strptime(self.time, '%d/%m/%Y  %H:%M:%S')
 
     def icon(self):
         return 'sciz-logo-quarter.png'

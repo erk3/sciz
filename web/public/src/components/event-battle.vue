@@ -93,7 +93,7 @@
 			<v-row wrap justify="center" align="start" class="fill-height">
 				<v-col class="col-5">
 					<v-card flat v-if="catt.some((e) => { return e.v})">
-		      			<v-divider></v-divider>
+						<v-divider></v-divider>
 						<v-list v-for="(carac, index) in catt" dense class="pa-0" :key="index">
 							<v-list-item v-if="carac.v">
 								<v-list-item-content>{{carac.k}}</v-list-item-content>
@@ -108,11 +108,11 @@
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
-		    		</v-card>
+					</v-card>
 				</v-col>
 				<v-col class="col-5 offset-2 text-center">
 					<v-card flat v-if="cdef.some((e) => { return e.v})">
-		      			<v-divider></v-divider>
+						<v-divider></v-divider>
 						<v-list v-for="(carac, index) in cdef" dense class="pa-0" :key="index">
 							<v-list-item v-if="carac.v">
 								<v-list-item-content>{{carac.k}}</v-list-item-content>
@@ -127,7 +127,7 @@
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
-		    		</v-card>
+					</v-card>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -136,83 +136,83 @@
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventBattle',
-		props: {
-			ba: {
-				type: Object,
-				default: null
-			}
-		},
-		data() {
-			return {
-				catt: [],
-				cdef: [],
-			}
-		},
-		computed: {
-			att_event: function () {
-				return this.ba.att_id && !this.ba.def_id && !this.ba.autre_id;
-			},
-			def_event: function () {
-				return this.ba.def_id && !this.ba.att_id && !this.ba.autre_id;
-			},
-			follower_event: function () {
-				return this.ba.owner_id !== this.ba.att_id && this.ba.owner_id !== this.ba.def_id && this.ba.owner_id !== this.ba.autre_id;
-			},
-			pos: function () {
-				var pos = '';
-				pos += (this.ba.pos_x !== null) ? 'X = ' + this.ba.pos_x : '';
-				pos += (this.ba.pos_y !== null) ? ((pos !== '') ? ' | Y = ' + this.ba.pos_y : 'Y = ' + this.ba.pos_y) : '';
-				pos += (this.ba.pos_n !== null) ? ((pos !== '') ? ' | N = ' + this.ba.pos_n : 'N = ' + this.ba.pos_n) : '';
-				return (pos === '') ? null : pos;
-			},
-			dir: function () {
-				var dir = '';
-				dir += (this.ba.dir_x !== null) ? this.ba.dir_x : '';
-				dir += (this.ba.dir_y !== null) ? ((dir !== '') ? ' ' + this.ba.dir_y : this.ba.dir_y) : '';
-				dir += (this.ba.dir_n !== null) ? ((dir !== '') ? ' ' + this.ba.dir_n : this.ba.dir_n) : '';
-				return (dir === '') ? null : dir;
-			}
-		},
-		beforeMount() {
-			// Caractéristiques ATT
-			this.catt.push({k: 'Jet d\'attaque', v: this.ba.att});
-			this.catt.push({k: 'Jet de déstabilisation', v: this.ba.destab});
-			this.catt.push({k: 'Jet de résistance', v: this.ba.resi});
-			this.catt.push({k: 'Blessure', v: this.ba.blessure});
-			this.catt.push({k: 'Jet de dégâts', v: this.ba.deg});
-			this.cdef.push({k: 'Soin', v: (this.ba.type.includes('Régénération') || this.ba.type.includes('Vampirisme')) ? this.ba.soin : null});
-			this.catt.push({k: 'Position', v: this.pos});
-			this.catt.push({k: 'Gain de MM', v: this.ba.mm});
-			this.catt.push({k: 'Gain de fatigue', v: this.ba.fatigue});
-			this.catt.push({k: 'Gain de PX', v: this.ba.px});
-			// Caractéristiques DEF
-			this.cdef.push({k: 'Jet d\'esquive', v: this.ba.esq});
-			this.cdef.push({k: 'Jet de parade', v: this.ba.par});
-			this.cdef.push({k: 'Jet de réflexe', v: this.ba.ref});
-			this.cdef.push({k: 'Jet de stabilisation', v: this.ba.stab});
-			this.cdef.push({k: 'Seuil de résistance', v: this.ba.sr});
-			this.cdef.push({k: 'Soin', v: (!this.ba.type.includes('Régénération') && !this.ba.type.includes('Vampirisme')) ? this.ba.soin : null});
-			this.cdef.push({k: 'Armure', v: this.ba.arm});
-			this.cdef.push({k: 'Direction', v: this.dir});
-			this.cdef.push({k: 'Gain de RM', v: this.ba.rm});
+export default {
+	name: 'EventBattle',
+	props: {
+		ba: {
+			type: Object,
+			default: null
 		}
+	},
+	data() {
+		return {
+			catt: [],
+			cdef: [],
+		}
+	},
+	computed: {
+		att_event: function () {
+			return this.ba.att_id && !this.ba.def_id && !this.ba.autre_id;
+		},
+		def_event: function () {
+			return this.ba.def_id && !this.ba.att_id && !this.ba.autre_id;
+		},
+		follower_event: function () {
+			return this.ba.owner_id !== this.ba.att_id && this.ba.owner_id !== this.ba.def_id && this.ba.owner_id !== this.ba.autre_id;
+		},
+		pos: function () {
+			var pos = '';
+			pos += (this.ba.pos_x !== null) ? 'X = ' + this.ba.pos_x : '';
+			pos += (this.ba.pos_y !== null) ? ((pos !== '') ? ' | Y = ' + this.ba.pos_y : 'Y = ' + this.ba.pos_y) : '';
+			pos += (this.ba.pos_n !== null) ? ((pos !== '') ? ' | N = ' + this.ba.pos_n : 'N = ' + this.ba.pos_n) : '';
+			return (pos === '') ? null : pos;
+		},
+		dir: function () {
+			var dir = '';
+			dir += (this.ba.dir_x !== null) ? this.ba.dir_x : '';
+			dir += (this.ba.dir_y !== null) ? ((dir !== '') ? ' ' + this.ba.dir_y : this.ba.dir_y) : '';
+			dir += (this.ba.dir_n !== null) ? ((dir !== '') ? ' ' + this.ba.dir_n : this.ba.dir_n) : '';
+			return (dir === '') ? null : dir;
+		}
+	},
+	beforeMount() {
+		// Caractéristiques ATT
+		this.catt.push({k: 'Jet d\'attaque', v: this.ba.att});
+		this.catt.push({k: 'Jet de déstabilisation', v: this.ba.destab});
+		this.catt.push({k: 'Jet de résistance', v: this.ba.resi});
+		this.catt.push({k: 'Blessure', v: this.ba.blessure});
+		this.catt.push({k: 'Jet de dégâts', v: this.ba.deg});
+		this.cdef.push({k: 'Soin', v: (this.ba.type.includes('Régénération') || this.ba.type.includes('Vampirisme')) ? this.ba.soin : null});
+		this.catt.push({k: 'Position', v: this.pos});
+		this.catt.push({k: 'Gain de MM', v: this.ba.mm});
+		this.catt.push({k: 'Gain de fatigue', v: this.ba.fatigue});
+		this.catt.push({k: 'Gain de PX', v: this.ba.px});
+		// Caractéristiques DEF
+		this.cdef.push({k: 'Jet d\'esquive', v: this.ba.esq});
+		this.cdef.push({k: 'Jet de parade', v: this.ba.par});
+		this.cdef.push({k: 'Jet de réflexe', v: this.ba.ref});
+		this.cdef.push({k: 'Jet de stabilisation', v: this.ba.stab});
+		this.cdef.push({k: 'Seuil de résistance', v: this.ba.sr});
+		this.cdef.push({k: 'Soin', v: (!this.ba.type.includes('Régénération') && !this.ba.type.includes('Vampirisme')) ? this.ba.soin : null});
+		this.cdef.push({k: 'Armure', v: this.ba.arm});
+		this.cdef.push({k: 'Direction', v: this.dir});
+		this.cdef.push({k: 'Gain de RM', v: this.ba.rm});
 	}
+}
 </script>
 
 <!-- STYLE -->
 <style>
-	.container-overlay {
-	  	position: relative;  
-	}
+.container-overlay {
+	position: relative;  
+}
 
-	.overlay {
-	  	background: none repeat scroll 0 0;
-	  	opacity: 0.8;
-		top:0;
-	  	left:0;
-	  	position: absolute;
-		width: 100%;
-	}
+.overlay {
+	background: none repeat scroll 0 0;
+	opacity: 0.8;
+	top:0;
+	left:0;
+	position: absolute;
+	width: 100%;
+}
 </style>

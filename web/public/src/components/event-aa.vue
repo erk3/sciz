@@ -50,7 +50,7 @@
 			<v-row wrap justify="center" align="start" class="fill-height">
 				<v-col class="col-4 text-center">
 					<v-card flat>
-		      		<v-divider></v-divider>
+						<v-divider></v-divider>
 						<v-list v-for="(carac, index) in cnum" dense class="pa-0" :key="index">
 							<v-list-item>
 								<v-list-item-content>{{carac.k}}</v-list-item-content>
@@ -65,52 +65,52 @@
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
-		    	</v-card>
-				</v-flex>
-			</v-layout>
-		</v-flex>
-	</v-layout>
+					</v-card>
+					</v-flex>
+					</v-layout>
+					</v-flex>
+					</v-layout>
 </template>
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventAA',
-		props: {
-			aa: {
-				type: Object,
-				default: null
-			}
-		},
-		data() {
-			return {
-				cnum: [],
-			}
-		},
-		computed: {
-			pdv_min: function () {
-				if (this.aa.blessure === 0) {
-					return this.aa.base_pdv_min;
-				}
-				return Math.floor(this.aa.base_pdv_min * (100 - Math.min(100, this.aa.blessure + 5)) / 100);
-			},
-			pdv_max: function () {
-				if (this.aa.blessure === 0) {
-					return this.aa.base_pdv_max;
-				}
-				return Math.ceil(this.aa.base_pdv_max * (100 - Math.max(1, this.aa.blessure - 4)) / 100);
-			},
-		},
-		beforeMount() {
-			// Caractéristiques numériques
-			this.cnum.push({k: 'Niveau', v: this.aa.niv})
-			this.cnum.push({k: 'Points de vie', v: this.displayMinMax(this.aa.base_pdv_min, this.aa.base_pdv_max, true)})
-			this.cnum.push({k: 'Attaque (D6)', v: this.displayMinMax(this.aa.base_att_min, this.aa.base_att_max, true)})
-			this.cnum.push({k: 'Esquive (D6)', v: this.displayMinMax(this.aa.base_esq_min, this.aa.base_esq_max, true)})
-			this.cnum.push({k: 'Dégâts (D3)', v: this.displayMinMax(this.aa.base_deg_min, this.aa.base_deg_max, true)})
-			this.cnum.push({k: 'Régénération (D3)', v: this.displayMinMax(this.aa.base_reg_min, this.aa.base_reg_max, true)})
-			this.cnum.push({k: 'Vue', v: this.displayMinMax(this.aa.base_vue_min, this.aa.base_vue_max, true)})
-			this.cnum.push({k: 'Armure (D3)', v: this.displayMinMax(this.aa.base_arm_min, this.aa.base_arm_max, true)})
+export default {
+	name: 'EventAA',
+	props: {
+		aa: {
+			type: Object,
+			default: null
 		}
+	},
+	data() {
+		return {
+			cnum: [],
+		}
+	},
+	computed: {
+		pdv_min: function () {
+			if (this.aa.blessure === 0) {
+				return this.aa.base_pdv_min;
+			}
+			return Math.floor(this.aa.base_pdv_min * (100 - Math.min(100, this.aa.blessure + 5)) / 100);
+		},
+		pdv_max: function () {
+			if (this.aa.blessure === 0) {
+				return this.aa.base_pdv_max;
+			}
+			return Math.ceil(this.aa.base_pdv_max * (100 - Math.max(1, this.aa.blessure - 4)) / 100);
+		},
+	},
+	beforeMount() {
+		// Caractéristiques numériques
+		this.cnum.push({k: 'Niveau', v: this.aa.niv})
+		this.cnum.push({k: 'Points de vie', v: this.displayMinMax(this.aa.base_pdv_min, this.aa.base_pdv_max, true)})
+		this.cnum.push({k: 'Attaque (D6)', v: this.displayMinMax(this.aa.base_att_min, this.aa.base_att_max, true)})
+		this.cnum.push({k: 'Esquive (D6)', v: this.displayMinMax(this.aa.base_esq_min, this.aa.base_esq_max, true)})
+		this.cnum.push({k: 'Dégâts (D3)', v: this.displayMinMax(this.aa.base_deg_min, this.aa.base_deg_max, true)})
+		this.cnum.push({k: 'Régénération (D3)', v: this.displayMinMax(this.aa.base_reg_min, this.aa.base_reg_max, true)})
+		this.cnum.push({k: 'Vue', v: this.displayMinMax(this.aa.base_vue_min, this.aa.base_vue_max, true)})
+		this.cnum.push({k: 'Armure (D3)', v: this.displayMinMax(this.aa.base_arm_min, this.aa.base_arm_max, true)})
 	}
+}
 </script>

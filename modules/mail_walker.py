@@ -16,7 +16,7 @@ class MailWalker:
     def __init__(self):
         self.mp = MailParser()
         self.load_conf()
-        
+
     # Configuration loader
     def load_conf(self):
         self.mailDirPath = sg.conf[sg.CONF_MAIL_SECTION][sg.CONF_MAIL_PATH]
@@ -60,13 +60,13 @@ class MailWalker:
             # Then re-sort by MH date, then by remaining life points (multiple events at same time)
             re_time = re.compile(sg.regex[sg.CONF_SECTION_COMMON][sg.CONF_NOTIF_TIME])
             re_vie = re.compile(sg.regex[sg.CONF_SECTION_BATTLE][sg.CONF_NOTIF_VIE])
-            parsed_mails_with_attrs = [(n, s, b, f, re_time.search(b) if b else None, re_vie.search(b) if b else None) for (n, (s, b, f)) in parsed_mails]
-            parsed_mails_with_attrs = [(n, s, b, f, datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.now(), int(v.groupdict()['vie']) if v else 0) for (n, s, b, f, t, v) in parsed_mails_with_attrs]
-            sorted_mails = sorted(parsed_mails_with_attrs, key=itemgetter(4, 5))
+            parsed_mails_with_attrs = [(n, s, b, f, h, re_time.search(b) if b else None, re_vie.search(b) if b else None) for (n, (s, b, f, h)) in parsed_mails]
+            parsed_mails_with_attrs = [(n, s, b, f, h, datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.now(), int(v.groupdict()['vie']) if v else 0) for (n, s, b, f, h, t, v) in parsed_mails_with_attrs]
+            sorted_mails = sorted(parsed_mails_with_attrs, key=itemgetter(5, 6))
             # Finally walk over the mails
-            for file_path, subject, body, froms, time, vie in sorted_mails:
+            for file_path, subject, body, froms, headers, time, vie in sorted_mails:
                 try:
-                    objs = self.mp.parse(subject, body, froms, sg.user)
+                    objs = self.mp.parse(subject, body, froms, headers, sg.user)
                     if objs == 'UNHANDLED':
                         self.archive(sg.user, file_path, 'unhandled')
                     elif objs is not None:

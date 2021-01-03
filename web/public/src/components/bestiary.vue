@@ -3,7 +3,7 @@
 	<v-container class="mt-5 fill-height" id="bestiary-view">
 		<!-- NOTIFICATIONS -->
 		<v-snackbar v-model="info" color="info" :timeout="6000" top>
-   			{{ info_msg }}
+			{{ info_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
 			</template>
@@ -48,60 +48,60 @@
 						<v-spacer></v-spacer>
 					</v-card-actions>
 				</v-card>
-    		</v-col>
+			</v-col>
 		</v-row>
 	</v-container>
 </template>
 
 <!-- SCRIPT -->
 <script>
-	import { getMobs, getnbCDM, request } from '~/src/api.js';
-	export default {
-    name: 'BestiaryView',
- 		data: () => ({
-			search: '',
-			result: '',
-			blason: '',
-			mobsList: [],
-			nbCDM: 0,
-			info: false,
-			info_msg: '',
-		}),
-		beforeMount() {
-			getMobs()
+import { getMobs, getnbCDM, request } from '~/src/api.js';
+export default {
+	name: 'BestiaryView',
+	data: () => ({
+		search: '',
+		result: '',
+		blason: '',
+		mobsList: [],
+		nbCDM: 0,
+		info: false,
+		info_msg: '',
+	}),
+	beforeMount() {
+		getMobs()
+			.then(res => {
+				if (res.status === 200) {
+					this.mobsList = res.data;
+				}
+			});
+		getnbCDM()
+			.then(res => {
+				if (res.status === 200) {
+					this.nbCDM = res.data;
+				}
+			});
+	},
+	methods: {
+		mobFilter (item, queryText, itemText) {
+			const text = item.nom.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+			const searchText = queryText.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+			var keywords = searchText.split(' ');
+			return keywords.every((search) => {return text.indexOf(search) > -1});
+		},	
+		makeRequest() {
+			request({'req': '%bestiaire:' + this.search.replace(/[\[\]]+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/(\s|\W)+/g, ',')})
 				.then(res => {
-					if (res.status === 200) {
-						this.mobsList = res.data;
-					}
-				});
-			getnbCDM()
-				.then(res => {
-					if (res.status === 200) {
-						this.nbCDM = res.data;
-					}
-				});
-		},
-		methods: {
-			mobFilter (item, queryText, itemText) {
-				const text = item.nom.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
-				const searchText = queryText.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
-				var keywords = searchText.split(' ');
-				return keywords.every((search) => {return text.indexOf(search) > -1});
-    		},	
-			makeRequest() {
-				request({'req': '%bestiaire:' + this.search.replace(/[\[\]]+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/(\s|\W)+/g, ',')})
-					.then(res => {
-						if (res.status === 200 && res.data) {
-							this.result = '';
-							var l = res.data['message'].length;
-							for (var i = 0; i < l; i++) {
-								this.result += res.data['message'][i];
-							}
-							this.blason = "" + this.result.match(/Blason\s*:\s*(.*)/)[1];
-							this.result = this.result.replace(/Blason.*|,$/gi, "");
+					if (res.status === 200 && res.data) {
+						this.result = '';
+						var l = res.data['message'].length;
+						for (var i = 0; i < l; i++) {
+							this.result += res.data['message'][i];
 						}
-					})
-			},
-		}
+						this.blason = "" + this.result.match(/Blason\s*:\s*(.*)/)[1];
+						this.result = this.result.replace(/Blason.*|,$/gi, "");
+					}
+				})
+		},
 	}
+}
 </script>

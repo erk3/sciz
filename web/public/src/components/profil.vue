@@ -3,13 +3,13 @@
 	<v-container justify="center" align="center" class="fill-height" id="profil-view" ma-5>
 		<!-- NOTIFICATIONS -->
 		<v-snackbar v-model="error" color="error" :timeout="6000" top>
-   			{{ error_msg }}
+			{{ error_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="error = false" v-bind="attrs">Fermer</v-btn>
 			</template>
 		</v-snackbar>
 		<v-snackbar v-model="success" color="success" :timeout="6000" top>
-   			{{ success_msg }}
+			{{ success_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="success = false" v-bind="attrs">Fermer</v-btn>
 			</template>
@@ -17,15 +17,15 @@
 		<v-snackbar v-model="info" color="info" :timeout="6000" top>
 			{{ info_msg }}
 			<template v-slot:action="{ attrs }">
-    			<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
+				<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
 			</template>
-  		</v-snackbar>
+		</v-snackbar>
 		<v-snackbar v-model="error_pwd" color="error" :timeout="6000" top>
-      		{{ error_pwd_msg }}
+			{{ error_pwd_msg }}
 			<template v-slot:action="{ attrs }">
 				<v-btn dark text @click="error_pwd = false" v-bind="attrs">Fermer</v-btn>
 			</template>
-  		</v-snackbar>
+		</v-snackbar>
 		<!-- SIDEBAR -->
 		<v-navigation-drawer app floating>
 			<v-row align="center" justify="center" class="fill-height pl-15">
@@ -45,7 +45,7 @@
 						<!-- SCIZ PREFS -->
 						<v-expansion-panel>
 							<v-expansion-panel-header class="title">Profil SCIZ</v-expansion-panel-header>
-	      					<v-expansion-panel-content>
+							<v-expansion-panel-content>
 								<v-row align="center" justify="center" class="fill-height">
 									<v-col class="col-8 text-center">
 										<span class=>Votre adresse SCIZ</span><br/></br>
@@ -76,8 +76,8 @@
 												<v-btn v-bind="attrs" v-on="on">Modifier mon mot de passe</v-btn>
 											</template>
 											<v-form v-model="valid_pwd">
-								      			<v-card class="pa-5">
-							        				<v-card-title class="headline">Modifier mon mot de passe</v-card-title>
+												<v-card class="pa-5">
+													<v-card-title class="headline">Modifier mon mot de passe</v-card-title>
 													<v-row align="center" justify="center">
 														<v-col class="col-6">
 															<v-text-field label="Ancien mot de passe" v-model="pwd" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error_pwd" required>
@@ -95,22 +95,22 @@
 															</v-text-field>
 														</v-col>
 													</v-row>
-							        				<v-card-actions>
-								          				<v-spacer></v-spacer>
-							          					<v-btn @click="pwd_dialog = false">Annuler</v-btn>
-								          				<v-btn class="primary" @click="resetPwd()" :disabled="!valid_pwd || pwd === '' || new_pwd === '' || new_pwd2 === ''">Modifier</v-btn>
-							        				</v-card-actions>
-							      				</v-card>
+													<v-card-actions>
+														<v-spacer></v-spacer>
+														<v-btn @click="pwd_dialog = false">Annuler</v-btn>
+														<v-btn class="primary" @click="resetPwd()" :disabled="!valid_pwd || pwd === '' || new_pwd === '' || new_pwd2 === ''">Modifier</v-btn>
+													</v-card-actions>
+												</v-card>
 											</v-form>
-							    		</v-dialog>
+										</v-dialog>
 									</v-col>
 								</v-row>
-      						</v-expansion-panel-content>
-    					</v-expansion-panel>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
 						<!-- MH PREFS -->
 						<v-expansion-panel>
 							<v-expansion-panel-header class="title">Profil MountyHall</v-expansion-panel-header>
-	      					<v-expansion-panel-content>
+							<v-expansion-panel-content>
 								<v-row align="center" justify="center">
 									<v-col class="col-8 text-center">
 										<v-text-field label="Mot de passe d'application" v-model="user.pwd_mh" hint="<a href='http://sp.mountyhall.com/hashing.php'>Qu'est ce que c'est ?</a><br/><br/><span class='orange--text text--lighten-1'>Mountyhall fixe des <a href='http://sp.mountyhall.com'>limites journalières</a> d'appel par trõll, veillez à ne pas les dépasser tous outils tiers confondus !</span>" persistent-hint>
@@ -149,14 +149,14 @@
 												<v-icon size="16px">fas {{ show_desc ? 'fa-chevron-down' : 'fa-chevron-up' }}</v-icon>
 											</v-btn>
 											<v-spacer></v-spacer>
-        									<v-slide-y-transition>
+											<v-slide-y-transition>
 												<v-data-table v-show="show_calls" :headers="headers" :items="calls" class="elevation-1" hide-default-footer sort-by="">
 													<template v-slot:item.manual="{ item }">
 														<td class="text-center" v-if="item.manual === true">Manuel</td>
-								      					<td class="text-center" v-else>Automatique</td>				
+														<td class="text-center" v-else>Automatique</td>				
 													</template>
 													<template v-slot:item.time="{ item }">
-								      					<td class="text-center" >{{ item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
+														<td class="text-center" >{{ item.time | moment('utc', 'DD/MM/YYYY HH:mm:ss') }}</td>
 													</template>
 													<template v-slot:item.status="{ item }">
 														<td class="text-center green--text" v-if="item.status === 0">Succès</td>
@@ -168,14 +168,14 @@
 														<td class="text-center red--text" v-else-if="item.status === 6">Troll désactivé</td>
 														<td class="text-center red--text" v-else>Erreur inconnue</td>
 													</template>
-								  				</v-data-table>
+												</v-data-table>
 												<v-pagination class="mt-5" v-model="page" :length="max_pages" :total-visible="7" @input="getCalls" next-icon="fas fa-angle-right" prev-icon="fas fa-angle-left"></v-pagination>
-        									</v-slide-y-transition>
+											</v-slide-y-transition>
 										</v-card-text>
-					        		</v-col>
+									</v-col>
 								</v-row>
-      						</v-expansion-panel-content>
-    					</v-expansion-panel>
+							</v-expansion-panel-content>
+						</v-expansion-panel>
 					</v-expansion-panels>
 				</v-form>
 				<!-- BOTTOM BUTTONS -->
@@ -186,167 +186,167 @@
 							<template v-slot:activator="{ on, attrs }">
 								<v-btn v-bind="attrs" v-on="on" class="error">Supprimer mon compte</v-btn>
 							</template>
-      						<v-card>
-        						<v-card-title class="headline">Supprimer votre compte SCIZ ?</v-card-title>
+							<v-card>
+								<v-card-title class="headline">Supprimer votre compte SCIZ ?</v-card-title>
 								<v-card-text>Cette action est définitive et irréversible.<br/>Les informations que vous avez déjà partagées avec d'autres utilisateurs leurs seront toujours accessibles.</v-card-text>
-        						<v-card-actions>
-          							<v-spacer></v-spacer>
-          							<v-btn @click="delete_dialog = false">Annuler</v-btn>
-          							<v-btn class="error" @click="deleteAccount()">Supprimer</v-btn>
-	        					</v-card-actions>
-      						</v-card>
-    					</v-dialog>
+								<v-card-actions>
+									<v-spacer></v-spacer>
+									<v-btn @click="delete_dialog = false">Annuler</v-btn>
+									<v-btn class="error" @click="deleteAccount()">Supprimer</v-btn>
+								</v-card-actions>
+							</v-card>
+						</v-dialog>
 					</v-col>
 				</v-row>
 			</v-col>
-    	</v-row>
+		</v-row>
 	</v-container>
 </template>
 
 <!-- SCRIPT -->
 <script>
-	import { EventBus } from '~/src/store.js'
-	import { getProfil, deleteProfil, getMhCalls, resetPassword, doMHCall } from '~/src/api.js'
-	
-	export default {
-    name: 'ProfilView',
-		data: () => ({
-			valid: true,
-			delete_dialog: false,
-			error: false,
-			error_msg: '',
-			success: false,
-			success_msg: '',
-			sp_call_disabled: false,
-			info: false,
-			info_msg: '',
-			show_calls: false,
-			mode: '',
-			page: 1,
-			max_pages: 1,
-			headers: [
-          { text: 'Origine', align: 'center', value: 'manual' },
-          { text: 'Nom', align: 'center', value: 'nom' },
-          { text: 'Type', align: 'center', value: 'type' },
-          { text: 'Horodatage', align: 'center', value: 'time' },
-          { text: 'Statut', align: 'center', value: 'status' }
-        ],
-			calls: [],
-			user: {
-				pseudo: '',
-				sciz_mail: '',
-				user_mail: '',
-				session: 1,
-				pwd_mh: '',
-				max_sp_dyn: 1,
-				community_sharing: true,
-			},
-			valid_pwd: true,
-			error_pwd: false,
-			error_pwd_msg: '',
-			pwd_dialog: false,
-			show_pwd: false,
-			pwd: '',
-			new_pwd: '',
-			new_pwd2: '',
-			pwdRule: v => v.length >= 8 || "Au moins 8 caractères",
-			mailRule: v => /^$|(^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/.test(v) || 'Adresse mail invalide !'
-		}),
-		beforeMount () {
-			getProfil()
-				.then(res => {
-					if (res.status === 200) {
-						this.user.pseudo = res.data['pseudo'] || '';
-						this.user.sciz_mail = res.data['sciz_mail'] || '';
-						this.user.user_mail = res.data['user_mail'] || '';
-						this.user.session = res.data['session'] || '';
-						this.user.pwd_mh = res.data['pwd_mh'] || '';
-						this.user.max_sp_dyn = res.data['max_sp_dyn'] || '';
-						this.user.max_sp_sta = res.data['max_sp_sta'] || '';
-						this.user.community_sharing = res.data['community_sharing'];
-						this.user.count_sp_dyn = res.data['count_sp_dyn'] || '';
-						this.user.count_sp_sta = res.data['count_sp_sta'] || '';
-					}
-				});
-			this.getCalls();
+import { EventBus } from '~/src/store.js'
+import { getProfil, deleteProfil, getMhCalls, resetPassword, doMHCall } from '~/src/api.js'
+
+export default {
+	name: 'ProfilView',
+	data: () => ({
+		valid: true,
+		delete_dialog: false,
+		error: false,
+		error_msg: '',
+		success: false,
+		success_msg: '',
+		sp_call_disabled: false,
+		info: false,
+		info_msg: '',
+		show_calls: false,
+		mode: '',
+		page: 1,
+		max_pages: 1,
+		headers: [
+			{ text: 'Origine', align: 'center', value: 'manual' },
+			{ text: 'Nom', align: 'center', value: 'nom' },
+			{ text: 'Type', align: 'center', value: 'type' },
+			{ text: 'Horodatage', align: 'center', value: 'time' },
+			{ text: 'Statut', align: 'center', value: 'status' }
+		],
+		calls: [],
+		user: {
+			pseudo: '',
+			sciz_mail: '',
+			user_mail: '',
+			session: 1,
+			pwd_mh: '',
+			max_sp_dyn: 1,
+			community_sharing: true,
 		},
-		methods: {
-			mh_call (script) {
-				this.sp_call_disabled = true;
-				doMHCall(script)
-					.then(res => { 
+		valid_pwd: true,
+		error_pwd: false,
+		error_pwd_msg: '',
+		pwd_dialog: false,
+		show_pwd: false,
+		pwd: '',
+		new_pwd: '',
+		new_pwd2: '',
+		pwdRule: v => v.length >= 8 || "Au moins 8 caractères",
+		mailRule: v => /^$|(^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/.test(v) || 'Adresse mail invalide !'
+	}),
+	beforeMount () {
+		getProfil()
+			.then(res => {
+				if (res.status === 200) {
+					this.user.pseudo = res.data['pseudo'] || '';
+					this.user.sciz_mail = res.data['sciz_mail'] || '';
+					this.user.user_mail = res.data['user_mail'] || '';
+					this.user.session = res.data['session'] || '';
+					this.user.pwd_mh = res.data['pwd_mh'] || '';
+					this.user.max_sp_dyn = res.data['max_sp_dyn'] || '';
+					this.user.max_sp_sta = res.data['max_sp_sta'] || '';
+					this.user.community_sharing = res.data['community_sharing'];
+					this.user.count_sp_dyn = res.data['count_sp_dyn'] || '';
+					this.user.count_sp_sta = res.data['count_sp_sta'] || '';
+				}
+			});
+		this.getCalls();
+	},
+	methods: {
+		mh_call (script) {
+			this.sp_call_disabled = true;
+			doMHCall(script)
+				.then(res => { 
+					this.success = true;
+					this.success_msg = res.data.message;
+					if (['profil4', 'vue2'].indexOf(script) > -1) {
+						this.user.count_sp_dyn += 1;
+					}
+					this.getCalls();
+					this.sp_call_disabled = false;
+				})
+				.catch(err => {
+					this.error = true;
+					if (err.response && err.response.data && err.response.data.message) {
+						this.error_msg = err.response.data.message;
+					} else {
+						this.error_msg = 'Une erreur est survenue...';
+					}
+					this.sp_call_disabled = false;
+				});
+		},
+		switchMode (mode) {
+			this.$store.commit('setMode', mode);
+			this.$vuetify.theme.dark = mode === 'dark';
+		},
+		saveProfil () {
+			this.$store.dispatch('saveProfil', this.user)
+				.then(() => {});
+		},
+		deleteAccount () {
+			deleteProfil()
+				.then(() => { 
+					this.$store.commit('logout');
+					this.$router.push('/');
+				});
+		},
+		resetPwd () {
+			resetPassword({ 'pwd': this.pwd, 'new_pwd': this.new_pwd, 'new_pwd2': this.new_pwd2 })
+				.then(res => { 
+					if (res.status === 200) {
 						this.success = true;
 						this.success_msg = res.data.message;
-						if (['profil4', 'vue2'].indexOf(script) > -1) {
-							this.user.count_sp_dyn += 1;
-						}
-						this.getCalls();
-						this.sp_call_disabled = false;
-					})
-					.catch(err => {
-						this.error = true;
-						if (err.response && err.response.data && err.response.data.message) {
-							this.error_msg = err.response.data.message;
-						} else {
-							this.error_msg = 'Une erreur est survenue...';
-						}
-						this.sp_call_disabled = false;
-					});
-			},
-			switchMode (mode) {
-				this.$store.commit('setMode', mode);
-				this.$vuetify.theme.dark = mode === 'dark';
-			},
-			saveProfil () {
-				this.$store.dispatch('saveProfil', this.user)
-					.then(() => {});
-			},
-			deleteAccount () {
-				deleteProfil()
-					.then(() => { 
-						this.$store.commit('logout');
-						this.$router.push('/');
-					});
-			},
-			resetPwd () {
-				resetPassword({ 'pwd': this.pwd, 'new_pwd': this.new_pwd, 'new_pwd2': this.new_pwd2 })
-					.then(res => { 
-						if (res.status === 200) {
-							this.success = true;
-							this.success_msg = res.data.message;
-							this.pwd_dialog = false;
-						}
-					})
-					.catch(err => {
-						this.error_pwd = true;
-						this.error_pwd_msg = 'Données invalides...';
-					});
-			},
-			getCalls () {
-				getMhCalls(this.page)
-					.then(res => {
-						if (res.status === 200) {
-							this.max_pages = Math.ceil(res.data['total'] / 10) || 0;
-							this.calls = res.data['calls'] || [];
-						}	
-					});
-			},
-			pwdMatch (error) {
-				if (this.new_pwd === '' || this.new_pwd2 === '') {
-					return error ? '' : false
-				} else {
-					return (this.new_pwd === this.new_pwd2) ? (error ? '' : true) : (error ? 'Le mot de passe ne correspond pas' : false)
-				}
-			}
+						this.pwd_dialog = false;
+					}
+				})
+				.catch(err => {
+					this.error_pwd = true;
+					this.error_pwd_msg = 'Données invalides...';
+				});
 		},
-  	mounted () {
-			this.mode = this.$store.getters.mode;
-			EventBus.$on('savedProfil', msg => {this.success = true; this.success_msg = msg});
-			EventBus.$on('failedSavingProfil', err => {this.error = true; this.error_msg = err});
-	  },
-	  beforeDestroy () {
-	    EventBus.$off('savedProfil');
-	    EventBus.$off('failedSavingProfil');
-	  }
+		getCalls () {
+			getMhCalls(this.page)
+				.then(res => {
+					if (res.status === 200) {
+						this.max_pages = Math.ceil(res.data['total'] / 10) || 0;
+						this.calls = res.data['calls'] || [];
+					}	
+				});
+		},
+		pwdMatch (error) {
+			if (this.new_pwd === '' || this.new_pwd2 === '') {
+				return error ? '' : false
+			} else {
+				return (this.new_pwd === this.new_pwd2) ? (error ? '' : true) : (error ? 'Le mot de passe ne correspond pas' : false)
+			}
+		}
+	},
+	mounted () {
+		this.mode = this.$store.getters.mode;
+		EventBus.$on('savedProfil', msg => {this.success = true; this.success_msg = msg});
+		EventBus.$on('failedSavingProfil', err => {this.error = true; this.error_msg = err});
+	},
+	beforeDestroy () {
+		EventBus.$off('savedProfil');
+		EventBus.$off('failedSavingProfil');
 	}
+}
 </script>

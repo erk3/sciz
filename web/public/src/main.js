@@ -85,7 +85,7 @@ Vue.mixin({
 				return '-';
 			}
 			return (bool) ? 'Oui' : 'Non';
-  		},
+		},
 	},
 	data() {
 		Image: {

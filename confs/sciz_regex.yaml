@@ -25,6 +25,7 @@ subjects:
   MailHelper_gmail: '(Confirmation\s+du\s+transfert\s+par( Gmail)?)|((Gmail )?Forwarding\s+Confirmation)(?s)'
   MailHelper_yahoo: 'Veuillez vérifier votre adresse mail'
   userEvent_dla: 'Votre (?P<type>DLA est depassée)'
+  userEvent_dla_report_activation: '(?P<type>(Report|Activation) de votre DLA)'
   followerEvent: '(?P<follower_nom>.+)\s+\((?P<follower_id>\d+)\)\s+est\s+arrivé(\s+pour\s+s''ébrouer)?\s*$'
   aaEvent: 'Analyse\s+Anatomique\s+sur\s+(?P<troll_nom>.+)\s+\((?P<troll_id>\d+)\)'
   cdmEvent: 'Connaissance\s+des\s+Monstres\s+(?P<cdm_niv>\d)\s+sur\s+(?P<mob_nom>.*)\s+\((?P<mob_id>\d+)\)(?s)'
@@ -88,6 +89,12 @@ common:
 # Regexps for userEvent
 userEvent:
   re_time: 'précédente\s+Date\s+Limite\s+d''Action\s+est\s+dépassée\s+\((?P<time>.+?)\)'
+  re_time_report_activation: 'Date\s+Limite\s+d''Action\s+précédente\s+était\s+le\s+(?P<old_dla>.+)(\.|$)'
+  re_pa: 'reste\s+(?P<pa>\d)\s+(P|p)oints?\s+d''(A|a)ctions?'
+  re_dla_report: '(R|r)epousser\s+au\s+(?P<next_dla>.+?)(\.|\n\n|$)(?s)'
+  re_dla_activation: 'Date\s+Limite\s+d''Action\s+est\s+donc\s+le\s+(?P<next_dla>.+)(\.|$)'
+  re_pdv_full: 'tous\s+vos\s+Points?\s+de\s+Vie\s+\((?P<pdv>\d+)\)'
+  re_pdv: '(?P<pdv>\d+)\s+Points?\s+de\s+Vie\s+\(sur\s+(?P<pv_max>\d+)\)'
 
 # Regexps for followerEvent
 followerEvent:

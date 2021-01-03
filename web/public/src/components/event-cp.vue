@@ -37,7 +37,7 @@
 			<v-row justify="center" align="center" class="fill-height">
 				<v-col class="col-4 text-center">
 					<v-card flat>
-		      			<v-divider></v-divider>
+						<v-divider></v-divider>
 						<v-list v-for="(carac, index) in cnum" dense class="pa-0" :key="index">
 							<v-list-item>
 								<v-list-item-content>{{carac.k}}</v-list-item-content>
@@ -52,7 +52,7 @@
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
-		    		</v-card>
+					</v-card>
 				</v-col>
 			</v-row>
 		</v-col>
@@ -61,21 +61,21 @@
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventCP',
-		props: {
-			cp: {
-				type: Object,
-				default: null
-			}
-		},
-		data() {
-			return {
-				cnum: [],
-			}
-		},
-		beforeMount() {
-			this.cnum.push({k: 'Maitrise Magique', v: this.cp.piege_mm})
+export default {
+	name: 'EventCP',
+	props: {
+		cp: {
+			type: Object,
+			default: null
 		}
+	},
+	data() {
+		return {
+			cnum: [],
+		}
+	},
+	beforeMount() {
+		this.cnum.push({k: 'Maitrise Magique', v: this.cp.piege_mm})
 	}
+}
 </script>

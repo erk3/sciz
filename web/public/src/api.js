@@ -10,12 +10,12 @@ const API_URL = '/api'
 // Ensure a cross-browser no-cache for xhr
 /*
 axios.interceptors.request.use(function (config) {
-    config.url += '?t=' + Date.now();
+		config.url += '?t=' + Date.now();
 		return config;
-  }, function (error) {
-    return Promise.reject(error);
-  });
-*/
+	}, function (error) {
+		return Promise.reject(error);
+	});
+	*/
 
 // HOME
 export function authenticate(userData) {
@@ -23,7 +23,7 @@ export function authenticate(userData) {
 }
 
 export function register(userData) {
-  return axios.post(API_URL + '/register', userData);
+	return axios.post(API_URL + '/register', userData);
 }
 
 export function reset(userData) {
@@ -54,7 +54,7 @@ export function getProfil() {
 }
 
 export function saveProfil(userData) {
-  return axios.post(API_URL + '/profil', userData);
+	return axios.post(API_URL + '/profil', userData);
 }
 
 export function deleteProfil() {
@@ -66,7 +66,7 @@ export function getMhCalls(page) {
 }
 
 export function resetPassword(pwdData) {
-  return axios.post(API_URL + '/resetPassword', pwdData);
+	return axios.post(API_URL + '/resetPassword', pwdData);
 }
 
 // COTERIES

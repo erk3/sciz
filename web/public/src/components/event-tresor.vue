@@ -45,7 +45,7 @@
 			<v-row justify="center" align="center" class="fill-height">
 				<v-col class="col-4 text-center">
 					<v-card flat>
-		      			<v-divider></v-divider>
+						<v-divider></v-divider>
 						<v-list v-for="(carac, index) in cnum" dense class="pa-0" :key="index">
 							<v-list-item>
 								<v-list-item-content>{{carac.k}}</v-list-item-content>
@@ -60,31 +60,31 @@
 								</v-list-item-content>
 							</v-list-item>
 						</v-list>
-		    		</v-card>
-				</v-flex>
-			</v-layout>
-		</v-flex>
-	</v-layout>
+					</v-card>
+					</v-flex>
+					</v-layout>
+					</v-flex>
+					</v-layout>
 </template>
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventTresor',
-		props: {
-			te: {
-				type: Object,
-				default: null
-			}
-		},
-		data() {
-			return {
-				cnum: [],
-			}
-		},
-		beforeMount() {
-			// Caractéristiques numériques
-			this.cnum.push({k: 'Type', v: this.te.tresor_type ? this.te.tresor_type : '-'})
+export default {
+	name: 'EventTresor',
+	props: {
+		te: {
+			type: Object,
+			default: null
 		}
+	},
+	data() {
+		return {
+			cnum: [],
+		}
+	},
+	beforeMount() {
+		// Caractéristiques numériques
+		this.cnum.push({k: 'Type', v: this.te.tresor_type ? this.te.tresor_type : '-'})
 	}
+}
 </script>

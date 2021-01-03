@@ -40,13 +40,13 @@
 
 <!-- SCRIPT -->
 <script>
-	export default {
-		name: 'EventChampi',
-		props: {
-			ce: {
-				type: Object,
-				default: null
-			}
+export default {
+	name: 'EventChampi',
+	props: {
+		ce: {
+			type: Object,
+			default: null
 		}
 	}
+}
 </script>
