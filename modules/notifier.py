@@ -13,7 +13,7 @@ class Notifier:
     # Constructor
     def __init__(self):
         self.check_conf()
-    
+
     # Configuration loader and checker
     def check_conf(self):
         # No conf needed yet
@@ -59,7 +59,7 @@ class Notifier:
         return o
 
     # STRINGIFY (Do not change the naming of the 'o' parameter without changing it accordingly in the formats...)
-    def stringify(self, o, json=None, filters=None):
+    def stringify(self, o, json=None, filters=None, stringifyTrollCapa=True):
         notification = ''
         # check we have a format
         if json is None and sg.format is not None:
@@ -117,7 +117,7 @@ class Notifier:
             for key in abreviations:
                 notification = notification.replace(key, abreviations[key])
         # If we are stringifying a Troll, then stringify its capas
-        if isinstance(o, TrollPrivate):
+        if isinstance(o, TrollPrivate) and stringifyTrollCapa:
             for capa in o.troll_privates_capas:
                 notification += '\n' + self.stringify(capa, json, filters)
         # Filter out things

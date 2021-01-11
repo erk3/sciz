@@ -5,6 +5,7 @@
 from classes.event import Event
 from classes.champi import Champi
 from classes.champi_private import ChampiPrivate
+from classes.being_troll_private import TrollPrivate
 from sqlalchemy import event, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -85,3 +86,12 @@ def upsert_champi_private(mapper, connection, target):
         champi_private.fraicheur = target.time
     # Upsert it
     sg.db.upsert(champi_private)
+
+
+@event.listens_for(champiEvent, 'before_insert', propagate=True)
+def play(mapper, connection, target):
+    t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+    if t.pa is None:
+        t.pa = 0
+    t.pa = max(0, t.pa - 1)
+    sg.db.upsert(t)

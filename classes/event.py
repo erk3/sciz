@@ -68,3 +68,4 @@ def upsert_event_owner(mapper, connection, target):
         sg.db.upsert(troll)
     elif target.owner_nom is None:
         target.owner_nom = owner_troll.nom
+

@@ -6,6 +6,7 @@ from classes.event import Event
 from classes.being import Being
 from classes.being_mob import Mob
 from classes.being_mob_private import MobPrivate
+from classes.being_troll_private import TrollPrivate
 from sqlalchemy import event, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -187,3 +188,12 @@ def upsert_mob_private(mapper, connection, target):
     mob_private.last_event_update_by = target.owner_id
     # Upsert it
     sg.db.upsert(mob_private)
+
+
+@event.listens_for(cdmEvent, 'before_insert', propagate=True)
+def play(mapper, connection, target):
+    t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+    if t.pa is None:
+        t.pa = 0
+    t.pa = max(0, t.pa - 1)
+    sg.db.upsert(t)

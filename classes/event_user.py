@@ -31,11 +31,13 @@ class userEvent(Event):
     old_dla = Column(DateTime)
     # Next DLA
     next_dla = Column(DateTime)
-    # Tiredness
-    #fatigue = Column(Integer)
+    # Concentration
+    concentration = Column(Integer)
 
     @hybrid_property
     def str_pdv(self):
+        if self.pdv is None:
+            return None
         pv_max = self.pv_max if self.pv_max is not None else self.pdv
         return str(self.pdv) + '/' + str(pv_max)
 
@@ -51,14 +53,24 @@ class userEvent(Event):
         super().build()
         if 'depassée' in self.type.lower():
             self.type = 'DLA dépassée'
-        if 'report' in self.type.lower():
-            self.type = 'DLA reportée'
-        if 'activation' in self.type.lower():
-            self.type = 'DLA activée'
-        if hasattr(self, 'old_dla') and self.old_dla is not None:
-            self.old_dla = datetime.datetime.strptime(self.old_dla, '%d/%m/%Y  %H:%M:%S')
-        if hasattr(self, 'next_dla') and self.next_dla is not None:
-            self.next_dla = datetime.datetime.strptime(self.next_dla, '%d/%m/%Y  %H:%M:%S')
+        else:
+            if 'report' in self.type.lower():
+                self.type = 'DLA reportée'
+            if 'activation' in self.type.lower():
+                self.type = 'DLA activée'
+            if hasattr(self, 'old_dla') and self.old_dla is not None:
+                self.old_dla = datetime.datetime.strptime(self.old_dla, '%d/%m/%Y  %H:%M:%S')
+            if hasattr(self, 'next_dla') and self.next_dla is not None:
+                self.next_dla = datetime.datetime.strptime(self.next_dla, '%d/%m/%Y  %H:%M:%S')
+            if hasattr(self, 'fatigue') and self.fatigue is not None:
+                if hasattr(self, 'fatigue_bis') and self.fatigue_bis is not None:
+                    self.fatigue = int(self.fatigue) + int(self.fatigue_bis)
+            else:
+                self.fatigue = 0
+            if hasattr(self, 'concentration') and self.concentration is not None:
+                self.concentration = int(self.concentration) * 5
+            else:
+                self.concentration = 0
 
     def icon(self):
         return 'troll-map-icon.svg'
@@ -77,9 +89,12 @@ def upsert_troll_private(mapper, connection, target):
         if troll_private.estimate_dla is not None:
             troll_private.next_dla = troll_private.estimate_dla
     else:
-        #troll_private.fatigue = target.fatigue
+        troll_private.fatigue = target.fatigue
+        # FIXME: several DLA of concentration
+        troll_private.base_concentration = target.concentration
         troll_private.pdv = target.pdv
         troll_private.next_dla = target.next_dla
+        troll_private.nb_att_sub = 0
     troll_private.last_event_update_at = target.time
     troll_private.last_event_update_by = target.owner_id
     # Upsert it

@@ -11,6 +11,7 @@ from classes.tresor import Tresor
 from classes.tresor_private import TresorPrivate
 from classes.event import Event
 from classes.lieu_piege import Piege
+from classes.capa_meta import MetaCapa
 from sqlalchemy import event, and_, Column, Integer, String, Boolean, ForeignKey, ForeignKeyConstraint
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -46,6 +47,8 @@ class battleEvent(Event):
     tresor_nom = Column(String(100))
     # Mushroom id (if one used)
     champi_id = Column(Integer, ForeignKey('champi.id'))
+    # Meta capa id
+    capa_meta_id = Column(Integer, ForeignKey('capa_meta.id'))
     # Event type
     type = Column(String(250))
     # ATT rolled
@@ -188,6 +191,7 @@ class battleEvent(Event):
     lieu = relationship('Lieu', primaryjoin='battleEvent.lieu_id == Lieu.id')
     tresor = relationship('Tresor', primaryjoin='battleEvent.tresor_id == Tresor.id')
     champi = relationship('Champi', primaryjoin='battleEvent.champi_id == Champi.id')
+    capa_meta = relationship('MetaCapa', primaryjoin='battleEvent.capa_meta_id == MetaCapa.id')
 
     # SQL Table Mapping
     __tablename__ = 'event_battle'
@@ -275,7 +279,7 @@ class battleEvent(Event):
         if self.type == 'enfumé':
             self.type = 'Enfumage'
         # Fix interposition
-        if 'Interposer' in self.type:
+        if 'interposer' in self.type.lower():
             self.type = 'Interposition'
         # Fix attraction from monsters
         if self.type == 'a attiré' or self.type == 'assomme':
@@ -285,6 +289,8 @@ class battleEvent(Event):
             self.capa_tour = 1
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
+            if hasattr(self, 'comp_niv') and self.comp_niv is not None:
+                self.type += ' (' + self.comp_niv + ')'
             if hasattr(self, 'flag_insulte_nok') and self.flag_insulte_nok is not None:
                 self.type += ' inefficace'
             elif hasattr(self, 'flag_insulte_meh') and self.flag_insulte_meh is not None:
@@ -545,9 +551,17 @@ def play(mapper, connection, target):
         dm = sg.db.session.query(MobPrivate).get((target.def_id, target.owner_id))
         dm.owner_id = target.owner_id
         sg.db.upsert(dm)
+    # Link metacapa
+    capa = MetaCapa.find_by_name(target.type)
+    if capa is not None:
+        target.capa_meta_id = capa.id
     # Attacker is a troll
     if target.att_id is not None and not Being.is_mob(target.att_id):
         at = sg.db.session.query(TrollPrivate).get((target.att_id, target.owner_id))
+        if at.pa is None:
+            at.pa = 0
+        if capa is not None:
+            at.pa = max(0, at.pa - capa.pa)
         if target.blessure is not None and at.pdv is not None and int(target.blessure) > 0:
             at.pdv = max(0, at.pdv - int(target.blessure))
         if target.soin is not None and 'sacrifice' not in t and at.pdv is not None and int(target.soin) > 0:
@@ -619,3 +633,5 @@ def link_follower(mapper, connection, target):
             if follower is not None:
                 follower.owner_id = target.owner_id
                 sg.db.upsert(follower)
+
+

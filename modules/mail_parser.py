@@ -209,7 +209,7 @@ class MailParser:
                 obj.owner_id = user.id
             # If we did not find a time for the mail (no MH header in the mail body?), we fix it using the 'Date' mail header
             if not hasattr(obj, 'time') or obj.time is None:
-                obj.time = email.utils.parsedate_to_datetime(headers['Date'])
+                obj.time = email.utils.parsedate_to_datetime(headers['Date']).replace(tzinfo=None)
             # If the user has a personal mail, check the 'from' header for it
             if not isinstance(obj, MailHelper) and user.user_mail is not None and user.user_mail != '' and not any('bot@mountyhall.com' in f for f in froms):
                 if not any(user.user_mail in f for f in froms):

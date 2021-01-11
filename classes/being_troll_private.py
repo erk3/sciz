@@ -228,6 +228,17 @@ class TrollPrivate(sg.sqlalchemybase):
         return None
 
     @hybrid_property
+    def concentration(self):
+        concentration = 0
+        if self.base_concentration is not None:
+            concentration += self.base_concentration
+        if self.bonus_concentration_phy is not None:
+            concentration += self.bonus_concentration_phy
+        if self.bonus_concentration_mag is not None:
+            concentration += self.bonus_concentration_mag
+        return concentration
+
+    @hybrid_property
     def str_fatigue(self):
         if self.fatigue is not None:
             res = None

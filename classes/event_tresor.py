@@ -6,6 +6,7 @@ from classes.event import Event
 from classes.tresor import Tresor
 from classes.tresor_meta import MetaTresor
 from classes.tresor_private import TresorPrivate
+from classes.being_troll_private import TrollPrivate
 from sqlalchemy import event, func, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -119,3 +120,12 @@ def upsert_tresor_private(mapper, connection, target):
     tresor_private.last_event_update_by = target.owner_id
     # Upsert it
     sg.db.upsert(tresor_private)
+
+
+@event.listens_for(tresorEvent, 'before_insert', propagate=True)
+def play(mapper, connection, target):
+    t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+    if t.pa is None:
+        t.pa = 0
+    t.pa = max(0, t.pa - 1)
+    sg.db.upsert(t)

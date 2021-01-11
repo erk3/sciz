@@ -1135,7 +1135,7 @@ TrollPrivateCapa:
 userEvent:
   Notification: '{Horodatage} {Type d''événement} pour {Troll} {Identifiant du Troll} {Nouvelle DLA} {Caractéristiques}'
   Attributs construits:
-    Caractéristiques: '({PA} {Points de vie})'
+    Caractéristiques: '({PA} {Points de vie} {Fatigue} {Concentration})'
   Attributs:
     Type d'événement:
       Préfixe: ''
@@ -1154,7 +1154,14 @@ userEvent:
       Préfixe: ''
       Attribut: '{o.str_pdv}'
       Suffixe: ' PV'
-
+    Fatigue:
+      Préfixe: 'fatigue '
+      Attribut: '{o.fatigue}'
+      Suffixe: ''
+    Concentration:
+      Préfixe: 'concentration +'
+      Attribut: '{o.concentration}'
+      Suffixe: '%'
 
 followerEvent:
   Notification: '{Horodatage} {Type d''événement} de {Suivant} appartenant à {Propriétaire} {Position}'

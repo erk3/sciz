@@ -113,3 +113,12 @@ def upsert_troll_private(mapper, connection, target):
     troll_private.last_event_update_by = target.troll_id
     # Upsert it
     sg.db.upsert(troll_private)
+
+
+@event.listens_for(aaEvent, 'before_insert', propagate=True)
+def play(mapper, connection, target):
+    t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+    if t.pa is None:
+        t.pa = 0
+    t.pa = max(0, t.pa - 1)
+    sg.db.upsert(t)

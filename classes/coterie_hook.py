@@ -127,6 +127,7 @@ class Hook(sg.sqlalchemybase):
         users_id = self.coterie.members_list_sharing(None, True, True)
         # Find the trolls
         trolls = []
+        filters = ['statut', 'action', 'resistance', 'maitrise', 'corpulence', 'agilite', 'armure', 'vue', 'regeneration', 'degats', 'attaque', 'esquive', 'reflexe']
         for _id in trolls_id:
             if int(_id) in users_id:
                 try:
@@ -137,10 +138,13 @@ class Hook(sg.sqlalchemybase):
                     for t in troll:
                         trolls.append({
                             'id': t.troll_id,
-                            'pa': t.pa,
                             'pdv': t.pdv,
                             'pdv_max': t.pdv_max,
-                            'fatigue': t.fatigue,
+                            'dla': t.next_dla.strftime('%d/%m %H:%M:%S') if t.next_dla else None,
+                            'fatigue': t.str_fatigue,
+                            'pa': t.pa,
+                            'concentration': t.concentration,
+                            'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
                         });
                 except NoResultFound:
                     pass

@@ -103,3 +103,10 @@ def upsert_troll_private(mapper, connection, target):
     # troll_private.last_event_update_id = target.id # FIXME : as it is an autoincrement this is not set already...
     # Upsert it
     sg.db.upsert(troll_private)
+
+
+@event.listens_for(tpEvent, 'before_insert', propagate=True)
+def play(mapper, connection, target):
+    t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
+    t.pa = 0
+    sg.db.upsert(t)
