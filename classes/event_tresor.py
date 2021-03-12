@@ -103,8 +103,10 @@ class tresorEvent(Event):
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(tresorEvent, 'before_insert')
 def upsert_targeted_tresor(mapper, connection, target):
-    tresor = Tresor(id=target.tresor_id, type=target.tresor_type)
-    sg.db.upsert(tresor)
+    tresor = sg.db.session.query(Tresor).get(target.tresor_id)
+    if tresor is None:
+        tresor = Tresor(id=target.tresor_id, type=target.tresor_type)
+        sg.db.upsert(tresor)
 
 
 @event.listens_for(tresorEvent, 'after_insert')

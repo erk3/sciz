@@ -40,7 +40,7 @@
 			</v-card>
 		</v-dialog>
 		<!-- SIDEBAR -->
-		<v-navigation-drawer app clipped fixed>
+		<v-navigation-drawer app clipped fixed permanent>
 			<v-app-bar flat class="pa-0 ma-0">
 				<span>Mes coteries</span>
 			</v-app-bar>

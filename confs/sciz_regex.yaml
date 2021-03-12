@@ -15,6 +15,7 @@ ignored_subjects:
   don_px: 'Don de \d+PX'
   don_gg: 'Don de GG'
   achat: 'Achat de Trésor'
+  gowap_taniere: 'est arrivé pour s''ébrouer sur la tanière'
 
 # Known mail subjects to parse (first to match)
 # Keys must be 'CLASS_routine' formatted
@@ -162,11 +163,11 @@ champiEvent:
 
 # Regexps for tresorEvent
 tresorEvent:
-  re_idt: '(le résultat suivant\s+:(\s+(?P<tresor_id>\d+)\s+\-)?\s+(?P<nom>.+?)(\s*(?P<mithril>en\sMithril))?\s*(\(|\[)(?P<effet>.*?)(\)|\]))(?s)'
+  re_idt: '(le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>.+?)(\s*(?P<mithril>en\sMithril))?\s*(\(|\[)(?P<effet>.*?)(\)|\]))(?s)'
   re_idt_type: 'identifié ce trésor\s+:\s+(?P<tresor_type>.+?)\s+\((?P<tresor_id>\d+)\)(?s)'
   re_idt_maudite: '(En identifiant ce parchemin tu viens de subir une (?P<nom>Malédiction))(?s)'
   re_idt_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
-  re_telek: '(avez (déplacé|ramassé)\s+:\s+(?P<tresor_type>.+?)\s+\((?P<tresor_id>\d+)\))(?s)'
+  re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>.+)'
   re_telek_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+et\s+Y\s*=\s*(?P<pos_y>\-?\d+)'
 
 # Regexps for every other events (kind of battle related)
@@ -232,7 +233,7 @@ battleEvent:
   re_pistage_zone: 'se\s+trouve\s+(?P<flag_pistage_zone>Sur votre Zone)'
   re_marquage: '(est\s+marqué\s+avec\s+''(?P<tag>.+)'')(?s)'
   re_machouillage: 'Le\s+trésor\s+\[(?P<tresor_id>\d+)]\s+(?P<tresor_nom>.+?)\s+a\s+été\s+en\s+partie\s+(?P<type>mangé)(?s)'
-  re_ea: '(?P<capa_desc>évènement aléatoire).*?ACTION\s*:\s+(?P<capa_effet>.+?)\s+\(Rare(?s)'
+  re_ea: '(?P<capa_desc>évènement aléatoire).*?(ACTION|action)\s*:\s+(?P<capa_effet>.+?)\s*\((R|r)areté(?s)'
   re_prog: 'a été (?P<prog>programmée?) avec succès'
   re_camou: 'Votre\s+(?P<flag_camou>(c|C)amouflage\s+(est\s+toujours\s+effectif|a\s+été\s+(annulé|ANNULÉ)))(?s)'
   re_pouvoir: 'Le\s+monstre.+?a\s+utilisé\s+sa\s+capacité\s+spéciale\s*:\s*(?P<type>.+)'

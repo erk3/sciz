@@ -2,7 +2,7 @@
 <template>
 	<v-container justify="center" align="center" class="fill-height pa-0 ma-0" id="share-view">
 		<!-- SIDEBAR -->
-		<v-navigation-drawer app clipped fixed>
+		<v-navigation-drawer app clipped fixed permanent>
 			<v-app-bar flat class="pa-0 ma-0">
 				<span>Mes calepins</span>
 			</v-app-bar>

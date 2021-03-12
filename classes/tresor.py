@@ -16,7 +16,7 @@ class Tresor(sg.sqlalchemybase):
     # Unique identifier
     id = Column(Integer, primary_key=True)
     # Type
-    type = Column(String(50))
+    type = Column(String(150))
     # Destroyed ?
     destroyed = Column(Boolean, default=False)
 

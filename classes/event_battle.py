@@ -279,7 +279,7 @@ class battleEvent(Event):
         if self.type == 'enfumé':
             self.type = 'Enfumage'
         # Fix interposition
-        if 'interposer' in self.type.lower():
+        if self.type is not None and 'interposer' in self.type.lower():
             self.type = 'Interposition'
         # Fix attraction from monsters
         if self.type == 'a attiré' or self.type == 'assomme':

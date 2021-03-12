@@ -27,7 +27,7 @@
 			</template>
 		</v-snackbar>
 		<!-- SIDEBAR -->
-		<v-navigation-drawer app clipped fixed>
+		<v-navigation-drawer app clipped fixed permanent>
 			<v-app-bar flat class="pa-0 ma-0">
 				<v-row align="center" justify="start" class="fill-height" no-gutters>
 					<v-col class="col-10"> Mes coteries </v-col>
@@ -300,7 +300,7 @@
 		<!-- HOOK DIALOG -->
 		<v-dialog v-if="selectedHook" v-model="hook_dialog">
 			<Format :h="selectedHook" :c="coterie_courante"></Format>
-		</v-dialog>-->
+		</v-dialog>
 	</v-container>
 </template>
 
