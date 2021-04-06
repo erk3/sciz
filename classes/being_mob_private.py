@@ -87,7 +87,7 @@ class MobPrivate(sg.sqlalchemybase):
     # VLC ?
     vlc = Column(Boolean)
     # Thief ?
-    voleur = Column(Boolean)
+    vole = Column(Boolean)
     # Ranged attack ?
     att_dist = Column(Boolean)
     # Magick attack ?
@@ -184,7 +184,7 @@ class MobPrivate(sg.sqlalchemybase):
                                            ['owner_id', 'blessure', 'capa_desc', 'capa_effet', 'capa_tour',
                                             'capa_portee',
                                             'nb_att_tour', 'vit_dep', 'vlc',
-                                            'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
+                                            'vole', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
                                             'bonus_malus', 'pos_x', 'pos_y', 'pos_n', 'last_seen_at',
                                             'last_event_at'], False)
                         for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm',

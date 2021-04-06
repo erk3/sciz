@@ -114,5 +114,5 @@ def play(mapper, connection, target):
     t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
     if t.pa is None:
         t.pa = 0
-    t.pa = max(0, t.pa - 4)
+    t.pa = max(0, int(t.pa) - 4)
     sg.db.upsert(t)

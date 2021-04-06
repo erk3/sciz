@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from classes.user import User
@@ -23,7 +23,7 @@ from modules.mh_caller import MhCaller
 from functools import wraps
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_claims, get_jwt_identity
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt, get_jwt_identity
 from flask_jwt_extended.view_decorators import _decode_jwt_from_request
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from sqlalchemy import func, or_, and_, asc, desc
@@ -37,7 +37,7 @@ if webapp.debug or webapp.testing or webapp.env != 'production':
     cors = CORS(webapp, resources={r"/api/*": {"origins": "*"}})
 jwt = JWTManager()
 
-# WEBAPP CONFIG
+# WEBAPP CONFIG
 @webapp.before_first_request
 def configure():
     # SCIZ startup
@@ -59,6 +59,7 @@ def configure():
     webapp.config['JWT_TOKEN_LOCATION'] = 'headers'
     webapp.config['JWT_HEADER_NAME'] = 'Authorization'
     webapp.config['JWT_HEADER_TYPE'] = ''
+    webapp.config['JWT_IDENTITY_CLAIM'] = 'identity'
     webapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     jwt.init_app(webapp)
 
@@ -77,48 +78,54 @@ def close_global_session(response):
     sg.db.session.close()
     return response
 
-# JWT CONFIG
+# JWT CONFIG
 @jwt.user_identity_loader
 def user_identity_lookup(user):
     return user.id
 
-@jwt.user_claims_loader
+@jwt.additional_claims_loader
 def add_claims_to_access_token(identity):
     now = datetime.datetime.now()
     if isinstance(identity, User):
         return {
             'hook_type': 'USER',
-            'id': identity.id,
+            'sub': identity.id,
             'iat': now,
             'exp': now + datetime.timedelta(minutes=identity.web_session_duration),
             'dom': sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_DOMAIN],
             'sec': sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_TLS]
         }
     elif isinstance(identity, Hook):
-        return {'hook_type': 'HOOK', 'id': identity.id, 'type': identity.type}
+        return {'hook_type': 'HOOK', 'sub': identity.id, 'type': identity.type}
     else:
-        return { 'id': identity.id }
+        return { 'sub': identity.id }
 
 def user_jwt_check(view_function):
     @wraps(view_function)
+    @jwt_required()
     def wrapper(*args, **kwargs):
-        jwt_data = _decode_jwt_from_request(request_type='access')[0]
-        authorized = jwt_data['user_claims']['hook_type'] == 'USER'
+        jwt_data = _decode_jwt_from_request(locations='headers', fresh=False)[0]
+        authorized = jwt_data['hook_type'] == 'USER'
         if not authorized: raise NoAuthorizationError('Non autorisé')
         return view_function(*args, **kwargs)
-    return jwt_required(wrapper)
+    return wrapper
 
 def hook_jwt_check(view_function):
     @wraps(view_function)
+    @jwt_required()
     def wrapper(*args, **kwargs):
-        jwt_data = _decode_jwt_from_request(request_type='access')[0]
-        authorized = jwt_data['user_claims']['hook_type'] == 'HOOK'
+        jwt_data = _decode_jwt_from_request(locations='headers', fresh=False)[0]
+        try:
+            authorized = jwt_data['hook_type'] == 'HOOK'
+        except:
+            # Backward compatibility with OLD SCIZ version
+            authorized = jwt_data['user_claims']['hook_type'] == 'HOOK'
         if not authorized:
             raise NoAuthorizationError('Non autorisé')
         if sg.db.session.query(Hook).filter(Hook.jwt==request.headers['Authorization']).count() < 1:
             raise NoAuthorizationError('Hook révoqué')
         return view_function(*args, **kwargs)
-    return jwt_required(wrapper)
+    return wrapper
 
 # ROUTES DEFINITION
 
@@ -143,7 +150,7 @@ def login_register():
     return res, 200
 
 # MOBS
-@webapp.route('/api/mobs', methods=('GET',))
+@webapp.route('/api/mobs', endpoint='get_mobs_list', methods=('GET',))
 @user_jwt_check
 def get_mobs_list():
     cdms = sg.db.session.query(cdmEvent).outerjoin(User, cdmEvent.owner_id == User.id).filter(User.community_sharing == True).distinct(cdmEvent.mob_nom, cdmEvent.mob_age).group_by(Event.id, cdmEvent.id, cdmEvent.mob_nom, cdmEvent.mob_age).all()
@@ -153,14 +160,14 @@ def get_mobs_list():
     res = jsonify(l)
     return res, 200
 
-@webapp.route('/api/nbCDM', methods=('GET',))
+@webapp.route('/api/nbCDM', endpoint='get_nb_cdm', methods=('GET',))
 @user_jwt_check
 def get_nb_cdm():
     res = jsonify(sg.db.session.query(cdmEvent).outerjoin(User, cdmEvent.owner_id == User.id).filter(User.community_sharing == True).count())
     return res, 200
 
 # USER PROFIL
-@webapp.route('/api/users/<int:id>', methods=('GET',))
+@webapp.route('/api/users/<int:id>', endpoint='get_users_list', methods=('GET',))
 @user_jwt_check
 def get_users_list(id):
     coterie = sg.db.session.query(Coterie).get(id)
@@ -172,7 +179,7 @@ def get_users_list(id):
     res = jsonify(l)
     return res, 200
 
-@webapp.route('/api/profil', methods=('GET',))
+@webapp.route('/api/profil', endpoint='get_profil', methods=('GET',))
 @user_jwt_check
 def get_profil():
     user = sg.db.session.query(User).get(get_jwt_identity())
@@ -183,7 +190,7 @@ def get_profil():
                   count_sp_sta=user.nb_calls_today('Statique'))
     return res, 200
 
-@webapp.route('/api/profil', methods=('POST',))
+@webapp.route('/api/profil', endpoint='set_profil', methods=('POST',))
 @user_jwt_check
 def set_profil():
     data = request.get_json()
@@ -193,7 +200,7 @@ def set_profil():
         return jsonify(message='Une erreur est survenue...'), 400
     return jsonify(message='Profil sauvegardé !'), 200
 
-@webapp.route('/api/profil', methods=('DELETE',))
+@webapp.route('/api/profil', endpoint='delete_profil', methods=('DELETE',))
 @user_jwt_check
 def delete_profil():
     user = sg.db.session.query(User).get(get_jwt_identity())
@@ -209,14 +216,14 @@ def delete_profil():
     sg.db.delete(user)
     return jsonify(message='Profil supprimé !'), 200
 
-@webapp.route('/api/calls/<int:page>', methods=('GET',))
+@webapp.route('/api/calls/<int:page>', endpoint='get_mh_calls', methods=('GET',))
 @user_jwt_check
 def get_mh_calls(page):
     total_calls = sg.db.session.query(MhCall).filter(MhCall.user_id == get_jwt_identity()).count()
     calls = sg.db.session.query(MhCall).filter(MhCall.user_id == get_jwt_identity()).order_by(MhCall.time.desc()).offset(min(total_calls, 10 * (page - 1))).limit(10).all()
     return jsonify(total=total_calls, calls=[sg.row2dict(c) for c in calls]), 200
 
-@webapp.route('/api/resetPassword', methods=('POST',))
+@webapp.route('/api/resetPassword', endpoint='reset_password', methods=('POST',))
 @user_jwt_check
 def reset_password():
     data = request.get_json()
@@ -227,8 +234,8 @@ def reset_password():
     return jsonify(message='Mot de passe modifié !'), 200
 
 # GROUPS
-@webapp.route('/api/groups/<path:path>', methods=('GET',))
-@webapp.route('/api/groups', defaults={'path': ''}, methods=('GET',))
+@webapp.route('/api/groups/<path:path>', endpoint='get_coteries', methods=('GET',))
+@webapp.route('/api/groups', endpoint='get_coteries', defaults={'path': ''}, methods=('GET',))
 @user_jwt_check
 def get_coteries(path):
     user = sg.db.session.query(User).get(get_jwt_identity())
@@ -253,8 +260,8 @@ def get_coteries(path):
     # Result
     return jsonify(coterie_perso=coterie_perso, coteries=coteries, invitations=invitations), 200
 
-@webapp.route('/api/group/<int:id>/webpad', methods=('GET',))
-@webapp.route('/api/group/<int:id>', methods=('GET',))
+@webapp.route('/api/group/<int:id>/webpad', endpoint='get_coterie', methods=('GET',))
+@webapp.route('/api/group/<int:id>', endpoint='get_coterie', methods=('GET',))
 @user_jwt_check
 def get_coterie(id):
     coterie = sg.db.session.query(Coterie).get(id)
@@ -269,7 +276,7 @@ def get_coterie(id):
         return jsonify(coterie=c, hooks=sg.row2dict(coterie.hooks)), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/group/<int:id>', methods=('POST',))
+@webapp.route('/api/group/<int:id>', endpoint='set_coterie', methods=('POST',))
 @user_jwt_check
 def set_coterie(id):
     data = request.get_json()
@@ -277,7 +284,7 @@ def set_coterie(id):
     coterie.update(get_jwt_identity(), **data) # Admin check is done in routine
     return jsonify(message='Coterie mise à jour'), 200
 
-@webapp.route('/api/group/<int:id>', methods=('DELETE',))
+@webapp.route('/api/group/<int:id>', endpoint='delete_coterie', methods=('DELETE',))
 @user_jwt_check
 def delete_coterie(id):
     coterie = sg.db.session.query(Coterie).get(id)
@@ -286,7 +293,7 @@ def delete_coterie(id):
         return jsonify(message='Coterie supprimée !'), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/share/invite/<int:id>', methods=('DELETE', 'POST'))
+@webapp.route('/api/share/invite/<int:id>', endpoint='accept_or_refuse_invite', methods=('DELETE', 'POST'))
 @user_jwt_check
 def accept_or_refuse_invite(id):
     data = request.get_json()
@@ -308,14 +315,14 @@ def accept_or_refuse_invite(id):
         return jsonify(message=message), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/group/create', methods=('POST',))
+@webapp.route('/api/group/create', endpoint='create_coterie', methods=('POST',))
 @user_jwt_check
 def create_coterie():
     data = request.get_json()
     Coterie.create(get_jwt_identity(), data['nom'], data['blason_uri'], data['desc'])
     return jsonify(message='Coterie créée'), 200
 
-@webapp.route('/api/shares/<int:id>', methods=('GET',))
+@webapp.route('/api/shares/<int:id>', endpoint='get_partages', methods=('GET',))
 @user_jwt_check
 def get_partages(id):
     coterie = sg.db.session.query(Coterie).get(id)
@@ -325,7 +332,7 @@ def get_partages(id):
                        pending=[{'partage': sg.row2dict(p), 'nom': p.user.pseudo, 'blason_uri': p.user.blason_uri} for p in coterie.partages_invitations]), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/shares/<int:id>', methods=('DELETE',))
+@webapp.route('/api/shares/<int:id>', endpoint='delete_partage', methods=('DELETE',))
 @user_jwt_check
 def delete_partage(id):
     coterie = sg.db.session.query(Coterie).get(id)
@@ -338,8 +345,8 @@ def delete_partage(id):
     return jsonify(message='Partage non supprimé'), 400
 
 # EVENTS
-@webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>', methods=('GET',))
-@webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>/revert', methods=('GET',))
+@webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>', endpoint='get_user_events', methods=('GET',))
+@webapp.route('/api/events/<int:coterie_id>/<int:limit>/<int:offset>/<int:last_time>/revert', endpoint='get_user_events', methods=('GET',))
 @user_jwt_check
 def get_user_events(coterie_id, limit, offset, last_time):
     coterie = sg.db.session.query(Coterie).get(coterie_id)
@@ -347,7 +354,7 @@ def get_user_events(coterie_id, limit, offset, last_time):
         return jsonify(events=coterie.get_events(min(limit, 100), offset, abs(last_time), 'revert' in request.url_rule.rule)), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/events/<int:event_id>', methods=('DELETE',))
+@webapp.route('/api/events/<int:event_id>', endpoint='delete_user_event', methods=('DELETE',))
 @user_jwt_check
 def delete_user_event(event_id):
     event = sg.db.new_session().query(Event).get(event_id)
@@ -363,7 +370,7 @@ def delete_user_event(event_id):
     return jsonify(message='Autorisation requise'), 401
 
 # HOOKS
-@webapp.route('/api/hook/renew/<int:id>', methods=('POST',))
+@webapp.route('/api/hook/renew/<int:id>', endpoint='renew', methods=('POST',))
 @user_jwt_check
 def renew(id):
     hook = sg.db.session.query(Hook).get(id)
@@ -373,7 +380,7 @@ def renew(id):
         return jsonify(message='Hook renouvelé'), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/request', methods=('POST',))
+@webapp.route('/api/hook/request', endpoint='make_hook_request', methods=('POST',))
 @hook_jwt_check
 def make_hook_request():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
@@ -385,7 +392,7 @@ def make_hook_request():
         return jsonify(message=res), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/user/request', methods=('POST',))
+@webapp.route('/api/user/request', endpoint='make_user_request', methods=('POST',))
 @user_jwt_check
 def make_user_request():
     user = sg.db.session.query(User).get(get_jwt_identity())
@@ -395,7 +402,7 @@ def make_user_request():
     res = sg.req.request(user, data.get('req'))
     return jsonify(message=res), 200
 
-@webapp.route('/api/hook/events', methods=('GET',))
+@webapp.route('/api/hook/events', endpoint='get_hook_events', methods=('GET',))
 @hook_jwt_check
 def get_hook_events():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
@@ -403,8 +410,8 @@ def get_hook_events():
         return jsonify(events=hook.trigger()), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>/<string:event_type>', methods=('GET',))
-@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>', methods=('GET',))
+@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>/<string:event_type>', endpoint='get_hook_events_for', methods=('GET',))
+@webapp.route('/api/hook/events/<int:being_id>/<int:start_time>/<int:end_time>', endpoint='get_hook_events_for', methods=('GET',))
 @hook_jwt_check
 def get_hook_events_for(being_id, start_time, end_time, event_type = None):
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
@@ -412,7 +419,7 @@ def get_hook_events_for(being_id, start_time, end_time, event_type = None):
         return jsonify(events=hook.get_events_for(being_id, start_time, end_time, event_type)), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/treasures', methods=('POST',))
+@webapp.route('/api/hook/treasures', endpoint='get_hook_treasures_for', methods=('POST',))
 @hook_jwt_check
 def get_hook_treasures_for():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
@@ -423,7 +430,7 @@ def get_hook_treasures_for():
         return jsonify(treasures=hook.get_treasures_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/trolls', methods=('POST',))
+@webapp.route('/api/hook/trolls', endpoint='get_hook_trolls_for', methods=('POST',))
 @hook_jwt_check
 def get_hook_trolls_for():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
@@ -445,7 +452,7 @@ def get_hook_trolls_for():
 #        return jsonify(treasures=hook.get_mushrooms_for(data.get('ids'))), 200
 #    return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/format/<int:hook_id>', methods=('GET',))
+@webapp.route('/api/hook/format/<int:hook_id>', endpoint='get_hook_format', methods=('GET',))
 @user_jwt_check
 def get_hook_format(hook_id):
     hook = sg.db.session.query(Hook).get(hook_id)
@@ -454,7 +461,7 @@ def get_hook_format(hook_id):
         return jsonify(format=json.dumps(format)), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/format/<int:hook_id>', methods=('POST',))
+@webapp.route('/api/hook/format/<int:hook_id>', endpoint='set_hook_format', methods=('POST',))
 @user_jwt_check
 def set_hook_format(hook_id):
     hook = sg.db.session.query(Hook).get(hook_id)
@@ -466,7 +473,7 @@ def set_hook_format(hook_id):
         return jsonify(message='Format sauvegardé !'), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/format/<int:hook_id>', methods=('DELETE',))
+@webapp.route('/api/hook/format/<int:hook_id>', endpoint='reset_hook_format', methods=('DELETE',))
 @user_jwt_check
 def reset_hook_format(hook_id):
     hook = sg.db.session.query(Hook).get(hook_id)
@@ -477,7 +484,7 @@ def reset_hook_format(hook_id):
     return jsonify(message='Autorisation requise'), 401
 
 # MH CALL
-@webapp.route('/api/mh_sp_call/<string:script>', methods=('POST',))
+@webapp.route('/api/mh_sp_call/<string:script>', endpoint='mh_sp_call', methods=('POST',))
 @user_jwt_check
 def mh_sp_call(script):
     # Sanity check

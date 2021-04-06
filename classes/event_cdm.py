@@ -93,8 +93,8 @@ class cdmEvent(Event):
     vit_dep = Column(String(10))
     # VLC ?
     vlc = Column(Boolean)
-    # Thief ?
-    voleur = Column(Boolean)
+    # Flying ?
+    vole = Column(Boolean)
     # Ranged attack ?
     att_dist = Column(Boolean)
     # Magick attack ?
@@ -152,7 +152,7 @@ class cdmEvent(Event):
         if hasattr(self, 'tour_eq'): attrs.append('tour')
         # cdmEvent Niv 5
         if hasattr(self, 'arm_mag_eq'): attrs.append('arm_mag')
-        self.voleur = sg.parseFrenchBoolean(self.voleur)
+        self.vole = sg.parseFrenchBoolean(self.vole)
         self.att_mag = sg.parseFrenchBoolean(self.att_mag)
         # Actual builds
         for attr in attrs:
@@ -178,7 +178,7 @@ def upsert_mob_private(mapper, connection, target):
     # Update it from the cdmEvent
     sg.copy_properties(target, mob_private,
                        ['blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour', 'vit_dep', 'vlc',
-                        'voleur', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus'], False)
+                        'vole', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus'], False)
     for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm', 'rm', 'tour']:
         attr_min = attr + '_min'
         attr_max = attr + '_max'
@@ -195,5 +195,5 @@ def play(mapper, connection, target):
     t = sg.db.session.query(TrollPrivate).get((target.owner_id, target.owner_id))
     if t.pa is None:
         t.pa = 0
-    t.pa = max(0, t.pa - 1)
+    t.pa = max(0, int(t.pa) - 1)
     sg.db.upsert(t)

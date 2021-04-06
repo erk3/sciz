@@ -123,9 +123,9 @@ class battleEvent(Event):
     @hybrid_property
     def esquive_parfaite(self):
         if all(attr is not None for attr in [self.att, self.esq]):
-            return int(self.esq) >= int(self.att) * 2
+            return int(self.esq) > int(self.att) * 2
         elif all(attr is not None for attr in [self.destab, self.stab]):
-            return int(self.stab) >= int(self.destab) * 2
+            return int(self.stab) > int(self.destab) * 2
         return False
 
     @hybrid_property
@@ -204,8 +204,8 @@ class battleEvent(Event):
     def build(self):
         super().build()
         # Fix att/def_being
-        fix_id = self.suivant_id if hasattr(self, 'suivant_id') else self.owner_id
-        fix_nom = self.suivant_nom if hasattr(self, 'suivant_nom') else self.owner_nom
+        fix_id = self.follower_id if hasattr(self, 'follower_id') else self.owner_id
+        fix_nom = self.follower_nom if hasattr(self, 'follower_nom') else self.owner_nom
         if self.att_id is None and self.def_id is None:
             if hasattr(self, 'flag_def') and self.flag_def is not None:
                 self.def_id, self.def_nom = fix_id, fix_nom
@@ -285,7 +285,7 @@ class battleEvent(Event):
         if self.type == 'a attiré' or self.type == 'assomme':
             self.type = 'Attraction assommante'
         # Fix GDS
-        if 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
+        if self.type is not None and 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
             self.capa_tour = 1
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
@@ -561,16 +561,16 @@ def play(mapper, connection, target):
         if at.pa is None:
             at.pa = 0
         if capa is not None:
-            at.pa = max(0, at.pa - capa.pa)
+            at.pa = max(0, int(at.pa) - int(capa.pa))
         if target.blessure is not None and at.pdv is not None and int(target.blessure) > 0:
-            at.pdv = max(0, at.pdv - int(target.blessure))
+            at.pdv = max(0, int(at.pdv) - int(target.blessure))
         if target.soin is not None and 'sacrifice' not in t and at.pdv is not None and int(target.soin) > 0:
-            at.pdv += int(target.soin)
+            at.pdv = int(at.pdv) + int(target.soin)
         if target.vie is not None and int(target.vie) > 0 and (target.blessure is not None or target.def_id is None or Being.is_mob(target.def_id)):
             at.pdv = int(target.vie)
         if target.fatigue is not None and int(target.fatigue) > 0:
             fatigue = at.fatigue if at.fatigue is not None else 0
-            at.fatigue = min(127, fatigue + int(target.fatigue))
+            at.fatigue = min(127, int(fatigue) + int(target.fatigue))
         if target.mm is not None and int(target.mm) > 0:
             at.base_mm_min = (at.base_mm_min if at.base_mm_min is not None else 0) + int(target.mm)
             at.base_mm_max = (at.base_mm_max if at.base_mm_max is not None else 0) + int(target.mm)
@@ -604,7 +604,7 @@ def play(mapper, connection, target):
         if target.soin is not None and dt.pdv is not None and 'sacrifice' not in t and int(target.soin) > 0:
             dt.pdv = dt.pdv + int(target.soin)
         if target.pdv is not None and dt.pdv is not None and int(target.pdv) > 0:
-            dt.pdv = max(0, dt.pdv - int(target.pdv))
+            dt.pdv = max(0, int(dt.pdv) - int(target.pdv))
             dt.nb_att_sub = (dt.nb_att_sub if dt.nb_att_sub is not None else 0) + 1
             dt.course = False
         if target.vie is not None and int(target.vie) > 0 and (target.blessure is None or target.att_id is None or Being.is_mob(target.att_id)):

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from classes.being import Being
@@ -56,12 +56,12 @@ class SqlHelper:
     # Init the DB (create the tables)
     def init(self):
         sg.sqlalchemybase.metadata.create_all(self.engine)
-        sg.db.engine.execute('CREATE EXTENSION unaccent;')
+        sg.db.engine.execute('CREATE EXTENSION IF NOT EXISTS unaccent;')
 
     # Connect to the DB (create it if missing)
     def connect(self):
         db_url = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name)
-        self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_size=25, max_overflow=10, use_batch_mode=True)
+        self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_size=25, max_overflow=10, executemany_mode='batch')
         if self.db_name is not None and not database_exists(self.engine.url):
             create_database(self.engine.url)
         # Create the session for main querying

@@ -362,7 +362,7 @@ class Requester:
         list_of_cdm_by_mob_id = {}
         for p in res:
             sg.copy_properties(p, pm, ['capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour', 'vit_dep',
-                                       'vlc', 'voleur', 'att_dist', 'att_mag'], False)
+                                       'vlc', 'vole', 'att_dist', 'att_mag'], False)
             if p.mob_id in list_of_cdm_by_mob_id:
                 list_of_cdm_by_mob_id[p.mob_id] = list_of_cdm_by_mob_id[p.mob_id] + [p]
             else:
