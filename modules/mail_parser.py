@@ -11,6 +11,7 @@ from classes.event_cp import cpEvent
 from classes.event_champi import champiEvent
 from classes.event_tresor import tresorEvent
 from classes.event_battle import battleEvent
+from classes.being import Being
 from modules.mail_helper import MailHelper
 import re, email, html.parser
 import modules.globals as sg
@@ -205,7 +206,10 @@ class MailParser:
             obj.mail_subject = subject
             obj.mail_body = body
             # If we did not find the owner of the mail we fix it (followers mail)
-            if hasattr(obj, 'owner_id') and obj.owner_id is None:
+            if hasattr(obj, 'owner_id') and obj.owner_id is not None and Being.is_mob(obj.owner_id):
+                obj.follower_id = obj.owner_id
+                obj.owner_id = user.id
+            elif hasattr(obj, 'owner_id') and obj.owner_id is None:
                 obj.owner_id = user.id
             # If we did not find a time for the mail (no MH header in the mail body?), we fix it using the 'Date' mail header
             if not hasattr(obj, 'time') or obj.time is None:

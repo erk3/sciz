@@ -241,7 +241,7 @@ class Hook(sg.sqlalchemybase):
         users_id_withHookPropagation = self.coterie.members_list_sharing(None, None, True, True)
         # Find the events
         try:
-            events = sg.db.session.query(Event).filter(Event.owner_id.in_(users_id), Event.id > self.last_event_id, datetime.utcnow() - Event.time < datetime.timedelta(hours=24)).order_by(asc(Event.time)).all()
+            events = sg.db.session.query(Event).filter(Event.owner_id.in_(users_id), Event.id > self.last_event_id, datetime.datetime.now() - Event.time < datetime.timedelta(hours=24)).order_by(asc(Event.time)).all()
         except NoResultFound as e:
             events = []
         # Stringify the events

@@ -80,7 +80,7 @@ MailHelper:
 common:
   # Note : we could (should?) retrieve the owner_id from the mail directory tree parsing
   re_troll: 'Tr(õ|o)ll n°(?P<owner_id>\d+)\s*:\s*(?P<owner_nom>.+)'
-  re_suivant: 'Suivant n°(?P<suivant_id>\d+)\s*:\s*(?P<suivant_nom>.+)'
+  re_suivant: 'Suivant n°(?P<follower_id>\d+)\s*:\s*(?P<follower_nom>.+)'
   re_type: '(Vous avez|Le Suivant n°\d+ a) été impliqué dans un événement : (?P<mh_type>.*)\.'
   re_time: 'Il était alors (aux alentours de )?: (?P<time>.*)\.'
   re_px: 'gagné (un total de )?(?P<px>\d+) PX'
@@ -163,11 +163,11 @@ champiEvent:
 
 # Regexps for tresorEvent
 tresorEvent:
-  re_idt: '(le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>[^\(\[]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>.*?)(\)|\])|$))(?s)'
+  re_idt: 'le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>[^\(\[\n]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?'
   re_idt_type: 'identifié ce trésor\s+:\s+(?P<tresor_type>.+?)\s+\((?P<tresor_id>\d+)\)(?s)'
   re_idt_maudite: '(En identifiant ce parchemin tu viens de subir une (?P<nom>Malédiction))(?s)'
   re_idt_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
-  re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>.+)'
+  re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>[^\n'']+)'
   re_telek_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+et\s+Y\s*=\s*(?P<pos_y>\-?\d+)'
 
 # Regexps for every other events (kind of battle related)

@@ -204,8 +204,8 @@ class battleEvent(Event):
     def build(self):
         super().build()
         # Fix att/def_being
-        fix_id = self.suivant_id if hasattr(self, 'suivant_id') else self.owner_id
-        fix_nom = self.suivant_nom if hasattr(self, 'suivant_nom') else self.owner_nom
+        fix_id = self.follower_id if hasattr(self, 'follower_id') else self.owner_id
+        fix_nom = self.follower_nom if hasattr(self, 'follower_nom') else self.owner_nom
         if self.att_id is None and self.def_id is None:
             if hasattr(self, 'flag_def') and self.flag_def is not None:
                 self.def_id, self.def_nom = fix_id, fix_nom
@@ -285,7 +285,7 @@ class battleEvent(Event):
         if self.type == 'a attiré' or self.type == 'assomme':
             self.type = 'Attraction assommante'
         # Fix GDS
-        if 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
+        if self.type is not None and 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
             self.capa_tour = 1
         # Fix HE & Insulte
         if hasattr(self, 'flag_he_insulte') and self.flag_he_insulte is not None:
