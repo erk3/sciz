@@ -24,7 +24,7 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "axios": "^0.21.1",
     "cssnano": "^4.1.10",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "parcel-bundler": "^1.12.4",
     "tiptap": "^1.30.0",
     "tiptap-extensions": "^1.33.2",
