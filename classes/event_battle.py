@@ -123,9 +123,9 @@ class battleEvent(Event):
     @hybrid_property
     def esquive_parfaite(self):
         if all(attr is not None for attr in [self.att, self.esq]):
-            return int(self.esq) >= int(self.att) * 2
+            return int(self.esq) > int(self.att) * 2
         elif all(attr is not None for attr in [self.destab, self.stab]):
-            return int(self.stab) >= int(self.destab) * 2
+            return int(self.stab) > int(self.destab) * 2
         return False
 
     @hybrid_property

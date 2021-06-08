@@ -70,9 +70,12 @@ class AdminHelper:
                     try:
                         m = re.search('%s(%s)?(?P<user_id>[^\.%s]+)' % (self.mailDirPath, os.sep, os.sep), path)
                         user_id = m.group('user_id')
-                        sg.logger.info('New mails for user %s !' % user_id)
+                        sg.logger.info('New mails for user %s !' % (user_id,))
                         sg.user = sg.db.session.query(User).get(user_id)
-                        sg.wk.walk()
+                        if sg.user is not None:
+                            sg.wk.walk()
+                        else:
+                            sg.logger.error("Mail received for %s, but user does not exist inside the databse..." % (user_id,))
                     except Exception as e:
                         sg.db.session.rollback()
                         sg.logger.exception(e)
