@@ -21,6 +21,8 @@ class MailWalker:
     def load_conf(self):
         self.mailDirPath = sg.conf[sg.CONF_MAIL_SECTION][sg.CONF_MAIL_PATH]
         self.mailMaxRetention = sg.conf[sg.CONF_INSTANCE_SECTION][sg.CONF_INSTANCE_MAIL_RETENTION]
+        self.re_time = re.compile(sg.regex[sg.CONF_SECTION_COMMON][sg.CONF_NOTIF_TIME])
+        self.re_vie = re.compile(sg.regex[sg.CONF_SECTION_BATTLE][sg.CONF_NOTIF_VIE])
 
     # Archive routine
     def archive(self, user, file_name, subdir):
@@ -58,9 +60,7 @@ class MailWalker:
             actual_mails = [(mbox.get_file(item[0])._file.name, email.message_from_string(mbox.get_string(item[0]))) for item in sorted_mbox]
             parsed_mails = [(file_path, self.mp.parse_mail(mail)) for (file_path, mail) in actual_mails]
             # Then re-sort by MH date, then by remaining life points (multiple events at same time)
-            re_time = re.compile(sg.regex[sg.CONF_SECTION_COMMON][sg.CONF_NOTIF_TIME])
-            re_vie = re.compile(sg.regex[sg.CONF_SECTION_BATTLE][sg.CONF_NOTIF_VIE])
-            parsed_mails_with_attrs = [(n, s, b, f, h, re_time.search(b) if b else None, re_vie.search(b) if b else None) for (n, (s, b, f, h)) in parsed_mails]
+            parsed_mails_with_attrs = [(n, s, b, f, h, self.re_time.search(b) if b else None, self.re_vie.search(b) if b else None) for (n, (s, b, f, h)) in parsed_mails]
             parsed_mails_with_attrs = [(n, s, b, f, h, datetime.datetime.strptime(t.groupdict()['time'], '%d/%m/%Y %H:%M:%S') if t else datetime.datetime.now(), int(v.groupdict()['vie']) if v else 0) for (n, s, b, f, h, t, v) in parsed_mails_with_attrs]
             sorted_mails = sorted(parsed_mails_with_attrs, key=itemgetter(5, 6))
             # Finally walk over the mails

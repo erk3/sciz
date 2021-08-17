@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from classes.event_user import userEvent
@@ -22,7 +22,12 @@ class MailParser:
 
     # Constructor
     def __init__(self):
-        pass
+        self.ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
+        self.subjects_regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
+        self.sections_regexps = {}
+        for section in sg.regex:
+            if section.endswith('Event'):
+                self.sections_regexps[section] = self.__load_regexps_section([sg.CONF_SECTION_COMMON, section])
 
     # Utility mail parser
     def parse_mail(self, msg):
@@ -113,14 +118,12 @@ class MailParser:
         # At the end all the regexps of the first item not in the others are copied
         res = {0: {}}
         # Loop over the regexp for ignored subject matching
-        ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
-        (key, res[0]) = self.__match_first_regexp(ignored_regexps, subject)
+        (key, res[0]) = self.__match_first_regexp(self.ignored_regexps, subject)
         if key is not None:
             sg.logger.warning('Ignored mail \'%s\', aborting...' % subject)
             return None
         # Loop over the regexp for subject matching
-        regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
-        (key, res[0]) = self.__match_first_regexp(regexps, subject)
+        (key, res[0]) = self.__match_first_regexp(self.subjects_regexps, subject)
         if key is None:
             if '[MountyHall]' in subject:
                 sg.logger.warning('No regexp matching mail subject \'%s\', archiving...' % subject)
@@ -132,15 +135,14 @@ class MailParser:
         # formated, for CLASS.build or CLASS.build_\1 to be called.
         # This is probably dangerous behavior but since no people should be
         # allowed to access the .yaml config file without having also access to
-        # this piece of code, this seems a nice code/logic factoring feature.
+        # this piece of code, it seems a nice code/logic factoring feature.
         split = key.split('_', 1)
         _class = split[0]
         _method = 'build' if len(split) == 1 else 'build_' + split[1].lower()
         # The .yaml config file must also have a section named as the
         # key that previously matched or at least the class name with all the
         # associated regexps to match in the mail
-        regexps = self.__load_regexps_section([sg.CONF_SECTION_COMMON, _class])
-        matchs = [(k, r.finditer(body)) for (k, r) in regexps]
+        matchs = [(k, r.finditer(body)) for (k, r) in self.sections_regexps[_class]]
         # We build a base event with the regexps that matched only once (first entry in res dictionnary)
         # And a list of events with the regexps that matched several time in the following entries of res dictionnary
         FLAG_EXCLUDE = 'FLAG_EXCLUDE'
