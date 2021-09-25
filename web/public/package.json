@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "cssnano": "^4.1.10",
     "lodash": "^4.17.20",
     "parcel-bundler": "^1.12.4",
