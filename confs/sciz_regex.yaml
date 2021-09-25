@@ -98,6 +98,7 @@ userEvent:
   re_pdv: '(?P<pdv>\d+)\s+Points?\s+de\s+Vie\s+\(sur\s+(?P<pv_max>\d+)\)'
   re_fatigue: 'Fatigue\s+est\s+actuellement\s+de\s+(?P<fatigue>\d+)\s+\(\+(?P<fatigue_bis>\d+)\)'
   re_concentration:  '(?P<concentration>\d+)\s+(P|p)oints?\s+d''action\s+n''(a|ont)\s+pas'
+  re_pos: 'Vous\s+êtes\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)'
 
 # Regexps for followerEvent
 followerEvent:

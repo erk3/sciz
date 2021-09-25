@@ -147,7 +147,7 @@ class MailParser:
         # And a list of events with the regexps that matched several time in the following entries of res dictionnary
         FLAG_EXCLUDE = 'FLAG_EXCLUDE'
         FLAG_CHECK_EXCLUDES = 'FLAG_CHECK_EXCLUDES'
-        ATTRS_MATCH_ONCE = ['flag_resist_att_mag']
+        ATTRS_MATCH_ONCE = ['flag_resist_att_mag', 'owner_id', 'owner_nom']
         ATTRS_MATCH_SUM = ['rm', 'mm', 'px']
         excludes = []
         for (key, matchall) in matchs:

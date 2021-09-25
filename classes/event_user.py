@@ -33,6 +33,12 @@ class userEvent(Event):
     next_dla = Column(DateTime)
     # Concentration
     concentration = Column(Integer)
+    # X axis position
+    pos_x = Column(Integer)
+    # Y axis position
+    pos_y = Column(Integer)
+    # N axis position
+    pos_n = Column(Integer)
 
     @hybrid_property
     def str_pdv(self):
@@ -90,6 +96,9 @@ def upsert_troll_private(mapper, connection, target):
             troll_private.next_dla = troll_private.estimate_dla
     else:
         troll_private.fatigue = target.fatigue
+        troll_private.pos_x = target.pos_x
+        troll_private.pos_y = target.pos_y
+        troll_private.pos_n = target.pos_n
         # FIXME: several DLA of concentration
         troll_private.base_concentration = target.concentration
         troll_private.pdv = target.pdv
