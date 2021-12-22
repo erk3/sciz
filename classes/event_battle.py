@@ -562,6 +562,8 @@ def play(mapper, connection, target):
             at.pa = 0
         if capa is not None:
             at.pa = max(0, int(at.pa) - int(capa.pa))
+        elif 'normale' in t:
+            at.pa = max(0, int(at.pa) - 4)
         if target.blessure is not None and at.pdv is not None and int(target.blessure) > 0:
             at.pdv = max(0, int(at.pdv) - int(target.blessure))
         if target.soin is not None and 'sacrifice' not in t and at.pdv is not None and int(target.soin) > 0:
