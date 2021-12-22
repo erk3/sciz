@@ -25,6 +25,7 @@ class MailParser:
         self.ignored_regexps = self.__load_regexps_section([sg.CONF_SECTION_IGNORED_SUBJECTS])
         self.subjects_regexps = self.__load_regexps_section([sg.CONF_SECTION_SUBJECTS])
         self.sections_regexps = {}
+        self.sections_regexps[sg.CONF_SECTION_MAIL] = self.__load_regexps_section([sg.CONF_SECTION_MAIL])
         for section in sg.regex:
             if section.endswith('Event'):
                 self.sections_regexps[section] = self.__load_regexps_section([sg.CONF_SECTION_COMMON, section])
