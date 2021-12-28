@@ -75,8 +75,6 @@ class userEvent(Event):
                 self.fatigue = 0
             if hasattr(self, 'concentration') and self.concentration is not None:
                 self.concentration = int(self.concentration) * 5
-            else:
-                self.concentration = 0
 
     def icon(self):
         return 'troll-map-icon.svg'
