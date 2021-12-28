@@ -13,7 +13,7 @@ Une interface tactique pour jouer en groupe à [Mountyhall](https://www.mountyha
 * Génération de notifications sur évènements
 * Moteur de requêtage des informations collectées et générées
 * Vue 2D, Bestiaire et autres outils
-* Plugins : Miaou, Discord, Hangouts
+* Plugins : Miaou, Discord
 * Interface Zhumain Machine
 
 # Installation

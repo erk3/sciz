@@ -32,7 +32,7 @@ class Hook(sg.sqlalchemybase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     # Coterie identifier
     coterie_id = Column(Integer, ForeignKey('coterie.id'))
-    # Type of hook (can currently be Miaou, Hangouts or Discord)
+    # Type of hook (can currently be Miaou or Discord)
     type = Column(String(50), nullable=False)
     # JWT
     jwt = Column(Text)

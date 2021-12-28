@@ -80,7 +80,5 @@ hooks:
   Miaou:
     URL: 'https://miaou.dystroy.org/sciz-webhook'
     #URL: 'http://miaou.dev/sciz-webhook'
-  Hangouts:
-    URL: ''
   Discord:
     URL: ''
