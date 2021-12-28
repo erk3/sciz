@@ -380,6 +380,7 @@ def renew(id):
         return jsonify(message='Hook renouvelé'), 200
     return jsonify(message='Autorisation requise'), 401
 
+# HOOK REQUESTER (TO BE DELETED WITH THE REQUESTER)
 @webapp.route('/api/hook/request', endpoint='make_hook_request', methods=('POST',))
 @hook_jwt_check
 def make_hook_request():
@@ -402,6 +403,7 @@ def make_user_request():
     res = sg.req.request(user, data.get('req'))
     return jsonify(message=res), 200
 
+# HOOKS DATA
 @webapp.route('/api/hook/events', endpoint='get_hook_events', methods=('GET',))
 @hook_jwt_check
 def get_hook_events():
@@ -441,6 +443,17 @@ def get_hook_trolls_for():
         return jsonify(trolls=hook.get_trolls_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
+@webapp.route('/api/hook/bestiaire', endpoint='get_hook_bestiaire', methods=('POST',))
+@hook_jwt_check
+def get_hook_bestiaire():
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        data = request.get_json()
+        if 'name' not in data or 'age' not in data:
+            return jsonify(message='Une erreur est survenue...'), 400
+        return jsonify(bestiaire=sg.req.bestiaire(data.get('name'), data.get('age'))), 200
+    return jsonify(message='Autorisation requise'), 401
+
 #@webapp.route('/api/hook/mushrooms', methods=('POST',))
 #@hook_jwt_check
 #def get_hook_mushrooms_for():
@@ -452,6 +465,7 @@ def get_hook_trolls_for():
 #        return jsonify(treasures=hook.get_mushrooms_for(data.get('ids'))), 200
 #    return jsonify(message='Autorisation requise'), 401
 
+# HOOK FORMAT
 @webapp.route('/api/hook/format/<int:hook_id>', endpoint='get_hook_format', methods=('GET',))
 @user_jwt_check
 def get_hook_format(hook_id):

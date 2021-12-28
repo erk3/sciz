@@ -42,6 +42,7 @@ class Requester:
 
     # Request
     def request(self, coterie_or_user, search):
+        return ['Une chauve-souris hors-service revient vers vous...']
         search = search.lower()
         # Special coterie handling
         if '%coterie' in search:
@@ -346,17 +347,15 @@ class Requester:
             recap = ' s\'ennuie !'
         return res + recap
 
-    @staticmethod
-    def bestiaire(cdm):
-        if cdm is None or not isinstance(cdm, cdmEvent):
-            return None
+    def bestiaire(self, name, age):
         # Get all the related CdM
-        res = sg.db.session.query(cdmEvent).outerjoin(User, User.community_sharing == True) \
-            .filter(cdmEvent.mob_nom == cdm.mob_nom, cdmEvent.mob_age == cdm.mob_age) \
+        #res = sg.db.session.query(cdmEvent).outerjoin(User, User.community_sharing == True) \
+        res = sg.db.session.query(cdmEvent) \
+            .filter(cdmEvent.mob_nom == name, cdmEvent.mob_age == age) \
             .order_by(cdmEvent.time.desc()).all()
         # Create a mob private
         pm = MobPrivate()
-        pm.mob = Mob(nom=cdm.mob_nom, age=cdm.mob_age)
+        pm.mob = Mob(nom=name, age=age)
         pm.mob = Mob.link_metamob(pm.mob)
         # Copy the fixed properties and compute a set of cdms regrouped by mob id
         list_of_cdm_by_mob_id = {}
@@ -403,4 +402,4 @@ class Requester:
                 setattr(pm, attr_min, min(list_attr_min))
             if len(list_attr_max) > 0:
                 setattr(pm, attr_max, max(list_attr_max))
-        return pm
+        return sg.no.stringify(pm, None, None)
