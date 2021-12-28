@@ -20,7 +20,7 @@ class MetaTresor(sg.sqlalchemybase):
     nom = Column(String(50))
     # Type
     type = Column(String(50))
-    
+
     # Associations
     tresor_privates = relationship('TresorPrivate', back_populates='tresor_meta', primaryjoin='MetaTresor.id == TresorPrivate.metatresor_id')
 
@@ -29,7 +29,11 @@ class MetaTresor(sg.sqlalchemybase):
 
     @staticmethod
     def link_metatresor(tresor):
-        #  Loop over every metatresors to find the longest one matching the tresor name
+        # Dirty hardcoded fix for spells, oghams and runes...
+        if tresor.nom is not None and any(a in tresor.nom.lower() for a in ['sortilège', 'ogham', 'rune :']):
+            meta = sg.db.session.query(MetaTresor).filter(MetaTresor.nom == 'Sortilège').one()
+            return meta.id, tresor.nom, '', meta.type
+        # Loop over every metatresors to find the longest one matching the tresor name
         res_meta_id = None
         res_nom = tresor.nom
         temp_nom = tresor.nom
@@ -40,7 +44,7 @@ class MetaTresor(sg.sqlalchemybase):
             len_found_metatresor_nom = 0
             for metatresor in metatresors:
                 len_metatresor_nom = len(metatresor.nom)
-                if metatresor.nom in temp_nom and len_metatresor_nom >= len_found_metatresor_nom:
+                if metatresor.nom.lower() in temp_nom.lower() and len_metatresor_nom >= len_found_metatresor_nom:
                     len_found_metatresor_nom = len_metatresor_nom
                     res_meta_id = metatresor.id
                     res_nom = metatresor.nom

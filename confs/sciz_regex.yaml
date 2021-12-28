@@ -35,7 +35,7 @@ subjects:
   champiEvent_idc: '(?P<type>Identification des (c|C)hampignons)'
   champiEvent_ramasser: '(?P<type>Ramass(er|age)) (d''un )?(c|C)hampignon'
   champiEvent_planter: '(?P<type>Planter) un champignon (?P<nom>.+)\s+(?P<qualite>.+?)\s+\((?P<champi_id>\d+)\)\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+Y\s*=\s*(?P<pos_y>\-?\d+)\s+N\s*=\s*(?P<pos_n>\-?\d+)'
-  tresorEvent_idt: '(?P<type>Identification des (t|T)résors)'
+  tresorEvent_idt: '(?P<type>Identification des (t|T)résors)\s*:\s*\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>.+)'
   tresorEvent_telek: '(?P<type>Télékinésie)'
   tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
   battleEvent_piege: '(?P<type>Déclenchement du Piège( sur un suivant)?)(?s)'
@@ -164,8 +164,7 @@ champiEvent:
 
 # Regexps for tresorEvent
 tresorEvent:
-  re_idt: 'le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>[^\(\[\n]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?'
-  re_idt_type: 'identifié ce trésor\s+:\s+(?P<tresor_type>.+?)\s+\((?P<tresor_id>\d+)\)(?s)'
+  re_idt: 'le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?(?s)'
   re_idt_maudite: '(En identifiant ce parchemin tu viens de subir une (?P<nom>Malédiction))(?s)'
   re_idt_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
   re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>[^\n'']+)'
