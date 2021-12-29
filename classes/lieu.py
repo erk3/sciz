@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey, event
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 import modules.globals as sg
@@ -57,3 +57,18 @@ class Lieu(sg.sqlalchemybase):
     @hybrid_property
     def is_visible(self):
         return not self.destroyed
+
+@event.listens_for(Lieu, 'after_insert')
+@event.listens_for(Lieu, 'after_update')
+def mark_old_place_destroyed(mapper, connection, target):
+    places_already_at_pos = sg.db.session.query(Lieu).filter(and_(Lieu.id != target.id,
+                                                                       Lieu.pos_x == target.pos_x,
+                                                                       Lieu.pos_y == target.pos_y,
+                                                                       Lieu.pos_n == target.pos_n)).all()
+    session = sg.db.new_session()
+    for place in places_already_at_pos:
+        place.destroyed = True
+        sg.db.upsert(place, session)
+    session.commit()
+    session.close()
+

@@ -454,16 +454,27 @@ def get_hook_bestiaire():
         return jsonify(bestiaire=sg.req.bestiaire(data.get('name'), data.get('age'))), 200
     return jsonify(message='Autorisation requise'), 401
 
-#@webapp.route('/api/hook/mushrooms', methods=('POST',))
-#@hook_jwt_check
-#def get_hook_mushrooms_for():
-#    hook = sg.db.session.query(Hook).get(get_jwt_identity())
-#    if hook is not None:
-#        data = request.get_json()
-#        if 'ids' not in data:
-#            return jsonify(message='Une erreur est survenue...'), 400
-#        return jsonify(treasures=hook.get_mushrooms_for(data.get('ids'))), 200
-#    return jsonify(message='Autorisation requise'), 401
+@webapp.route('/api/hook/traps', endpoint='get_hook_traps', methods=('POST',))
+@hook_jwt_check
+def get_hook_traps():
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        data = request.get_json()
+        if any(a not in data for a in ['pos_x', 'pos_y', 'pos_n', 'view_h', 'view_v']):
+            return jsonify(message='Une erreur est survenue...'), 400
+        return jsonify(traps=hook.get_traps_for(data.get('pos_x'), data.get('pos_y'), data.get('pos_n'), data.get('view_h'), data.get('view_v'))), 200
+    return jsonify(message='Autorisation requise'), 401
+
+@webapp.route('/api/hook/mushrooms', methods=('POST',))
+@hook_jwt_check
+def get_hook_mushrooms_for():
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        data = request.get_json()
+        if 'ids' not in data:
+            return jsonify(message='Une erreur est survenue...'), 400
+        return jsonify(mushrooms=hook.get_mushrooms_for(data.get('ids'))), 200
+    return jsonify(message='Autorisation requise'), 401
 
 # HOOK FORMAT
 @webapp.route('/api/hook/format/<int:hook_id>', endpoint='get_hook_format', methods=('GET',))

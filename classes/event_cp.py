@@ -3,6 +3,7 @@
 
 # IMPORTS
 from classes.event import Event
+from classes.lieu import Lieu
 from classes.lieu_piege import Piege
 from classes.being_troll_private import TrollPrivate
 from sqlalchemy import Column, Integer, String, ForeignKey, event, func, and_
@@ -74,20 +75,6 @@ def upsert_lieu_piege(mapper, connection, target):
         sg.copy_properties(target, piege, ['pos_x', 'pos_y', 'pos_n', 'piege_type', 'piege_mm'], False)
         # Upsert it
         sg.db.upsert(piege)
-
-
-@event.listens_for(cpEvent, 'after_insert')
-def mark_old_piege_destroyed(mapper, connection, target):
-    pieges_already_at_pos = sg.db.session.query(Piege).filter(and_(Piege.id != target.piege_id,
-                                                                   Piege.pos_x == target.pos_x,
-                                                                   Piege.pos_y == target.pos_y,
-                                                                   Piege.pos_n == target.pos_n)).all()
-    session = sg.db.new_session()
-    for piege in pieges_already_at_pos:
-        piege.destroyed = True
-        sg.db.upsert(piege, session)
-    session.commit()
-    session.close()
 
 
 @event.listens_for(cpEvent, 'after_insert')

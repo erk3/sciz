@@ -11,6 +11,9 @@ from classes.event_cp import cpEvent
 from classes.event_tresor import tresorEvent
 from classes.event_champi import champiEvent
 from classes.tresor_private import TresorPrivate
+from classes.champi_private import ChampiPrivate
+from classes.lieu import Lieu
+from classes.lieu_piege import Piege
 from classes.being_troll_private import TrollPrivate
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound
@@ -151,29 +154,58 @@ class Hook(sg.sqlalchemybase):
         return trolls
 
     # Use the hook to get specific mushrooms
-    #def get_mushrooms_for(self, mushrooms_id):
-    #    if self.jwt is None: return
-    #    # Build the list of active users
-    #    users_id = self.coterie.members_list_sharing(True, None, True)
-    #    # Find the mushrooms
-    #    del mushrooms_id[100:]
-    #    mushrooms = []
-    #    for _id in mushrooms_id:
-    #        try:
-    #            mushroom = sg.db.session.query(ChampiPrivate) \
-    #                .filter(and_(ChampiPrivate.viewer_id.in_(users_id), ChampiPrivate.champi_id == _id)) \
-    #                .order_by(ChampiPrivate.last_event_update_at.desc().nullslast(),
-    #                          ChampiPrivate.last_seen_at.desc().nullslast()) \
-    #                .limit(1).all()
-    #            for m in mushroom:
-    #                mushrooms.append({
-    #                    'id': m.tresor_id,
-    #                    'nom': m.nom,
-    #                    'qualite': m.qualite,
-    #                });
-    #        except NoResultFound:
-    #            pass
-    #    return mushrooms
+    def get_mushrooms_for(self, mushrooms_id):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(True, None, True)
+        # Find the mushrooms
+        del mushrooms_id[100:]
+        mushrooms = []
+        for _id in mushrooms_id:
+            try:
+                mushroom = sg.db.session.query(ChampiPrivate) \
+                    .filter(and_(ChampiPrivate.viewer_id.in_(users_id), ChampiPrivate.champi_id == _id), ChampiPrivate.nom != None) \
+                    .order_by(ChampiPrivate.last_event_update_at.desc().nullslast(),
+                              ChampiPrivate.last_seen_at.desc().nullslast()) \
+                    .limit(1).all()
+                for m in mushroom:
+                    mushrooms.append({
+                        'id': m.champi_id,
+                        'nom': m.nom,
+                        'qualite': m.qualite,
+                    });
+            except NoResultFound:
+                pass
+        return mushrooms
+
+    # Use the hook to get specific traps
+    def get_traps_for(self, pos_x, pos_y, pos_n, view_h, view_v):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(True, None, True)
+        # Find the traps
+        traps = []
+        try:
+            _traps = sg.db.session.query(Piege) \
+                .filter(and_(Lieu.pos_x >= pos_x - view_h, Lieu.pos_x <= pos_x + view_h,
+                             Lieu.pos_y >= pos_y - view_h, Lieu.pos_y <= pos_y + view_h,
+                             Lieu.pos_n >= pos_n - view_v, Lieu.pos_n <= pos_n + view_v,
+                             Lieu.owner_id.in_(users_id), Lieu.destroyed == False)) \
+                .order_by(Lieu.last_seen_at.desc().nullslast()).all()
+            for t in _traps:
+                traps.append({
+                    'id': t.id,
+                    'owner_id': t.owner_id,
+                    'pos_x': t.pos_x,
+                    'pos_y': t.pos_y,
+                    'pos_n': t.pos_n,
+                    'type': t.piege_type,
+                    'mm': t.piege_mm,
+                    'creation_datetime': sg.format_time(t.creation_datetime)
+                });
+        except NoResultFound:
+            pass
+        return traps
 
     # Use the hook to get specific events
     def get_events_for(self, being_id, start_time, end_time, event_type = None):

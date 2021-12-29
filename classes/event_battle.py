@@ -501,14 +501,17 @@ def upsert_targetted_beings(mapper, connection, target):
 @event.listens_for(battleEvent, 'before_insert')
 def mark_old_piege_destroyed_and_link(mapper, connection, target):
     try:
-        piege = sg.db.session.query(Piege).filter(and_(Piege.owner_id != target.owner_id,
-                                                       Piege.pos_x == target.pos_x,
-                                                       Piege.pos_y == target.pos_y,
-                                                       Piege.pos_n == target.pos_n)).one()
-        target.lieu_id = piege.id
-        piege.destroyed = True
-        sg.db.upsert(piege)
-    except (NoResultFound, MultipleResultsFound):
+        # If a battle event is of trap type its a trigger (a creation is a cp event)
+        if ('piège' in target.type.lower() or 'piege' in target.type.lower()):
+            # FIXME: don't destroy the trap if levitating?
+            pieges = sg.db.session.query(Piege).filter(and_(Piege.pos_x == target.pos_x,
+                                                           Piege.pos_y == target.pos_y,
+                                                           Piege.pos_n == target.pos_n)).all()
+            for piege in pieges:
+                target.lieu_id = piege.id
+                piege.destroyed = True
+                sg.db.upsert(piege)
+    except (NoResultFound):
         pass
 
 

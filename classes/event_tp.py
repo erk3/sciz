@@ -4,6 +4,7 @@
 # IMPORTS
 from classes.being_troll_private import TrollPrivate
 from classes.event import Event
+from classes.lieu import Lieu
 from classes.lieu_portail import Portail
 from sqlalchemy import Column, Integer, ForeignKey, event, and_
 from sqlalchemy.orm import relationship
@@ -70,20 +71,6 @@ def upsert_lieu_portail(mapper, connection, target):
                            False)
         # Upsert it
         sg.db.upsert(portail)
-
-
-@event.listens_for(tpEvent, 'after_insert')
-def mark_old_portail_destroyed(mapper, connection, target):
-    portails_already_at_pos = sg.db.session.query(Portail).filter(and_(Portail.id != target.portail_id,
-                                                                       Portail.pos_x == target.pos_x,
-                                                                       Portail.pos_y == target.pos_y,
-                                                                       Portail.pos_n == target.pos_n)).all()
-    session = sg.db.new_session()
-    for portail in portails_already_at_pos:
-        portail.destroyed = True
-        sg.db.upsert(portail, session)
-    session.commit()
-    session.close()
 
 
 @event.listens_for(tpEvent, 'after_insert')

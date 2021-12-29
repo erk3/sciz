@@ -74,7 +74,7 @@ class SqlHelper:
 
     # Rebind any object to a session (no commit)
     def rebind(self, obj, given_session=None):
-        sg.logger.debug('Rebinding %s...' % obj)
+        #sg.logger.debug('Rebinding %s...' % obj)
         if given_session is None:
             session = object_session(obj) or self.new_session()
             obj = session.merge(obj)
@@ -85,7 +85,7 @@ class SqlHelper:
 
     # Upsert any object
     def upsert(self, obj, given_session=None, propagate=True):
-        sg.logger.debug('Upserting %s...' % obj)
+        #sg.logger.debug('Upserting %s...' % obj)
         if given_session is None:
             session = self.new_session()
             obj = session.merge(obj)
