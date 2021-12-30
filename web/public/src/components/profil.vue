@@ -67,7 +67,6 @@
 											</template>
 											<span>Reconnexion nécessaire avant application de la modification</span>
 										</v-tooltip><br/>
-										<v-switch label="Contribuer au partage communautaire" v-model="user.community_sharing" persistent-hint hint="Partage anonyme et sans identifiant des CdM et de votre vue (trõlls exclus)"></v-switch>
 										<v-switch label="Utiliser le mode sombre" v-model="mode" :input-value="mode" true-value="dark" false-value="light" @change="switchMode(mode)"></v-switch><br/>
 										<br/>
 										<!-- RESET PWD DIALOG -->
@@ -239,7 +238,6 @@ export default {
 			session: 1,
 			pwd_mh: '',
 			max_sp_dyn: 1,
-			community_sharing: true,
 		},
 		valid_pwd: true,
 		error_pwd: false,
@@ -263,7 +261,6 @@ export default {
 					this.user.pwd_mh = res.data['pwd_mh'] || '';
 					this.user.max_sp_dyn = res.data['max_sp_dyn'] || '';
 					this.user.max_sp_sta = res.data['max_sp_sta'] || '';
-					this.user.community_sharing = res.data['community_sharing'];
 					this.user.count_sp_dyn = res.data['count_sp_dyn'] || '';
 					this.user.count_sp_sta = res.data['count_sp_sta'] || '';
 				}

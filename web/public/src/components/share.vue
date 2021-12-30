@@ -185,10 +185,8 @@
 									</template>
 									<v-list>
 										<v-list-item v-if="hook.type === 'Discord'" :href="'https://discordapp.com/oauth2/authorize?client_id=531898253210550281&scope=bot&permissions=2048'">Inviter le bot sur mon serveur</v-list-item>
-										<v-list-item v-if="hook.type === 'Hangouts'" @click="info_msg = 'Adresse copiée dans le presse-papier'; info = true;" v-clipboard:copy="'botsciz@gmail.com'">Copier l'adresse du bot à inviter</v-list-item>
 										<v-list-item v-if="hook.type === 'Miaou' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-item>
 										<v-list-item v-if="hook.type === 'Discord' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'!sciz register ' + hook.jwt">Copier la commande d'enregistrement</v-list-item>
-										<v-list-item v-if="hook.type === 'Hangouts' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="'/sciz register '+ hook.jwt">Copier la commande d'enregistrement</v-list-item>
 										<v-list-item v-if="hook.type === 'Mountyzilla' && hook.jwt" @click="info_msg = 'Commande copiée dans le presse-papier'; info = true;" v-clipboard:copy="hook.jwt">Copier le JWT</v-list-item>
 										<v-list-item v-if="hook.jwt && partage_courant.admin" @click="selectedHook = hook; hook_dialog = true;">Configurer</v-list-item>
 										<v-list-item v-if="hook.jwt && partage_courant.admin" @click="regenerateHook(hook.id)"><span class="red--text text-darken1">Régénérer</span></v-list-item>
@@ -364,7 +362,7 @@ export default {
 		},
 		refreshGroups() {
 			var coterie_courante = this.coterie_courante;
-			getGroups(false, true, true)
+			getGroups(true, true)
 				.then(res => {
 					if (res.status === 200) {
 						this.coterie_perso = res.data['coterie_perso'];

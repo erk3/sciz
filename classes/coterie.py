@@ -32,8 +32,6 @@ class Coterie(sg.sqlalchemybase):
     blason_uri = Column(String(500))
     # Type of Coterie, can be personnal or grouped
     grouped = Column(Boolean, default=True)
-    # Webpad
-    webpad = Column(JSON)
 
     # Associations
     partages = relationship('Partage', back_populates='coterie', primaryjoin='Coterie.id == Partage.coterie_id', cascade='all,delete-orphan')
@@ -121,9 +119,6 @@ class Coterie(sg.sqlalchemybase):
             for attr in ['nom', 'desc', 'blason_uri']:
                 if attr in kwargs and kwargs.get(attr) is not None:
                     setattr(self, attr, kwargs.get(attr))
-        for attr in ['webpad']:
-            if attr in kwargs and kwargs.get(attr) is not None:
-                setattr(self, attr, kwargs.get(attr))
         if 'partages' in kwargs and self.grouped:
             now = datetime.datetime.now()
             partages = kwargs.get('partages')

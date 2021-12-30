@@ -10,7 +10,7 @@
 			</v-col>
 			<v-col>
 				<v-layout fill-height align-center justify-center caption>
-					2019-2021 © SCIZ
+					2019-2022 © SCIZ
 				</v-layout>
 			</v-col>
 			<v-col>

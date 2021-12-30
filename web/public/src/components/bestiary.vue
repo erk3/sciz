@@ -11,20 +11,20 @@
 		<!-- BESTIARY -->
 		<v-row wrap justify="center" align="start">
 			<v-col class="col-6 text-center">
-				<v-autocomplete v-model="search" :items="mobsList" item-text="nom" item-value="nom" chips hide-no-data cache-items :menu-props="{'closeOnContentClick': true}" no-data-text="Aucun monstre dans le bestiaire..." v-on:change="makeRequest" :filter="mobFilter" :hint="'Le bestiaire compte actuellement ' + nbCDM + ' connaissances des monstres partagées par la communauté !'" persistent-hint placeholder="Rechercher un monstre..." label="Recherchez un monstre !">
+				<v-autocomplete v-model="select" :items="mobsList" item-text="nom" item-value="nom" chips hide-no-data cache-items :menu-props="{'closeOnContentClick': true}" no-data-text="Aucun monstre dans le bestiaire..." v-on:change="makeRequest" :filter="mobFilter" :hint="'Le bestiaire compte actuellement ' + nbCDM + ' connaissances des monstres partagées par la communauté !'" persistent-hint placeholder="Rechercher un monstre (trois caractères minimum)..." label="Recherchez un monstre !" :search-input.sync="search" :loading="loading">
 					<template slot="selection" slot-scope="data">
-						<v-chip close close-icon="far fa-times-circle" @click:close="search=''; result=''; blason=''">
+						<v-chip close close-icon="far fa-times-circle" @click:close="select=''; result=''; blason=''">
 							<v-avatar>
-								<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain></v-img>
-								<v-img v-else :src="Image('unknown')" alt="" contain></v-img>
+								<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain max-width="30"></v-img>
+								<v-img v-else :src="Image('unknown')" alt="" contain max-width='30'></v-img>
 							</v-avatar>
 							{{ data.item.nom }}
 						</v-chip>
 					</template>
 					<template slot="item" slot-scope="data">
 						<v-list-tile-avatar>
-							<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain max-width="30px"></v-img>
-							<v-img v-else :src="Image('unknown')" alt="" contain></v-img>
+							<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain max-width="30"></v-img>
+							<v-img v-else :src="Image('unknown')" alt="" contain max-width="30"></v-img>
 						</v-list-tile-avatar>
 						<v-list-tile-content>
 							<v-list-tile-title> {{ data.item.nom }} </v-list-tile-title>
@@ -55,11 +55,13 @@
 
 <!-- SCRIPT -->
 <script>
-import { getMobs, getnbCDM, request } from '~/src/api.js';
+import { getMobs, getnbCDM, getBestiaire } from '~/src/api.js';
 export default {
 	name: 'BestiaryView',
 	data: () => ({
+		select: '',
 		search: '',
+        loading: false,
 		result: '',
 		blason: '',
 		mobsList: [],
@@ -68,12 +70,6 @@ export default {
 		info_msg: '',
 	}),
 	beforeMount() {
-		getMobs()
-			.then(res => {
-				if (res.status === 200) {
-					this.mobsList = res.data;
-				}
-			});
 		getnbCDM()
 			.then(res => {
 				if (res.status === 200) {
@@ -81,24 +77,41 @@ export default {
 				}
 			});
 	},
+    watch: {
+      search (val) {
+        val && val !== this.select && this.searchMobs(val)
+      },
+    },
 	methods: {
 		mobFilter (item, queryText, itemText) {
 			const text = item.nom.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 			const searchText = queryText.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
 			var keywords = searchText.split(' ');
 			return keywords.every((search) => {return text.indexOf(search) > -1});
-		},	
+		},
+        searchMobs (val) {
+		    if (val.length < 3) { return; }
+            this.loading = true;
+            getMobs({'search': val})
+			.then(res => {
+				if (res.status === 200) {
+					this.mobsList = res.data;
+				}
+		        this.loading = false;
+			});
+        },
 		makeRequest() {
-			request({'req': '%bestiaire:' + this.search.replace(/[\[\]]+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/(\s|\W)+/g, ',')})
+            var r = this.select.match(/\s*(.+?)\s*\[\s*(.+)\s*]/);
+			getBestiaire({'name': r[1], 'age': r[2]})
 				.then(res => {
 					if (res.status === 200 && res.data) {
 						this.result = '';
-						var l = res.data['message'].length;
+						var l = res.data['bestiaire'].length;
 						for (var i = 0; i < l; i++) {
-							this.result += res.data['message'][i];
+							this.result += res.data['bestiaire'][i];
 						}
 						this.blason = "" + this.result.match(/Blason\s*:\s*(.*)/)[1];
-						this.result = this.result.replace(/Blason.*|,$/gi, "");
+                        this.result = this.result.replace(/Blason.*|,$/gi, "");
 					}
 				})
 		},

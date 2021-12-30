@@ -74,6 +74,7 @@ class Mob(Being):
             if metamob.nom in mob.nom and len_metamob_nom > len_found_metamob_nom:
                 len_found_metamob_nom = len_metamob_nom
                 mob.metamob_id = metamob.id
+                mob.mob_meta = sg.db.rebind(metamob)
                 # Get the race if we have a similar mob
                 similar_mob = sg.db.session.query(Mob).filter(Mob.metamob_id == mob.metamob_id).first()
                 if similar_mob is not None and similar_mob:

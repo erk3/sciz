@@ -158,7 +158,6 @@ class Requester:
             filters = cls.owner_id.in_(users_id)
         elif cls is cdmEvent:
             query = query.outerjoin(User, cls.owner_id == User.id)
-            filters = and_(User.community_sharing == True)
         elif cls is Lieu:
             query = query.outerjoin(Piege)
             filters = and_(cls.destroyed != True, or_(cls.owner_id is None, cls.owner_id.in_(users_id)))
@@ -174,7 +173,7 @@ class Requester:
             elif cls is MobPrivate:
                 query = query.join(cls.mob)
             if key == 'recherche':
-                filters = and_(User.community_sharing == True, getattr(cls.mob.property.mapper.class_, 'mort') == False, getattr(cls, attr_pos_x) is not None, getattr(cls, attr_pos_y) is not None, getattr(cls, attr_pos_n) is not None)
+                filters = and_(getattr(cls.mob.property.mapper.class_, 'mort') == False, getattr(cls, attr_pos_x) is not None, getattr(cls, attr_pos_y) is not None, getattr(cls, attr_pos_n) is not None)
             if key == 'troll':
                 # Exclude personnal private for those not sharing it
                 filters = case([(cls.viewer_id.in_(users_id), and_(cls.viewer_id.in_(users_id), cls.troll_id != cls.viewer_id))], else_= cls.viewer_id.in_(sp4_users_id))
@@ -349,7 +348,6 @@ class Requester:
 
     def bestiaire(self, name, age):
         # Get all the related CdM
-        #res = sg.db.session.query(cdmEvent).outerjoin(User, User.community_sharing == True) \
         res = sg.db.session.query(cdmEvent) \
             .filter(cdmEvent.mob_nom == name, cdmEvent.mob_age == age) \
             .order_by(cdmEvent.time.desc()).all()
@@ -360,8 +358,8 @@ class Requester:
         # Copy the fixed properties and compute a set of cdms regrouped by mob id
         list_of_cdm_by_mob_id = {}
         for p in res:
-            sg.copy_properties(p, pm, ['capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour', 'vit_dep',
-                                       'vlc', 'vole', 'att_dist', 'att_mag'], False)
+            sg.copy_properties(p, pm, ['capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour',
+                                       'vit_dep', 'vlc', 'vole', 'att_dist', 'att_mag'], False)
             if p.mob_id in list_of_cdm_by_mob_id:
                 list_of_cdm_by_mob_id[p.mob_id] = list_of_cdm_by_mob_id[p.mob_id] + [p]
             else:

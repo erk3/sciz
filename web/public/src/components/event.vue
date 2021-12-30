@@ -158,7 +158,6 @@ export default {
 	components: { EventCDM, EventAA, EventTresor, EventChampi, EventTP, EventCP, EventBattle },
 	data() {
 		return {
-			tick: null,
 			loaded: false,
 			error: false,
 			success: false,
@@ -179,7 +178,6 @@ export default {
 			coteries: [],
 			max_date: new Date().toISOString().substr(0, 10),
 			limit: 25,
-			should_refresh: false,
 		}
 	},
 	beforeMount() {
@@ -210,12 +208,12 @@ export default {
 			const pageHeight = window.innerHeight;
 			const bottomOfPage = document.documentElement.scrollHeight;
 			if ((bottomOfPage <= fromTop + pageHeight) && this.loaded) {
-				this.loadEvents(this.limit, this.offset, true, false);
+				this.loadEvents(this.limit, this.offset, false);
 			}
 		},
 		refreshGroups() {
 			var coterie_courante = this.coterie_courante;
-			getGroups(false, false, false)
+			getGroups(false, false)
 				.then(res => {
 					if (res.status === 200) {
 						this.coterie_perso = res.data['coterie_perso'];
@@ -228,10 +226,7 @@ export default {
 								this.coterie_courante = coterie;
 							}
 						}); 	
-						this.loadEvents(this.limit, 0, true, true);
-						if (this.tick === null || this.tick === undefined) {
-							this.tick = window.setInterval(this.loadEvents, 10000, this.limit, 0, false, false);
-						}
+						this.loadEvents(this.limit, 0, true);
 					}
 				});
 		},
@@ -263,29 +258,22 @@ export default {
 			this.$store.commit('setCoterieName', this.coterie_courante.nom);
 			this.loadEvents(this.limit, 0, true, true);
 		},
-		loadEvents(limit, offset, old, force) {
+		loadEvents(limit, offset, force) {
 			if (!force && !this.loaded) { return; }
 			if (force) {
 				this.offset = 0;
 				this.events = [];
 			}
 			var lastPos = window.pageYOffset;
-			this.loaded = !old;
-			if (old && !force) {
-				this.$vuetify.goTo(document.documentElement.scrollHeight);
-			}
-			var last_time = (old) ? 0 : this.last_time;
+			this.loaded = false;
 			var revert = false;
 			if (this.date) {
 				revert = true;
 				if (this.time) {
-					last_time = this.$moment.utc(this.date + ' ' + this.time, 'YYYY-MM-DD hh:mm').toDate().getTime();
+					var last_time = this.$moment.utc(this.date + ' ' + this.time, 'YYYY-MM-DD hh:mm').toDate().getTime();
 				} else {
 					last_time = this.$moment.utc(this.date, 'YYYY-MM-DD').toDate().getTime();
 				}
-			}
-			if (!old && this.date) {
-				return; // No call if there is a date limit and it's not an 'old' call
 			}
 			getEvents(this.coterie_courante.id, limit, offset, last_time, revert)
 				.then(res => {
@@ -312,10 +300,6 @@ export default {
 							if (last > 0) {
 								item.repr = item.repr.substring(0, last - 1); // First line break
 							}
-							// Notification
-							if (!old) {
-								this.$notification.show('SCIZ', {body: item.repr}, {});
-							}
 							// Insert ordered
 							if (this.events.length < 1) {
 								this.events.splice(0, 0, item);
@@ -337,9 +321,6 @@ export default {
 							}
 						});
 						this.offset += events.length;
-					}
-					if (old && !force) {
-						this.$vuetify.goTo(lastPos);
 					}
 					this.$nextTick(() => {
 						this.loaded = true;

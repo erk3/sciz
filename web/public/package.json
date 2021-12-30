@@ -1,7 +1,6 @@
 {
   "name": "SCIZ",
   "version": "1.0.0",
-  "main": "index.html",
   "license": "MIT",
   "sitemap": {
     "siteURL": "https://www.sciz.fr/"
@@ -15,29 +14,30 @@
     "dist-clean": "yarn clean && rm -rf node_modules .cache"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.4",
-    "@vue/component-compiler-utils": "^3.2.0",
-    "sass": "^1.30.0",
-    "vue-template-compiler": "^2.6.12"
+    "@parcel/transformer-vue": "^2.0.1",
+    "@vue/compiler-sfc": "^3.2.26",
+    "@vue/component-compiler-utils": "^3.3.0",
+    "sass": "^1.45.1",
+    "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
-    "axios": "^0.21.1",
-    "cssnano": "^4.1.10",
-    "lodash": "^4.17.20",
-    "parcel-bundler": "^1.12.4",
-    "tiptap": "^1.30.0",
-    "tiptap-extensions": "^1.33.2",
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "axios": "^0.24.0",
+    "cssnano": "^4.1.11",
+    "lodash": "^4.17.21",
+    "parcel-bundler": "^1.2.15",
+    "postcss": "^8.4.5",
+    "prosemirror-model": "^1.16.1",
     "v-click-outside": "^3.1.2",
-    "vue-clipboard2": "^0.3.1",
+    "vue-clipboard2": "^0.3.3",
     "vue-cookies": "^1.7.4",
     "vue-hot-reload-api": "^2.3.4",
     "vue-lodash": "^2.1.2",
     "vue-moment": "^4.1.0",
     "vue-native-notification": "^1.1.1",
     "vue2": "^1.0.0",
-    "vuetify": "^2.4.0",
-    "vuex": "^3.6.0",
+    "vuetify": "^2.6.2",
+    "vuex": "^3.6.2",
     "webfontloader": "^1.6.28"
   },
   "resolutions": {

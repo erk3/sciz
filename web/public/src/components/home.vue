@@ -16,7 +16,7 @@
 				<p class="caption" v-show="show_desc">
 				SCIZ est un outil tourné vers <a href="https://www.mountyhall.com/">MountyHall</a> et destiné aux groupes de chasse.<br/>
 				Sa fonction première est d'aggréger, consolider, conserver et partager automagiquement les notifications mail envoyées par le jeu à chaque trõll.<br/>
-				Il permet en particulier de retrouver ces informations sur Mountyzilla, Miaou, Hangouts ou Discord.
+				Il permet en particulier de retrouver ces informations sur Mountyzilla, Miaou ou Discord.
 				</p>
 			</v-slide-y-transition>
 		</v-card-text>

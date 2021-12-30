@@ -4,7 +4,6 @@ import Router from 'vue-router';
 import HomeView from '~/src/components/home.vue';
 import EventView from '~/src/components/event.vue';
 import BestiaryView from '~/src/components/bestiary.vue';
-import PadView from '~/src/components/pad.vue';
 import ProfilView from '~/src/components/profil.vue';
 import ShareView from '~/src/components/share.vue';
 import PageNotFoundView from '~/src/components/404.vue';
@@ -37,14 +36,6 @@ var router = new Router({
 			path: '/bestiary',
 			name: 'BestiaryView',
 			component: BestiaryView,
-			meta: {
-				requiresAuth: true
-			}
-		},
-		{
-			path: '/pad',
-			name: 'PadView',
-			component: PadView,
 			meta: {
 				requiresAuth: true
 			}

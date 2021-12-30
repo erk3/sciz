@@ -20,6 +20,7 @@ from classes.lieu import Lieu
 from classes.event import Event
 from classes.event_cdm import cdmEvent
 from modules.mh_caller import MhCaller
+from modules.sql_helper import unaccent
 from functools import wraps
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
@@ -29,7 +30,6 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 from sqlalchemy import func, or_, and_, asc, desc
 import datetime, dateutil.relativedelta, json, math, re, sys, logging
 import modules.globals as sg
-
 
 # WEBAPP DEFINITION
 webapp = Flask('SCIZ', static_folder='./web/dist-public/static', template_folder='./web/dist-public/template')
@@ -100,6 +100,13 @@ def add_claims_to_access_token(identity):
     else:
         return { 'sub': identity.id }
 
+def jwt_check(view_function):
+    @wraps(view_function)
+    @jwt_required()
+    def wrapper(*args, **kwargs):
+        return view_function(*args, **kwargs)
+    return wrapper
+
 def user_jwt_check(view_function):
     @wraps(view_function)
     @jwt_required()
@@ -150,10 +157,15 @@ def login_register():
     return res, 200
 
 # MOBS
-@webapp.route('/api/mobs', endpoint='get_mobs_list', methods=('GET',))
+@webapp.route('/api/mobs', endpoint='get_mobs_list', methods=('POST',))
 @user_jwt_check
 def get_mobs_list():
-    cdms = sg.db.session.query(cdmEvent).outerjoin(User, cdmEvent.owner_id == User.id).filter(User.community_sharing == True).distinct(cdmEvent.mob_nom, cdmEvent.mob_age).group_by(Event.id, cdmEvent.id, cdmEvent.mob_nom, cdmEvent.mob_age).all()
+    data = request.get_json()
+    if 'search' not in data:
+        return jsonify(message='Une erreur est survenue...'), 400
+    v = sg.flatten(data.get('search'))
+    f = or_(unaccent(cdmEvent.mob_nom).ilike('%' + v + '%'), unaccent(cdmEvent.mob_age).ilike('%' + v + '%'))
+    cdms = sg.db.session.query(cdmEvent).distinct(cdmEvent.mob_nom, cdmEvent.mob_age).filter(f).group_by(Event.id, cdmEvent.id, cdmEvent.mob_nom, cdmEvent.mob_age).all()
     l = []
     for cdm in cdms:
         l.append({'nom': cdm.mob_nom + ' [' + cdm.mob_age + ']', 'blason_uri': cdm.mob.blason_uri})
@@ -163,7 +175,7 @@ def get_mobs_list():
 @webapp.route('/api/nbCDM', endpoint='get_nb_cdm', methods=('GET',))
 @user_jwt_check
 def get_nb_cdm():
-    res = jsonify(sg.db.session.query(cdmEvent).outerjoin(User, cdmEvent.owner_id == User.id).filter(User.community_sharing == True).count())
+    res = jsonify(sg.db.session.query(cdmEvent).count())
     return res, 200
 
 # USER PROFIL
@@ -186,8 +198,7 @@ def get_profil():
     res = jsonify(pseudo=user.nom, sciz_mail=user.mail, user_mail=user.user_mail,
                   session=user.web_session_duration // 60, pwd_mh=user.mh_api_key,
                   max_sp_dyn=user.max_mh_sp_dynamic, max_sp_sta=user.max_mh_sp_static,
-                  community_sharing=user.community_sharing, count_sp_dyn=user.nb_calls_today('Dynamique'),
-                  count_sp_sta=user.nb_calls_today('Statique'))
+                  count_sp_dyn=user.nb_calls_today('Dynamique'), count_sp_sta=user.nb_calls_today('Statique'))
     return res, 200
 
 @webapp.route('/api/profil', endpoint='set_profil', methods=('POST',))
@@ -247,10 +258,6 @@ def get_coteries(path):
     coterie_perso = sg.row2dict(partage_perso.coterie)
     coteries = [sg.row2dict(p.coterie) for p in partages_actifs]
     invitations = [sg.row2dict(p.coterie) for p in partages_invitations]
-    # Delete webpad if not necessary
-    if not 'withwebpad' in path:
-        for c in [coterie_perso] + coteries + invitations:
-            c['webpad'] = None
     # Add MP/PX link and hooks if admin ans asked for
     for p, c in zip([partage_perso] + partages_actifs + partages_invitations, [coterie_perso] + coteries + invitations):
         c['mp_link'] = p.coterie.mp_link
@@ -260,13 +267,10 @@ def get_coteries(path):
     # Result
     return jsonify(coterie_perso=coterie_perso, coteries=coteries, invitations=invitations), 200
 
-@webapp.route('/api/group/<int:id>/webpad', endpoint='get_coterie', methods=('GET',))
 @webapp.route('/api/group/<int:id>', endpoint='get_coterie', methods=('GET',))
 @user_jwt_check
 def get_coterie(id):
     coterie = sg.db.session.query(Coterie).get(id)
-    if not 'webpad' in request.url_rule.rule:
-        delattr(coterie, 'webpad')
     c = sg.row2dict(coterie)
     c['px_link'] = coterie.px_link
     c['mp_link'] = coterie.mp_link
@@ -443,16 +447,13 @@ def get_hook_trolls_for():
         return jsonify(trolls=hook.get_trolls_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/bestiaire', endpoint='get_hook_bestiaire', methods=('POST',))
-@hook_jwt_check
-def get_hook_bestiaire():
-    hook = sg.db.session.query(Hook).get(get_jwt_identity())
-    if hook is not None:
-        data = request.get_json()
-        if 'name' not in data or 'age' not in data:
-            return jsonify(message='Une erreur est survenue...'), 400
-        return jsonify(bestiaire=sg.req.bestiaire(data.get('name'), data.get('age'))), 200
-    return jsonify(message='Autorisation requise'), 401
+@webapp.route('/api/hook/bestiaire', endpoint='get_bestiaire', methods=('POST',))
+@jwt_check
+def get_bestiaire():
+    data = request.get_json()
+    if 'name' not in data or 'age' not in data:
+        return jsonify(message='Une erreur est survenue...'), 400
+    return jsonify(bestiaire=sg.req.bestiaire(data.get('name'), data.get('age'))), 200
 
 @webapp.route('/api/hook/traps', endpoint='get_hook_traps', methods=('POST',))
 @hook_jwt_check

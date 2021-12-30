@@ -2,6 +2,7 @@ import axios from 'axios'
 
 // DEBUG MODE ONLY
 //const API_URL = 'http://127.0.0.1:8080/api'
+//const API_URL = 'https://www.sciz.fr/api'
 // PRODUCTION MODE ONLY
 const API_URL = '/api'
 
@@ -31,8 +32,8 @@ export function reset(userData) {
 }
 
 // MOBS
-export function getMobs() {
-	return axios.get(API_URL + '/mobs');
+export function getMobs(req) {
+	return axios.post(API_URL + '/mobs', req);
 }
 
 export function getnbCDM() {
@@ -70,11 +71,8 @@ export function resetPassword(pwdData) {
 }
 
 // COTERIES
-export function getGroups(withWebPad, withInvites, withHooks) {
+export function getGroups(withInvites, withHooks) {
 	var url = API_URL + '/groups';
-	if (withWebPad) {
-		url += '/withwebpad'
-	}
 	if (withInvites) {
 		url += '/withinvites'
 	}
@@ -84,11 +82,8 @@ export function getGroups(withWebPad, withInvites, withHooks) {
 	return axios.get(url);
 }
 
-export function getGroup(id, withWebPad) {
+export function getGroup(id) {
 	var url = API_URL + '/group/' + id;
-	if (withWebPad) {
-		url += '/webpad'
-	}
 	return axios.get(url);
 }
 
@@ -133,8 +128,8 @@ export function saveFormat(hook_id, format) {
 	return axios.post(API_URL + '/hook/format/' + hook_id, format)
 }
 
-export function request(req) {
-	return axios.post(API_URL + '/user/request', req)
+export function getBestiaire(req) {
+	return axios.post(API_URL + '/hook/bestiaire', req)
 }
 
 export function resetFormat(hook_id) {

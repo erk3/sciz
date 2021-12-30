@@ -61,7 +61,7 @@ class SqlHelper:
     # Connect to the DB (create it if missing)
     def connect(self):
         db_url = 'postgresql+psycopg2://%s:%s@%s:%s/%s' % (self.db_user, self.db_pass, self.db_host, self.db_port, self.db_name)
-        self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_size=25, max_overflow=10, executemany_mode='batch')
+        self.engine = create_engine(db_url, encoding=sg.DEFAULT_CHARSET, client_encoding=sg.DEFAULT_CHARSET, pool_recycle=3600, pool_size=25, max_overflow=10, executemany_mode='batch')
         if self.db_name is not None and not database_exists(self.engine.url):
             create_database(self.engine.url)
         # Create the session for main querying
@@ -100,13 +100,13 @@ class SqlHelper:
     # Upsert any Private
     def reconciliate(self, obj):
         if any(isinstance(obj, c) for c  in [TrollPrivate, MobPrivate, ChampiPrivate, TresorPrivate]):
-            sg.logger.debug('Reconciliating %s...' % obj)
+            #sg.logger.debug('Reconciliating %s...' % obj)
             obj.reconciliate()
         return obj
 
     # Delete any object
     def delete(self, obj, given_session=None):
-        sg.logger.debug('Deleting %s...' % obj)
+        #sg.logger.debug('Deleting %s...' % obj)
         if given_session is None:
             session = self.new_session()
             obj = session.merge(obj)

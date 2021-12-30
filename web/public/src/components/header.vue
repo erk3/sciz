@@ -10,7 +10,6 @@
 				<v-btn :to="{name: 'HomeView'}" v-if="!isAuthenticated()" text>Accueil</v-btn>
 				<v-btn :to="{name: 'EventView'}" v-if="isAuthenticated()" text >Volière</v-btn>
 				<v-btn :to="{name: 'BestiaryView'}" v-if="isAuthenticated()" text >Bestiaire</v-btn>
-				<v-btn :to="{name: 'PadView'}" v-if="isAuthenticated()" text >Calepin</v-btn>
 			</v-col>
 			<!-- RIGHT SIDE -->
 			<v-col align="right" v-if="isAuthenticated()">

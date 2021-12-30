@@ -23,6 +23,7 @@ from sqlalchemy.sql.functions import ReturnTypeFromArgs
 import copy, requests, json, datetime
 import modules.globals as sg
 
+# FIXME: should import from module.sql_helper but creates a circular dependency...
 class unaccent(ReturnTypeFromArgs):
     pass
 

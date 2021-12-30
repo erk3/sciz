@@ -37,8 +37,6 @@ class User(sg.sqlalchemybase):
     max_mh_sp_static = Column(Integer(), default=1)
     # Web session duration
     web_session_duration = Column(Integer(), default=60)
-    # Community sharing
-    community_sharing = Column(Boolean, default=True)
 
     # Associations
     troll = relationship('Troll', back_populates='user', primaryjoin='User.id == Troll.id')
@@ -213,7 +211,6 @@ class User(sg.sqlalchemybase):
                 return None
             self.mh_api_key = kwargs.get('pwd_mh').strip()
             self.max_mh_sp_dynamic = max(min(16, int(kwargs.get('max_sp_dyn'))), 0)
-            self.community_sharing = kwargs.get('community_sharing')
             if not (0 <= self.max_mh_sp_dynamic <= 24 and 0 <= self.max_mh_sp_static <= 10):
                 return None
             return sg.db.upsert(self)
