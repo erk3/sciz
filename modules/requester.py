@@ -354,7 +354,7 @@ class Requester:
         # Create a mob private
         pm = MobPrivate()
         pm.mob = Mob(nom=name, age=age)
-        pm.mob = Mob.link_metamob(pm.mob)
+        pm.mob = Mob.link_metamob(pm.mob, rebind=True)
         # Copy the fixed properties and compute a set of cdms regrouped by mob id
         list_of_cdm_by_mob_id = {}
         for p in res:

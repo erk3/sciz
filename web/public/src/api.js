@@ -129,7 +129,7 @@ export function saveFormat(hook_id, format) {
 }
 
 export function getBestiaire(req) {
-	return axios.post(API_URL + '/hook/bestiaire', req)
+	return axios.post(API_URL + '/bestiaire', req)
 }
 
 export function resetFormat(hook_id) {

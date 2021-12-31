@@ -65,7 +65,7 @@ class Mob(Being):
         return sg.conf[sg.CONF_MH_SECTION][sg.CONF_LINK_MOB] + str(self.id)
 
     @staticmethod
-    def link_metamob(mob):
+    def link_metamob(mob, rebind=False):
         # Loop over every metamobs to find the longest one matching the mob name
         metamobs = sg.db.session.query(MetaMob).all()
         len_found_metamob_nom = 0
@@ -74,7 +74,8 @@ class Mob(Being):
             if metamob.nom in mob.nom and len_metamob_nom > len_found_metamob_nom:
                 len_found_metamob_nom = len_metamob_nom
                 mob.metamob_id = metamob.id
-                mob.mob_meta = sg.db.session.query(MetaMob).get(metamob.id)
+                if rebind:
+                    mob.mob_meta = sg.db.session.query(MetaMob).get(metamob.id)
                 # Get the race if we have a similar mob
                 similar_mob = sg.db.session.query(Mob).filter(Mob.metamob_id == mob.metamob_id).first()
                 if similar_mob is not None and similar_mob:

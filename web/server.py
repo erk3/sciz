@@ -441,13 +441,10 @@ def get_hook_treasures_for():
 def get_hook_trolls_for():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
     if hook is not None:
-        data = request.get_json()
-        if 'ids' not in data:
-            return jsonify(message='Une erreur est survenue...'), 400
-        return jsonify(trolls=hook.get_trolls_for(data.get('ids'))), 200
+        return jsonify(trolls=hook.get_trolls_for()), 200
     return jsonify(message='Autorisation requise'), 401
 
-@webapp.route('/api/hook/bestiaire', endpoint='get_bestiaire', methods=('POST',))
+@webapp.route('/api/bestiaire', endpoint='get_bestiaire', methods=('POST',))
 @jwt_check
 def get_bestiaire():
     data = request.get_json()

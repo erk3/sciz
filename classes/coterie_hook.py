@@ -125,33 +125,40 @@ class Hook(sg.sqlalchemybase):
         return treasures
 
     # Use the hook to get specific trolls
-    def get_trolls_for(self, trolls_id):
+    def get_trolls_for(self):
         if self.jwt is None: return
         # Build the list of active users
-        users_id = self.coterie.members_list_sharing(None, True, True)
+        users_id = self.coterie.members_list_sharing(None, True, True, True)
         # Find the trolls
         trolls = []
         filters = ['statut', 'action', 'resistance', 'maitrise', 'corpulence', 'agilite', 'armure', 'vue', 'regeneration', 'degats', 'attaque', 'esquive', 'reflexe']
-        for _id in trolls_id:
-            if int(_id) in users_id:
-                try:
-                    troll = sg.db.session.query(TrollPrivate) \
-                        .filter(and_(TrollPrivate.viewer_id.in_(users_id), TrollPrivate.troll_id == _id)) \
-                        .order_by(TrollPrivate.last_reconciliation_at.desc().nullslast())\
-                        .limit(1).all()
-                    for t in troll:
-                        trolls.append({
-                            'id': t.troll_id,
-                            'pdv': t.pdv,
-                            'pdv_max': t.pdv_max,
-                            'dla': t.next_dla.strftime('%d/%m %H:%M:%S') if t.next_dla else None,
-                            'fatigue': t.str_fatigue,
-                            'pa': t.pa,
-                            'concentration': t.concentration,
-                            'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
-                        });
-                except NoResultFound:
-                    pass
+        for _id in users_id:
+            try:
+                troll = sg.db.session.query(TrollPrivate) \
+                    .filter(and_(TrollPrivate.viewer_id.in_(users_id), TrollPrivate.troll_id == _id)) \
+                    .order_by(TrollPrivate.last_reconciliation_at.desc().nullslast())\
+                    .limit(1).all()
+                for t in troll:
+                    trolls.append({
+                        'id': t.troll_id,
+                        'nom': t.troll.nom,
+                        'niv': t.troll.niv,
+                        'race': t.troll.race,
+                        'pdv': t.pdv,
+                        'pdv_max': t.pdv_max,
+                        'dla': t.next_dla.strftime('%d/%m %H:%M:%S') if t.next_dla else None,
+                        'fatigue': t.str_fatigue,
+                        'pa': t.pa,
+                        'concentration': t.concentration,
+                        'pos_x': t.pos_x,
+                        'pos_y': t.pos_y,
+                        'pos_n': t.pos_n,
+                        'pos_n': t.pos_n,
+                        'statut': t.statut,
+                        'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
+                    });
+            except NoResultFound:
+                pass
         return trolls
 
     # Use the hook to get specific mushrooms
