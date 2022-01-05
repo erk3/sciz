@@ -22,12 +22,13 @@ from classes.event_cdm import cdmEvent
 from modules.mh_caller import MhCaller
 from modules.sql_helper import unaccent
 from functools import wraps
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, url_for, render_template, jsonify, request
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt, get_jwt_identity
 from flask_jwt_extended.view_decorators import _decode_jwt_from_request
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from sqlalchemy import func, or_, and_, asc, desc
+from authlib.integrations.flask_client import OAuth
 import datetime, dateutil.relativedelta, json, math, re, sys, logging
 import modules.globals as sg
 
@@ -36,6 +37,8 @@ webapp = Flask('SCIZ', static_folder='./web/dist-public/static', template_folder
 if webapp.debug or webapp.testing or webapp.env != 'production':
     cors = CORS(webapp, resources={r"/api/*": {"origins": "*"}})
 jwt = JWTManager()
+oauth = OAuth()
+#oauth = OAuth(aupdate_token=update_token)
 
 # WEBAPP CONFIG
 @webapp.before_first_request
@@ -55,6 +58,7 @@ def configure():
             else:
                 traceback.print_exc()
             sys.exit(1)
+    webapp.config['SECRET_KEY'] = sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_SECRET]
     webapp.config['JWT_SECRET_KEY'] = sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_SECRET]
     webapp.config['JWT_TOKEN_LOCATION'] = 'headers'
     webapp.config['JWT_HEADER_NAME'] = 'Authorization'
@@ -62,6 +66,43 @@ def configure():
     webapp.config['JWT_IDENTITY_CLAIM'] = 'identity'
     webapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     jwt.init_app(webapp)
+    oauth.init_app(webapp) 
+    oauth.register(
+        name='mh',
+        client_id='SCIZ',
+        client_secret='7xwwFSygQxj4RYfm',
+        request_token_url=None,
+        request_token_params=None,
+        access_token_url='https://games.mountyhall.com/mountyhall/libs/oauth2/token.php',
+        access_token_params=None,
+        authorize_url='https://games.mountyhall.com/mountyhall/libs/oauth2/authorize.php',
+        authorize_params=None,
+        api_base_url=None,
+        client_kwargs=None,
+    )
+
+### OAUTH 
+@webapp.route('/oauth')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return oauth.mh.authorize_redirect(redirect_uri)
+
+@webapp.route('/api/login/callback')
+def authorize():
+    token = oauth.mh.authorize_access_token()
+    sg.logger.info(token)
+    # FIXME : gérer access denied
+    # FIXME : puis récupérer user connecté
+    # FIXME : s'il existe s'authentifier SCIZ et basta pour le moment (stockage token MH plus tard)
+    # FIXME : s'il existe pas créer le user
+    # FIXME : supprimer les mots de passe de la table user
+    # FIXME : modifier l'UI pour un seul gros bouton "Authentification MH"
+    #sg.logger.info(oauth.mh.get('user', token=token))
+    #resp = oauth.twitter.get('account/verify_credentials.json')
+    #resp.raise_for_status()
+    #profile = resp.json()
+    # do something with the token and profile
+    return redirect('/')
 
 @webapp.errorhandler(500)
 def internal_error(error):
@@ -451,6 +492,15 @@ def get_bestiaire():
     if 'name' not in data or 'age' not in data:
         return jsonify(message='Une erreur est survenue...'), 400
     return jsonify(bestiaire=sg.req.bestiaire(data.get('name'), data.get('age'))), 200
+
+@webapp.route('/api/bestiaire/check', endpoint='bestiaire_check', methods=('POST',))
+@jwt_check
+def bestiaire_check():
+    data = request.get_json()
+    if 'mobs' not in data:
+        return jsonify(message='Une erreur est survenue...'), 400
+    return jsonify(bestiaire=sg.req.bestiaire_check(data.get('mobs'))), 200
+
 
 @webapp.route('/api/hook/traps', endpoint='get_hook_traps', methods=('POST',))
 @hook_jwt_check

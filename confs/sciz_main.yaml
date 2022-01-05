@@ -7,17 +7,16 @@ app:
 
 # Incoming mails configuration
 mail:
-  domain_name: 'domaine.sciz.a.changer'
+  domain_name: 'sciz.fr'
   maildirs_base_path: '/var/mail/vhosts/'
-  #maildirs_base_path: '/mail/'
 
 # Outgoing mails configuration
 smtp:
-  from: 'sciz-donotreply@domaine.a.changer'
+  from: 'SCIZ <do-not-reply@sciz.fr>'
   pwd: 'smtp_passwd'
-  host: 'smtp.host.a.changer'
-  tls: false
-  port: 25
+  host: '127.0.0.1'
+  tls: true
+  port: 465
 
 # Logging configuration
 log:
@@ -25,11 +24,11 @@ log:
   file_max_size: 5000000000 # 500Mo
   formatter: '%(asctime)s :: %(levelname)s :: %(module)s, line %(lineno)d :: %(message)s'
 
-# Web server configuration
+# Web server configuration (internal only)
 web:
   port: 8080
-  tls: false
-  domain: '0.0.0.0'
+  tls: true
+  domain: 'localhost'
   secret: 'ThisShouldBeAVeryLongAndRandomSecret1234'
 
 # Database configuration

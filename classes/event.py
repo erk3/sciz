@@ -19,7 +19,7 @@ class Event(sg.sqlalchemybase):
     # Owner Troll ID
     owner_id = Column(Integer, ForeignKey('being_troll.id'))
     # Owner Troll name
-    owner_nom = Column(String(50))
+    owner_nom = Column(String(150))
     # Datetime
     time = Column(DateTime())
     # Type of event (from MH)

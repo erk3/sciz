@@ -346,6 +346,16 @@ class Requester:
             recap = ' s\'ennuie !'
         return res + recap
 
+    def bestiaire_check(self, mobs):
+        check = []
+        for mob in mobs:
+            res = sg.db.session.query(cdmEvent) \
+                .filter(cdmEvent.mob_nom == mob['name'], cdmEvent.mob_age == mob['age']) \
+                .count()
+            if (res > 0):
+                check.append(mob['name'] + ' ' + mob['age'])
+        return check
+
     def bestiaire(self, name, age):
         # Get all the related CdM
         res = sg.db.session.query(cdmEvent) \
@@ -400,4 +410,4 @@ class Requester:
                 setattr(pm, attr_min, min(list_attr_min))
             if len(list_attr_max) > 0:
                 setattr(pm, attr_max, max(list_attr_max))
-        return sg.no.stringify(pm, None, None)
+        return sg.no.stringify(pm, None, None) + '\nBasé sur %s CDM' % (len(res),)
