@@ -33,7 +33,7 @@ class followerEvent(Event):
 
     # Associations
     follower = relationship('Mob', primaryjoin='followerEvent.follower_id == Mob.id')
-    owner = relationship('Troll', primaryjoin='followerEvent.owner_id == Troll.id')
+    owner = relationship('Troll', primaryjoin='followerEvent.owner_id == Troll.id', viewonly=True)
 
     # SQL Table Mapping
     __tablename__ = 'event_follower'

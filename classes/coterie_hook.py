@@ -23,10 +23,6 @@ from sqlalchemy.sql.functions import ReturnTypeFromArgs
 import copy, requests, json, datetime
 import modules.globals as sg
 
-# FIXME: should import from module.sql_helper but creates a circular dependency...
-class unaccent(ReturnTypeFromArgs):
-    pass
-
 # CLASS DEFINITION
 class Hook(sg.sqlalchemybase):
 
@@ -216,7 +212,7 @@ class Hook(sg.sqlalchemybase):
         return traps
 
     # Use the hook to get specific events
-    def get_events_for(self, being_id, start_time, end_time, event_type = None):
+    def get_events_for(self, being_id, start_time, end_time):
         if self.jwt is None: return
         # Build the list of active users
         users_id = self.coterie.members_list_sharing(None, None, True)
@@ -229,12 +225,6 @@ class Hook(sg.sqlalchemybase):
                           Event.mail_subject.ilike('%' + str(being_id) + '%'),
                           Event.mail_body.ilike('%' + str(being_id) + '%')
                       ))
-            if event_type is not None:
-                filter = and_(filter,
-                              or_(
-                                  unaccent(Event.mail_subject).ilike('%' + event_type + '%'),
-                                  unaccent(Event.mail_body).ilike('%' + event_type + '%')
-                              ))
             events = sg.db.session.query(Event).filter(filter).order_by(asc(Event.time)).limit(50).all()
         except NoResultFound as e:
             events = []

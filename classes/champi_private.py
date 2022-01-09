@@ -53,7 +53,7 @@ class ChampiPrivate(sg.sqlalchemybase):
 
     # Associations
     champi = relationship('Champi', back_populates='champi_privates', primaryjoin='ChampiPrivate.champi_id == Champi.id')
-    viewer = relationship('Troll', back_populates='viewed_champi_privates', primaryjoin='ChampiPrivate.viewer_id == Troll.id')
+    viewer = relationship('Troll', back_populates='viewed_champi_privates', primaryjoin='ChampiPrivate.viewer_id == Troll.id', viewonly=True)
     owner = relationship('Troll', back_populates='owned_champi_privates', primaryjoin='ChampiPrivate.owner_id == Troll.id and ChampiPrivate.viewer_id == Troll.id')
 
     # SQL Table Mapping

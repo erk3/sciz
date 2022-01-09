@@ -122,7 +122,7 @@ class MobPrivate(sg.sqlalchemybase):
     last_reconciliation_by = Column(Integer, ForeignKey('being_troll.id', ondelete='SET NULL'))
 
     # Associations
-    viewer = relationship('Troll', back_populates='viewed_mob_privates', primaryjoin='MobPrivate.viewer_id == Troll.id')
+    viewer = relationship('Troll', back_populates='viewed_mob_privates', primaryjoin='MobPrivate.viewer_id == Troll.id', viewonly=True)
     owner = relationship('Troll', back_populates='owned_mob_privates', primaryjoin='MobPrivate.owner_id == Troll.id')
     mob = relationship('Mob', back_populates='mob_privates', primaryjoin='MobPrivate.mob_id == Mob.id')
 

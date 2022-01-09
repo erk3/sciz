@@ -67,7 +67,7 @@ class TresorPrivate(sg.sqlalchemybase):
     # Associations
     tresor_meta = relationship('MetaTresor', back_populates='tresor_privates', primaryjoin='TresorPrivate.metatresor_id == MetaTresor.id')
     tresor = relationship('Tresor', back_populates='tresor_privates', primaryjoin='TresorPrivate.tresor_id == Tresor.id')
-    viewer = relationship('Troll', back_populates='viewed_tresor_privates', primaryjoin='TresorPrivate.viewer_id == Troll.id')
+    viewer = relationship('Troll', back_populates='viewed_tresor_privates', primaryjoin='TresorPrivate.viewer_id == Troll.id', viewonly=True)
     owner = relationship('Troll', back_populates='owned_tresor_privates', primaryjoin='TresorPrivate.owner_id == Troll.id and TresorPrivate.viewer_id == Troll.id')
 
     # SQL Table Mapping

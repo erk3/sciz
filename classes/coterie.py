@@ -36,9 +36,9 @@ class Coterie(sg.sqlalchemybase):
     # Associations
     partages = relationship('Partage', back_populates='coterie', primaryjoin='Coterie.id == Partage.coterie_id', cascade='all,delete-orphan')
     hooks = relationship('Hook', back_populates='coterie', primaryjoin='Coterie.id == Hook.coterie_id', cascade='all,delete-orphan')
-    hook_miaou = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Miaou")', uselist=False)
-    hook_discord = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Discord")', uselist=False)
-    hook_mountyzilla = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Mountyzilla")', uselist=False)
+    hook_miaou = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Miaou")', uselist=False, viewonly=True)
+    hook_discord = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Discord")', uselist=False, viewonly=True)
+    hook_mountyzilla = relationship('Hook', primaryjoin='and_(Coterie.id == Hook.coterie_id, Hook.type == "Mountyzilla")', uselist=False, viewonly=True)
 
     # SQL Table Mapping
     __tablename__ = 'coterie'

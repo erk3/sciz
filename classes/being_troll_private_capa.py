@@ -31,9 +31,9 @@ class TrollPrivateCapa(sg.sqlalchemybase):
     bonus = Column(Integer, default=0)
 
     # Associations
-    troll = relationship('Troll', back_populates='troll_privates_capas', primaryjoin='TrollPrivateCapa.troll_id == Troll.id')
-    viewer = relationship('Troll', back_populates='viewed_troll_privates_capas', primaryjoin='TrollPrivateCapa.viewer_id == Troll.id')
-    troll_private = relationship('TrollPrivate', back_populates='troll_privates_capas', primaryjoin='and_(foreign(TrollPrivateCapa.troll_id) == TrollPrivate.troll_id, foreign(TrollPrivateCapa.viewer_id) == TrollPrivate.viewer_id)', remote_side=(TrollPrivate.troll_id, TrollPrivate.viewer_id))
+    troll = relationship('Troll', back_populates='troll_privates_capas', primaryjoin='TrollPrivateCapa.troll_id == Troll.id', viewonly=True)
+    viewer = relationship('Troll', back_populates='viewed_troll_privates_capas', primaryjoin='TrollPrivateCapa.viewer_id == Troll.id', viewonly=True)
+    troll_private = relationship('TrollPrivate', back_populates='troll_privates_capas', primaryjoin='and_(foreign(TrollPrivateCapa.troll_id) == TrollPrivate.troll_id, foreign(TrollPrivateCapa.viewer_id) == TrollPrivate.viewer_id)', remote_side=(TrollPrivate.troll_id, TrollPrivate.viewer_id), viewonly=True)
     metacapa = relationship('MetaCapa', primaryjoin='TrollPrivateCapa.metacapa_id == MetaCapa.id')
 
     # SQL Table Mapping

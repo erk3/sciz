@@ -40,7 +40,7 @@ class Event(sg.sqlalchemybase):
     fatigue = Column(Integer)
 
     # Associations
-    owner = relationship('Troll', primaryjoin='Event.owner_id == Troll.id')
+    owner = relationship('Troll', primaryjoin='Event.owner_id == Troll.id', viewonly=True)
     #owner_private_troll = relationship('TrollPrivate', primaryjoin='and_(Event.owner_id == TrollPrivate.troll_id, Event.owner_id = TrollPrivate.viewer_id)')
 
     # SQL Table Mapping
