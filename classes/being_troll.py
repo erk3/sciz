@@ -32,6 +32,7 @@ class Troll(Being):
     # Guilde rank identifier
     guilde_rang = Column(Integer)
     # Is in stasis ?
+    intangible = Column(Boolean)
     # Is a NPC ?
     pnj = Column(Boolean)
     # Is a friend of the MH team ?
