@@ -57,6 +57,10 @@ var router = new Router({
 			}
 		},
 		{
+			path: '/api/login/callback',
+			redirect: '/event',
+		},
+        {
 			path: '*',
 			name: 'PageNotFoundView',
 			component: PageNotFoundView
@@ -67,9 +71,9 @@ var router = new Router({
 router.beforeEach((to, from, next) => {
 	// Try to auto-authenticate
 	if (!store.getters.isAuthenticated()) {
-		var cookie = window.$cookies.get('sciz');
-		if (cookie) {
-			store.commit('setCookie', cookie);
+		var jwt = window.$cookies.get('sciz_session');
+		if (jwt) {
+			store.commit('setSession', jwt);
 		}
 	}
 	// Guard for non-authenticated user
@@ -78,7 +82,9 @@ router.beforeEach((to, from, next) => {
 			path: '/',
 			params: { nextUrl: to.fullPath }
 		});
-	} else {
+    } else if (store.getters.isAuthenticated() && to.path === '/' ) {
+		next({ path: '/event' });
+    } else {
 		next();
 	}
 });

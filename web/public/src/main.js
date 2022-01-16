@@ -4,7 +4,7 @@ import Vue from 'vue';
 // VUE RESOURCE IMPORT
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
-Vue.http.options.root = '/api/';
+//Vue.http.options.root = '/api/';
 
 // VUETIFY + FONTAWESOME IMPORT
 import Vuetify from 'vuetify';

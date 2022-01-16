@@ -422,14 +422,14 @@ class battleEvent(Event):
             return 'armor.svg'
         if 'Vision accrue' in self.type:
             return 'binoculars.svg'
-        if any(w in self.type for w in [' programmée', 'Protection ']):
+        if any(w in self.type for w in [' programmée', 'Protection']):
             return 'stopwatch.svg'
         if any(w in self.type for w in ['Explosion', 'Piège à feu']):
             return 'explosion.svg'
-        if any(w in self.type for w in ['Glue de', 'Piège à glue']):
+        if any(w in self.type for w in ['Glue', 'Piège à glue']):
             return 'glue.svg'
-        if any(w in self.type for w in ['Camouflage de', ' invisibilité']):
-            return ' invisible-man.svg'
+        if any(w in self.type for w in ['Camouflage', 'Invisibilité']):
+            return 'invisible-man.svg'
         if 'Vision lointaine' in self.type:
             return 'telescope.svg'
         if 'Vampirisme' in self.type:
@@ -440,7 +440,7 @@ class battleEvent(Event):
             return 'levitation.svg'
         if 'Ronflements' in self.type:
             return 'dreaming.svg'
-        if any(w in self.type for w in ['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sand de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'pu\'rin', 'Zet crakdedand']):
+        if any(w in self.type for w in ['Lancer', 'Baume de', 'Dower', 'Sinne', 'Sang de', 'Elixir', 'Essence', 'Extrait', 'Jus de', 'Conserve', 'Métomol', 'Potion ', 'Pufpuff', 'Toxine', 'Voï\'pu\'rin', 'Zet crakdedand']):
             return 'flask.svg'
         if any(w in self.type for w in ['Idée ', 'Plan ', 'Rune ', 'Traité ', 'Yeu\'ki\'pic']):
             return 'scroll.svg'

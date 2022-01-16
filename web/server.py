@@ -22,13 +22,14 @@ from classes.event_cdm import cdmEvent
 from modules.mh_caller import MhCaller
 from modules.sql_helper import unaccent
 from functools import wraps
-from flask import Flask, url_for, render_template, jsonify, request
+from flask import Flask, url_for, render_template, jsonify, request, make_response, redirect
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt, get_jwt_identity
 from flask_jwt_extended.view_decorators import _decode_jwt_from_request
 from flask_jwt_extended.exceptions import NoAuthorizationError
 from sqlalchemy import func, or_, and_, asc, desc
 from authlib.integrations.flask_client import OAuth
+from authlib.integrations.base_client.errors import OAuthError
 import datetime, dateutil.relativedelta, json, math, re, sys, logging
 import modules.globals as sg
 
@@ -58,6 +59,7 @@ def configure():
             else:
                 traceback.print_exc()
             sys.exit(1)
+    # Setup
     webapp.config['SECRET_KEY'] = sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_SECRET]
     webapp.config['JWT_SECRET_KEY'] = sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_SECRET]
     webapp.config['JWT_TOKEN_LOCATION'] = 'headers'
@@ -66,43 +68,48 @@ def configure():
     webapp.config['JWT_IDENTITY_CLAIM'] = 'identity'
     webapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     jwt.init_app(webapp)
-    oauth.init_app(webapp) 
+    oauth.init_app(webapp)
     oauth.register(
-        name='mh',
-        client_id='SCIZ',
-        client_secret='7xwwFSygQxj4RYfm',
-        request_token_url=None,
-        request_token_params=None,
-        access_token_url='https://games.mountyhall.com/mountyhall/libs/oauth2/token.php',
-        access_token_params=None,
-        authorize_url='https://games.mountyhall.com/mountyhall/libs/oauth2/authorize.php',
-        authorize_params=None,
-        api_base_url=None,
-        client_kwargs=None,
+        name = 'mh',
+        server_metadata_url = sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_SERVER_METADATA_URL],
+        client_id = sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_CLIENT_ID],
+        client_secret = sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_CLIENT_SECRET],
+        client_kwargs = {'scope': sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_CLIENT_SCOPE]}
     )
 
-### OAUTH 
-@webapp.route('/oauth')
+### OAUTH
+@webapp.route('/api/login')
 def login():
     redirect_uri = url_for('authorize', _external=True)
     return oauth.mh.authorize_redirect(redirect_uri)
 
 @webapp.route('/api/login/callback')
 def authorize():
-    token = oauth.mh.authorize_access_token()
-    sg.logger.info(token)
-    # FIXME : gérer access denied
-    # FIXME : puis récupérer user connecté
-    # FIXME : s'il existe s'authentifier SCIZ et basta pour le moment (stockage token MH plus tard)
-    # FIXME : s'il existe pas créer le user
-    # FIXME : supprimer les mots de passe de la table user
-    # FIXME : modifier l'UI pour un seul gros bouton "Authentification MH"
-    #sg.logger.info(oauth.mh.get('user', token=token))
-    #resp = oauth.twitter.get('account/verify_credentials.json')
-    #resp.raise_for_status()
-    #profile = resp.json()
-    # do something with the token and profile
-    return redirect('/')
+    try:
+        token = oauth.mh.authorize_access_token()
+    except OAuthError:
+        return redirect('/?error=1')
+    if token is None:
+        return redirect('/?error=1')
+    userinfo = oauth.mh.userinfo()
+    if userinfo is None:
+        return redirect('/?error=1')
+    user = sg.db.session.query(User).get(userinfo['sub'])
+    if user is None:
+        user = User(id = userinfo['sub'])
+        user = sg.db.upsert(user)
+        sg.db.session, user = sg.db.rebind(user)
+    #sg.logger.info(userinfo)
+    user.troll.nom = userinfo['nom']
+    user.troll.niv = userinfo['niveau']
+    user.troll.race = userinfo['race']
+    user.troll.blason_uri = userinfo['blason']
+    user.troll.guilde_id = userinfo['guilde']['id']
+    user = sg.db.upsert(user)
+    jwt = create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration))
+    res = make_response(render_template('index.html'))
+    res.set_cookie('sciz_session', jwt, secure=True)
+    return res, 200
 
 @webapp.errorhandler(500)
 def internal_error(error):
@@ -130,11 +137,8 @@ def add_claims_to_access_token(identity):
     if isinstance(identity, User):
         return {
             'hook_type': 'USER',
-            'sub': identity.id,
-            'iat': now,
-            'exp': now + datetime.timedelta(minutes=identity.web_session_duration),
-            'dom': sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_DOMAIN],
-            'sec': sg.conf[sg.CONF_WEB_SECTION][sg.CONF_WEB_TLS]
+            'nom': identity.troll.nom,
+            'blason_uri': identity.troll.blason_uri
         }
     elif isinstance(identity, Hook):
         return {'hook_type': 'HOOK', 'sub': identity.id, 'type': identity.type}
@@ -177,26 +181,6 @@ def hook_jwt_check(view_function):
 
 # ROUTES DEFINITION
 
-# LOGIN & REGISTER
-@webapp.route('/api/login', methods=('POST',))
-@webapp.route('/api/register', methods=('POST',))
-@webapp.route('/api/reset', methods=('POST',))
-def login_register():
-    data = request.get_json()
-    user, error = None, None
-    if 'register' in request.url_rule.rule:
-        user, error = User.register(**data)
-    elif 'reset' in request.url_rule.rule:
-        user, error = User.reset(**data)
-    else:
-        user, error = User.authenticate(**data)
-    if user is None:
-        return jsonify(message=error), 400
-    user = sg.db.session.query(User).get(user.id)
-    user_flat = {'id': user.id, 'nom': user.nom, 'blason_uri': user.blason_uri}
-    res = jsonify(jwt=create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration)), user=user_flat)
-    return res, 200
-
 # MOBS
 @webapp.route('/api/mobs', endpoint='get_mobs_list', methods=('POST',))
 @user_jwt_check
@@ -236,7 +220,7 @@ def get_users_list(id):
 @user_jwt_check
 def get_profil():
     user = sg.db.session.query(User).get(get_jwt_identity())
-    res = jsonify(pseudo=user.nom, sciz_mail=user.mail, user_mail=user.user_mail,
+    res = jsonify(sciz_mail=user.mail, user_mail=user.user_mail,
                   session=user.web_session_duration // 60, pwd_mh=user.mh_api_key,
                   max_sp_dyn=user.max_mh_sp_dynamic, max_sp_sta=user.max_mh_sp_static,
                   count_sp_dyn=user.nb_calls_today('Dynamique'), count_sp_sta=user.nb_calls_today('Statique'))
@@ -274,16 +258,6 @@ def get_mh_calls(page):
     total_calls = sg.db.session.query(MhCall).filter(MhCall.user_id == get_jwt_identity()).count()
     calls = sg.db.session.query(MhCall).filter(MhCall.user_id == get_jwt_identity()).order_by(MhCall.time.desc()).offset(min(total_calls, 10 * (page - 1))).limit(10).all()
     return jsonify(total=total_calls, calls=[sg.row2dict(c) for c in calls]), 200
-
-@webapp.route('/api/resetPassword', endpoint='reset_password', methods=('POST',))
-@user_jwt_check
-def reset_password():
-    data = request.get_json()
-    user = sg.db.session.query(User).get(get_jwt_identity())
-    user, error = user.resetPassword(**data)
-    if user is None:
-        return jsonify(message=error), 400
-    return jsonify(message='Mot de passe modifié !'), 200
 
 # GROUPS
 @webapp.route('/api/groups/<path:path>', endpoint='get_coteries', methods=('GET',))
@@ -372,9 +346,9 @@ def create_coterie():
 def get_partages(id):
     coterie = sg.db.session.query(Coterie).get(id)
     if coterie.has_partage(get_jwt_identity()) or coterie.has_pending_partage(get_jwt_identity()):
-        return jsonify(admins=[{'partage': sg.row2dict(p), 'nom': p.user.pseudo, 'blason_uri': p.user.blason_uri} for p in coterie.partages_admins],
-                       users=[{'partage': sg.row2dict(p), 'nom': p.user.pseudo, 'blason_uri': p.user.blason_uri} for p in coterie.partages_utilisateurs],
-                       pending=[{'partage': sg.row2dict(p), 'nom': p.user.pseudo, 'blason_uri': p.user.blason_uri} for p in coterie.partages_invitations]), 200
+        return jsonify(admins=[{'partage': sg.row2dict(p), 'nom': p.user.nom, 'blason_uri': p.user.blason_uri} for p in coterie.partages_admins],
+                       users=[{'partage': sg.row2dict(p), 'nom': p.user.nom, 'blason_uri': p.user.blason_uri} for p in coterie.partages_utilisateurs],
+                       pending=[{'partage': sg.row2dict(p), 'nom': p.user.nom, 'blason_uri': p.user.blason_uri} for p in coterie.partages_invitations]), 200
     return jsonify(message='Autorisation requise'), 401
 
 @webapp.route('/api/shares/<int:id>', endpoint='delete_partage', methods=('DELETE',))
@@ -462,7 +436,7 @@ def get_hook_events():
 def get_hook_events_for(being_id, start_time, end_time):
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
     if hook is not None:
-        return jsonify(events=hook.get_events_for(being_id, start_time, end_time, event_type)), 200
+        return jsonify(events=hook.get_events_for(being_id, start_time, end_time)), 200
     return jsonify(message='Autorisation requise'), 401
 
 @webapp.route('/api/hook/treasures', endpoint='get_hook_treasures_for', methods=('POST',))

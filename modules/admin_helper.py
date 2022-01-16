@@ -109,6 +109,7 @@ class AdminHelper:
                 continue
             if last_ftp_call is None or (now - last_ftp_call).total_seconds() >= self.ftpRefresh * 60:
                 try:
+                    sg.mc.guildes_ftp_call()
                     sg.mc.trolls2_ftp_call()
                     sg.mc.monstres_ftp_call()
                     sg.mc.tresors_ftp_call()

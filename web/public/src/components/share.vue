@@ -139,7 +139,7 @@
 									<v-tooltip top>
 										<template v-slot:activator="{ on, attrs }">
 											<v-btn icon @click="show_shares = !show_shares" v-bind="attrs" v-on="on">
-												<v-icon size="16px">{{ show_shares ? 'fas fa-chevron-down' : 'fas fa-chevron-up' }}</v-icon>
+												<v-icon size="16px">{{ show_shares ? 'fas fa-chevron-up' : 'fas fa-chevron-down' }}</v-icon>
 											</v-btn>
 										</template>
 										<span>Partages de la coterie</span>
@@ -251,8 +251,8 @@
 									<template slot="selection" slot-scope="data">
 										<v-chip close close-icon="far fa-times-circle" @click:close="removePending(data.item)">
 											<v-avatar>
-												<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain></v-img>
-												<v-img v-else :src="Image('unknown')" alt="" contain></v-img>
+												<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain max-width="30px"></v-img>
+								                <v-img v-else :src="Image('unknown')" alt="" contain max-width='30'></v-img>
 											</v-avatar>
 											{{ data.item.nom }}
 										</v-chip>
@@ -260,7 +260,7 @@
 									<template slot="item" slot-scope="data">
 										<v-list-tile-avatar>
 											<v-img :src="data.item.blason_uri" v-if="data.item.blason_uri" @error="data.item.blason_uri=Image('unknown')" alt="" contain max-width="30px"></v-img>
-											<v-img v-else :src="Image('unknown')" alt="" contain></v-img>
+								            <v-img v-else :src="Image('unknown')" alt="" contain max-width='30'></v-img>
 										</v-list-tile-avatar>
 										<v-list-tile-content>
 											<v-list-tile-title> {{ data.item.nom }} ({{ data.item.id }}) </v-list-tile-title>

@@ -12,6 +12,7 @@ from classes.being_mob_meta import MetaMob
 from classes.being_mob_private import MobPrivate
 from classes.tresor_meta import MetaTresor
 from classes.lieu import Lieu
+from classes.guilde import Guilde
 from classes.tresor import Tresor
 from classes.tresor_private import TresorPrivate
 from classes.champi import Champi
@@ -45,6 +46,7 @@ class MhCaller:
         self.ftpTresors = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_TRESORS]
         self.ftpSorts = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_SORTS]
         self.ftpComps = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_COMPS]
+        self.ftpGuildes = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_GUILDES]
         self.ftpEvents = sg.conf[sg.CONF_MH_SECTION][sg.CONF_FTP_EVENTS]
 
     # Main MH caller (should never be a show-stopper, if MH is down for example)
@@ -225,8 +227,11 @@ class MhCaller:
             sg.db.upsert(mh_call)
             sg.logger.warning('Error %s while calling profil4 for user %s' % (mh_call.status, user.id))
             if mh_call.status == '6' or mh_call.status == '2':
-                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0' % (user.id,))
+                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0 and disabling hook propagation' % (user.id,))
                 user.max_mh_sp_static = user.max_mh_sp_dynamic = 0
+                for p in user.partages:
+                    p.disablePropagation()
+                    sg.db.upsert(p)
                 sg.db.upsert(user)
             if verbose:
                 print('Erreur lors de la mise à jour du troll n°%s' % user.id)
@@ -365,8 +370,11 @@ class MhCaller:
             sg.db.upsert(mh_call)
             sg.logger.warning('Error %s while calling Vue2 for user %s' % (mh_call.status, user.id))
             if mh_call.status == '6' or mh_call.status == '2':
-                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0' % (user.id,))
+                sg.logger.warning('MH account for user %s is deactivated, setting SP limits to 0 and disabling hook propagation' % (user.id,))
                 user.max_mh_sp_static = user.max_mh_sp_dynamic = 0
+                for p in user.partages:
+                    p.disablePropagation()
+                    sg.db.upsert(p)
                 sg.db.upsert(user)
             if verbose:
                 print('Erreur lors de la mise à jour de la vue du troll n°%s' % user.id)
@@ -501,5 +509,35 @@ class MhCaller:
         if len(to_update) > 0:
             session = sg.db.new_session()
             session.bulk_update_mappings(Mob, [sg.row2dictWithoutNone(mob) for mob in to_update])
+            session.commit()
+            session.close()
+
+    # Caller to MH Guildes FTP
+    # See http://ftp.mountyhall.com/help.txt
+    def guildes_ftp_call(self):
+        sg.logger.info('Calling Guildes MH FTP...')
+        # Get the file
+        sep = ';'
+        mh_r = requests.get('http://%s/%s' % (self.ftpURL, self.ftpGuildes))
+        lines = mh_r.text.split('\n')
+        guildes = []
+        i = 0
+        for line in lines:
+            if line.count(sep) == 3: # Some lines are wrongly formated
+                # Get the data
+                guilde_id, guilde_nom, guilde_count, _ = line.split(sep)
+                guilde = Guilde(id=guilde_id, nom=guilde_nom, count=guilde_count)
+                guildes.append(guilde)
+        # Separate existing and new objects
+        existing = [str(r.id) for r in sg.db.session.query(Guilde.id).filter(Guilde.id.in_([guilde.id for guilde in guildes])).all()]
+        to_insert = [guilde for guilde in guildes if str(guilde.id) not in existing]
+        to_update = [guilde for guilde in guildes if str(guilde.id) in existing]
+        # Bulk insert new objects
+        if len(to_insert) > 0:
+            sg.db.engine.execute(Guilde.__table__.insert(), [sg.row2dict(guilde) for guilde in to_insert])
+        # Bulk update old objects
+        if len(to_update) > 0:
+            session = sg.db.new_session()
+            session.bulk_update_mappings(Guilde, [sg.row2dictWithoutNone(guilde) for guilde in to_update])
             session.commit()
             session.close()

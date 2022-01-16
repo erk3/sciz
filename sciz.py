@@ -88,8 +88,8 @@ class SCIZ:
         #    user.mh_api_key = user.mh_api_key.strip() if user.mh_api_key is not None else user.mh_api_key
         #    sg.db.upsert(user)
         ### Create a test user
-        user = User(id=1, pseudo='Test', pwd_hash='test', mh_api_key='TEST')
-        sg.db.upsert(user)
+        #user = User(id=1, pwd_hash='test', mh_api_key='TEST')
+        #sg.db.upsert(user)
         pass
 
 

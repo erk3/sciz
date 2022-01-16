@@ -151,6 +151,7 @@ class Hook(sg.sqlalchemybase):
                         'pos_n': t.pos_n,
                         'pos_n': t.pos_n,
                         'statut': t.statut,
+                        'guilde': t.troll.guilde.nom if t.troll.guilde else None,
                         'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
                     });
             except NoResultFound:

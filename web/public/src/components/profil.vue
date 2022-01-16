@@ -20,12 +20,6 @@
 				<v-btn dark text @click="info = false" v-bind="attrs">Fermer</v-btn>
 			</template>
 		</v-snackbar>
-		<v-snackbar v-model="error_pwd" color="error" :timeout="6000" top>
-			{{ error_pwd_msg }}
-			<template v-slot:action="{ attrs }">
-				<v-btn dark text @click="error_pwd = false" v-bind="attrs">Fermer</v-btn>
-			</template>
-		</v-snackbar>
 		<!-- SIDEBAR -->
 		<v-navigation-drawer app floating>
 			<v-row align="center" justify="center" class="fill-height pl-15">
@@ -59,8 +53,7 @@
 											<span>Cliquer pour copier</span>
 										</v-tooltip>
 										<br/><br/>
-										<v-text-field label="Pseudonyme" v-model="user.pseudo" hint="Lorsque possible, votre pseudonyme remplacera votre nom dans SCIZ"></v-text-field><br/>
-										<v-text-field label="Courriel" v-model="user.user_mail" hint="Votre courriel est uniquement utilisé pour vous retourner vos codes de transfert et contrôler l'expéditeur des notifications envoyées à votre boite aux lettres SCIZ" :rules="[mailRule]"></v-text-field><br/><br/>
+										<v-text-field label="Courriel" v-model="user.user_mail" always-dirty hint="Votre courriel est uniquement utilisé pour vous retourner vos codes de transfert et contrôler l'expéditeur des notifications envoyées à votre boite aux lettres SCIZ" :rules="[mailRule]"></v-text-field><br/><br/>
 										<v-tooltip top>
 											<template v-slot:activator="{ on, attrs }">
 												<v-slider label="Durée de session" v-model="user.session" :thumb-size="24" thumb-label="always" min="1" max="24" always-dirty hint="Durée maximum en heures avant déconnexion de votre session SCIZ" persistent-hint v-bind="attrs" v-on="on"></v-slider>
@@ -69,39 +62,6 @@
 										</v-tooltip><br/>
 										<v-switch label="Utiliser le mode sombre" v-model="mode" :input-value="mode" true-value="dark" false-value="light" @change="switchMode(mode)"></v-switch><br/>
 										<br/>
-										<!-- RESET PWD DIALOG -->
-										<v-dialog v-model="pwd_dialog" max-width="50%">
-											<template v-slot:activator="{ on, attrs }">
-												<v-btn v-bind="attrs" v-on="on">Modifier mon mot de passe</v-btn>
-											</template>
-											<v-form v-model="valid_pwd">
-												<v-card class="pa-5">
-													<v-card-title class="headline">Modifier mon mot de passe</v-card-title>
-													<v-row align="center" justify="center">
-														<v-col class="col-6">
-															<v-text-field label="Ancien mot de passe" v-model="pwd" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="pwd !== '' && error_pwd" required>
-																<template v-slot:prepend><v-icon size="20px">fas fa-unlock</v-icon></template>
-																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
-															</v-text-field>
-															<br/>
-															<v-text-field label="Nouveau mot de passe" v-model="new_pwd" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd !== '' && error_pwd" counter :rules="[pwdRule]" :success="pwdMatch(false)" required>
-																<template v-slot:prepend><v-icon size="20px">fas fa-lock</v-icon></template>
-																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
-															</v-text-field>
-															<v-text-field label="Confirmation" v-model="new_pwd2" :type="show_pwd ? 'text' : 'password'" @click:append="show_pwd = !show_pwd" :error="new_pwd2 !== '' && error_pwd" counter :error-messages="pwdMatch(true)" :success="pwdMatch(false)" required>
-																<template v-slot:prepend><v-icon size="20px">fas fa-lock</v-icon></template>
-																<template v-slot:append><v-icon size="20px" @click="show_pwd = !show_pwd">fas {{ show_pwd ? 'fa-eye' : 'fa-eye-slash' }}</v-icon></template>
-															</v-text-field>
-														</v-col>
-													</v-row>
-													<v-card-actions>
-														<v-spacer></v-spacer>
-														<v-btn @click="pwd_dialog = false">Annuler</v-btn>
-														<v-btn class="primary" @click="resetPwd()" :disabled="!valid_pwd || pwd === '' || new_pwd === '' || new_pwd2 === ''">Modifier</v-btn>
-													</v-card-actions>
-												</v-card>
-											</v-form>
-										</v-dialog>
 									</v-col>
 								</v-row>
 							</v-expansion-panel-content>
@@ -145,7 +105,7 @@
 										<v-card-text class="text-center">
 											<v-spacer></v-spacer>
 											<v-btn icon @click="show_calls = !show_calls">
-												<v-icon size="16px">fas {{ show_desc ? 'fa-chevron-down' : 'fa-chevron-up' }}</v-icon>
+												<v-icon size="16px">fas {{ show_desc ? 'fa-chevron-up' : 'fa-chevron-down' }}</v-icon>
 											</v-btn>
 											<v-spacer></v-spacer>
 											<v-slide-y-transition>
@@ -205,7 +165,7 @@
 <!-- SCRIPT -->
 <script>
 import { EventBus } from '~/src/store.js'
-import { getProfil, deleteProfil, getMhCalls, resetPassword, doMHCall } from '~/src/api.js'
+import { getProfil, deleteProfil, getMhCalls, doMHCall } from '~/src/api.js'
 
 export default {
 	name: 'ProfilView',
@@ -232,29 +192,18 @@ export default {
 		],
 		calls: [],
 		user: {
-			pseudo: '',
 			sciz_mail: '',
 			user_mail: '',
 			session: 1,
 			pwd_mh: '',
 			max_sp_dyn: 1,
 		},
-		valid_pwd: true,
-		error_pwd: false,
-		error_pwd_msg: '',
-		pwd_dialog: false,
-		show_pwd: false,
-		pwd: '',
-		new_pwd: '',
-		new_pwd2: '',
-		pwdRule: v => v.length >= 8 || "Au moins 8 caractères",
 		mailRule: v => /^$|(^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/.test(v) || 'Adresse mail invalide !'
 	}),
 	beforeMount () {
 		getProfil()
 			.then(res => {
 				if (res.status === 200) {
-					this.user.pseudo = res.data['pseudo'] || '';
 					this.user.sciz_mail = res.data['sciz_mail'] || '';
 					this.user.user_mail = res.data['user_mail'] || '';
 					this.user.session = res.data['session'] || '';
@@ -305,20 +254,6 @@ export default {
 					this.$router.push('/');
 				});
 		},
-		resetPwd () {
-			resetPassword({ 'pwd': this.pwd, 'new_pwd': this.new_pwd, 'new_pwd2': this.new_pwd2 })
-				.then(res => { 
-					if (res.status === 200) {
-						this.success = true;
-						this.success_msg = res.data.message;
-						this.pwd_dialog = false;
-					}
-				})
-				.catch(err => {
-					this.error_pwd = true;
-					this.error_pwd_msg = 'Données invalides...';
-				});
-		},
 		getCalls () {
 			getMhCalls(this.page)
 				.then(res => {
@@ -328,13 +263,6 @@ export default {
 					}	
 				});
 		},
-		pwdMatch (error) {
-			if (this.new_pwd === '' || this.new_pwd2 === '') {
-				return error ? '' : false
-			} else {
-				return (this.new_pwd === this.new_pwd2) ? (error ? '' : true) : (error ? 'Le mot de passe ne correspond pas' : false)
-			}
-		}
 	},
 	mounted () {
 		this.mode = this.$store.getters.mode;

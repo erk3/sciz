@@ -19,10 +19,6 @@ class User(sg.sqlalchemybase):
 
     # Unique identifier of the player
     id = Column(Integer, ForeignKey('being_troll.id'), primary_key=True)
-    # Pseudonyme
-    pseudo = Column(String(50), nullable=False)
-    # Password
-    pwd_hash = Column(String(550), nullable=False)
     # SCIZ mail
     mail = Column(String(255), nullable=False)
     # SCIZ mail hash pwd
@@ -54,11 +50,9 @@ class User(sg.sqlalchemybase):
 
     @hybrid_property
     def nom(self):
-        if self.pseudo is None or self.pseudo == '':
-            if self.troll is not None and self.troll.nom is not None:
-                return self.troll.nom
-            return None
-        return self.pseudo
+        if self.troll is not None and self.troll.nom is not None:
+            return self.troll.nom
+        return None
 
     @hybrid_property
     def should_refresh_dynamic_sp(self):
@@ -66,8 +60,7 @@ class User(sg.sqlalchemybase):
         since = now - datetime.timedelta(hours=24)
         count = self.mh_calls.filter(MhCall.time > since, MhCall.status == 0, MhCall.type == 'Dynamique').count()
         last = self.mh_calls.filter(MhCall.type == 'Dynamique').order_by(desc(MhCall.time)).first()
-        max_mh_sp_dynamic = max(0, min(24, self.max_mh_sp_dynamic if last.status == 0 else 24))
-        return max_mh_sp_dynamic > 0 and count <= max_mh_sp_dynamic and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_dynamic)
+        return self.max_mh_sp_dynamic > 0 and count <= self.max_mh_sp_dynamic and (last is None or (now - last.time).total_seconds() > 24 * 3600 / self.max_mh_sp_dynamic)
 
     @hybrid_property
     def should_refresh_static_sp(self):
@@ -75,8 +68,7 @@ class User(sg.sqlalchemybase):
         since = now - datetime.timedelta(hours=24)
         count = self.mh_calls.filter(MhCall.time > since, MhCall.status == 0, MhCall.type == 'Statique').count()
         last = self.mh_calls.filter(MhCall.type == 'Statique').order_by(desc(MhCall.time)).first()
-        max_mh_sp_static = max(0, min(10, self.max_mh_sp_static if last.status == 0 else 10))
-        return max_mh_sp_static > 0 and count <= max_mh_sp_static and (last is None or (now - last.time).total_seconds() > 24 * 3600 / max_mh_sp_static)
+        return self.max_mh_sp_static > 0 and count <= self.max_mh_sp_static and (last is None or (now - last.time).total_seconds() > 24 * 3600 / self.max_mh_sp_static)
 
     @hybrid_property
     def partages_groupe(self):
@@ -117,73 +109,6 @@ class User(sg.sqlalchemybase):
             return list(filter(lambda x: x.pending and ((x.start is None or x.start < now) and (x.end is None or now < x.end)), self.partages))
         return None
 
-    @classmethod
-    def authenticate(cls, **kwargs):
-        id = kwargs.get('id').strip()
-        pwd = kwargs.get('pwd').strip()
-        if id is None or not id.isdigit() or pwd is None:
-            return None, 'Données de formulaire invalides'
-        user = sg.db.session.query(User).filter(User.id == int(id)).first()
-        if user is None or not bcrypt.checkpw(pwd.encode(sg.DEFAULT_CHARSET), user.pwd_hash.encode(sg.DEFAULT_CHARSET)):
-            return None, 'Identifiants invalides'
-        return user, ''
-
-    @classmethod
-    def register(cls, **kwargs):
-        id = kwargs.get('id').strip()
-        pwd = kwargs.get('pwd').strip()
-        pwd2 = kwargs.get('pwd2').strip()
-        pwd_mh = kwargs.get('pwd_mh').strip()
-        if any(a is None for a in [id, pwd, pwd2, pwd_mh]) or not id.isdigit() or pwd != pwd2 or len(pwd) < 8:
-            return None, 'Données de formulaire invalides'
-        user = sg.db.session.query(User).get(id)
-        if user is not None:
-            return None, 'Cet utilisateur existe déjà...'
-        user = User(id=id, pseudo='', pwd_hash=pwd, mh_api_key=pwd_mh)
-        user = sg.db.upsert(user)
-        mh_call = True
-        try:
-            mh_call = sg.mc.profil4_sp_call(user)
-        except Exception as e:
-            mh_call = False
-        if not mh_call:
-            sg.db.delete(user)
-            return None, 'Impossible de vérifier le mot de passe d\'application MH'
-        else:
-            troll = sg.db.session.query(Troll).get(id)
-            if troll is not None:
-                user.pseudo = troll.nom
-                user = sg.db.upsert(user)
-        return user, ''
-
-    @classmethod
-    def reset(cls, **kwargs):
-        id = kwargs.get('id').strip()
-        pwd = kwargs.get('pwd').strip()
-        pwd2 = kwargs.get('pwd2').strip()
-        pwd_mh = kwargs.get('pwd_mh').strip()
-        if any(a is None for a in [id, pwd, pwd2, pwd_mh]) or not id.isdigit() or pwd != pwd2 or len(pwd) < 8:
-            return None, 'Données de formulaire invalides'
-        user = sg.db.session.query(User).get(id)
-        if user is None:
-            return None, 'Cet utilisateur n\'existe pas...'
-        old_mh_api_key = user.mh_api_key
-        user.mh_api_key = pwd_mh
-        user = sg.db.upsert(user)
-        mh_call = True
-        try:
-            mh_call = sg.mc.profil4_sp_call(user)
-        except Exception as e:
-            mh_call = False
-        if not mh_call:
-            user.mh_api_key = old_mh_api_key
-            user = sg.db.upsert(user)
-            return None, 'Impossible de vérifier le mot de passe d\'application MH'
-        else:
-            user.pwd_hash = pwd.strip()
-            user = sg.db.upsert(user)
-        return user, ''
-
     def nb_calls_today(self, type):
         if type not in ['Dynamique', 'Statique']:
             return -1
@@ -204,7 +129,6 @@ class User(sg.sqlalchemybase):
 
     def update(self, **kwargs):
         try:
-            self.pseudo = kwargs.get('pseudo')[:50].strip()
             self.user_mail = kwargs.get('user_mail').strip()
             self.web_session_duration = int(kwargs.get('session')) * 60
             if not (1 * 60 <= self.web_session_duration <= 24 * 60):
@@ -216,15 +140,6 @@ class User(sg.sqlalchemybase):
             return sg.db.upsert(self)
         except Exception as e:
             return None
-
-    def resetPassword(self, **kwargs):
-        pwd = kwargs.get('pwd').strip()
-        new_pwd = kwargs.get('new_pwd').strip()
-        new_pwd2 = kwargs.get('new_pwd2').strip()
-        if any(a is None for a in [pwd, new_pwd, new_pwd2]) or new_pwd != new_pwd2 or len(new_pwd) < 8 or not bcrypt.checkpw(pwd.encode(sg.DEFAULT_CHARSET), self.pwd_hash.encode(sg.DEFAULT_CHARSET)):
-            return None, 'Données invalides...'
-        self.pwd_hash = new_pwd
-        return sg.db.upsert(self), ''
 
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
@@ -250,18 +165,9 @@ def generate_random_mail_pwd_hash(mapper, connection, target):
 
 
 @event.listens_for(User, 'before_insert')
-@event.listens_for(User, 'before_update')
-def hash_password(mapper, connection, target):
-    state = inspect(target)
-    hist = state.get_history('pwd_hash', True)
-    if hist.has_changes() and target.pwd_hash is not None and isinstance(target.pwd_hash, str):
-        target.pwd_hash = bcrypt.hashpw(target.pwd_hash.encode(sg.DEFAULT_CHARSET), bcrypt.gensalt(12)).decode(sg.DEFAULT_CHARSET)
-
-
-@event.listens_for(User, 'before_insert')
 def create_public_troll(mapper, connection, target):
     if sg.db.session.query(Troll).get(target.id) is None:
-        sg.db.upsert(Troll(id=target.id, nom=target.pseudo))
+        sg.db.upsert(Troll(id=target.id))
 
 
 @event.listens_for(User, 'before_insert')

@@ -12,7 +12,7 @@ Event:
       Format temporel: '%d/%m/%Y %Hh%M:%S'
     Troll:
       Préfixe: ''
-      Attribut: '{o.owner.pseudo}'
+      Attribut: '{o.owner.nom}'
       Suffixe: ''
     Identifiant du Troll:
       Préfixe: '('

@@ -41,6 +41,10 @@ class Partage(sg.sqlalchemybase):
     # SQL Table Mapping
     __tablename__ = 'user_partage'
 
+    def disablePropagation(self):
+        if self.coterie is not None and not self.coterie.grouped:
+            return
+        self.hookPropagation = False
 
 # SQLALCHEMY LISTENERS (same listener types executed in order)
 @event.listens_for(Partage, 'before_update')

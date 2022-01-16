@@ -27,7 +27,6 @@ log:
 # Web server configuration (internal only)
 web:
   port: 8080
-  tls: true
   domain: 'localhost'
   secret: 'ThisShouldBeAVeryLongAndRandomSecret1234'
 
@@ -50,6 +49,10 @@ instance:
 
 # MountyHall related configuration
 mh:
+  oauth_server_metadata_url: 'https://games.mountyhall.com/mountyhall/libs/oauth2/.well-known/openid-configuration.json'
+  oauth_client_id: 'SCIZ'
+  oauth_client_secret: 'A secret provided by the MH team'
+  oauth_client_scope: 'openid profile'
   sp_url: 'sp.mountyhall.com'
   sp_p_id: 'Numero'
   sp_p_apikey: 'Motdepasse'
@@ -64,6 +67,7 @@ mh:
   tresors_path: 'Public_Tresors.txt'
   sorts_path: 'Public_Sortileges.txt'
   comps_path: 'Public_Competences.txt'
+  guildes_path: 'Public_Guildes.txt'
   events_path: 'evenements/yyyy/yyyymmdd_Public_Events_MORT.txt' #yyyy et yyyymmdd are replaced by SCIZ , don't change it
   troll_link: 'https://games.mountyhall.com/mountyhall/View/PJView.php?ai_IDPJ='
   mob_link: 'http://games.mountyhall.com/mountyhall/View/MonsterView.php?ai_IDPJ='

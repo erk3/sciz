@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 // DEBUG MODE ONLY
-//const API_URL = 'http://127.0.0.1:8080/api'
-//const API_URL = 'https://www.sciz.fr/api'
+//export const API_URL = 'http://127.0.0.1:8080/api'
+//export const API_URL = 'https://www.sciz.fr/api'
 // PRODUCTION MODE ONLY
-const API_URL = '/api'
+export const API_URL = '/api'
 
 // INTERCEPTORS
 
@@ -17,19 +17,6 @@ axios.interceptors.request.use(function (config) {
 		return Promise.reject(error);
 	});
 	*/
-
-// HOME
-export function authenticate(userData) {
-	return axios.post(API_URL + '/login', userData);
-}
-
-export function register(userData) {
-	return axios.post(API_URL + '/register', userData);
-}
-
-export function reset(userData) {
-	return axios.post(API_URL + '/reset', userData);
-}
 
 // MOBS
 export function getMobs(req) {
@@ -64,10 +51,6 @@ export function deleteProfil() {
 
 export function getMhCalls(page) {
 	return axios.get(API_URL + '/calls/' + page);
-}
-
-export function resetPassword(pwdData) {
-	return axios.post(API_URL + '/resetPassword', pwdData);
 }
 
 // COTERIES

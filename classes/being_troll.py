@@ -28,11 +28,10 @@ class Troll(Being):
     # Fly count
     nb_mouche = Column(Integer)
     # Guilde identifier
-    guilde_id = Column(Integer)
+    guilde_id = Column(Integer, ForeignKey('guilde.id', ondelete='SET NULL'))
     # Guilde rank identifier
     guilde_rang = Column(Integer)
     # Is in stasis ?
-    intangible = Column(Boolean)
     # Is a NPC ?
     pnj = Column(Boolean)
     # Is a friend of the MH team ?
@@ -44,6 +43,7 @@ class Troll(Being):
 
     # Associations
     user = relationship('User', back_populates='troll', primaryjoin='Troll.id == User.id', uselist=False)
+    guilde = relationship('Guilde', back_populates='trolls', primaryjoin='Troll.guilde_id == Guilde.id', uselist=False)
     events = relationship('Event', primaryjoin='Troll.id == Event.owner_id')
     troll_privates = relationship('TrollPrivate', back_populates='troll', primaryjoin='Troll.id == TrollPrivate.troll_id')
     troll_privates_capas = relationship('TrollPrivateCapa', back_populates='troll', primaryjoin='Troll.id == TrollPrivateCapa.troll_id', viewonly=True)
@@ -66,15 +66,7 @@ class Troll(Being):
 
     @hybrid_property
     def nom_complet(self):
-        #if self.user is not None and self.user.pseudo is not None:
-        #    return '%s (%d)' % (self.user.pseudo, self.id)
         return '%s (%d)' % (self.nom, self.id)
-
-    @hybrid_property
-    def pseudo(self):
-        if self.user is not None and self.user.pseudo is not None:
-            return self.user.pseudo
-        return self.nom
 
     @hybrid_property
     def link(self):
