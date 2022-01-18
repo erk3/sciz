@@ -38,7 +38,6 @@ const mutations = {
         state.jwt = jwt;
 		const data = JSON.parse(atob(jwt.split('.')[1]));
         state.user = {'id': data.identity, 'nom': data.nom, 'blason_uri': data.blason_uri}
-		// window.$cookies.set('sciz', state, new Date(data.exp * 1000), '/', data.dom, data.secure);
 		// Set the authorization header
 		axios.defaults.headers.common['Authorization'] = jwt;
 	},
@@ -86,7 +85,7 @@ const getters = {
 	// isAuthenticated
 	isAuthenticated(state) {
 		return () => {
-		    var jwt = state.jwt;
+            var jwt = state.jwt;
 			if (!jwt || jwt.split('.').length < 3) {
 				return false;
 			}

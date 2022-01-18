@@ -34,7 +34,6 @@
 
 <!-- SCRIPT -->
 <script>
-import { API_URL } from '~/src/api.js'
 
 export default {
 	name: 'HomeView',

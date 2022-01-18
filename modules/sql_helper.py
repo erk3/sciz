@@ -7,6 +7,7 @@ from classes.being_troll import Troll
 from classes.being_troll_private import TrollPrivate
 from classes.being_troll_private_capa import TrollPrivateCapa
 from classes.guilde import Guilde
+from classes.maisonnee import Maisonnee
 from classes.being_mob import Mob
 from classes.being_mob_meta import MetaMob
 from classes.being_mob_private import MobPrivate

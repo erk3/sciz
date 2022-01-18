@@ -2,26 +2,22 @@
 #coding: utf-8
 
 # IMPORTS
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
 import modules.globals as sg
 
 
 # CLASS DEFINITION
-class Guilde(sg.sqlalchemybase):
+class Maisonnee(sg.sqlalchemybase):
 
     # Constructor is handled by SqlAlchemy, do not override
 
     # Unique identifier
     id = Column(Integer, primary_key=True)
-    # Name
-    nom = Column(String(250))
-    # Number of members
-    count = Column(Integer)
 
     # Associations
-    trolls = relationship('Troll', back_populates='guilde', primaryjoin='Guilde.id == Troll.guilde_id')
+    trolls = relationship('Troll', back_populates='maisonnee', primaryjoin='Maisonnee.id == Troll.maisonnee_id')
 
     # SQL Table Mapping
-    __tablename__ = 'guilde'
+    __tablename__ = 'maisonnee'
 

@@ -1,5 +1,5 @@
-#   !/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from sqlalchemy.ext.declarative import declarative_base
@@ -269,3 +269,8 @@ row2dict = lambda r: {c.name: getattr(r, c.name) for c in r.__table__.columns}
 
 
 row2dictWithoutNone = lambda r: {c.name: getattr(r, c.name) for c in r.__table__.columns if getattr(r, c.name) is not None}
+
+def max_datetime(a, b):
+    if a is None: return b
+    if b is None: return a
+    return max(a, b)

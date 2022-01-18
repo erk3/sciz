@@ -16,6 +16,7 @@ from classes.tresor import Tresor
 from classes.tresor_private import TresorPrivate
 from classes.champi import Champi
 from classes.champi_private import ChampiPrivate
+from classes.maisonnee import Maisonnee
 from classes.lieu import Lieu
 from classes.event import Event
 from classes.event_cdm import cdmEvent
@@ -39,7 +40,6 @@ if webapp.debug or webapp.testing or webapp.env != 'production':
     cors = CORS(webapp, resources={r"/api/*": {"origins": "*"}})
 jwt = JWTManager()
 oauth = OAuth()
-#oauth = OAuth(aupdate_token=update_token)
 
 # WEBAPP CONFIG
 @webapp.before_first_request
@@ -76,40 +76,6 @@ def configure():
         client_secret = sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_CLIENT_SECRET],
         client_kwargs = {'scope': sg.conf[sg.CONF_MH_SECTION][sg.CONF_OAUTH_CLIENT_SCOPE]}
     )
-
-### OAUTH
-@webapp.route('/api/login')
-def login():
-    redirect_uri = url_for('authorize', _external=True)
-    return oauth.mh.authorize_redirect(redirect_uri)
-
-@webapp.route('/api/login/callback')
-def authorize():
-    try:
-        token = oauth.mh.authorize_access_token()
-    except OAuthError:
-        return redirect('/?error=1')
-    if token is None:
-        return redirect('/?error=1')
-    userinfo = oauth.mh.userinfo()
-    if userinfo is None:
-        return redirect('/?error=1')
-    user = sg.db.session.query(User).get(userinfo['sub'])
-    if user is None:
-        user = User(id = userinfo['sub'])
-        user = sg.db.upsert(user)
-        sg.db.session, user = sg.db.rebind(user)
-    #sg.logger.info(userinfo)
-    user.troll.nom = userinfo['nom']
-    user.troll.niv = userinfo['niveau']
-    user.troll.race = userinfo['race']
-    user.troll.blason_uri = userinfo['blason']
-    user.troll.guilde_id = userinfo['guilde']['id']
-    user = sg.db.upsert(user)
-    jwt = create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration))
-    res = make_response(render_template('index.html'))
-    res.set_cookie('sciz_session', jwt, secure=True)
-    return res, 200
 
 @webapp.errorhandler(500)
 def internal_error(error):
@@ -181,6 +147,61 @@ def hook_jwt_check(view_function):
 
 # ROUTES DEFINITION
 
+# AUTHENTIFICATION
+@webapp.route('/api/login')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return oauth.mh.authorize_redirect(redirect_uri)
+
+@webapp.route('/api/login/callback')
+def authorize():
+    try:
+        token = oauth.mh.authorize_access_token()
+    except OAuthError:
+        return redirect('/?error=1')
+    if token is None:
+        return redirect('/?error=1')
+    userinfo = oauth.mh.userinfo()
+    if userinfo is None:
+        return redirect('/?error=1')
+    # Create all the user in the maisonnee
+    ids = list(dict.fromkeys(userinfo['ids'] + [userinfo['sub']]))
+    maisonnee_id = sg.db.session.query(Troll.maisonnee_id).filter(Troll.id.in_(ids)).first()[0]
+    if maisonnee_id is None:
+        maisonnee_id = sg.db.upsert(Maisonnee()).id
+    for _id in ids:
+        user = sg.db.session.query(User).get(_id)
+        if user is None:
+            user = User(id = _id)
+        user.troll.maisonnee_id = maisonnee_id
+        user = sg.db.upsert(user)
+    # Update the current user
+    user = sg.db.session.query(User).get(_id)
+    user.troll.nom = userinfo['nom']
+    user.troll.niv = userinfo['niveau']
+    user.troll.race = userinfo['race']
+    user.troll.blason_uri = userinfo['blason']
+    user.troll.guilde_id = userinfo['guilde']['id'] if userinfo['guilde'] is not None else None
+    user = sg.db.upsert(user)
+    jwt = create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration))
+    res = make_response(render_template('index.html'))
+    res.set_cookie('sciz_session', jwt, secure=True)
+    return res, 200
+
+@webapp.route('/api/login_as/<int:troll_id>', endpoint='login_as', methods=('GET','POST',))
+@user_jwt_check
+def login_as(troll_id):
+    maisonnee_id = sg.db.session.query(Troll.maisonnee_id).filter(Troll.id == get_jwt_identity()).scalar()
+    if maisonnee_id is None:
+        return jsonify(message='Autorisation requise'), 401
+    if sg.db.session.query(Troll).filter(and_(Troll.id == troll_id, Troll.maisonnee_id == maisonnee_id)).count() < 1:
+        return jsonify(message='Autorisation requise'), 401
+    user = sg.db.session.query(User).get(troll_id)
+    jwt = create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration))
+    res = make_response()
+    res.set_cookie('sciz_session', jwt, secure=True)
+    return res, 200
+
 # MOBS
 @webapp.route('/api/mobs', endpoint='get_mobs_list', methods=('POST',))
 @user_jwt_check
@@ -225,6 +246,17 @@ def get_profil():
                   max_sp_dyn=user.max_mh_sp_dynamic, max_sp_sta=user.max_mh_sp_static,
                   count_sp_dyn=user.nb_calls_today('Dynamique'), count_sp_sta=user.nb_calls_today('Statique'))
     return res, 200
+
+@webapp.route('/api/maisonnee', endpoint='get_maisonnee', methods=('GET',))
+@user_jwt_check
+def get_maisonnee():
+    user = sg.db.session.query(User).get(get_jwt_identity())
+    maisonnee = sg.db.session.query(Troll).filter(and_(Troll.maisonnee_id == user.troll.maisonnee_id, Troll.id != user.id)).all()
+    trolls = []
+    for troll in maisonnee:
+        trolls.append({'id': troll.id, 'nom': troll.nom, 'blason_uri': troll.blason_uri})
+    return jsonify({'maisonnee': trolls}), 200
+
 
 @webapp.route('/api/profil', endpoint='set_profil', methods=('POST',))
 @user_jwt_check

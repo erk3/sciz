@@ -53,6 +53,17 @@ export function getMhCalls(page) {
 	return axios.get(API_URL + '/calls/' + page);
 }
 
+// MAISONNEE
+export function getMaisonnee() {
+	var url = API_URL + '/maisonnee';
+	return axios.get(url);
+}
+
+export function loginAs(id) {
+	var url = API_URL + '/login_as/' + id;
+	return axios.post(url);
+}
+
 // COTERIES
 export function getGroups(withInvites, withHooks) {
 	var url = API_URL + '/groups';

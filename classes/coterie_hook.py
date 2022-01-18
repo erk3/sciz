@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from classes.event import Event
@@ -152,6 +152,8 @@ class Hook(sg.sqlalchemybase):
                         'pos_n': t.pos_n,
                         'statut': t.statut,
                         'guilde': t.troll.guilde.nom if t.troll.guilde else None,
+                        'last_event_update_at': t.last_event_update_at,
+                        'last_profile_update_at': sg.max_datetime(t.last_sp4_update_at, t.last_reconciliation_at),
                         'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
                     });
             except NoResultFound:

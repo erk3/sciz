@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+#coding: utf-8
 
 # IMPORTS
 from classes.being import Being
@@ -27,6 +27,8 @@ class Troll(Being):
     nb_mort = Column(Integer)
     # Fly count
     nb_mouche = Column(Integer)
+    # Maisonnee identifier
+    maisonnee_id = Column(Integer, ForeignKey('maisonnee.id', ondelete='SET NULL'))
     # Guilde identifier
     guilde_id = Column(Integer, ForeignKey('guilde.id', ondelete='SET NULL'))
     # Guilde rank identifier
@@ -45,6 +47,7 @@ class Troll(Being):
     # Associations
     user = relationship('User', back_populates='troll', primaryjoin='Troll.id == User.id', uselist=False)
     guilde = relationship('Guilde', back_populates='trolls', primaryjoin='Troll.guilde_id == Guilde.id', uselist=False)
+    maisonnee = relationship('Maisonnee', back_populates='trolls', primaryjoin='Troll.maisonnee_id == Maisonnee.id', uselist=False)
     events = relationship('Event', primaryjoin='Troll.id == Event.owner_id')
     troll_privates = relationship('TrollPrivate', back_populates='troll', primaryjoin='Troll.id == TrollPrivate.troll_id')
     troll_privates_capas = relationship('TrollPrivateCapa', back_populates='troll', primaryjoin='Troll.id == TrollPrivateCapa.troll_id', viewonly=True)
