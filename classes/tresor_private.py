@@ -70,6 +70,9 @@ class TresorPrivate(sg.sqlalchemybase):
     viewer = relationship('Troll', back_populates='viewed_tresor_privates', primaryjoin='TresorPrivate.viewer_id == Troll.id', viewonly=True)
     owner = relationship('Troll', back_populates='owned_tresor_privates', primaryjoin='TresorPrivate.owner_id == Troll.id and TresorPrivate.viewer_id == Troll.id')
 
+    # Index
+    #FIXME CREATE INDEX tresor_private_id_viewer ON tresor_private USING btree (viewer_id, tresor_id);
+
     # SQL Table Mapping
     __tablename__ = 'tresor_private'
     __table_args__ = (PrimaryKeyConstraint('tresor_id', 'viewer_id'), )

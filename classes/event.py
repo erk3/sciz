@@ -43,6 +43,9 @@ class Event(sg.sqlalchemybase):
     owner = relationship('Troll', primaryjoin='Event.owner_id == Troll.id', viewonly=True)
     #owner_private_troll = relationship('TrollPrivate', primaryjoin='and_(Event.owner_id == TrollPrivate.troll_id, Event.owner_id = TrollPrivate.viewer_id)')
 
+    # Index
+    #FIXME CREATE INDEX event_owner_time ON event USING btree (owner_id, time);
+
     # SQL Table Mapping
     __tablename__ = 'event'
     __mapper_args__ = {

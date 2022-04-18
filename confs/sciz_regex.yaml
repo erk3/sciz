@@ -164,7 +164,8 @@ champiEvent:
 
 # Regexps for tresorEvent
 tresorEvent:
-  re_idt: 'le résultat suivant\s+:(\s+\[(?P<tresor_id>\d+)\])?\s+(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?(?s)'
+  #re_idt: 'le résultat suivant\s*:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?(?s)'
+  re_idt: 'le résultat suivant\s*:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\)\]]+)(\)|\]))?\n{1,}'
   re_idt_maudite: '(En identifiant ce parchemin tu viens de subir une (?P<nom>Malédiction))(?s)'
   re_idt_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
   re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>[^\n'']+)'

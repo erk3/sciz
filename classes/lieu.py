@@ -2,7 +2,7 @@
 #coding: utf-8
 
 # IMPORTS
-from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey, event
+from sqlalchemy import Column, Integer, Boolean, String, DateTime, ForeignKey, event, and_
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 import modules.globals as sg

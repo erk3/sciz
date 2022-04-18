@@ -33,6 +33,7 @@ from authlib.integrations.flask_client import OAuth
 from authlib.integrations.base_client.errors import OAuthError
 import datetime, dateutil.relativedelta, json, math, re, sys, logging
 import modules.globals as sg
+import traceback
 
 # WEBAPP DEFINITION
 webapp = Flask('SCIZ', static_folder='./web/dist-public/static', template_folder='./web/dist-public/template')
@@ -173,7 +174,7 @@ def authorize():
         user = sg.db.session.query(User).get(_id)
         if user is None:
             user = User(id = _id)
-        user.troll.maisonnee_id = maisonnee_id
+        user.troll = Troll(id = _id, maisonnee_id = maisonnee_id)
         user = sg.db.upsert(user)
     # Update the current user
     user = sg.db.session.query(User).get(_id)
@@ -477,7 +478,7 @@ def get_hook_treasures_for():
     hook = sg.db.session.query(Hook).get(get_jwt_identity())
     if hook is not None:
         data = request.get_json()
-        if 'ids' not in data:
+        if 'ids' not in data or not all(i.isdigit() for i in data.get('ids')):
             return jsonify(message='Une erreur est survenue...'), 400
         return jsonify(treasures=hook.get_treasures_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
@@ -516,6 +517,17 @@ def get_hook_traps():
         if any(a not in data for a in ['pos_x', 'pos_y', 'pos_n', 'view_h', 'view_v']):
             return jsonify(message='Une erreur est survenue...'), 400
         return jsonify(traps=hook.get_traps_for(data.get('pos_x'), data.get('pos_y'), data.get('pos_n'), data.get('view_h'), data.get('view_v'))), 200
+    return jsonify(message='Autorisation requise'), 401
+
+@webapp.route('/api/hook/portals', endpoint='get_hook_portals', methods=('POST',))
+@hook_jwt_check
+def get_hook_portals():
+    hook = sg.db.session.query(Hook).get(get_jwt_identity())
+    if hook is not None:
+        data = request.get_json()
+        if 'ids' not in data or not all(i.isdigit() for i in data.get('ids')):
+            return jsonify(message='Une erreur est survenue...'), 400
+        return jsonify(portals=hook.get_portals_for(data.get('ids'))), 200
     return jsonify(message='Autorisation requise'), 401
 
 @webapp.route('/api/hook/mushrooms', methods=('POST',))

@@ -10,14 +10,18 @@ from classes.event_tp import tpEvent
 from classes.event_cp import cpEvent
 from classes.event_tresor import tresorEvent
 from classes.event_champi import champiEvent
+from classes.event_follower import followerEvent
+from classes.event_user import userEvent
 from classes.tresor_private import TresorPrivate
 from classes.champi_private import ChampiPrivate
 from classes.lieu import Lieu
+from classes.lieu_portail import Portail
 from classes.lieu_piege import Piege
+from classes.being import Being
 from classes.being_troll_private import TrollPrivate
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON, UniqueConstraint, asc, or_, and_
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, aliased
 from sqlalchemy.sql.functions import ReturnTypeFromArgs
 
 import copy, requests, json, datetime
@@ -120,6 +124,32 @@ class Hook(sg.sqlalchemybase):
                 pass
         return treasures
 
+    # Use the hook to get specific portals
+    def get_portals_for(self, portals_id):
+        if self.jwt is None: return
+        # Build the list of active users
+        users_id = self.coterie.members_list_sharing(True, None, True)
+        # Find the treasures
+        del portals_id[100:]
+        tps = []
+        try:
+            res = sg.db.session.query(Portail) \
+                    .filter(and_(Portail.id.in_(portals_id), Portail.owner_id.in_(users_id))) \
+                    .all()
+        except NoResultFound:
+            pass
+        for tp in res:
+            tps.append({
+                'id': tp.id,
+                'owner_id': tp.owner.nom,
+                'owner_nom': tp.owner.nom,
+                'creation': tp.creation_datetime,
+                'pos_x_dst': tp.pos_x_dst,
+                'pos_y_dst': tp.pos_y_dst,
+                'pos_n_dst': tp.pos_n_dst
+            });
+        return tps
+
     # Use the hook to get specific trolls
     def get_trolls_for(self):
         if self.jwt is None: return
@@ -151,7 +181,8 @@ class Hook(sg.sqlalchemybase):
                         'pos_n': t.pos_n,
                         'pos_n': t.pos_n,
                         'statut': t.statut,
-                        'guilde': t.troll.guilde.nom if t.troll.guilde else None,
+                        'guilde_nom': t.troll.guilde.nom if t.troll.guilde else '',
+                        'guilde_id': t.troll.guilde.id if t.troll.guilde else '',
                         'last_event_update_at': t.last_event_update_at,
                         'last_profile_update_at': sg.max_datetime(t.last_sp4_update_at, t.last_reconciliation_at),
                         'caracs': '\n'.join(sg.no.stringify(t, filters=filters, stringifyTrollCapa=False).split('\n')[1:])
@@ -220,15 +251,61 @@ class Hook(sg.sqlalchemybase):
         # Build the list of active users
         users_id = self.coterie.members_list_sharing(None, None, True)
         # Find the events
+        ismob = Being.is_mob(being_id)
+        incoterie = being_id in users_id
         try:
-            filter = and_(Event.owner_id.in_(users_id),
-                      Event.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
-                      Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0),
-                      or_(
-                          Event.mail_subject.ilike('%' + str(being_id) + '%'),
-                          Event.mail_body.ilike('%' + str(being_id) + '%')
-                      ))
-            events = sg.db.session.query(Event).filter(filter).order_by(asc(Event.time)).limit(50).all()
+            # General filter
+            tf = and_(Event.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
+                      Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0))
+            af = and_(Event.owner_id.in_(users_id), tf)
+            sf = and_(Event.owner_id == being_id, tf)
+            # BATTLE events
+            f = and_(af, or_(battleEvent.att_id == being_id,
+                             battleEvent.def_id == being_id,
+                             battleEvent.autre_id == being_id))
+            u = sg.db.session.query(battleEvent.id, battleEvent.time).join(aliased(Event)).filter(f)
+            # CDM events
+            if ismob or incoterie:
+                f  = and_(af, cdmEvent.mob_id == being_id) if ismob else sf
+                u = u.union_all(sg.db.session.query(cdmEvent.id, cdmEvent.time).join(aliased(Event)).filter(f))
+            # AA events
+            if not ismob:
+                if not incoterie:
+                    f = and_(af, aaEvent.troll_id == being_id)
+                else:
+                    f = and_(tf, or_(aaEvent.troll_id == being_id,
+                                     Event.owner_id == being_id))
+                u = u.union_all(sg.db.session.query(aaEvent.id, aaEvent.time).join(aliased(Event)).filter(f))
+            # CP events
+            if incoterie:
+                u = u.union_all(sg.db.session.query(cpEvent.id, cpEvent.time).join(aliased(Event)).filter(sf))
+            # TP events
+            if incoterie:
+                u = u.union_all(sg.db.session.query(tpEvent.id, tpEvent.time).join(aliased(Event)).filter(sf))
+            # TRESOR events
+            if incoterie:
+                u = u.union_all(sg.db.session.query(tresorEvent.id, tresorEvent.time).join(aliased(Event)).filter(sf))
+            # CHAMPI events
+            if incoterie:
+                u = u.union_all(sg.db.session.query(champiEvent.id, champiEvent.time).join(aliased(Event)).filter(sf))
+            # FOLLOWER events
+            if ismob or incoterie:
+                f  = and_(af, followerEvent.follower_id == being_id) if ismob else sf
+                u = u.union_all(sg.db.session.query(followerEvent.id, followerEvent.time).join(aliased(Event)).filter(f))
+            # USER events
+            if incoterie:
+                u = u.union_all(sg.db.session.query(userEvent.id, userEvent.time).join(aliased(Event)).filter(sf))
+            events = u.order_by(asc(Event.time)).limit(50).all()
+            # Get the actual events
+            events = sg.db.session.query(Event).filter(Event.id.in_([e[0] for e in events])).all()
+            #filter = and_(Event.owner_id.in_(users_id),
+            #          Evzent.time >= datetime.datetime.fromtimestamp(start_time / 1000.0),
+            #          Event.time <= datetime.datetime.fromtimestamp(end_time / 1000.0),
+            #          or_(
+            #              Event.mail_subject.ilike('%' + str(being_id) + '%'),
+            #              Event.mail_body.ilike('%' + str(being_id) + '%')
+            #          ))
+            #events = sg.db.session.query(Event).filter(filter).order_by(asc(Event.time)).limit(50).all()
         except NoResultFound as e:
             events = []
         # Stringify the events

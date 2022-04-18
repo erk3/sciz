@@ -53,7 +53,7 @@ class MailWalker:
         try:
             sg.db.session = sg.db.new_session()
             # Open the mailbox
-            mbox = mailbox.Maildir(self.mailDirPath + os.sep + sg.user.mail)
+            mbox = mailbox.Maildir(self.mailDirPath + os.sep + sg.user.mail, create=True)
             # Build a sorted list of key-message by 'Date' header #RFC822
             sorted_mbox = sorted(mbox.iteritems(), key=lambda x: email.utils.parsedate(x[1].get('Date')))
             # Then get the actuals mails

@@ -460,6 +460,10 @@ class MhCaller:
                         lieu = Lieu(id=lieu_id, nom=lieu_nom,
                                     pos_x=lieu_pos_x, pos_y=lieu_pos_y, pos_n=lieu_pos_n,
                                     last_seen_at=now, last_seen_by=user.id, last_seen_with='SV2')
+                        if 'Portail' in lieu_nom:
+                            lieu.type = 'Portail'
+                        if 'Piège' in lieu_nom:
+                            lieu.type = 'Piège'
                         objs_set[Lieu].append(lieu)
                     except Exception as e:
                         pass

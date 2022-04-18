@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # IMPORTS
-#from classes.coterie_hook import Hook
+from classes.coterie_hook import Hook
 from web.server import webapp as application
 from modules.admin_helper import AdminHelper
 from modules.requester import Requester
@@ -56,7 +56,7 @@ class SCIZ:
             log_file.setLevel(logging_level)
             log_file.setFormatter(formatter)
             logger = logging.getLogger(logger_name)
-            logger.setLevel(logging.DEBUG)
+            logger.setLevel(logging_level)
             logger.addHandler(log_file)
         sg.logger = logging.getLogger('sciz')
 

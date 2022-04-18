@@ -115,6 +115,9 @@ class cdmEvent(Event):
     # Associations
     mob = relationship('Mob', primaryjoin='cdmEvent.mob_id == Mob.id')
 
+    # Index
+    #FIXME CREATE INDEX event_cdm_nom_age ON event_cdm USING btree (mob_nom, mob_age);
+
     # SQL Table Mapping
     __tablename__ = 'event_cdm'
     __mapper_args__ = {
