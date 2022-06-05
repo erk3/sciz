@@ -361,6 +361,7 @@ class Requester:
         res = sg.db.session.query(cdmEvent) \
             .filter(cdmEvent.mob_nom == name, cdmEvent.mob_age == age) \
             .order_by(cdmEvent.time.desc()).all()
+        unique = set()
         # Create a mob private
         pm = MobPrivate()
         pm.mob = Mob(nom=name, age=age)
@@ -368,6 +369,7 @@ class Requester:
         # Copy the fixed properties and compute a set of cdms regrouped by mob id
         list_of_cdm_by_mob_id = {}
         for p in res:
+            unique.add(p.mob_id)
             sg.copy_properties(p, pm, ['capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour',
                                        'vit_dep', 'vlc', 'vole', 'att_dist', 'att_mag'], False)
             if p.mob_id in list_of_cdm_by_mob_id:
@@ -410,4 +412,5 @@ class Requester:
                 setattr(pm, attr_min, min(list_attr_min))
             if len(list_attr_max) > 0:
                 setattr(pm, attr_max, max(list_attr_max))
-        return sg.no.stringify(pm, None, None) + '\nBasé sur %s CDM' % (len(res),)
+        return sg.no.stringify(pm, None, None) + '\nBasé sur %s CDM de %s monstre%s' % (len(res), len(unique), 's' if len(unique) > 1 else '',)
+

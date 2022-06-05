@@ -52,6 +52,10 @@ class MobPrivate(sg.sqlalchemybase):
     reg_min = Column(Integer)
     # Number of maximum dices for REG (D3)
     reg_max = Column(Integer)
+    # Number of minimum dices for ARM (D3)
+    arm_min = Column(Integer)
+    # Number of maximum dices for ARM (D3)
+    arm_max = Column(Integer)
     # Minimum physical ARM
     arm_phy_min = Column(Integer)
     # Maximum physical ARM
@@ -187,7 +191,7 @@ class MobPrivate(sg.sqlalchemybase):
                                             'vole', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement',
                                             'bonus_malus', 'pos_x', 'pos_y', 'pos_n', 'last_seen_at',
                                             'last_event_at'], False)
-                        for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm',
+                        for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm', 'arm_phy', 'arm_mag', 'vue', 'mm',
                                      'rm',
                                      'tour']:
                             attr_min = attr + '_min'

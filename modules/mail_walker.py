@@ -72,7 +72,11 @@ class MailWalker:
                     elif objs is not None:
                         if not type(objs) is list: objs = [objs]
                         for obj in objs:
-                            if not isinstance(obj, MailHelper):
+                            if isinstance(obj, MailHelper):
+                                continue
+                            if obj.owner_id is None or not sg.user.is_same_maisonnee(obj.owner_id):
+                                sg.logger.error("Discarded a forgery for troll '%s', sent to user '%d'" % (obj.owner_id, sg.user.id,))
+                            else:
                                 obj = sg.db.upsert(obj)
                                 # DEBUG ONLY
                                 #session, obj = sg.db.rebind(obj)
@@ -89,13 +93,18 @@ class MailWalker:
                     self.archive(sg.user, file_path, 'error')
                     sg.logger.exception(e)
                     sg.db.session.rollback()
-            # Push reverse hook
+            # Push reverse hook for the whole maisonnee
+            # (in case the user is using the mail of another linked user)
             if sg.db.session is not None:
                 sg.db.session.close()
             sg.db.session, sg.user = sg.db.rebind(sg.user)
-            for p in sg.user.partages_actifs + [sg.user.partage_perso]:
-                if p.coterie is not None and p.coterie.hook_miaou is not None:
-                    p.coterie.hook_miaou.trigger(False)
+            users = [sg.user]
+            if sg.user.troll.maisonnee is not None:
+                users = [t.user for t in sg.user.troll.maisonnee.trolls]
+            for u in users:
+                for p in u.partages_actifs + [u.partage_perso]:
+                    if p.coterie is not None and p.coterie.hook_miaou is not None:
+                        p.coterie.hook_miaou.trigger(False)
         except (OSError, IOError, mailbox.Error) as e:
             sg.logger.error('Fail to scan mail directory! Error: %s' % e)
         finally:

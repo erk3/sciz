@@ -74,7 +74,7 @@ class tresorEvent(Event):
                 self.type += ' (déplacement)'
             else:
                 self.type += ' (ramassage)'
-            self.tresor_type = re.sub('Gigots de Gob\'', 'Gigots de Gob', self.tresor_type)
+            #self.tresor_type = re.sub('Gigots de Gob\'', 'Gigots de Gob', self.tresor_type)
         # Adjust some values
         if self.nom is not None:
             self.nom = re.sub(r'\n', ' ', self.nom).strip()

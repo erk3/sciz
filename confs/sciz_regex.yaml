@@ -16,6 +16,8 @@ ignored_subjects:
   don_gg: 'Don de GG'
   achat: 'Achat de Trésor'
   gowap_taniere: 'est arrivé pour s''ébrouer sur la tanière'
+  auberge: 'Auberge'
+  password: 'mot de passe'
 
 # Known mail subjects to parse (first to match)
 # Keys must be 'CLASS_routine' formatted
@@ -35,9 +37,9 @@ subjects:
   champiEvent_idc: '(?P<type>Identification des (c|C)hampignons)'
   champiEvent_ramasser: '(?P<type>Ramass(er|age)) (d''un )?(c|C)hampignon'
   champiEvent_planter: '(?P<type>Planter) un champignon (?P<nom>.+)\s+(?P<qualite>.+?)\s+\((?P<champi_id>\d+)\)\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+Y\s*=\s*(?P<pos_y>\-?\d+)\s+N\s*=\s*(?P<pos_n>\-?\d+)'
-  tresorEvent_idt: '(?P<type>Identification des (t|T)résors)\s*:\s*\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>.+)'
-  tresorEvent_telek: '(?P<type>Télékinésie)'
-  tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)\s+\((?P<tresor_id>\d+)\)'
+  tresorEvent_idt: '(?P<type>Identification des (t|T)résors)\s*:\s*(\[(?P<tresor_id>\d+)\]\s+)?(?P<tresor_type>.+)'
+  tresorEvent_telek: '(?P<type>Télékinésie)(\s*-\s*(\[(?P<tresor_id>\d+)\]\s+)?(?P<tresor_type>.+))?'
+  tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_id>\d+)\]\s+)?(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)'
   battleEvent_piege: '(?P<type>Déclenchement du Piège( sur un suivant)?)(?s)'
   battleEvent_sort: 'Sortilège(\s*sur\s*Suivant)?\s*:\s*(?P<type>.+?)(\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+))?($|\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)|\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
   battleEvent_sort_suivant: 'Sortilège\s+sur\s+Suivant\s*:\s*(?P<type>.+?)\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
@@ -126,7 +128,8 @@ cdmEvent:
   re_esq: 'Esquive.*(\(entre (?P<esq_min>\d+) et (?P<esq_max>\d+)\)|supérieure?s? à (?P<esq_sup>\d+)|inférieure?s? à (?P<esq_inf>\d+)|égale?s? à (?P<esq_eq>\d+))'
   re_deg: 'Dég(â|à)t.*(\(entre (?P<deg_min>\d+) et (?P<deg_max>\d+)\)|supérieure?s? à (?P<deg_sup>\d+)|inférieure?s? à (?P<deg_inf>\d+)|égale?s? à (?P<deg_eq>\d+))'
   re_reg: 'Rég(é|è)n.*(\(entre (?P<reg_min>\d+) et (?P<reg_max>\d+)\)|supérieure?s? à (?P<reg_sup>\d+)|inférieure?s? à (?P<reg_inf>\d+)|égale?s? à (?P<reg_eq>\d+))'
-  re_arm_phy: 'Armure( Physique)?\s*:.*(\(entre (?P<arm_phy_min>\d+) et (?P<arm_phy_max>\d+)\)|supérieure?s? à (?P<arm_phy_sup>\d+)|inférieure?s? à (?P<arm_phy_inf>\d+)|égale?s? à (?P<arm_phy_eq>\d+))'
+  re_arm: '\n\s*Dés\s*d''\s*Armure\s*:[^\n]*?(\(entre (?P<arm_min>\d+) et (?P<arm_max>\d+)\)|supérieure?s? à (?P<arm_sup>\d+)|inférieure?s? à (?P<arm_inf>\d+)|égale?s? à (?P<arm_eq>\d+))(?s)'
+  re_arm_phy: '\n\s*Armure( Physique)?\s*:[^\n]*?(\(entre (?P<arm_phy_min>\d+) et (?P<arm_phy_max>\d+)\)|supérieure?s? à (?P<arm_phy_sup>\d+)|inférieure?s? à (?P<arm_phy_inf>\d+)|égale?s? à (?P<arm_phy_eq>\d+))(?s)'
   re_arm_mag: 'Armure Magique.*(\(entre (?P<arm_mag_min>\d+) et (?P<arm_mag_max>\d+)\)|supérieure?s? à (?P<arm_mag_sup>\d+)|inférieure?s? à (?P<arm_mag_inf>\d+)|égale?s? à (?P<arm_mag_eq>\d+))'
   re_vue: 'Vue.*(\(entre (?P<vue_min>\d+) et (?P<vue_max>\d+)\)|supérieure?s? à (?P<vue_sup>\d+)|inférieure?s? à (?P<vue_inf>\d+)|égale?s? à (?P<vue_eq>\d+))'
   re_mm: 'Maitrise Magique.*(\(entre (?P<mm_min>\d+) et (?P<mm_max>\d+)\)|supérieure?s? à (?P<mm_sup>\d+)|inférieure?s? à (?P<mm_inf>\d+)|égale?s? à (?P<mm_eq>\d+))'
@@ -164,12 +167,11 @@ champiEvent:
 
 # Regexps for tresorEvent
 tresorEvent:
-  #re_idt: 'le résultat suivant\s*:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\n]*?)(\)|\]))?(?s)'
-  re_idt: 'le résultat suivant\s*:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\)\]]+)(\)|\]))?\n{1,}'
+  re_idt: 'le résultat suivant\s*:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+?)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\)\]]+)(\)|\]))?\n{1,}'
   re_idt_maudite: '(En identifiant ce parchemin tu viens de subir une (?P<nom>Malédiction))(?s)'
   re_idt_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+)'
-  re_telek: 'avez (déplacé|ramassé)\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<tresor_type>[^\n'']+)'
-  re_telek_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+et\s+Y\s*=\s*(?P<pos_y>\-?\d+)'
+  re_telek: 'avez (déplacé|ramassé)\s+:(\s*\[(?P<tresor_id>\d+)\])?\s*(?P<nom>[^\(\[\*]+?)(\s*(?P<mithril>en\sMithril))?(\s*(\(|\[)(?P<effet>[^\)\]]+)(\)|\]))?(\s*de\s+(?P<templates>Qualité\s+.+))?(en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+et\s+Y\s*=\s*(?P<pos_y>\-?\d+))?\n{1,}'
+  #re_telek_pos: 'en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s+et\s+Y\s*=\s*(?P<pos_y>\-?\d+)'
 
 # Regexps for every other events (kind of battle related)
 battleEvent:
@@ -214,8 +216,9 @@ battleEvent:
   re_bam_bum: 'votre\s+(?P<capa_effet>(R|M)M\s+sera\s+égale\s+à\s+\-?\d+\s+\(\+?\-?\d+\))\s+pendant\s+(?P<capa_tour>\d+)\s+tour(?s)'
   re_bam_portail: 'spatio-magicielle\s+qui\s+a\s+(?P<capa_desc>(altéré|détruit)\s+le\s+portail\s+de\s+téléportation\s+(arrivant|situé))(?s)'
   re_def_parcho_potion: '(?P<flag_def>été\s+influencé\s+par\s+l'')\s*effet\s+((du\s+Parchemin)|(de\s+la\s+Potion))\s+:\s+\[(?P<tresor_id>\d+)\]\s+(?P<type>.+)'
-  re_parcho_potion_effet: 'effet\s+(est\s+le\s+suivant\s+):\s+(?P<capa_effet>[^\(]+?(\d+\s*(min|D\d)?|Effet\s+de\s+Zone))'
-  re_att_ldp: '(réussi\s+à\s+lancer\s+la\s+potion\s*:\s+(?P<type_potion>.+?)\s*\()(?s)'
+  #re_parcho_potion_effet: 'effet\s+(est\s+le\s+suivant\s+):\s+(?P<capa_effet>[^\(]+?(\d+\s*(min|D\d)?|Effet\s+de\s+Zone))'
+  re_parcho_potion_effet: 'effet\s+(est\s+le\s+suivant\s+):\s+(?P<capa_effet>[^\n]+)'
+  re_att_ldp: '(réussi\s+à\s+lancer\s+la\s+potion\s*:\s+(\[(?P<tresor_id>\d+)\]\s+)?(?P<type_potion>.+?)\s*\()(?s)'
   re_att_ldp_rate: 'Vous avez (complètement )?(?P<flag_ldp_rate>loupé votre cible)'
   re_siphon: '(malus\s+d''attaque\s+d(û|ü|u)\s+à\s+la\s+nécrose\s+de\s+(?P<capa_effet>\d+)\s+points?)(?s)'
   re_rafale: '(malus\s+de\s+(?P<capa_effet>\d+)\s+points?\s+pour\s+.*\s+régénérations)(?s)'
@@ -225,7 +228,7 @@ battleEvent:
   #re_def_balayage: '(Tr.ll\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)\s+(l''|vous\s+)a\s+balayé)(?s)'
   re_insulte_ok: '(?P<flag_insulte_ok>yeux\s+que\s+pour\s+vous)(?s)'
   re_insulte_nok: '(?P<flag_insulte_nok>Néanmoins\s+le\s+regard\s+de\s+celui-ci\s+se\s+porte)(?s)'
-  re_insulte_meh: '(?P<flag_insulte_meh>Bien\s+que\s+le\s+monstre\s+semble\s+avoir\s+entendu\s+votre\s+insulte)(?s)'
+  re_insulte_meh: '(?P<flag_insulte_meh>semble\s+avoir\s+entendu\s+votre\s+insulte)(?s)'
   re_he: '(Votre\s+cible\s+(n'')?est( pas)?\s+(?P<he>Effrayée))(?s)'
   re_retraite: 'un mouvement de (?P<dir_for>retraite) vers le (?P<direction>\w+)'
   re_pistage_pos: 'Vous\s+êtes\s+en\s+X\s*=\s*(?P<pos_x>-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>-?\d+)'
@@ -233,7 +236,7 @@ battleEvent:
   re_pistage_hors_portee: 'semble\s+(?P<flag_pistage_hors>hors de portée)'
   re_pistage_zone: 'se\s+trouve\s+(?P<flag_pistage_zone>Sur votre Zone)'
   re_marquage: '(est\s+marqué\s+avec\s+''(?P<tag>.+)'')(?s)'
-  re_machouillage: 'Le\s+trésor\s(?P<tresor_nom>.+?)\s+\[(?P<tresor_id>\d+)]\s+a\s+été\s+en\s+partie\s+(?P<type>mangé)(?s)'
+  re_machouillage: 'Le\s+trésor\s+\[(?P<tresor_id>\d+)]\s+(?P<tresor_nom>.+?)\s+a\s+été\s+en\s+partie\s+(?P<type>mangé)(?s)'
   re_ea: '((?P<capa_desc>évènement aléatoire).*?(ACTION|action)\s*:\s*(?P<capa_effet>.+?)\s*\((R|r)areté)(?s)'
   re_prog: 'a été (?P<prog>programmée?) avec succès'
   re_camou: 'Votre\s+(?P<flag_camou>(c|C)amouflage\s+(est\s+toujours\s+effectif|a\s+été\s+(annulé|ANNULÉ)))(?s)'
@@ -241,6 +244,7 @@ battleEvent:
   re_pouvoir_alt: 'Le monstre utilise son pouvoir d''(?P<type>Anéantissement Magique)'
   re_pouvoir_ter: 'Le monstre avec son pouvoir de (?P<type>.+?) vous fait perdre (?P<capa_effet>\d+%) de maitrise de votre (Compétence|Sortil(.+?)ge) (?P<capa_desc>.+?)\.'
   re_attraction: 'Le\s+monstre\s+vous\s+(?P<type>(a attiré)|(assomme)|(a éjecté)).+?(Vous\s+êtes(?P<flag_resist>\s+un\s+peu)?\s+étourdi)?'
+  re_expulsion: '(?P<type>expulsé)\s+de\s+sa\s+caverne'
   #re_baroufle_att: '(Vous\s+jouez\s+la\s+symphonie\s+suivante\s*:\s*"(?P<capa_desc>.+)")(?s)' # Not really useful
   re_baroufle_att_pos: '(Votre\s+mélodie\s+résonne\s+dans\s+votre\s+caverne\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)(?P<flag_baroufle_portee>\s+mais\s+aussi\s+dans\s+les\s+cavernes\s+voisines)?)(?s)'
   re_baroufle_effet: '((effet\s+suivant|vous\s+influence)\s*:\s*(?P<capa_effet>(\s*\-\s*[^\n]+)+))(?s)'
@@ -262,3 +266,5 @@ battleEvent:
   re_vlc_vl_zone: 'Zone\s*centrale\s*ciblée\s*:\s*X\s*=\s*(?P<pos_x>\-?\d+)\s*\|\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*\|\s*N\s*=\s*(?P<pos_n>\-?\d+)'
   re_vlc_self: 'voir\s+les\s+éléments\s+cachés\s+situés\s+jusqu''à\s+(?P<capa_effet>\d+\s+cases\s+horizontalement)'
   re_massacre: '(Vous\s+avez\s+(?P<massacre>massacré)\s+le\s+monstre)(?s)'
+  re_propulseur_ok: '(?P<flag_propulseur_ok>Le\s+propulseur\s+a\s+fonctionné)'
+  re_propulseur_nok: '(?P<flag_propulseur_nok>Le\s+propulseur\s+ne\s+vous\s+a\s+donc\s+été\s+d''aucune\s+utilité)'

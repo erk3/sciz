@@ -59,6 +59,10 @@ class cdmEvent(Event):
     reg_min = Column(Integer)
     # Number of maximum dices for REG (D3)
     reg_max = Column(Integer)
+    # Number of minimum dices for ARM (D3)
+    arm_min = Column(Integer)
+    # Number of maximum dices for ARM (D3)
+    arm_max = Column(Integer)
     # Minimum physical ARM
     arm_phy_min = Column(Integer)
     # Maximum physical ARM
@@ -143,7 +147,7 @@ class cdmEvent(Event):
         # Name
         self.mob_nom, self.mob_age, self.mob_tag = Being.parse_name(self.mob_id, self.mob_nom)
         # cdmEvent Niv 1
-        attrs = ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'vue']
+        attrs = ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm', 'arm_phy', 'vue']
         # cdmEvent Niv 2
         if hasattr(self, 'mm_eq'): attrs.append('mm')
         if hasattr(self, 'rm_eq'): attrs.append('rm')
@@ -182,7 +186,7 @@ def upsert_mob_private(mapper, connection, target):
     sg.copy_properties(target, mob_private,
                        ['blessure', 'capa_desc', 'capa_effet', 'capa_tour', 'capa_portee', 'nb_att_tour', 'vit_dep', 'vlc',
                         'vole', 'att_dist', 'att_mag', 'dla', 'sang_froid', 'chargement', 'bonus_malus'], False)
-    for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm_phy', 'arm_mag', 'vue', 'mm', 'rm', 'tour']:
+    for attr in ['niv', 'pdv', 'att', 'esq', 'deg', 'reg', 'arm', 'arm_phy', 'arm_mag', 'vue', 'mm', 'rm', 'tour']:
         attr_min = attr + '_min'
         attr_max = attr + '_max'
         setattr(mob_private, attr_min, sg.do_unless_none(max, (getattr(mob_private, attr_min), getattr(target, attr_min))))

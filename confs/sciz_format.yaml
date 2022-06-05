@@ -260,7 +260,7 @@ cdmEvent:
   Notification: '{Horodatage} Connaissance des monstres {Niveau CDM} de {Troll} {Identifiant du Troll} sur {Monstre cible} : {Blessure} {Caractéristiques} {PX}'
   Attributs construits:
     Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
-    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Durée du tour}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Vole}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{PV}{Délimiteur}{Vie restante}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARM}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Durée du tour}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Vole}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
   Attributs:
     Monstre cible:
       Préfixe: ''
@@ -305,6 +305,10 @@ cdmEvent:
     REG:
       Préfixe: 'REG '
       Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
+      Suffixe: 'D3'
+    ARM:
+      Préfixe: 'ARM '
+      Attribut: '{sg.str_min_max(o.arm_min, o.arm_max)}'
       Suffixe: 'D3'
     ARMP:
       Préfixe: 'ARMP '
@@ -419,7 +423,7 @@ battleEvent:
       Suffixe: ''
     Trésor:
       Préfixe: ' affectant '
-      Attribut: '{o.tresor_private.nom_complet}'
+      Attribut: '{o.tresor_damaged.nom_complet}'
       Suffixe: ''
     Esquivé normalement:
       Attribut: '{o.esquive}'
@@ -938,7 +942,7 @@ MobPrivate:
   Attributs construits:
     Position: 'Position : {Position X} {Position Y} {Position N}'
     Capacité spéciale: 'Capacité spéciale : {Capacité spéciale (description)}{Capacité spéciale (effet)}{Capacité spéciale (durée)}{Capacité spéciale (portée)}'
-    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{Points de vie}{Délimiteur}{Vie restante}{Délimiteur}{Position}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Vole}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
+    Caractéristiques: '{Délimiteur}{Race}{Délimiteur}{Niveau}{Délimiteur}{Blessure}{Délimiteur}{Points de vie}{Délimiteur}{Vie restante}{Délimiteur}{Position}{Délimiteur}{ATT}{Délimiteur}{ESQ}{Délimiteur}{DEG}{Délimiteur}{REG}{Délimiteur}{ARM}{Délimiteur}{ARMP}{Délimiteur}{ARMM}{Délimiteur}{VUE}{Délimiteur}{MM}{Délimiteur}{RM}{Délimiteur}{Capacité spéciale}{Délimiteur}{Nombre d''attaque}{Délimiteur}{Vitesse de déplacement}{Délimiteur}{VLC}{Délimiteur}{Vole}{Délimiteur}{Attaque à distance}{Délimiteur}{Attaque magique}{Délimiteur}{DLA}{Délimiteur}{Sang froid}{Délimiteur}{Chargement}{Délimiteur}{Bonus/Malus}{Délimiteur}{Blason}'
   Attributs:
     Identifiant du monstre:
       Préfixe: '('
@@ -991,6 +995,10 @@ MobPrivate:
     REG:
       Préfixe: 'Régénération : '
       Attribut: '{sg.str_min_max(o.reg_min, o.reg_max)}'
+      Suffixe: 'D3'
+    ARM:
+      Préfixe: 'Armure : '
+      Attribut: '{sg.str_min_max(o.arm_min, o.arm_max)}'
       Suffixe: 'D3'
     ARMP:
       Préfixe: 'Armure Physique : '

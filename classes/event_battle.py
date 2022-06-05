@@ -175,6 +175,12 @@ class battleEvent(Event):
         return sg.db.session.query(TresorPrivate).get((self.tresor_id, self.owner_id))
 
     @hybrid_property
+    def tresor_damaged(self):
+        if self.type in ['Machouillage']:
+            return self.tresor_private
+        return None
+
+    @hybrid_property
     def subtype(self):
         subtype = ''
         subtype += ' critique' if self.critique else ''
@@ -281,9 +287,11 @@ class battleEvent(Event):
         # Fix interposition
         if self.type is not None and 'interposer' in self.type.lower():
             self.type = 'Interposition'
-        # Fix attraction from monsters
+        # Fix attraction and expulsion from monsters
         if self.type == 'a attiré' or self.type == 'assomme':
             self.type = 'Attraction assommante'
+        if self.type == 'expulsé':
+            self.type = 'Expulsion'
         # Fix GDS
         if self.type is not None and 'Griffe' in self.type and not self.esquive and (not hasattr(self, 'capa_tour') or self.capa_tour is None):
             self.capa_tour = 1
@@ -352,8 +360,14 @@ class battleEvent(Event):
         if hasattr(self, 'flag_ldp') and self.flag_ldp is not None:
             if hasattr(self, 'type_potion') and self.type_potion is not None:
                 self.type = self.type.replace('potion', self.type_potion)
+                self.type = self.type.replace('Lancer', 'Lancé')
         if hasattr(self, 'flag_ldp_rate') and self.flag_ldp_rate is not None:
             self.type += ' raté'
+        # Handles the container
+        if hasattr(self, 'flag_propulseur_nok') and self.flag_propulseur_nok is not None:
+            self.type += " (propulsion ratée)"
+        elif hasattr(self, 'flag_propulseur_ok') and self.flag_propulseur_ok is not None:
+            self.type += " (propulsion réussie)"
         # Handle the flags
         if hasattr(self, 'flag_resist_att_mag'):
             self.flag_resist = self.flag_resist_att_mag is not None and (not hasattr(self, 'capa_effet') or self.capa_effet is None)
@@ -567,6 +581,8 @@ def play(mapper, connection, target):
             at.pa = max(0, int(at.pa) - int(capa.pa))
         elif 'normale' in t:
             at.pa = max(0, int(at.pa) - 4)
+        if 'propulsion réussie' in t:
+            at.pa += 1
         if target.blessure is not None and at.pdv is not None and int(target.blessure) > 0:
             at.pdv = max(0, int(at.pdv) - int(target.blessure))
         if target.soin is not None and 'sacrifice' not in t and at.pdv is not None and int(target.soin) > 0:
