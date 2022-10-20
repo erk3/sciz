@@ -12,12 +12,14 @@ ignored_subjects:
   pass: 'Passe'
   roulotte: 'roulotte'
   hibernation: 'Hibernation'
-  don_px: 'Don de \d+PX'
-  don_gg: 'Don de GG'
-  achat: 'Achat de Trésor'
+  don: 'Don de'
+  achat: 'Achat'
   gowap_taniere: 'est arrivé pour s''ébrouer sur la tanière'
   auberge: 'Auberge'
   password: 'mot de passe'
+  consigne: 'Consigne'
+  trollcante: 'Trollcante'
+  guilde: 'guilde'
 
 # Known mail subjects to parse (first to match)
 # Keys must be 'CLASS_routine' formatted
@@ -40,7 +42,7 @@ subjects:
   tresorEvent_idt: '(?P<type>Identification des (t|T)résors)\s*:\s*(\[(?P<tresor_id>\d+)\]\s+)?(?P<tresor_type>.+)'
   tresorEvent_telek: '(?P<type>Télékinésie)(\s*-\s*(\[(?P<tresor_id>\d+)\]\s+)?(?P<tresor_type>.+))?'
   tresorEvent_bidouille: '(?P<type>Bidouille)\s+sur\s+(\[(?P<tresor_id>\d+)\]\s+)?(\[(?P<tresor_type>Bidouille)\]\s+)?(?P<nom>.+)'
-  battleEvent_piege: '(?P<type>Déclenchement du Piège( sur un suivant)?)(?s)'
+  battleEvent_piege: '(?P<type>Déclenchement d(u|e) (P|p)iège( sur un suivant)?)(?s)'
   battleEvent_sort: 'Sortilège(\s*sur\s*Suivant)?\s*:\s*(?P<type>.+?)(\s+en\s+X\s*=\s*(?P<pos_x>\-?\d+)\s*,\s*Y\s*=\s*(?P<pos_y>\-?\d+)\s*,\s*N\s*=\s*(?P<pos_n>\-?\d+))?($|\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)|\s+sur\s+(?P<def_nom>.+)\s+\((?P<def_id>\d+)\))(?s)'
   battleEvent_sort_suivant: 'Sortilège\s+sur\s+Suivant\s*:\s*(?P<type>.+?)\s+lancé\s+par\s+(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'
   battleEvent_pouvoir: 'pouvoir \"(?P<type>.+)\"\s+d''(?P<att_nom>.+)\s+\((?P<att_id>\d+)\)(?s)'

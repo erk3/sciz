@@ -31,7 +31,7 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 from sqlalchemy import func, or_, and_, asc, desc
 from authlib.integrations.flask_client import OAuth
 from authlib.integrations.base_client.errors import OAuthError
-import datetime, dateutil.relativedelta, json, math, re, sys, logging
+import datetime, dateutil.relativedelta, json, math, re, sys, logging, urllib.parse
 import modules.globals as sg
 import traceback
 
@@ -68,6 +68,9 @@ def configure():
     webapp.config['JWT_HEADER_TYPE'] = ''
     webapp.config['JWT_IDENTITY_CLAIM'] = 'identity'
     webapp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    webapp.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    webapp.config['SESSION_COOKIE_NAME'] = 'session'
+    webapp.config['SESSION_COOKIE_SECURE'] = True
     jwt.init_app(webapp)
     oauth.init_app(webapp)
     oauth.register(
@@ -158,12 +161,14 @@ def login():
 def authorize():
     try:
         token = oauth.mh.authorize_access_token()
-    except OAuthError:
+    except OAuthError as o:
+        sg.logger.exception(o)
         return redirect('/?error=1')
     if token is None:
         return redirect('/?error=1')
     userinfo = oauth.mh.userinfo()
     if userinfo is None:
+        sg.logger.error('Missing info from MH for logging user: ' + userinfo)
         return redirect('/?error=1')
     # Create all the user in the maisonnee
     ids = list(dict.fromkeys(userinfo['ids'] + [userinfo['sub']]))
@@ -181,7 +186,9 @@ def authorize():
     user.troll.nom = userinfo['nom']
     user.troll.niv = userinfo['niveau']
     user.troll.race = userinfo['race']
-    user.troll.blason_uri = userinfo['blason']
+    if userinfo['blason'].startswith('/MH_Blasons/'):
+    	userinfo['blason'] = 'https://games.mountyhall.com/' + userinfo['blason']
+    user.troll.blason_uri = userinfo['blason'].split('?')[0]
     user.troll.guilde_id = userinfo['guilde']['id'] if userinfo['guilde'] is not None else None
     user = sg.db.upsert(user)
     jwt = create_access_token(identity=user, expires_delta=datetime.timedelta(minutes=user.web_session_duration))
