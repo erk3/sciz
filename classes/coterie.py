@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-#coding: utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # IMPORTS
 from classes.event import Event
@@ -132,11 +132,14 @@ class Coterie(sg.sqlalchemybase):
             if is_admin:
                 for id in partages['toExpire']:
                     if self.has_pending_partage(id) or self.has_partage(id):
-                        partage = sg.db.session.query(Partage).filter(Partage.coterie_id==self.id, Partage.user_id==id).order_by(desc(Partage.id)).first()
-                        partage.end = now
+                        partage = sg.db.session.query(Partage).filter(Partage.coterie_id==self.id, Partage.user_id==id, Partage.pending.is_(False), Partage.end.is_(None)).first()
+                        if partage:
+                            partage.end = now
             # Update admins and users
             for user in partages['admins'] + partages['users']:
-                partage = sg.db.session.query(Partage).filter(Partage.coterie_id==self.id, Partage.user_id==user['partage']['user_id']).order_by(desc(Partage.id)).first()
+                partage = sg.db.session.query(Partage).filter(Partage.coterie_id==self.id, Partage.user_id==user['partage']['user_id'], Partage.pending.is_(False), Partage.end.is_(None)).first()
+                if not partage:
+                    continue
                 if is_admin:
                     if not (partage.admin and len(self.partages_admins) <= 1):
                         partage.admin = user['partage']['admin']
