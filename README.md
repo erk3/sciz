@@ -1,6 +1,6 @@
 ![SCIZ LOGO](web/public/src/assets/images/logo.png)
 
-[![Chat on Miaou](https://miaou.dystroy.org/static/shields/room-fr.svg?v=1)](https://miaou.dystroy.org/2603?SCIZ)
+EDIT 09/2023 : le support de SCIZ est officiellement arrêté pour une durée indéfinie.
 
 # Système de Chauve-souris Interdimensionnel pour Zhumains
 
@@ -12,8 +12,7 @@ Une interface tactique pour jouer en groupe à [Mountyhall](https://www.mountyha
 * Consolidation éventuelle et croisement avec les données disponibles publiquement
 * Génération de notifications sur évènements
 * Moteur de requêtage des informations collectées et générées
-* Vue 2D, Bestiaire et autres outils
-* Plugins : Miaou, Discord
+* Plugins : Miaou, Discord, MountyZilla
 * Interface Zhumain Machine
 
 # Installation
